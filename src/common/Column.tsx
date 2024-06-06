@@ -21,18 +21,18 @@ export const Column: FC<ColumnProps> = props =>
 
         if (size)
         {
-            let colClassName = `col-span-${size}`;
+            let colClassName = `col-span-${ size }`;
 
-            if (isCssGrid) colClassName = `${colClassName}`;
+            if (isCssGrid) colClassName = `${ colClassName }`;
 
             newClassNames.push(colClassName);
         }
 
         if (offset)
         {
-            let colClassName = `offset-${offset}`;
+            let colClassName = `offset-${ offset }`;
 
-            if (isCssGrid) colClassName = `g-start-${offset}`;
+            if (isCssGrid) colClassName = `g-start-${ offset }`;
 
             newClassNames.push(colClassName);
         }
@@ -40,7 +40,7 @@ export const Column: FC<ColumnProps> = props =>
         if (classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [size, offset, isCssGrid, classNames]);
+    }, [ size, offset, isCssGrid, classNames ]);
 
-    return <Flex classNames={getClassNames} column={column} gap={gap} {...rest} />;
+    return <Flex classNames={ getClassNames } column={ column } gap={ gap } { ...rest } />;
 }

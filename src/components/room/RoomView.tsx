@@ -35,12 +35,12 @@ export const RoomView: FC<{}> = props =>
     }, []);
 
     return (
-        <div ref={elementRef} className={classNames('size-full', (!roomSession && 'hidden'))}>
-            {roomSession &&
+        <div ref={ elementRef } className={ classNames('size-full', (!roomSession && 'hidden')) }>
+            { roomSession &&
                 <>
                     <RoomWidgetsView />
-                    {roomSession.isSpectator && <RoomSpectatorView />}
-                </>}
+                    { roomSession.isSpectator && <RoomSpectatorView /> }
+                </> }
         </div>
     );
 }

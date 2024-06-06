@@ -22,22 +22,22 @@ export const CameraWidgetEffectListItemView: FC<CameraWidgetEffectListItemViewPr
         <>
             asassa
 
-            <LayoutGridItem itemActive={isActive} title={LocalizeText(!isLocked ? (`camera.effect.name.${effect.name}`) : `camera.effect.required.level ${effect.minLevel}`)} onClick={event => (!isActive && selectEffect())}>
-                {isActive &&
-                    <Button className="rounded-circle remove-effect" variant="danger" onClick={removeEffect}>
+            <LayoutGridItem itemActive={ isActive } title={ LocalizeText(!isLocked ? (`camera.effect.name.${ effect.name }`) : `camera.effect.required.level ${ effect.minLevel }`) } onClick={ event => (!isActive && selectEffect()) }>
+                { isActive &&
+                    <Button className="rounded-circle remove-effect" variant="danger" onClick={ removeEffect }>
                         <FaTimes className="fa-icon" />
-                    </Button>}
-                {!isLocked && (thumbnailUrl && thumbnailUrl.length > 0) &&
+                    </Button> }
+                { !isLocked && (thumbnailUrl && thumbnailUrl.length > 0) &&
                     <div className="effect-thumbnail-image border">
-                        <img alt="" src={thumbnailUrl} />
-                    </div>}
-                {isLocked &&
+                        <img alt="" src={ thumbnailUrl } />
+                    </div> }
+                { isLocked &&
                     <Text bold center>
                         <div>
                             <FaLock className="fa-icon" />
                         </div>
-                        {effect.minLevel}
-                    </Text>}
+                        { effect.minLevel }
+                    </Text> }
             </LayoutGridItem>
         </>
     );

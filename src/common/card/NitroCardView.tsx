@@ -15,7 +15,7 @@ export const NitroCardView: FC<NitroCardViewProps> = props =>
 
     const getClassNames = useMemo(() =>
     {
-        const newClassNames: string[] = ['resize', 'rounded', 'shadow',];
+        const newClassNames: string[] = [ 'resize', 'rounded', 'shadow', ];
 
         // Card Theme Changer
         newClassNames.push('border-[1px] border-[#283F5D]');
@@ -25,12 +25,12 @@ export const NitroCardView: FC<NitroCardViewProps> = props =>
         if (classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [theme, classNames]);
+    }, [ classNames ]);
 
     return (
-        <NitroCardContextProvider value={{ theme }}>
-            <DraggableWindow disableDrag={disableDrag} handleSelector={handleSelector} uniqueKey={uniqueKey} windowPosition={windowPosition}>
-                <Column classNames={getClassNames} gap={gap} innerRef={elementRef} overflow={overflow} position={position} {...rest} />
+        <NitroCardContextProvider value={ { theme } }>
+            <DraggableWindow disableDrag={ disableDrag } handleSelector={ handleSelector } uniqueKey={ uniqueKey } windowPosition={ windowPosition }>
+                <Column classNames={ getClassNames } gap={ gap } innerRef={ elementRef } overflow={ overflow } position={ position } { ...rest } />
             </DraggableWindow>
         </NitroCardContextProvider>
     );

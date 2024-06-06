@@ -27,17 +27,17 @@ export const NitroButton = forwardRef<HTMLButtonElement, PropsWithChildren<{
 
     return (
         <button
-            ref={ref}
-            className={classNames(
+            ref={ ref }
+            className={ classNames(
                 classes.base,
                 classes.size[size],
                 outline ? classes.outline[color] : classes.color[color],
                 disabled && classes.disabled,
                 className
-            )}
-            disabled={disabled}
-            type={type}
-            {...rest} />
+            ) }
+            disabled={ disabled }
+            type={ type }
+            { ...rest } />
     );
 });
 

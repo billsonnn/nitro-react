@@ -13,14 +13,14 @@ export const FurniturePlaylistEditorWidgetView: FC<{}> = props =>
 
     return (
         <NitroCardView className="nitro-playlist-editor-widget" theme="primary-slim">
-            <NitroCardHeaderView headerText={LocalizeText('playlist.editor.title')} onCloseClick={onClose} />
+            <NitroCardHeaderView headerText={ LocalizeText('playlist.editor.title') } onCloseClick={ onClose } />
             <NitroCardContentView>
                 <div className="flex flex-row gap-1 h-full">
                     <div className="w-50 relative overflow-hidden h-full rounded flex flex-col">
-                        <DiskInventoryView addToPlaylist={addToPlaylist} diskInventory={diskInventory} />
+                        <DiskInventoryView addToPlaylist={ addToPlaylist } diskInventory={ diskInventory } />
                     </div>
                     <div className="w-50 relative overflow-hidden h-full rounded flex flex-col">
-                        <SongPlaylistView currentPlayingIndex={currentPlayingIndex} furniId={objectId} playlist={playlist} removeFromPlaylist={removeFromPlaylist} togglePlayPause={togglePlayPause} />
+                        <SongPlaylistView currentPlayingIndex={ currentPlayingIndex } furniId={ objectId } playlist={ playlist } removeFromPlaylist={ removeFromPlaylist } togglePlayPause={ togglePlayPause } />
                     </div>
                 </div>
             </NitroCardContentView>

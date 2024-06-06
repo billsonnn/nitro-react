@@ -15,8 +15,8 @@ interface GroupsContainerViewProps extends GridProps
 export const GroupsContainerView: FC<GroupsContainerViewProps> = props =>
 {
     const { itsMe = null, groups = null, onLeaveGroup = null, overflow = 'hidden', gap = 2, ...rest } = props;
-    const [selectedGroupId, setSelectedGroupId] = useState<number>(null);
-    const [groupInformation, setGroupInformation] = useState<GroupInformationParser>(null);
+    const [ selectedGroupId, setSelectedGroupId ] = useState<number>(null);
+    const [ groupInformation, setGroupInformation ] = useState<GroupInformationParser>(null);
 
     useMessageEvent<GroupInformationEvent>(GroupInformationEvent, event =>
     {
@@ -32,7 +32,7 @@ export const GroupsContainerView: FC<GroupsContainerViewProps> = props =>
         if (!selectedGroupId) return;
 
         SendMessageComposer(new GroupInformationComposer(selectedGroupId, false));
-    }, [selectedGroupId]);
+    }, [ selectedGroupId ]);
 
     useEffect(() =>
     {
@@ -50,7 +50,7 @@ export const GroupsContainerView: FC<GroupsContainerViewProps> = props =>
                 return groups[0].groupId;
             });
         }
-    }, [groups]);
+    }, [ groups ]);
 
     if (!groups || !groups.length)
     {
@@ -66,24 +66,24 @@ export const GroupsContainerView: FC<GroupsContainerViewProps> = props =>
     }
 
     return (
-        <Grid gap={2} overflow={overflow} {...rest}>
-            <Column alignItems="center" overflow="auto" size={2}>
-                <AutoGrid className="w-[50px]" columnCount={1} columnMinHeight={50} overflow={null}>
-                    {groups.map((group, index) =>
+        <Grid gap={ 2 } overflow={ overflow } { ...rest }>
+            <Column alignItems="center" overflow="auto" size={ 2 }>
+                <AutoGrid className="w-[50px]" columnCount={ 1 } columnMinHeight={ 50 } overflow={ null }>
+                    { groups.map((group, index) =>
                     {
                         return (
-                            <LayoutGridItem key={index} className="p-1" itemActive={(selectedGroupId === group.groupId)} overflow="unset" onClick={() => setSelectedGroupId(group.groupId)}>
-                                {itsMe &&
-                                    <i className={'absolute end-0 top-0 z-20 nitro-icon icon-group-' + (group.favourite ? 'favorite' : 'not-favorite')} onClick={() => ToggleFavoriteGroup(group)} />}
-                                <LayoutBadgeImageView badgeCode={group.badgeCode} isGroup={true} />
+                            <LayoutGridItem key={ index } className="p-1" itemActive={ (selectedGroupId === group.groupId) } overflow="unset" onClick={ () => setSelectedGroupId(group.groupId) }>
+                                { itsMe &&
+                                    <i className={ 'absolute end-0 top-0 z-20 nitro-icon icon-group-' + (group.favourite ? 'favorite' : 'not-favorite') } onClick={ () => ToggleFavoriteGroup(group) } /> }
+                                <LayoutBadgeImageView badgeCode={ group.badgeCode } isGroup={ true } />
                             </LayoutGridItem>
                         )
-                    })}
+                    }) }
                 </AutoGrid>
             </Column>
-            <Column overflow="hidden" size={10}>
-                {groupInformation &&
-                    <GroupInformationView groupInformation={groupInformation} onClose={onLeaveGroup} />}
+            <Column overflow="hidden" size={ 10 }>
+                { groupInformation &&
+                    <GroupInformationView groupInformation={ groupInformation } onClose={ onLeaveGroup } /> }
             </Column>
         </Grid>
     );

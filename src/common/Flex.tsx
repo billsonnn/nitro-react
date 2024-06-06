@@ -44,7 +44,7 @@ export const Flex: FC<FlexProps> = props =>
         if (classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [column, reverse, gap, center, alignSelf, alignItems, justifyContent, classNames]);
+    }, [ column, reverse, gap, center, alignSelf, alignItems, justifyContent, classNames ]);
 
-    return <Base classNames={getClassNames} display={display} {...rest} />;
+    return <Base classNames={ getClassNames } display={ display } { ...rest } />;
 }

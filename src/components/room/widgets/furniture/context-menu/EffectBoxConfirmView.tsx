@@ -23,14 +23,14 @@ export const EffectBoxConfirmView: FC<EffectBoxConfirmViewProps> = props =>
 
     return (
         <NitroCardView className="nitro-use-product-confirmation">
-            <NitroCardHeaderView headerText={LocalizeText('effectbox.header.title')} onCloseClick={onClose} />
+            <NitroCardHeaderView headerText={ LocalizeText('effectbox.header.title') } onCloseClick={ onClose } />
             <NitroCardContentView center>
                 <div className="flex gap-2">
                     <Column justifyContent="between">
-                        <Text>{LocalizeText('effectbox.header.description')}</Text>
+                        <Text>{ LocalizeText('effectbox.header.description') }</Text>
                         <div className="flex items-center justify-between">
-                            <Button variant="danger" onClick={onClose}>{LocalizeText('generic.cancel')}</Button>
-                            <Button variant="success" onClick={useProduct}>{LocalizeText('generic.ok')}</Button>
+                            <Button variant="danger" onClick={ onClose }>{ LocalizeText('generic.cancel') }</Button>
+                            <Button variant="success" onClick={ useProduct }>{ LocalizeText('generic.ok') }</Button>
                         </div>
                     </Column>
                 </div>

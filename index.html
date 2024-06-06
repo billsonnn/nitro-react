@@ -44,7 +44,7 @@
     </head>
     <body>
         <noscript>You need to enable JavaScript to run this app.</noscript>
-        <div id="root" class="h-full w-full"></div>
+        <div id="root" class="w-full h-full"></div>
         <script>
             window.NitroConfig = {
                 "config.urls": ["/renderer-config.json", "/ui-config.json"],
@@ -62,31 +62,6 @@
                 "friend.id":
                     new URLSearchParams(window.location.search).get("friend") ||
                     0,
-                "external.texts.url": [
-                    "https://images.habbo.ws/assets/gamedata/" +
-                        (new URLSearchParams(window.location.search).get(
-                            "lang",
-                        ) || null) +
-                        "/ExternalTexts.json",
-                    "https://images.habbo.ws/assets/gamedata/" +
-                        (new URLSearchParams(window.location.search).get(
-                            "lang",
-                        ) || null) +
-                        "/UITexts.json",
-                ],
-                "furnidata.url":
-                    "https://images.habbo.ws/assets/gamedata/" +
-                    (new URLSearchParams(window.location.search).get("lang") ||
-                        null) +
-                    "/FurnitureData.json",
-                "productdata.url":
-                    "https://images.habbo.ws/assets/gamedata/" +
-                    (new URLSearchParams(window.location.search).get("lang") ||
-                        null) +
-                    "/ProductData.json",
-                lang:
-                    new URLSearchParams(window.location.search).get("lang") ||
-                    null,
             };
         </script>
         <script type="module" src="./src/index.tsx"></script>

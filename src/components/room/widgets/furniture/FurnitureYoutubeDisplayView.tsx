@@ -12,7 +12,7 @@ interface FurnitureYoutubeDisplayViewProps extends AutoGridProps
 
 export const FurnitureYoutubeDisplayView: FC<{}> = FurnitureYoutubeDisplayViewProps =>
 {
-    const [player, setPlayer] = useState<any>(null);
+    const [ player, setPlayer ] = useState<any>(null);
     const { objectId = -1, videoId = null, videoStart = 0, videoEnd = 0, currentVideoState = null, selectedVideo = null, playlists = [], onClose = null, previous = null, next = null, pause = null, play = null, selectVideo = null } = useFurnitureYoutubeWidget();
 
     const onStateChange = (event: { target: YouTubePlayer; data: number }) =>
@@ -54,7 +54,7 @@ export const FurnitureYoutubeDisplayView: FC<{}> = FurnitureYoutubeDisplayViewPr
 
             return;
         }
-    }, [currentVideoState, player]);
+    }, [ currentVideoState, player ]);
 
     if (objectId === -1) return null;
 
@@ -74,32 +74,32 @@ export const FurnitureYoutubeDisplayView: FC<{}> = FurnitureYoutubeDisplayViewPr
 
     return (
         <NitroCardView className="youtube-tv-widget">
-            <NitroCardHeaderView headerText={LocalizeText('catalog.page.youtube_tvs')} onCloseClick={onClose} />
+            <NitroCardHeaderView headerText={ LocalizeText('catalog.page.youtube_tvs') } onCloseClick={ onClose } />
             <NitroCardContentView>
                 <div className="row size-full">
                     <div className="youtube-video-container col-span-9 overflow-hidden">
-                        {(videoId && videoId.length > 0) &&
-                            <YouTube containerClassName={'youtubeContainer'} opts={youtubeOptions} videoId={videoId} onReady={event => setPlayer(event.target)} onStateChange={onStateChange} />
+                        { (videoId && videoId.length > 0) &&
+                            <YouTube containerClassName={ 'youtubeContainer' } opts={ youtubeOptions } videoId={ videoId } onReady={ event => setPlayer(event.target) } onStateChange={ onStateChange } />
                         }
-                        {(!videoId || videoId.length === 0) &&
-                            <div className="empty-video size-full justify-center items-center flex">{LocalizeText('widget.furni.video_viewer.no_videos')}</div>
+                        { (!videoId || videoId.length === 0) &&
+                            <div className="empty-video size-full justify-center items-center flex">{ LocalizeText('widget.furni.video_viewer.no_videos') }</div>
                         }
                     </div>
                     <div className="playlist-container col-span-3 flex flex-col">
                         <span className="playlist-controls justify-center flex">
-                            <i className="icon icon-youtube-prev cursor-pointer" onClick={previous} />
-                            <i className="icon icon-youtube-next cursor-pointer" onClick={next} />
+                            <i className="icon icon-youtube-prev cursor-pointer" onClick={ previous } />
+                            <i className="icon icon-youtube-next cursor-pointer" onClick={ next } />
                         </span>
-                        <div className="mb-1">{LocalizeText('widget.furni.video_viewer.playlists')}</div>
-                        <AutoGrid className="mb-1" columnCount={1} columnMinHeight={100} columnMinWidth={80} overflow="auto">
-                            {playlists && playlists.map((entry, index) =>
+                        <div className="mb-1">{ LocalizeText('widget.furni.video_viewer.playlists') }</div>
+                        <AutoGrid className="mb-1" columnCount={ 1 } columnMinHeight={ 100 } columnMinWidth={ 80 } overflow="auto">
+                            { playlists && playlists.map((entry, index) =>
                             {
                                 return (
-                                    <LayoutGridItem key={index} itemActive={(entry.video === selectedVideo)} onClick={event => selectVideo(entry.video)}>
-                                        <b>{entry.title}</b>
+                                    <LayoutGridItem key={ index } itemActive={ (entry.video === selectedVideo) } onClick={ event => selectVideo(entry.video) }>
+                                        <b>{ entry.title }</b>
                                     </LayoutGridItem>
                                 )
-                            })}
+                            }) }
                         </AutoGrid>
                     </div>
                 </div>

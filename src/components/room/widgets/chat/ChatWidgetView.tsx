@@ -24,7 +24,7 @@ export const ChatWidgetView: FC<{}> = props =>
 
             return prevValue;
         })
-    }, [setChatMessages]);
+    }, [ setChatMessages ]);
 
     const checkOverlappingChats = useCallback((chat: ChatBubbleMessage, moved: number, tempChats: ChatBubbleMessage[]) => 
     {
@@ -46,7 +46,7 @@ export const ChatWidgetView: FC<{}> = props =>
                 checkOverlappingChats(collides, amount, tempChats);
             }
         }
-    }, [chatMessages]);
+    }, [ chatMessages ]);
 
     const makeRoom = useCallback((chat: ChatBubbleMessage) =>
     {
@@ -54,7 +54,7 @@ export const ChatWidgetView: FC<{}> = props =>
         {
             chat.skipMovement = true;
 
-            checkOverlappingChats(chat, 0, [chat]);
+            checkOverlappingChats(chat, 0, [ chat ]);
 
             removeHiddenChats();
         }
@@ -82,7 +82,7 @@ export const ChatWidgetView: FC<{}> = props =>
                 removeHiddenChats();
             }
         }
-    }, [chatSettings, checkOverlappingChats, removeHiddenChats, setChatMessages]);
+    }, [ chatSettings, checkOverlappingChats, removeHiddenChats, setChatMessages ]);
 
     useEffect(() =>
     {
@@ -93,7 +93,7 @@ export const ChatWidgetView: FC<{}> = props =>
             const currentHeight = elementRef.current.offsetHeight;
             const newHeight = Math.round(document.body.offsetHeight * GetConfigurationValue<number>('chat.viewer.height.percentage'));
 
-            elementRef.current.style.height = `${newHeight}px`;
+            elementRef.current.style.height = `${ newHeight }px`;
 
             setChatMessages(prevValue =>
             {
@@ -114,7 +114,7 @@ export const ChatWidgetView: FC<{}> = props =>
         {
             window.removeEventListener('resize', resize);
         }
-    }, [setChatMessages]);
+    }, [ setChatMessages ]);
 
     useEffect(() =>
     {
@@ -152,11 +152,11 @@ export const ChatWidgetView: FC<{}> = props =>
 
             worker.terminate();
         }
-    }, [getScrollSpeed, removeHiddenChats, setChatMessages]);
+    }, [ getScrollSpeed, removeHiddenChats, setChatMessages ]);
 
     return (
-        <div ref={elementRef} className="absolute flex justify-center items-center w-full top-0 min-h-[1px] z-[var(--chat-zindex)] bg-transparent roundehidden shadow-none pointer-events-none">
-            {chatMessages.map(chat => <ChatWidgetMessageView key={chat.id} bubbleWidth={chatSettings.weight} chat={chat} makeRoom={makeRoom} />)}
+        <div ref={ elementRef } className="absolute flex justify-center items-center w-full top-0 min-h-[1px] z-[var(--chat-zindex)] bg-transparent roundehidden shadow-none pointer-events-none">
+            { chatMessages.map(chat => <ChatWidgetMessageView key={ chat.id } bubbleWidth={ chatSettings.weight } chat={ chat } makeRoom={ makeRoom } />) }
         </div>
     );
 }

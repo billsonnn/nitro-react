@@ -15,7 +15,7 @@ interface FloorplanImportExportViewProps
 export const FloorplanImportExportView: FC<FloorplanImportExportViewProps> = props =>
 {
     const { onCloseClick = null } = props;
-    const [map, setMap] = useState<string>('');
+    const [ map, setMap ] = useState<string>('');
     const { originalFloorplanSettings = null } = useFloorplanEditorContext();
 
     const saveFloorChanges = () =>
@@ -38,15 +38,15 @@ export const FloorplanImportExportView: FC<FloorplanImportExportViewProps> = pro
 
     return (
         <NitroCardView className="floorplan-import-export" theme="primary-slim">
-            <NitroCardHeaderView headerText={LocalizeText('floor.plan.editor.import.export')} onCloseClick={onCloseClick} />
+            <NitroCardHeaderView headerText={ LocalizeText('floor.plan.editor.import.export') } onCloseClick={ onCloseClick } />
             <NitroCardContentView>
-                <textarea className="h-full" value={map} onChange={event => setMap(event.target.value)} />
+                <textarea className="h-full" value={ map } onChange={ event => setMap(event.target.value) } />
                 <div className="flex justify-between">
-                    <Button onClick={event => setMap(ConvertTileMapToString(originalFloorplanSettings.tilemap))}>
-                        {LocalizeText('floor.plan.editor.revert.to.last.received.map')}
+                    <Button onClick={ event => setMap(ConvertTileMapToString(originalFloorplanSettings.tilemap)) }>
+                        { LocalizeText('floor.plan.editor.revert.to.last.received.map') }
                     </Button>
-                    <Button onClick={saveFloorChanges}>
-                        {LocalizeText('floor.plan.editor.save')}
+                    <Button onClick={ saveFloorChanges }>
+                        { LocalizeText('floor.plan.editor.save') }
                     </Button>
                 </div>
             </NitroCardContentView>

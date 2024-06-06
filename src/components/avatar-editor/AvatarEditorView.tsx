@@ -13,7 +13,7 @@ const DEFAULT_FEMALE_FIGURE: string = 'hr-515-33.hd-600-1.ch-635-70.lg-716-66-62
 
 export const AvatarEditorView: FC<{}> = props =>
 {
-    const [isVisible, setIsVisible] = useState(false);
+    const [ isVisible, setIsVisible ] = useState(false);
     const { setIsVisible: setEditorVisibility, avatarModels, activeModelKey, setActiveModelKey, loadAvatarData, getFigureStringWithFace, gender, figureSetIds = [], randomizeCurrentFigure = null, getFigureString = null } = useAvatarEditor();
 
     const processAction = (action: string) =>
@@ -69,49 +69,49 @@ export const AvatarEditorView: FC<{}> = props =>
     useEffect(() =>
     {
         setEditorVisibility(isVisible)
-    }, [isVisible, setEditorVisibility]);
+    }, [ isVisible, setEditorVisibility ]);
 
     if (!isVisible) return null;
 
     return (
         <NitroCardView className="w-[620px] h-[374px] nitro-avatar-editor" uniqueKey="avatar-editor">
-            <NitroCardHeaderView headerText={LocalizeText('avatareditor.title')} onCloseClick={event => setIsVisible(false)} />
+            <NitroCardHeaderView headerText={ LocalizeText('avatareditor.title') } onCloseClick={ event => setIsVisible(false) } />
             <NitroCardTabsView>
-                {Object.keys(avatarModels).map(modelKey =>
+                { Object.keys(avatarModels).map(modelKey =>
                 {
                     const isActive = (activeModelKey === modelKey);
 
                     return (
-                        <NitroCardTabsItemView key={modelKey} isActive={isActive} onClick={event => setActiveModelKey(modelKey)}>
-                            {LocalizeText(`avatareditor.category.${modelKey}`)}
+                        <NitroCardTabsItemView key={ modelKey } isActive={ isActive } onClick={ event => setActiveModelKey(modelKey) }>
+                            { LocalizeText(`avatareditor.category.${ modelKey }`) }
                         </NitroCardTabsItemView>
                     );
-                })}
+                }) }
             </NitroCardTabsView>
             <NitroCardContentView>
                 <Grid className="grid gap-2 overflow-hidden">
                     <div className="flex flex-col col-span-9 overflow-hidden">
-                        {((activeModelKey.length > 0) && (activeModelKey !== AvatarEditorFigureCategory.WARDROBE)) &&
-                            <AvatarEditorModelView categories={avatarModels[activeModelKey]} name={activeModelKey} />}
-                        {(activeModelKey === AvatarEditorFigureCategory.WARDROBE) &&
-                            <AvatarEditorWardrobeView />}
+                        { ((activeModelKey.length > 0) && (activeModelKey !== AvatarEditorFigureCategory.WARDROBE)) &&
+                            <AvatarEditorModelView categories={ avatarModels[activeModelKey] } name={ activeModelKey } /> }
+                        { (activeModelKey === AvatarEditorFigureCategory.WARDROBE) &&
+                            <AvatarEditorWardrobeView /> }
                     </div>
                     <div className="flex flex-col col-span-3 overflow-hidden gap-1">
                         <AvatarEditorFigurePreviewView />
                         <div className="flex flex-col !flex-grow gap-1">
                             <div className="relative inline-flex align-middle">
-                                <Button className='flex-auto ' variant="secondary" onClick={event => processAction(AvatarEditorAction.ACTION_RESET)}>
+                                <Button className="flex-auto " variant="secondary" onClick={ event => processAction(AvatarEditorAction.ACTION_RESET) }>
                                     <FaRedo className="fa-icon" />
                                 </Button>
-                                <Button className='flex-auto' variant="secondary" onClick={event => processAction(AvatarEditorAction.ACTION_CLEAR)}>
+                                <Button className="flex-auto" variant="secondary" onClick={ event => processAction(AvatarEditorAction.ACTION_CLEAR) }>
                                     <FaTrash className="fa-icon" />
                                 </Button>
-                                <Button className='flex-auto' variant="secondary" onClick={event => processAction(AvatarEditorAction.ACTION_RANDOMIZE)}>
+                                <Button className="flex-auto" variant="secondary" onClick={ event => processAction(AvatarEditorAction.ACTION_RANDOMIZE) }>
                                     <FaDice className="fa-icon" />
                                 </Button>
                             </div>
-                            <Button className="w-full" variant="success" onClick={event => processAction(AvatarEditorAction.ACTION_SAVE)}>
-                                {LocalizeText('avatareditor.save')}
+                            <Button className="w-full" variant="success" onClick={ event => processAction(AvatarEditorAction.ACTION_SAVE) }>
+                                { LocalizeText('avatareditor.save') }
                             </Button>
                         </div>
                     </div>

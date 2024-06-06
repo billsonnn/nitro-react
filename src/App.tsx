@@ -10,7 +10,7 @@ NitroVersion.UI_VERSION = GetUIVersion();
 
 export const App: FC<{}> = props =>
 {
-    const [isReady, setIsReady] = useState(false);
+    const [ isReady, setIsReady ] = useState(false);
 
     useMessageEvent<LoadGameUrlEvent>(LoadGameUrlEvent, event =>
     {
@@ -94,10 +94,10 @@ export const App: FC<{}> = props =>
     }, []);
 
     return (
-        <div className={classNames('w-full h-full overflow-hidden text-base', !(window.devicePixelRatio % 1) && '[image-rendering:pixelated]')}>
-            {!isReady &&
-                <LoadingView />}
-            {isReady && <MainView />}
+        <div className={ classNames('w-full h-full overflow-hidden text-base', !(window.devicePixelRatio % 1) && '[image-rendering:pixelated]') }>
+            { !isReady &&
+                <LoadingView /> }
+            { isReady && <MainView /> }
             <div id="draggable-windows-container" />
         </div>
     );

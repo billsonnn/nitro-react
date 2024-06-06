@@ -16,8 +16,8 @@ const MODE_MONSTERPLANT_SEED: number = 0;
 export const MonsterPlantSeedConfirmView: FC<MonsterPlantSeedConfirmViewProps> = props =>
 {
     const { objectId = -1, onClose = null } = props;
-    const [furniData, setFurniData] = useState<IFurnitureData>(null);
-    const [mode, setMode] = useState(MODE_DEFAULT);
+    const [ furniData, setFurniData ] = useState<IFurnitureData>(null);
+    const [ mode, setMode ] = useState(MODE_DEFAULT);
     const { roomSession = null } = useRoom();
 
     const useProduct = () =>
@@ -54,13 +54,13 @@ export const MonsterPlantSeedConfirmView: FC<MonsterPlantSeedConfirmViewProps> =
         }
 
         setMode(mode);
-    }, [roomSession, objectId, onClose]);
+    }, [ roomSession, objectId, onClose ]);
 
     if (mode === MODE_DEFAULT) return null;
 
     return (
         <NitroCardView className="nitro-use-product-confirmation">
-            <NitroCardHeaderView headerText={LocalizeText('useproduct.widget.title.plant_seed', ['name'], [furniData.name])} onCloseClick={onClose} />
+            <NitroCardHeaderView headerText={ LocalizeText('useproduct.widget.title.plant_seed', [ 'name' ], [ furniData.name ]) } onCloseClick={ onClose } />
             <NitroCardContentView center>
                 <div className="flex gap-2 overflow-hidden">
                     <div className="flex flex-col">
@@ -69,13 +69,13 @@ export const MonsterPlantSeedConfirmView: FC<MonsterPlantSeedConfirmViewProps> =
                         </div>
                     </div>
                     <div className="flex flex-col justify-between overflow-auto">
-                        <Column gap={2}>
-                            <Text>{LocalizeText('useproduct.widget.text.plant_seed', ['productName'], [furniData.name])}</Text>
-                            <Text>{LocalizeText('useproduct.widget.info.plant_seed')}</Text>
+                        <Column gap={ 2 }>
+                            <Text>{ LocalizeText('useproduct.widget.text.plant_seed', [ 'productName' ], [ furniData.name ]) }</Text>
+                            <Text>{ LocalizeText('useproduct.widget.info.plant_seed') }</Text>
                         </Column>
                         <div className="flex items-center justify-between">
-                            <Button variant="danger" onClick={onClose}>{LocalizeText('useproduct.widget.cancel')}</Button>
-                            <Button variant="success" onClick={useProduct}>{LocalizeText('widget.monsterplant_seed.button.use')}</Button>
+                            <Button variant="danger" onClick={ onClose }>{ LocalizeText('useproduct.widget.cancel') }</Button>
+                            <Button variant="success" onClick={ useProduct }>{ LocalizeText('widget.monsterplant_seed.button.use') }</Button>
                         </div>
                     </div>
                 </div>

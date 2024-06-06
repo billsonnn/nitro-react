@@ -17,15 +17,15 @@ export const NitroItemCountBadge = forwardRef<HTMLDivElement, PropsWithChildren<
 
     return (
         <div
-            ref={ref}
-            className={classNames(
+            ref={ ref }
+            className={ classNames(
                 classes.base,
                 classes.themes[theme],
                 className
-            )}
-            {...rest}>
-            {count}
-            {children}
+            ) }
+            { ...rest }>
+            { count }
+            { children }
         </div>
     );
 });

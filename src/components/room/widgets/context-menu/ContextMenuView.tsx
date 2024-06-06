@@ -28,10 +28,10 @@ let FADE_TIME = 1;
 export const ContextMenuView: FC<ContextMenuViewProps> = props =>
 {
     const { objectId = -1, category = -1, userType = -1, fades = false, onClose = null, classNames = [], style = {}, children = null, collapsable = false, ...rest } = props;
-    const [pos, setPos] = useState<{ x: number, y: number }>({ x: null, y: null });
-    const [opacity, setOpacity] = useState(1);
-    const [isFading, setIsFading] = useState(false);
-    const [isCollapsed, setIsCollapsed] = useState(COLLAPSED);
+    const [ pos, setPos ] = useState<{ x: number, y: number }>({ x: null, y: null });
+    const [ opacity, setOpacity ] = useState(1);
+    const [ isFading, setIsFading ] = useState(false);
+    const [ isCollapsed, setIsCollapsed ] = useState(COLLAPSED);
     const elementRef = useRef<HTMLDivElement>();
 
     const updateFade = useCallback((time: number) =>
@@ -50,7 +50,7 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
         }
 
         setOpacity(newOpacity);
-    }, [isFading, onClose]);
+    }, [ isFading, onClose ]);
 
     const updatePosition = useCallback((bounds: NitroRectangle, location: { x: number, y: number }) =>
     {
@@ -90,11 +90,11 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
         else if (y > maxTop) y = maxTop;
 
         setPos({ x, y });
-    }, [userType]);
+    }, [ userType ]);
 
     const getClassNames = useMemo(() =>
     {
-        const newClassNames: string[] = ['!p-[2px] bg-[#1c323f] border-[2px] border-[solid] border-[rgba(255,255,255,.5)] rounded-[.25rem] text-[.7875rem] z-40 pointer-events-auto', 'absolute'];
+        const newClassNames: string[] = [ '!p-[2px] bg-[#1c323f] border-[2px] border-[solid] border-[rgba(255,255,255,.5)] rounded-[.25rem] text-[.7875rem] z-40 pointer-events-auto', 'absolute' ];
 
         if (isCollapsed) newClassNames.push('menu-hidden');
 
@@ -103,7 +103,7 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
         if (classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [pos, classNames, isCollapsed]);
+    }, [ pos, classNames, isCollapsed ]);
 
     const getStyle = useMemo(() =>
     {
@@ -116,7 +116,7 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
         if (Object.keys(style).length) newStyle = { ...newStyle, ...style };
 
         return newStyle;
-    }, [pos, opacity, style]);
+    }, [ pos, opacity, style ]);
 
     useEffect(() =>
     {
@@ -140,7 +140,7 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
         {
             GetTicker().remove(update);
         }
-    }, [objectId, category, updateFade, updatePosition]);
+    }, [ objectId, category, updateFade, updatePosition ]);
 
     useEffect(() =>
     {
@@ -149,12 +149,12 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
         const timeout = setTimeout(() => setIsFading(true), FADE_DELAY);
 
         return () => clearTimeout(timeout);
-    }, [fades]);
+    }, [ fades ]);
 
     useEffect(() =>
     {
         COLLAPSED = isCollapsed;
-    }, [isCollapsed]);
+    }, [ isCollapsed ]);
 
     useEffect(() =>
     {
@@ -163,8 +163,8 @@ export const ContextMenuView: FC<ContextMenuViewProps> = props =>
         FADE_TIME = 1;
     }, []);
 
-    return <div ref={elementRef} className={getClassNames.join(' ')} style={getStyle} {...rest}>
-        {!(collapsable && COLLAPSED) && children}
-        {collapsable && <ContextMenuCaretView collapsed={isCollapsed} onClick={() => setIsCollapsed(!isCollapsed)} />}
+    return <div ref={ elementRef } className={ getClassNames.join(' ') } style={ getStyle } { ...rest }>
+        { !(collapsable && COLLAPSED) && children }
+        { collapsable && <ContextMenuCaretView collapsed={ isCollapsed } onClick={ () => setIsCollapsed(!isCollapsed) } /> }
     </div>;
 }

@@ -24,7 +24,7 @@ export const LayoutGridItem: FC<LayoutGridItemProps> = props =>
 
     const getClassNames = useMemo(() =>
     {
-        const newClassNames: string[] = ['layout-grid-item', 'border', 'border-2', 'border-muted', 'rounded'];
+        const newClassNames: string[] = [ 'layout-grid-item', 'border', 'border-2', 'border-muted', 'rounded' ];
 
 
         if (itemActive) newClassNames.push('!bg-[#ececec] !border-[#fff]');
@@ -44,33 +44,33 @@ export const LayoutGridItem: FC<LayoutGridItemProps> = props =>
         if (classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [itemActive, itemUniqueSoldout, itemUniqueNumber, itemUnseen, itemHighlight, disabled, itemImage, classNames]);
+    }, [ itemActive, itemUniqueSoldout, itemUniqueNumber, itemUnseen, itemHighlight, disabled, itemImage, classNames ]);
 
     const getStyle = useMemo(() =>
     {
         let newStyle = { ...style };
 
-        if (itemImage && !(itemUniqueSoldout || (itemUniqueNumber > 0))) newStyle.backgroundImage = `url(${itemImage})`;
+        if (itemImage && !(itemUniqueSoldout || (itemUniqueNumber > 0))) newStyle.backgroundImage = `url(${ itemImage })`;
 
         if (itemColor) newStyle.backgroundColor = itemColor;
 
         if (Object.keys(style).length) newStyle = { ...newStyle, ...style };
 
         return newStyle;
-    }, [style, itemImage, itemColor, itemUniqueSoldout, itemUniqueNumber]);
+    }, [ style, itemImage, itemColor, itemUniqueSoldout, itemUniqueNumber ]);
 
     return (
-        <Column pointer center={center} classNames={getClassNames} column={column} overflow={overflow} position={position} style={getStyle} {...rest}>
-            {(itemCount > itemCountMinimum) &&
-                <LayoutItemCountView count={itemCount} />}
-            {(itemUniqueNumber > 0) &&
+        <Column pointer center={ center } classNames={ getClassNames } column={ column } overflow={ overflow } position={ position } style={ getStyle } { ...rest }>
+            { (itemCount > itemCountMinimum) &&
+                <LayoutItemCountView count={ itemCount } /> }
+            { (itemUniqueNumber > 0) &&
                 <>
-                    <Base fit className="unique-bg-override" style={{ backgroundImage: `url(${itemImage})` }} />
+                    <Base fit className="unique-bg-override" style={ { backgroundImage: `url(${ itemImage })` } } />
                     <div className="absolute bottom-0 unique-item-counter">
-                        <LayoutLimitedEditionStyledNumberView value={itemUniqueNumber} />
+                        <LayoutLimitedEditionStyledNumberView value={ itemUniqueNumber } />
                     </div>
-                </>}
-            {children}
+                </> }
+            { children }
         </Column>
     );
 }

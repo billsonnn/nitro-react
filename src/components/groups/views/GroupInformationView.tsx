@@ -4,7 +4,7 @@ import { CatalogPageName, GetGroupManager, GetGroupMembers, GroupMembershipType,
 import { Button, Column, Grid, GridProps, LayoutBadgeImageView, Text } from '../../../common';
 import { useNotification } from '../../../hooks';
 
-const STATES: string[] = ['regular', 'exclusive', 'private'];
+const STATES: string[] = [ 'regular', 'exclusive', 'private' ];
 
 interface GroupInformationViewProps extends GridProps
 {
@@ -36,11 +36,11 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
     {
         if (groupInformation.membershipType === GroupMembershipType.NOT_MEMBER || groupInformation.membershipType === GroupMembershipType.REQUEST_PENDING) return null;
 
-        if (isRealOwner) return <i className="nitro-icon icon-group-owner" title={LocalizeText('group.youareowner')} />;
+        if (isRealOwner) return <i className="nitro-icon icon-group-owner" title={ LocalizeText('group.youareowner') } />;
 
-        if (groupInformation.isAdmin) return <i className="nitro-icon icon-group-admin" title={LocalizeText('group.youareadmin')} />;
+        if (groupInformation.isAdmin) return <i className="nitro-icon icon-group-admin" title={ LocalizeText('group.youareadmin') } />;
 
-        return <i className="nitro-icon icon-group-member" title={LocalizeText('group.youaremember')} />;
+        return <i className="nitro-icon icon-group-member" title={ LocalizeText('group.youaremember') } />;
     }
 
     const getButtonText = () =>
@@ -100,45 +100,45 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
     if (!groupInformation) return null;
 
     return (
-        <Grid overflow={overflow} {...rest}>
-            <Column center overflow="hidden" size={3}>
+        <Grid overflow={ overflow } { ...rest }>
+            <Column center overflow="hidden" size={ 3 }>
                 <div className="flex items-center overflow-hidden group-badge">
-                    <LayoutBadgeImageView badgeCode={groupInformation.badge} isGroup={true} scale={2} />
+                    <LayoutBadgeImageView badgeCode={ groupInformation.badge } isGroup={ true } scale={ 2 } />
                 </div>
-                <Column alignItems="center" gap={1}>
-                    <Text pointer small underline onClick={() => handleAction('members')}>{LocalizeText('group.membercount', ['totalMembers'], [groupInformation.membersCount.toString()])}</Text>
-                    {(groupInformation.pendingRequestsCount > 0) &&
-                        <Text pointer small underline onClick={() => handleAction('members_pending')}>{LocalizeText('group.pendingmembercount', ['amount'], [groupInformation.pendingRequestsCount.toString()])}</Text>}
-                    {groupInformation.isOwner &&
-                        <Text pointer small underline onClick={() => handleAction('manage')}>{LocalizeText('group.manage')}</Text>}
+                <Column alignItems="center" gap={ 1 }>
+                    <Text pointer small underline onClick={ () => handleAction('members') }>{ LocalizeText('group.membercount', [ 'totalMembers' ], [ groupInformation.membersCount.toString() ]) }</Text>
+                    { (groupInformation.pendingRequestsCount > 0) &&
+                        <Text pointer small underline onClick={ () => handleAction('members_pending') }>{ LocalizeText('group.pendingmembercount', [ 'amount' ], [ groupInformation.pendingRequestsCount.toString() ]) }</Text> }
+                    { groupInformation.isOwner &&
+                        <Text pointer small underline onClick={ () => handleAction('manage') }>{ LocalizeText('group.manage') }</Text> }
                 </Column>
-                {getRoleIcon()}
+                { getRoleIcon() }
             </Column>
             <div className="flex flex-col justify-between overflow-auto col-span-9">
                 <div className="flex flex-col overflow-hidden">
                     <div className="flex flex-col gap-1">
                         <div className="flex items-center gap-2">
-                            <Text bold>{groupInformation.title}</Text>
+                            <Text bold>{ groupInformation.title }</Text>
                             <div className="flex gap-1">
-                                <i className={'nitro-icon icon-group-type-' + groupInformation.type} title={LocalizeText(`group.edit.settings.type.${STATES[groupInformation.type]}.help`)} />
-                                {groupInformation.canMembersDecorate &&
-                                    <i className="nitro-icon icon-group-decorate" title={LocalizeText('group.memberscandecorate')} />}
+                                <i className={ 'nitro-icon icon-group-type-' + groupInformation.type } title={ LocalizeText(`group.edit.settings.type.${ STATES[groupInformation.type] }.help`) } />
+                                { groupInformation.canMembersDecorate &&
+                                    <i className="nitro-icon icon-group-decorate" title={ LocalizeText('group.memberscandecorate') } /> }
                             </div>
                         </div>
-                        <Text small>{LocalizeText('group.created', ['date', 'owner'], [groupInformation.createdAt, groupInformation.ownerName])}</Text>
+                        <Text small>{ LocalizeText('group.created', [ 'date', 'owner' ], [ groupInformation.createdAt, groupInformation.ownerName ]) }</Text>
                     </div>
-                    <Text small className="group-description" overflow="auto">{groupInformation.description}</Text>
+                    <Text small className="group-description" overflow="auto">{ groupInformation.description }</Text>
                 </div>
                 <div className="flex flex-col gap-2">
                     <div className="flex flex-col gap-1">
-                        <Text pointer small underline onClick={() => handleAction('homeroom')}>{LocalizeText('group.linktobase')}</Text>
-                        <Text pointer small underline onClick={() => handleAction('furniture')}>{LocalizeText('group.buyfurni')}</Text>
-                        <Text pointer small underline onClick={() => handleAction('popular_groups')}>{LocalizeText('group.showgroups')}</Text>
+                        <Text pointer small underline onClick={ () => handleAction('homeroom') }>{ LocalizeText('group.linktobase') }</Text>
+                        <Text pointer small underline onClick={ () => handleAction('furniture') }>{ LocalizeText('group.buyfurni') }</Text>
+                        <Text pointer small underline onClick={ () => handleAction('popular_groups') }>{ LocalizeText('group.showgroups') }</Text>
                     </div>
-                    {(groupInformation.type !== GroupType.PRIVATE || groupInformation.type === GroupType.PRIVATE && groupInformation.membershipType === GroupMembershipType.MEMBER) &&
-                        <Button disabled={(groupInformation.membershipType === GroupMembershipType.REQUEST_PENDING) || isRealOwner} onClick={handleButtonClick}>
-                            {LocalizeText(getButtonText())}
-                        </Button>}
+                    { (groupInformation.type !== GroupType.PRIVATE || groupInformation.type === GroupType.PRIVATE && groupInformation.membershipType === GroupMembershipType.MEMBER) &&
+                        <Button disabled={ (groupInformation.membershipType === GroupMembershipType.REQUEST_PENDING) || isRealOwner } onClick={ handleButtonClick }>
+                            { LocalizeText(getButtonText()) }
+                        </Button> }
                 </div>
             </div>
         </Grid>

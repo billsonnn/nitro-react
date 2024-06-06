@@ -14,8 +14,8 @@ export interface CatalogRedeemVoucherViewProps
 export const CatalogRedeemVoucherView: FC<CatalogRedeemVoucherViewProps> = props =>
 {
     const { text = null } = props;
-    const [voucher, setVoucher] = useState<string>('');
-    const [isWaiting, setIsWaiting] = useState(false);
+    const [ voucher, setVoucher ] = useState<string>('');
+    const [ isWaiting, setIsWaiting ] = useState(false);
     const { simpleAlert = null } = useNotification();
 
     const redeemVoucher = () =>
@@ -33,7 +33,7 @@ export const CatalogRedeemVoucherView: FC<CatalogRedeemVoucherViewProps> = props
 
         let message = LocalizeText('catalog.alert.voucherredeem.ok.description');
 
-        if (parser.productName) message = LocalizeText('catalog.alert.voucherredeem.ok.description.furni', ['productName', 'productDescription'], [parser.productName, parser.productDescription]);
+        if (parser.productName) message = LocalizeText('catalog.alert.voucherredeem.ok.description.furni', [ 'productName', 'productDescription' ], [ parser.productName, parser.productDescription ]);
 
         simpleAlert(message, null, null, null, LocalizeText('catalog.alert.voucherredeem.ok.title'));
 
@@ -45,7 +45,7 @@ export const CatalogRedeemVoucherView: FC<CatalogRedeemVoucherViewProps> = props
     {
         const parser = event.getParser();
 
-        simpleAlert(LocalizeText(`catalog.alert.voucherredeem.error.description.${parser.errorCode}`), null, null, null, LocalizeText('catalog.alert.voucherredeem.error.title'));
+        simpleAlert(LocalizeText(`catalog.alert.voucherredeem.error.description.${ parser.errorCode }`), null, null, null, LocalizeText('catalog.alert.voucherredeem.error.title'));
 
         setIsWaiting(false);
     });
@@ -56,11 +56,10 @@ export const CatalogRedeemVoucherView: FC<CatalogRedeemVoucherViewProps> = props
 
 
             <NitroInput
-                placeholder={text}
-                value={voucher}
-                onChange={event => setVoucher(event.target.value)} />
-
-            <Button disabled={isWaiting} variant="primary" onClick={redeemVoucher}>
+                placeholder={ text }
+                value={ voucher }
+                onChange={ event => setVoucher(event.target.value) } />
+            <Button disabled={ isWaiting } variant="primary" onClick={ redeemVoucher }>
                 <FaTag className="fa-icon" />
             </Button>
         </div>

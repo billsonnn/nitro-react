@@ -26,7 +26,7 @@ export const Text: FC<TextProps> = props =>
 
     const getClassNames = useMemo(() =>
     {
-        const newClassNames: string[] = ['inline'];
+        const newClassNames: string[] = [ 'inline' ];
 
         if (variant) newClassNames.push('text-' + variant);
 
@@ -57,7 +57,7 @@ export const Text: FC<TextProps> = props =>
         if (textBreak) newClassNames.push('text-break');
 
         return newClassNames;
-    }, [variant, fontWeight, fontSize, align, bold, underline, italics, truncate, center, textEnd, small, wrap, noWrap, textBreak]);
+    }, [ variant, fontWeight, fontSize, align, bold, underline, italics, truncate, center, textEnd, small, wrap, noWrap, textBreak ]);
 
-    return <Base classNames={getClassNames} {...rest} />;
+    return <Base classNames={ getClassNames } { ...rest } />;
 }

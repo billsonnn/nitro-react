@@ -19,7 +19,7 @@ export const Button: FC<ButtonProps> = props =>
 
         // fucked up method i know (i dont have a clue what im doing because im a ninja)
 
-        const newClassNames: string[] = ['pointer-events-auto inline-block font-normal leading-normal text-[#fff] text-center no-underline align-middle cursor-pointer select-none border-[1px] border-[solid] border-[transparent] px-[.75rem] py-[.375rem] text-[.9rem] rounded-[.25rem] [transition:color_.15s_ease-in-out,_background-color_.15s_ease-in-out,_border-color_.15s_ease-in-out,_box-shadow_.15s_ease-in-out]'];
+        const newClassNames: string[] = [ 'pointer-events-auto inline-block font-normal leading-normal text-[#fff] text-center no-underline align-middle cursor-pointer select-none border-[1px] border-[solid] border-[transparent] px-[.75rem] py-[.375rem] text-[.9rem] rounded-[.25rem] [transition:color_.15s_ease-in-out,_background-color_.15s_ease-in-out,_border-color_.15s_ease-in-out,_box-shadow_.15s_ease-in-out]' ];
 
         if (variant)
         {
@@ -62,7 +62,7 @@ export const Button: FC<ButtonProps> = props =>
         if (classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [variant, size, active, disabled, classNames]);
+    }, [ variant, size, active, disabled, classNames ]);
 
-    return <Flex center classNames={getClassNames} {...rest} />;
+    return <Flex center classNames={ getClassNames } { ...rest } />;
 }

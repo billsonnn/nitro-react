@@ -18,9 +18,9 @@ interface GroupTabIdentityViewProps
 export const GroupTabIdentityView: FC<GroupTabIdentityViewProps> = props =>
 {
     const { groupData = null, setGroupData = null, setCloseAction = null, onClose = null, isCreator = false, availableRooms = [] } = props;
-    const [groupName, setGroupName] = useState<string>('');
-    const [groupDescription, setGroupDescription] = useState<string>('');
-    const [groupHomeroomId, setGroupHomeroomId] = useState<number>(-1);
+    const [ groupName, setGroupName ] = useState<string>('');
+    const [ groupDescription, setGroupDescription ] = useState<string>('');
+    const [ groupHomeroomId, setGroupHomeroomId ] = useState<number>(-1);
     const { showConfirm = null } = useNotification();
 
     const deleteGroup = () =>
@@ -62,21 +62,21 @@ export const GroupTabIdentityView: FC<GroupTabIdentityViewProps> = props =>
         SendMessageComposer(new GroupSaveInformationComposer(groupData.groupId, groupName, (groupDescription || '')));
 
         return true;
-    }, [groupData, groupName, groupDescription, groupHomeroomId, setGroupData]);
+    }, [ groupData, groupName, groupDescription, groupHomeroomId, setGroupData ]);
 
     useEffect(() =>
     {
         setGroupName(groupData.groupName || '');
         setGroupDescription(groupData.groupDescription || '');
         setGroupHomeroomId(groupData.groupHomeroomId);
-    }, [groupData]);
+    }, [ groupData ]);
 
     useEffect(() =>
     {
         setCloseAction({ action: saveIdentity });
 
         return () => setCloseAction(null);
-    }, [setCloseAction, saveIdentity]);
+    }, [ setCloseAction, saveIdentity ]);
 
     if (!groupData) return null;
 
@@ -84,34 +84,34 @@ export const GroupTabIdentityView: FC<GroupTabIdentityViewProps> = props =>
         <Column justifyContent="between" overflow="auto">
             <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-1">
-                    <Text center className="col-span-3">{LocalizeText('group.edit.name')}</Text>
-                    <NitroInput maxLength={29} type="text" value={groupName} onChange={event => setGroupName(event.target.value)} />
+                    <Text center className="col-span-3">{ LocalizeText('group.edit.name') }</Text>
+                    <NitroInput maxLength={ 29 } type="text" value={ groupName } onChange={ event => setGroupName(event.target.value) } />
                 </div>
                 <div className="flex items-center gap-1">
-                    <Text center className="col-span-3">{LocalizeText('group.edit.desc')}</Text>
-                    <textarea className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem]  rounded-[.2rem] form-control-sm" maxLength={254} value={groupDescription} onChange={event => setGroupDescription(event.target.value)} />
+                    <Text center className="col-span-3">{ LocalizeText('group.edit.desc') }</Text>
+                    <textarea className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem]  rounded-[.2rem] form-control-sm" maxLength={ 254 } value={ groupDescription } onChange={ event => setGroupDescription(event.target.value) } />
                 </div>
-                {isCreator &&
+                { isCreator &&
                     <>
                         <div className="flex items-center gap-1">
-                            <Text center className="col-span-3">{LocalizeText('group.edit.base')}</Text>
-                            <Column fullWidth gap={1}>
-                                <select className="form-select form-select-sm" value={groupHomeroomId} onChange={event => setGroupHomeroomId(parseInt(event.target.value))}>
-                                    <option disabled value={-1}>{LocalizeText('group.edit.base.select.room')}</option>
-                                    {availableRooms && availableRooms.map((room, index) => <option key={index} value={room.id}>{room.name}</option>)}
+                            <Text center className="col-span-3">{ LocalizeText('group.edit.base') }</Text>
+                            <Column fullWidth gap={ 1 }>
+                                <select className="form-select form-select-sm" value={ groupHomeroomId } onChange={ event => setGroupHomeroomId(parseInt(event.target.value)) }>
+                                    <option disabled value={ -1 }>{ LocalizeText('group.edit.base.select.room') }</option>
+                                    { availableRooms && availableRooms.map((room, index) => <option key={ index } value={ room.id }>{ room.name }</option>) }
                                 </select>
                             </Column>
                         </div>
                         <div className="flex gap-1">
                             <div className="col-span-3">&nbsp;</div>
-                            <Text small>{LocalizeText('group.edit.base.warning')}</Text>
+                            <Text small>{ LocalizeText('group.edit.base.warning') }</Text>
                         </div>
-                    </>}
+                    </> }
             </div>
-            {!isCreator &&
-                <Button variant="danger" onClick={deleteGroup}>{LocalizeText('group.delete')}</Button>}
-            {isCreator &&
-                <Text center fullWidth pointer underline onClick={event => CreateLinkEvent('navigator/create')}>{LocalizeText('group.createroom')}</Text>}
+            { !isCreator &&
+                <Button variant="danger" onClick={ deleteGroup }>{ LocalizeText('group.delete') }</Button> }
+            { isCreator &&
+                <Text center fullWidth pointer underline onClick={ event => CreateLinkEvent('navigator/create') }>{ LocalizeText('group.createroom') }</Text> }
         </Column>
     );
 };

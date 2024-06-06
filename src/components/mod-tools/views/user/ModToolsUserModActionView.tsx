@@ -28,9 +28,9 @@ const MOD_ACTION_DEFINITIONS = [
 export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = props =>
 {
     const { user = null, onCloseClick = null } = props;
-    const [selectedTopic, setSelectedTopic] = useState(-1);
-    const [selectedAction, setSelectedAction] = useState(-1);
-    const [message, setMessage] = useState<string>('');
+    const [ selectedTopic, setSelectedTopic ] = useState(-1);
+    const [ selectedAction, setSelectedAction ] = useState(-1);
+    const [ message, setMessage ] = useState<string>('');
     const { cfhCategories = null, settings = null } = useModTools();
     const { simpleAlert = null } = useNotification();
 
@@ -47,7 +47,7 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
         }
 
         return values;
-    }, [cfhCategories]);
+    }, [ cfhCategories ]);
 
     const sendAlert = (message: string) => simpleAlert(message, NotificationAlertType.DEFAULT, null, null, 'Error');
 
@@ -61,7 +61,7 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
 
         if (errorMessage) return sendAlert(errorMessage);
 
-        const messageOrDefault = (message.trim().length === 0) ? LocalizeText(`help.cfh.topic.${category.id}`) : message;
+        const messageOrDefault = (message.trim().length === 0) ? LocalizeText(`help.cfh.topic.${ category.id }`) : message;
 
         SendMessageComposer(new DefaultSanctionMessageComposer(user.userId, selectedTopic, messageOrDefault));
 
@@ -87,7 +87,7 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
             return;
         }
 
-        const messageOrDefault = (message.trim().length === 0) ? LocalizeText(`help.cfh.topic.${category.id}`) : message;
+        const messageOrDefault = (message.trim().length === 0) ? LocalizeText(`help.cfh.topic.${ category.id }`) : message;
 
         switch (sanction.actionType)
         {
@@ -151,24 +151,24 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
     if (!user) return null;
 
     return (
-        <NitroCardView className="nitro-mod-tools-user-action" theme="primary-slim" windowPosition={DraggableWindowPosition.TOP_LEFT}>
-            <NitroCardHeaderView headerText={'Mod Action: ' + (user ? user.username : '')} onCloseClick={() => onCloseClick()} />
+        <NitroCardView className="nitro-mod-tools-user-action" theme="primary-slim" windowPosition={ DraggableWindowPosition.TOP_LEFT }>
+            <NitroCardHeaderView headerText={ 'Mod Action: ' + (user ? user.username : '') } onCloseClick={ () => onCloseClick() } />
             <NitroCardContentView className="text-black">
-                <select className="form-select form-select-sm" value={selectedTopic} onChange={event => setSelectedTopic(parseInt(event.target.value))}>
-                    <option disabled value={-1}>CFH Topic</option>
-                    {topics.map((topic, index) => <option key={index} value={index}>{LocalizeText('help.cfh.topic.' + topic.id)}</option>)}
+                <select className="form-select form-select-sm" value={ selectedTopic } onChange={ event => setSelectedTopic(parseInt(event.target.value)) }>
+                    <option disabled value={ -1 }>CFH Topic</option>
+                    { topics.map((topic, index) => <option key={ index } value={ index }>{ LocalizeText('help.cfh.topic.' + topic.id) }</option>) }
                 </select>
-                <select className="form-select form-select-sm" value={selectedAction} onChange={event => setSelectedAction(parseInt(event.target.value))}>
-                    <option disabled value={-1}>Sanction Type</option>
-                    {MOD_ACTION_DEFINITIONS.map((action, index) => <option key={index} value={index}>{action.name}</option>)}
+                <select className="form-select form-select-sm" value={ selectedAction } onChange={ event => setSelectedAction(parseInt(event.target.value)) }>
+                    <option disabled value={ -1 }>Sanction Type</option>
+                    { MOD_ACTION_DEFINITIONS.map((action, index) => <option key={ index } value={ index }>{ action.name }</option>) }
                 </select>
                 <div className="flex flex-col gap-1">
                     <Text small>Optional message type, overrides default</Text>
-                    <textarea className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem]  rounded-[.2rem]" value={message} onChange={event => setMessage(event.target.value)} />
+                    <textarea className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem]  rounded-[.2rem]" value={ message } onChange={ event => setMessage(event.target.value) } />
                 </div>
-                <Flex gap={1} justifyContent="between">
-                    <Button variant="primary" onClick={sendDefaultSanction}>Default Sanction</Button>
-                    <Button variant="success" onClick={sendSanction}>Sanction</Button>
+                <Flex gap={ 1 } justifyContent="between">
+                    <Button variant="primary" onClick={ sendDefaultSanction }>Default Sanction</Button>
+                    <Button variant="success" onClick={ sendSanction }>Sanction</Button>
                 </Flex>
             </NitroCardContentView>
         </NitroCardView>

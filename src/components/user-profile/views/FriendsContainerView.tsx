@@ -17,11 +17,11 @@ export const FriendsContainerView: FC<FriendsContainerViewProps> = props =>
     return (
         <div className="flex flex-col gap-1">
             <Text small>
-                <b>{LocalizeText('extendedprofile.friends.count')}</b> {friendsCount}
+                <b>{ LocalizeText('extendedprofile.friends.count') }</b> { friendsCount }
             </Text>
-            <Text bold small>{LocalizeText('extendedprofile.relstatus')}</Text>
+            <Text bold small>{ LocalizeText('extendedprofile.relstatus') }</Text>
             <div className="flex flex-col gap-2">
-                <RelationshipsContainerView relationships={relationships} />
+                <RelationshipsContainerView relationships={ relationships } />
             </div>
         </div>
     )

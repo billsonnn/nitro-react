@@ -21,8 +21,8 @@ const TOTAL_SHOWN_ITEMS = 5;
 export const CalendarView: FC<CalendarViewProps> = props =>
 {
     const { onClose = null, campaignName = null, currentDay = null, numDays = null, missedDays = null, openedDays = null, openPackage = null, receivedProducts = null } = props;
-    const [selectedDay, setSelectedDay] = useState(currentDay);
-    const [index, setIndex] = useState(Math.max(0, (selectedDay - 1)));
+    const [ selectedDay, setSelectedDay ] = useState(currentDay);
+    const [ index, setIndex ] = useState(Math.max(0, (selectedDay - 1)));
 
     const getDayState = (day: number) =>
     {
@@ -98,44 +98,44 @@ export const CalendarView: FC<CalendarViewProps> = props =>
 
     return (
         <NitroCardView className="nitro-campaign-calendar" theme="primary-slim">
-            <NitroCardHeaderView headerText={LocalizeText(`campaign.calendar.${campaignName}.title`)} onCloseClick={onClose} />
+            <NitroCardHeaderView headerText={ LocalizeText(`campaign.calendar.${ campaignName }.title`) } onCloseClick={ onClose } />
             <NitroCardContentView>
-                <Grid alignItems="center" fullHeight={false} justifyContent="between">
-                    <Column size={1} />
-                    <Column size={10}>
+                <Grid alignItems="center" fullHeight={ false } justifyContent="between">
+                    <Column size={ 1 } />
+                    <Column size={ 10 }>
                         <div className="flex items-center gap-1 justify-between">
                             <div className="flex flex-col gap-1">
-                                <Text fontSize={3}>{LocalizeText('campaign.calendar.heading.day', ['number'], [(selectedDay + 1).toString()])}</Text>
-                                <Text>{dayMessage(selectedDay)}</Text>
+                                <Text fontSize={ 3 }>{ LocalizeText('campaign.calendar.heading.day', [ 'number' ], [ (selectedDay + 1).toString() ]) }</Text>
+                                <Text>{ dayMessage(selectedDay) }</Text>
                             </div>
                             <div>
-                                {GetSessionDataManager().isModerator &&
-                                    <Button variant="danger" onClick={forceOpen}>Force open</Button>}
+                                { GetSessionDataManager().isModerator &&
+                                    <Button variant="danger" onClick={ forceOpen }>Force open</Button> }
                             </div>
                         </div>
                     </Column>
-                    <Column size={1} />
+                    <Column size={ 1 } />
                 </Grid>
                 <div className="flex h-full gap-2">
                     <div className="flex items-center justify-center">
-                        <div className="campaign-spritesheet prev cursor-pointer" onClick={onClickPrev} />
+                        <div className="campaign-spritesheet prev cursor-pointer" onClick={ onClickPrev } />
                     </div>
                     <Column center fullWidth>
-                        <Grid fit columnCount={TOTAL_SHOWN_ITEMS} gap={1}>
-                            {[...Array(TOTAL_SHOWN_ITEMS)].map((e, i) =>
+                        <Grid fit columnCount={ TOTAL_SHOWN_ITEMS } gap={ 1 }>
+                            { [ ...Array(TOTAL_SHOWN_ITEMS) ].map((e, i) =>
                             {
                                 const day = (index + i);
 
                                 return (
-                                    <Column key={i} overflow="hidden">
-                                        <CalendarItemView active={(selectedDay === day)} itemId={day} product={receivedProducts.has(day) ? receivedProducts.get(day) : null} state={getDayState(day)} onClick={onClickItem} />
+                                    <Column key={ i } overflow="hidden">
+                                        <CalendarItemView active={ (selectedDay === day) } itemId={ day } product={ receivedProducts.has(day) ? receivedProducts.get(day) : null } state={ getDayState(day) } onClick={ onClickItem } />
                                     </Column>
                                 );
-                            })}
+                            }) }
                         </Grid>
                     </Column>
                     <div className="flex items-center justify-center">
-                        <div className="campaign-spritesheet next cursor-pointer" onClick={onClickNext} />
+                        <div className="campaign-spritesheet next cursor-pointer" onClick={ onClickNext } />
                     </div>
                 </div>
             </NitroCardContentView>

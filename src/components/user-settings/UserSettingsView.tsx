@@ -8,10 +8,10 @@ import { classNames } from '../../layout';
 
 export const UserSettingsView: FC<{}> = props =>
 {
-    const [isVisible, setIsVisible] = useState(false);
-    const [userSettings, setUserSettings] = useState<NitroSettingsEvent>(null);
-    const [catalogPlaceMultipleObjects, setCatalogPlaceMultipleObjects] = useCatalogPlaceMultipleItems();
-    const [catalogSkipPurchaseConfirmation, setCatalogSkipPurchaseConfirmation] = useCatalogSkipPurchaseConfirmation();
+    const [ isVisible, setIsVisible ] = useState(false);
+    const [ userSettings, setUserSettings ] = useState<NitroSettingsEvent>(null);
+    const [ catalogPlaceMultipleObjects, setCatalogPlaceMultipleObjects ] = useCatalogPlaceMultipleItems();
+    const [ catalogSkipPurchaseConfirmation, setCatalogSkipPurchaseConfirmation ] = useCatalogSkipPurchaseConfirmation();
 
     const processAction = (type: string, value?: boolean | number | string) =>
     {
@@ -122,63 +122,63 @@ export const UserSettingsView: FC<{}> = props =>
         if (!userSettings) return;
 
         DispatchUiEvent(userSettings);
-    }, [userSettings]);
+    }, [ userSettings ]);
 
     if (!isVisible || !userSettings) return null;
 
     return (
         <NitroCardView className="user-settings-window" theme="primary-slim" uniqueKey="user-settings">
-            <NitroCardHeaderView headerText={LocalizeText('widget.memenu.settings.title')} onCloseClick={event => processAction('close_view')} />
+            <NitroCardHeaderView headerText={ LocalizeText('widget.memenu.settings.title') } onCloseClick={ event => processAction('close_view') } />
             <NitroCardContentView className="text-black">
                 <div className="flex flex-col gap-1">
                     <div className="flex items-center gap-1">
-                        <input checked={userSettings.oldChat} className="form-check-input" type="checkbox" onChange={event => processAction('oldchat', event.target.checked)} />
-                        <Text>{LocalizeText('memenu.settings.chat.prefer.old.chat')}</Text>
+                        <input checked={ userSettings.oldChat } className="form-check-input" type="checkbox" onChange={ event => processAction('oldchat', event.target.checked) } />
+                        <Text>{ LocalizeText('memenu.settings.chat.prefer.old.chat') }</Text>
                     </div>
                     <div className="flex items-center gap-1">
-                        <input checked={userSettings.roomInvites} className="form-check-input" type="checkbox" onChange={event => processAction('room_invites', event.target.checked)} />
-                        <Text>{LocalizeText('memenu.settings.other.ignore.room.invites')}</Text>
+                        <input checked={ userSettings.roomInvites } className="form-check-input" type="checkbox" onChange={ event => processAction('room_invites', event.target.checked) } />
+                        <Text>{ LocalizeText('memenu.settings.other.ignore.room.invites') }</Text>
                     </div>
                     <div className="flex items-center gap-1">
-                        <input checked={userSettings.cameraFollow} className="form-check-input" type="checkbox" onChange={event => processAction('camera_follow', event.target.checked)} />
-                        <Text>{LocalizeText('memenu.settings.other.disable.room.camera.follow')}</Text>
+                        <input checked={ userSettings.cameraFollow } className="form-check-input" type="checkbox" onChange={ event => processAction('camera_follow', event.target.checked) } />
+                        <Text>{ LocalizeText('memenu.settings.other.disable.room.camera.follow') }</Text>
                     </div>
                     <div className="flex items-center gap-1">
-                        <input checked={catalogPlaceMultipleObjects} className="form-check-input" type="checkbox" onChange={event => setCatalogPlaceMultipleObjects(event.target.checked)} />
-                        <Text>{LocalizeText('memenu.settings.other.place.multiple.objects')}</Text>
+                        <input checked={ catalogPlaceMultipleObjects } className="form-check-input" type="checkbox" onChange={ event => setCatalogPlaceMultipleObjects(event.target.checked) } />
+                        <Text>{ LocalizeText('memenu.settings.other.place.multiple.objects') }</Text>
                     </div>
                     <div className="flex items-center gap-1">
-                        <input checked={catalogSkipPurchaseConfirmation} className="form-check-input" type="checkbox" onChange={event => setCatalogSkipPurchaseConfirmation(event.target.checked)} />
-                        <Text>{LocalizeText('memenu.settings.other.skip.purchase.confirmation')}</Text>
+                        <input checked={ catalogSkipPurchaseConfirmation } className="form-check-input" type="checkbox" onChange={ event => setCatalogSkipPurchaseConfirmation(event.target.checked) } />
+                        <Text>{ LocalizeText('memenu.settings.other.skip.purchase.confirmation') }</Text>
                     </div>
                 </div>
                 <div className="flex flex-col">
-                    <Text bold>{LocalizeText('widget.memenu.settings.volume')}</Text>
+                    <Text bold>{ LocalizeText('widget.memenu.settings.volume') }</Text>
                     <div className="flex flex-col gap-1">
-                        <Text>{LocalizeText('widget.memenu.settings.volume.ui')}</Text>
+                        <Text>{ LocalizeText('widget.memenu.settings.volume.ui') }</Text>
                         <div className="flex items-center gap-1">
-                            {(userSettings.volumeSystem === 0) && <FaVolumeMute className={classNames((userSettings.volumeSystem >= 50) && 'text-muted', 'fa-icon')} />}
-                            {(userSettings.volumeSystem > 0) && <FaVolumeDown className={classNames((userSettings.volumeSystem >= 50) && 'text-muted', 'fa-icon')} />}
-                            <input className="custom-range w-full" id="volumeSystem" max="100" min="0" step="1" type="range" value={userSettings.volumeSystem} onChange={event => processAction('system_volume', event.target.value)} onMouseUp={() => saveRangeSlider('volume')} />
-                            <FaVolumeUp className={classNames((userSettings.volumeSystem < 50) && 'text-muted', 'fa-icon')} />
+                            { (userSettings.volumeSystem === 0) && <FaVolumeMute className={ classNames((userSettings.volumeSystem >= 50) && 'text-muted', 'fa-icon') } /> }
+                            { (userSettings.volumeSystem > 0) && <FaVolumeDown className={ classNames((userSettings.volumeSystem >= 50) && 'text-muted', 'fa-icon') } /> }
+                            <input className="custom-range w-full" id="volumeSystem" max="100" min="0" step="1" type="range" value={ userSettings.volumeSystem } onChange={ event => processAction('system_volume', event.target.value) } onMouseUp={ () => saveRangeSlider('volume') } />
+                            <FaVolumeUp className={ classNames((userSettings.volumeSystem < 50) && 'text-muted', 'fa-icon') } />
                         </div>
                     </div>
                     <div className="flex flex-col gap-1">
-                        <Text>{LocalizeText('widget.memenu.settings.volume.furni')}</Text>
+                        <Text>{ LocalizeText('widget.memenu.settings.volume.furni') }</Text>
                         <div className="flex items-center gap-1">
-                            {(userSettings.volumeFurni === 0) && <FaVolumeMute className={classNames((userSettings.volumeFurni >= 50) && 'text-muted', 'fa-icon')} />}
-                            {(userSettings.volumeFurni > 0) && <FaVolumeDown className={classNames((userSettings.volumeFurni >= 50) && 'text-muted', 'fa-icon')} />}
-                            <input className="custom-range w-full" id="volumeFurni" max="100" min="0" step="1" type="range" value={userSettings.volumeFurni} onChange={event => processAction('furni_volume', event.target.value)} onMouseUp={() => saveRangeSlider('volume')} />
-                            <FaVolumeUp className={classNames((userSettings.volumeFurni < 50) && 'text-muted', 'fa-icon')} />
+                            { (userSettings.volumeFurni === 0) && <FaVolumeMute className={ classNames((userSettings.volumeFurni >= 50) && 'text-muted', 'fa-icon') } /> }
+                            { (userSettings.volumeFurni > 0) && <FaVolumeDown className={ classNames((userSettings.volumeFurni >= 50) && 'text-muted', 'fa-icon') } /> }
+                            <input className="custom-range w-full" id="volumeFurni" max="100" min="0" step="1" type="range" value={ userSettings.volumeFurni } onChange={ event => processAction('furni_volume', event.target.value) } onMouseUp={ () => saveRangeSlider('volume') } />
+                            <FaVolumeUp className={ classNames((userSettings.volumeFurni < 50) && 'text-muted', 'fa-icon') } />
                         </div>
                     </div>
                     <div className="flex flex-col gap-1">
-                        <Text>{LocalizeText('widget.memenu.settings.volume.trax')}</Text>
+                        <Text>{ LocalizeText('widget.memenu.settings.volume.trax') }</Text>
                         <div className="flex items-center gap-1">
-                            {(userSettings.volumeTrax === 0) && <FaVolumeMute className={classNames((userSettings.volumeTrax >= 50) && 'text-muted', 'fa-icon')} />}
-                            {(userSettings.volumeTrax > 0) && <FaVolumeDown className={classNames((userSettings.volumeTrax >= 50) && 'text-muted', 'fa-icon')} />}
-                            <input className="custom-range w-full" id="volumeTrax" max="100" min="0" step="1" type="range" value={userSettings.volumeTrax} onChange={event => processAction('trax_volume', event.target.value)} onMouseUp={() => saveRangeSlider('volume')} />
-                            <FaVolumeUp className={classNames((userSettings.volumeTrax < 50) && 'text-muted', 'fa-icon')} />
+                            { (userSettings.volumeTrax === 0) && <FaVolumeMute className={ classNames((userSettings.volumeTrax >= 50) && 'text-muted', 'fa-icon') } /> }
+                            { (userSettings.volumeTrax > 0) && <FaVolumeDown className={ classNames((userSettings.volumeTrax >= 50) && 'text-muted', 'fa-icon') } /> }
+                            <input className="custom-range w-full" id="volumeTrax" max="100" min="0" step="1" type="range" value={ userSettings.volumeTrax } onChange={ event => processAction('trax_volume', event.target.value) } onMouseUp={ () => saveRangeSlider('volume') } />
+                            <FaVolumeUp className={ classNames((userSettings.volumeTrax < 50) && 'text-muted', 'fa-icon') } />
                         </div>
                     </div>
                 </div>

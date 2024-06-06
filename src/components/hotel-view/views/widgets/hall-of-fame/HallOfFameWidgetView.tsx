@@ -8,7 +8,7 @@ import { HallOfFameWidgetViewProps } from './HallOfFameWidgetView.types';
 export const HallOfFameWidgetView: FC<HallOfFameWidgetViewProps> = props =>
 {
     const { slot = -1, conf = null } = props;
-    const [data, setData] = useState<CommunityGoalHallOfFameData>(null);
+    const [ data, setData ] = useState<CommunityGoalHallOfFameData>(null);
 
     useMessageEvent<CommunityGoalHallOfFameMessageEvent>(CommunityGoalHallOfFameMessageEvent, event =>
     {
@@ -21,17 +21,17 @@ export const HallOfFameWidgetView: FC<HallOfFameWidgetViewProps> = props =>
     {
         const campaign: string = conf ? conf['campaign'] : '';
         SendMessageComposer(new GetCommunityGoalHallOfFameMessageComposer(campaign));
-    }, [conf]);
+    }, [ conf ]);
 
     if (!data) return null;
 
     return (
         <div className="bg-[#0000004d] rounded-[.25rem] justify-center flex">
-            {data.hof && (data.hof.length > 0) && data.hof.map((entry, index) =>
+            { data.hof && (data.hof.length > 0) && data.hof.map((entry, index) =>
             {
-                return <HallOfFameItemView key={index} data={entry} level={(index + 1)} />;
+                return <HallOfFameItemView key={ index } data={ entry } level={ (index + 1) } />;
             }
-            )}
+            ) }
         </div>
     );
 }

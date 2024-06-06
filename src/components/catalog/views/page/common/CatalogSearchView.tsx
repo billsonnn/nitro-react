@@ -8,7 +8,7 @@ import { NitroInput } from '../../../../../layout';
 
 export const CatalogSearchView: FC<{}> = props =>
 {
-    const [searchValue, setSearchValue] = useState('');
+    const [ searchValue, setSearchValue ] = useState('');
     const { currentType = null, rootNode = null, offersToNodes = null, searchResult = null, setSearchResult = null, setCurrentPage = null } = useCatalog();
 
     useEffect(() =>
@@ -37,7 +37,7 @@ export const CatalogSearchView: FC<{}> = props =>
 
                 if ((currentType === CatalogType.NORMAL) && furniture.excludeDynamic) continue;
 
-                const searchValues = [furniture.className, furniture.name, furniture.description].join(' ').replace(/ /gi, '').toLowerCase();
+                const searchValues = [ furniture.className, furniture.name, furniture.description ].join(' ').replace(/ /gi, '').toLowerCase();
 
                 if ((currentType === CatalogType.BUILDER) && (furniture.purchaseOfferId === -1) && (furniture.rentOfferId === -1))
                 {
@@ -75,7 +75,7 @@ export const CatalogSearchView: FC<{}> = props =>
         }, 300);
 
         return () => clearTimeout(timeout);
-    }, [offersToNodes, currentType, rootNode, searchValue, setCurrentPage, setSearchResult]);
+    }, [ offersToNodes, currentType, rootNode, searchValue, setCurrentPage, setSearchResult ]);
 
     return (
         <div className="flex gap-1">
@@ -87,20 +87,20 @@ export const CatalogSearchView: FC<{}> = props =>
 
 
                 <NitroInput
-                    placeholder={LocalizeText('generic.search')}
-                    value={searchValue}
-                    onChange={event => setSearchValue(event.target.value)} />
+                    placeholder={ LocalizeText('generic.search') }
+                    value={ searchValue }
+                    onChange={ event => setSearchValue(event.target.value) } />
 
 
             </Flex>
-            {(!searchValue || !searchValue.length) &&
+            { (!searchValue || !searchValue.length) &&
                 <Button className="catalog-search-button" variant="primary">
                     <FaSearch className="fa-icon" />
-                </Button>}
-            {searchValue && !!searchValue.length &&
-                <Button className="catalog-search-button" variant="primary" onClick={event => setSearchValue('')}>
+                </Button> }
+            { searchValue && !!searchValue.length &&
+                <Button className="catalog-search-button" variant="primary" onClick={ event => setSearchValue('') }>
                     <FaTimes className="fa-icon" />
-                </Button>}
+                </Button> }
         </div>
     );
 }

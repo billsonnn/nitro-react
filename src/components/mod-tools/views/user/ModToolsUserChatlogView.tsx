@@ -14,8 +14,8 @@ interface ModToolsUserChatlogViewProps
 export const ModToolsUserChatlogView: FC<ModToolsUserChatlogViewProps> = props =>
 {
     const { userId = null, onCloseClick = null } = props;
-    const [userChatlog, setUserChatlog] = useState<ChatRecordData[]>(null);
-    const [username, setUsername] = useState<string>(null);
+    const [ userChatlog, setUserChatlog ] = useState<ChatRecordData[]>(null);
+    const [ username, setUsername ] = useState<string>(null);
 
     useMessageEvent<UserChatlogEvent>(UserChatlogEvent, event =>
     {
@@ -30,14 +30,14 @@ export const ModToolsUserChatlogView: FC<ModToolsUserChatlogViewProps> = props =
     useEffect(() =>
     {
         SendMessageComposer(new GetUserChatlogMessageComposer(userId));
-    }, [userId]);
+    }, [ userId ]);
 
     return (
-        <NitroCardView className="nitro-mod-tools-chatlog" theme="primary-slim" windowPosition={DraggableWindowPosition.TOP_LEFT}>
-            <NitroCardHeaderView headerText={`User Chatlog: ${username || ''}`} onCloseClick={onCloseClick} />
+        <NitroCardView className="nitro-mod-tools-chatlog" theme="primary-slim" windowPosition={ DraggableWindowPosition.TOP_LEFT }>
+            <NitroCardHeaderView headerText={ `User Chatlog: ${ username || '' }` } onCloseClick={ onCloseClick } />
             <NitroCardContentView className="text-black h-full">
-                {userChatlog &&
-                    <ChatlogView records={userChatlog} />}
+                { userChatlog &&
+                    <ChatlogView records={ userChatlog } /> }
             </NitroCardContentView>
         </NitroCardView>
     );

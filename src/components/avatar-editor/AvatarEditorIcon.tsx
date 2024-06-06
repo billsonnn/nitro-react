@@ -30,16 +30,16 @@ export const AvatarEditorIcon = forwardRef<HTMLDivElement, PropsWithChildren<{
 */
     return (
         <div
-            ref={ref}
+            ref={ ref }
 
-            className={classNames(
+            className={ classNames(
                 'nitro-avatar-editor-spritesheet',
                 'cursor-pointer',
-                `${icon}-icon`,
+                `${ icon }-icon`,
                 selected && 'selected',
                 className
-            )}
-            {...rest} />
+            ) }
+            { ...rest } />
     );
 });
 

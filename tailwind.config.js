@@ -72,10 +72,10 @@ module.exports = {
                 '3xl': '1.953rem',
                 '4xl': '2.441rem',
                 '5xl': '3.052rem',
-              },
+            },
           
             fontFamily: {
-                sans: [ 'Ubuntu'],
+                sans: [ 'Ubuntu' ],
             },
             colors: generateShades(colors),
             boxShadow,
@@ -94,7 +94,7 @@ module.exports = {
                
                 '3': '0.3rem',
              
-              },
+            },
             zIndex: {
                 'toolbar': '',
                 'loading': '100',
@@ -148,10 +148,10 @@ module.exports = {
     darkMode: 'class',
     variants: {
         extend: {
-          divideColor: ['group-hover'],
-          backgroundColor: ['group-focus'],
+            divideColor: [ 'group-hover' ],
+            backgroundColor: [ 'group-focus' ],
         }
-      },
+    },
     plugins: [
         require('@tailwindcss/forms'),
     ],

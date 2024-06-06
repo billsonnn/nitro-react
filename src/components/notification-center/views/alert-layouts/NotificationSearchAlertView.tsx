@@ -1,6 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText, NotificationAlertItem, OpenUrl } from '../../../../api';
 import { AutoGrid, Button, Column, Flex, LayoutNotificationAlertView, LayoutNotificationAlertViewProps } from '../../../../common';
+import { NitroInput } from '../../../../layout';
 
 interface NotificationDefaultAlertViewProps extends LayoutNotificationAlertViewProps
 {
@@ -11,8 +12,8 @@ export const NotificationSeachAlertView: FC<NotificationDefaultAlertViewProps> =
 {
     const { item = null, title = ((props.item && props.item.title) || ''), onClose = null, ...rest } = props;
 
-    const [searchValue, setSearchValue] = useState('');
-    const [results, setResults] = useState<string[]>([]);
+    const [ searchValue, setSearchValue ] = useState('');
+    const [ results, setResults ] = useState<string[]>([]);
 
     const visitUrl = () =>
     {
@@ -32,29 +33,29 @@ export const NotificationSeachAlertView: FC<NotificationDefaultAlertViewProps> =
     useEffect(() =>
     {
         setResults(JSON.parse(item.messages[0]));
-    }, [item]);
+    }, [ item ]);
 
     const isAction = (item.clickUrl && item.clickUrl.startsWith('event:'));
 
     return (
-        <LayoutNotificationAlertView title={title} onClose={onClose} {...rest}>
+        <LayoutNotificationAlertView title={ title } onClose={ onClose } { ...rest }>
             <Flex fullWidth alignItems="center" position="relative">
-                <NitroInput placeholder={LocalizeText('generic.search')} type="text" value={searchValue} onChange={event => updateSearchValue(event.target.value)} />
+                <NitroInput placeholder={ LocalizeText('generic.search') } type="text" value={ searchValue } onChange={ event => updateSearchValue(event.target.value) } />
             </Flex>
             <Column fullHeight className="py-1" overflow="hidden">
-                <AutoGrid columnCount={1} gap={1}>
-                    {results && results.map((n, index) =>
+                <AutoGrid columnCount={ 1 } gap={ 1 }>
+                    { results && results.map((n, index) =>
                     {
-                        return <span key={index}>{n}</span>
-                    })}
+                        return <span key={ index }>{ n }</span>
+                    }) }
                 </AutoGrid>
             </Column>
             <hr className="my-2" />
-            <Column center alignItems="center" gap={1}>
-                {!isAction && !item.clickUrl &&
-                    <Button onClick={onClose}>{LocalizeText('generic.close')}</Button>}
-                {item.clickUrl && (item.clickUrl.length > 0) &&
-                    <Button onClick={visitUrl}>{LocalizeText(item.clickUrlText)}</Button>}
+            <Column center alignItems="center" gap={ 1 }>
+                { !isAction && !item.clickUrl &&
+                    <Button onClick={ onClose }>{ LocalizeText('generic.close') }</Button> }
+                { item.clickUrl && (item.clickUrl.length > 0) &&
+                    <Button onClick={ visitUrl }>{ LocalizeText(item.clickUrlText) }</Button> }
             </Column>
         </LayoutNotificationAlertView>
     );

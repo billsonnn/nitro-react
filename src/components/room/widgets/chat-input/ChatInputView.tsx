@@ -8,7 +8,7 @@ import { ChatInputStyleSelectorView } from './ChatInputStyleSelectorView';
 
 export const ChatInputView: FC<{}> = props =>
 {
-    const [chatValue, setChatValue] = useState<string>('');
+    const [ chatValue, setChatValue ] = useState<string>('');
     const { chatStyleId = 0, updateChatStyleId = null } = useSessionInfo();
     const { selectedUsername = '', floodBlocked = false, floodBlockedSeconds = 0, setIsTyping = null, setIsIdle = null, sendChat = null } = useChatInputWidget();
     const { roomSession = null } = useRoom();
@@ -30,14 +30,14 @@ export const ChatInputView: FC<{}> = props =>
         if (!(activeElement instanceof HTMLInputElement) && !(activeElement instanceof HTMLTextAreaElement)) return false;
 
         return true;
-    }, [inputRef]);
+    }, [ inputRef ]);
 
     const setInputFocus = useCallback(() =>
     {
         inputRef.current.focus();
 
         inputRef.current.setSelectionRange((inputRef.current.value.length * 2), (inputRef.current.value.length * 2));
-    }, [inputRef]);
+    }, [ inputRef ]);
 
     const checkSpecialKeywordForInput = useCallback(() =>
     {
@@ -45,9 +45,9 @@ export const ChatInputView: FC<{}> = props =>
         {
             if ((prevValue !== chatModeIdWhisper) || !selectedUsername.length) return prevValue;
 
-            return (`${prevValue} ${selectedUsername}`);
+            return (`${ prevValue } ${ selectedUsername }`);
         });
-    }, [selectedUsername, chatModeIdWhisper]);
+    }, [ selectedUsername, chatModeIdWhisper ]);
 
     const sendChatValue = useCallback((value: string, shiftKey: boolean = false) =>
     {
@@ -102,7 +102,7 @@ export const ChatInputView: FC<{}> = props =>
         }
 
         setChatValue(append);
-    }, [chatModeIdWhisper, chatModeIdShout, chatModeIdSpeak, maxChatLength, chatStyleId, setIsTyping, setIsIdle, sendChat]);
+    }, [ chatModeIdWhisper, chatModeIdShout, chatModeIdSpeak, maxChatLength, chatStyleId, setIsTyping, setIsIdle, sendChat ]);
 
     const updateChatInput = useCallback((value: string) =>
     {
@@ -117,7 +117,7 @@ export const ChatInputView: FC<{}> = props =>
         }
 
         setChatValue(value);
-    }, [setIsTyping, setIsIdle]);
+    }, [ setIsTyping, setIsIdle ]);
 
     const onKeyDownEvent = useCallback((event: KeyboardEvent) =>
     {
@@ -150,14 +150,14 @@ export const ChatInputView: FC<{}> = props =>
                 return;
         }
 
-    }, [floodBlocked, inputRef, chatModeIdWhisper, anotherInputHasFocus, setInputFocus, checkSpecialKeywordForInput, sendChatValue]);
+    }, [ floodBlocked, inputRef, chatModeIdWhisper, anotherInputHasFocus, setInputFocus, checkSpecialKeywordForInput, sendChatValue ]);
 
     useUiEvent<RoomWidgetUpdateChatInputContentEvent>(RoomWidgetUpdateChatInputContentEvent.CHAT_INPUT_CONTENT, event =>
     {
         switch (event.chatMode)
         {
             case RoomWidgetUpdateChatInputContentEvent.WHISPER: {
-                setChatValue(`${chatModeIdWhisper} ${event.userName} `);
+                setChatValue(`${ chatModeIdWhisper } ${ event.userName } `);
                 return;
             }
             case RoomWidgetUpdateChatInputContentEvent.SHOUT:
@@ -222,14 +222,14 @@ export const ChatInputView: FC<{}> = props =>
         {
             document.body.removeEventListener('keydown', onKeyDownEvent);
         }
-    }, [onKeyDownEvent]);
+    }, [ onKeyDownEvent ]);
 
     useEffect(() =>
     {
         if (!inputRef.current) return;
 
         inputRef.current.parentElement.dataset.value = chatValue;
-    }, [chatValue]);
+    }, [ chatValue ]);
 
     if (!roomSession || roomSession.isSpectator) return null;
 
@@ -237,12 +237,12 @@ export const ChatInputView: FC<{}> = props =>
         createPortal(
             <div className="nitro-chat-input-container flex justify-center items-center relative h-10 border-2 border-black bg-gray-200 pr-2.5 w-full overflow-hidden rounded-lg">
                 <div className="items-center input-sizer">
-                    {!floodBlocked &&
-                        <input ref={inputRef} className="[font-size:inherit] placeholder-[#6c757d] bg-transparent border-none focus:border-current focus:shadow-none focus:ring-0	" maxLength={maxChatLength} placeholder={LocalizeText('widgets.chatinput.default')} type="text" value={chatValue} onChange={event => updateChatInput(event.target.value)} onMouseDown={event => setInputFocus()} />}
-                    {floodBlocked &&
-                        <Text variant="danger">{LocalizeText('chat.input.alert.flood', ['time'], [floodBlockedSeconds.toString()])} </Text>}
+                    { !floodBlocked &&
+                        <input ref={ inputRef } className="[font-size:inherit] placeholder-[#6c757d] bg-transparent border-none focus:border-current focus:shadow-none focus:ring-0	" maxLength={ maxChatLength } placeholder={ LocalizeText('widgets.chatinput.default') } type="text" value={ chatValue } onChange={ event => updateChatInput(event.target.value) } onMouseDown={ event => setInputFocus() } /> }
+                    { floodBlocked &&
+                        <Text variant="danger">{ LocalizeText('chat.input.alert.flood', [ 'time' ], [ floodBlockedSeconds.toString() ]) } </Text> }
                 </div>
-                <ChatInputStyleSelectorView chatStyleId={chatStyleId} chatStyleIds={chatStyleIds} selectChatStyleId={updateChatStyleId} />
+                <ChatInputStyleSelectorView chatStyleId={ chatStyleId } chatStyleIds={ chatStyleIds } selectChatStyleId={ updateChatStyleId } />
             </div>, document.getElementById('toolbar-chat-input-container'))
     );
 }

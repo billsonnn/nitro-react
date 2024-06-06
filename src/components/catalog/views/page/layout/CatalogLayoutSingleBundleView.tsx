@@ -15,19 +15,19 @@ export const CatalogLayoutSingleBundleView: FC<CatalogLayoutProps> = props =>
         <>
             <CatalogFirstProductSelectorWidgetView />
             <Grid>
-                <Column overflow="hidden" size={7}>
-                    {!!page.localization.getText(2) &&
-                        <Text dangerouslySetInnerHTML={{ __html: page.localization.getText(2) }} />}
+                <Column overflow="hidden" size={ 7 }>
+                    { !!page.localization.getText(2) &&
+                        <Text dangerouslySetInnerHTML={ { __html: page.localization.getText(2) } } /> }
                     <Column grow className="bg-muted p-2 rounded" overflow="hidden">
                         <CatalogBundleGridWidgetView fullWidth className="nitro-catalog-layout-bundle-grid" />
                     </Column>
                 </Column>
-                <Column gap={1} overflow="hidden" size={5}>
-                    {!!page.localization.getText(1) &&
-                        <Text center small overflow="auto">{page.localization.getText(1)}</Text>}
-                    <Column grow gap={0} overflow="hidden" position="relative">
-                        {!!page.localization.getImage(1) &&
-                            <img alt="" className="!flex-grow" src={page.localization.getImage(1)} />}
+                <Column gap={ 1 } overflow="hidden" size={ 5 }>
+                    { !!page.localization.getText(1) &&
+                        <Text center small overflow="auto">{ page.localization.getText(1) }</Text> }
+                    <Column grow gap={ 0 } overflow="hidden" position="relative">
+                        { !!page.localization.getImage(1) &&
+                            <img alt="" className="!flex-grow" src={ page.localization.getImage(1) } /> }
                         <CatalogAddOnBadgeWidgetView className="bg-muted rounded bottom-0 start-0" position="absolute" />
                         <CatalogSimplePriceWidgetView />
                     </Column>

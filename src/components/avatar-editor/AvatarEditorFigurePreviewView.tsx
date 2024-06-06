@@ -8,7 +8,7 @@ const DEFAULT_DIRECTION: number = 4;
 
 export const AvatarEditorFigurePreviewView: FC<{}> = props =>
 {
-    const [direction, setDirection] = useState<number>(DEFAULT_DIRECTION);
+    const [ direction, setDirection ] = useState<number>(DEFAULT_DIRECTION);
     const { getFigureString = null } = useAvatarEditor();
 
     const rotateFigure = (newDirection: number) =>
@@ -28,12 +28,12 @@ export const AvatarEditorFigurePreviewView: FC<{}> = props =>
 
     return (
         <div className="flex flex-col figure-preview-container overflow-hidden relative">
-            <LayoutAvatarImageView direction={direction} figure={getFigureString} scale={2} />
+            <LayoutAvatarImageView direction={ direction } figure={ getFigureString } scale={ 2 } />
             <AvatarEditorIcon className="avatar-spotlight" icon="spotlight" />
             <div className="avatar-shadow" />
             <div className="arrow-container">
-                <AvatarEditorIcon icon="arrow-left" onClick={event => rotateFigure(direction + 1)} />
-                <AvatarEditorIcon icon="arrow-right" onClick={event => rotateFigure(direction - 1)} />
+                <AvatarEditorIcon icon="arrow-left" onClick={ event => rotateFigure(direction + 1) } />
+                <AvatarEditorIcon icon="arrow-right" onClick={ event => rotateFigure(direction - 1) } />
             </div>
         </div>
     );

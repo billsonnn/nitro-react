@@ -56,7 +56,7 @@ export const Base: FC<BaseProps<HTMLDivElement>> = props =>
         if (classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [display, fit, fitV, grow, shrink, fullWidth, fullHeight, overflow, position, float, pointer, visible, textColor, classNames]);
+    }, [ display, fit, fitV, grow, shrink, fullWidth, fullHeight, overflow, position, float, pointer, visible, textColor, classNames ]);
 
     const getClassName = useMemo(() =>
     {
@@ -65,7 +65,7 @@ export const Base: FC<BaseProps<HTMLDivElement>> = props =>
         if (className.length) newClassName += (' ' + className);
 
         return newClassName.trim();
-    }, [getClassNames, className]);
+    }, [ getClassNames, className ]);
 
     const getStyle = useMemo(() =>
     {
@@ -74,11 +74,11 @@ export const Base: FC<BaseProps<HTMLDivElement>> = props =>
         if (Object.keys(style).length) newStyle = { ...newStyle, ...style };
 
         return newStyle;
-    }, [style]);
+    }, [ style ]);
 
     return (
-        <div ref={innerRef} className={getClassName} style={getStyle} {...rest}>
-            {children}
+        <div ref={ innerRef } className={ getClassName } style={ getStyle } { ...rest }>
+            { children }
         </div>
     );
 }

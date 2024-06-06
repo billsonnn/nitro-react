@@ -16,28 +16,28 @@ export interface LayoutAvatarImageViewProps extends BaseProps<HTMLDivElement>
 export const LayoutAvatarImageView: FC<LayoutAvatarImageViewProps> = props =>
 {
     const { figure = '', gender = 'M', headOnly = false, direction = 0, scale = 1, classNames = [], style = {}, ...rest } = props;
-    const [avatarUrl, setAvatarUrl] = useState<string>(null);
-    const [isReady, setIsReady] = useState<boolean>(false);
+    const [ avatarUrl, setAvatarUrl ] = useState<string>(null);
+    const [ isReady, setIsReady ] = useState<boolean>(false);
     const isDisposed = useRef(false);
 
     const getClassNames = useMemo(() =>
     {
-        const newClassNames: string[] = ['avatar-image relative w-[90px] h-[130px] bg-no-repeat bg-[center_-8px] pointer-events-none'];
+        const newClassNames: string[] = [ 'avatar-image relative w-[90px] h-[130px] bg-no-repeat bg-[center_-8px] pointer-events-none' ];
 
         if (classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [classNames]);
+    }, [ classNames ]);
 
     const getStyle = useMemo(() =>
     {
         let newStyle: CSSProperties = {};
 
-        if (avatarUrl && avatarUrl.length) newStyle.backgroundImage = `url('${avatarUrl}')`;
+        if (avatarUrl && avatarUrl.length) newStyle.backgroundImage = `url('${ avatarUrl }')`;
 
         if (scale !== 1)
         {
-            newStyle.transform = `scale(${scale})`;
+            newStyle.transform = `scale(${ scale })`;
 
             if (!(scale % 1)) newStyle.imageRendering = 'pixelated';
         }
@@ -45,13 +45,13 @@ export const LayoutAvatarImageView: FC<LayoutAvatarImageViewProps> = props =>
         if (Object.keys(style).length) newStyle = { ...newStyle, ...style };
 
         return newStyle;
-    }, [avatarUrl, scale, style]);
+    }, [ avatarUrl, scale, style ]);
 
     useEffect(() =>
     {
         if (!isReady) return;
 
-        const figureKey = [figure, gender, direction, headOnly].join('-');
+        const figureKey = [ figure, gender, direction, headOnly ].join('-');
 
         if (AVATAR_IMAGE_CACHE.has(figureKey))
         {
@@ -85,7 +85,7 @@ export const LayoutAvatarImageView: FC<LayoutAvatarImageViewProps> = props =>
 
             resetFigure(figure);
         }
-    }, [figure, gender, direction, headOnly, isReady]);
+    }, [ figure, gender, direction, headOnly, isReady ]);
 
     useEffect(() =>
     {
@@ -99,5 +99,5 @@ export const LayoutAvatarImageView: FC<LayoutAvatarImageViewProps> = props =>
         }
     }, []);
 
-    return <Base classNames={getClassNames} style={getStyle} {...rest} />;
+    return <Base classNames={ getClassNames } style={ getStyle } { ...rest } />;
 }

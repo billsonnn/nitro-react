@@ -3,8 +3,8 @@ import { ColorUtils } from '../../../../api';
 import { DraggableWindow, DraggableWindowPosition } from '../../../../common';
 import { useFurnitureSpamWallPostItWidget } from '../../../../hooks';
 
-const STICKIE_COLORS = ['9CCEFF', 'FF9CFF', '9CFF9C', 'FFFF33'];
-const STICKIE_COLOR_NAMES = ['blue', 'pink', 'green', 'yellow'];
+const STICKIE_COLORS = [ '9CCEFF', 'FF9CFF', '9CFF9C', 'FFFF33' ];
+const STICKIE_COLOR_NAMES = [ 'blue', 'pink', 'green', 'yellow' ];
 
 const getStickieColorName = (color: string) =>
 {
@@ -22,23 +22,23 @@ export const FurnitureSpamWallPostItView: FC<{}> = props =>
     if (objectId === -1) return null;
 
     return (
-        <DraggableWindow handleSelector=".drag-handler" windowPosition={DraggableWindowPosition.TOP_LEFT}>
-            <div className={'nitro-stickie nitro-stickie-image stickie-' + getStickieColorName(color)}>
+        <DraggableWindow handleSelector=".drag-handler" windowPosition={ DraggableWindowPosition.TOP_LEFT }>
+            <div className={ 'nitro-stickie nitro-stickie-image stickie-' + getStickieColorName(color) }>
                 <div className="flex items-center stickie-header drag-handler">
                     <div className="flex items-center !flex-grow h-full">
-                        {canModify &&
+                        { canModify &&
                             <>
-                                <div className="nitro-stickie-image stickie-trash header-trash" onClick={onClose}></div>
-                                {STICKIE_COLORS.map(color =>
+                                <div className="nitro-stickie-image stickie-trash header-trash" onClick={ onClose }></div>
+                                { STICKIE_COLORS.map(color =>
                                 {
-                                    return <div key={color} className="stickie-color ms-1" style={{ backgroundColor: ColorUtils.makeColorHex(color) }} onClick={event => setColor(color)} />
-                                })}
-                            </>}
+                                    return <div key={ color } className="stickie-color ms-1" style={ { backgroundColor: ColorUtils.makeColorHex(color) } } onClick={ event => setColor(color) } />
+                                }) }
+                            </> }
                     </div>
-                    <div className="flex items-center nitro-stickie-image stickie-close header-close" onClick={onClose}></div>
+                    <div className="flex items-center nitro-stickie-image stickie-close header-close" onClick={ onClose }></div>
                 </div>
                 <div className="stickie-context">
-                    <textarea autoFocus className="context-text" tabIndex={0} value={text} onChange={event => setText(event.target.value)}></textarea>
+                    <textarea autoFocus className="context-text" tabIndex={ 0 } value={ text } onChange={ event => setText(event.target.value) }></textarea>
                 </div>
             </div>
         </DraggableWindow>

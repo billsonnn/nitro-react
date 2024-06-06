@@ -1,19 +1,19 @@
 // @flow strict
-"use client"
-import { useEffect, useRef, useState } from "react";
+'use client'
+import { useEffect, useRef, useState } from 'react';
 
 function ReactPopover({
     children,
     content,
-    trigger = "click"
+    trigger = 'click'
 })
 {
-    const [show, setShow] = useState(false);
+    const [ show, setShow ] = useState(false);
     const wrapperRef = useRef(null);
 
     const handleMouseOver = () =>
     {
-        if (trigger === "hover")
+        if (trigger === 'hover')
         {
             setShow(true);
         };
@@ -21,7 +21,7 @@ function ReactPopover({
 
     const handleMouseLeft = () =>
     {
-        if (trigger === "hover")
+        if (trigger === 'hover')
         {
             setShow(false);
         };
@@ -40,31 +40,31 @@ function ReactPopover({
         if (show)
         {
             // Bind the event listener
-            document.addEventListener("mousedown", handleClickOutside);
+            document.addEventListener('mousedown', handleClickOutside);
             return () =>
             {
                 // Unbind the event listener on clean up
-                document.removeEventListener("mousedown", handleClickOutside);
+                document.removeEventListener('mousedown', handleClickOutside);
             };
         }
-    }, [show, wrapperRef]);
+    }, [ show, wrapperRef ]);
 
     return (
         <div
-            ref={wrapperRef}
-            onMouseEnter={handleMouseOver}
-            onMouseLeave={handleMouseLeft}
-            className="w-fit h-fit relative flex justify-center">
+            ref={ wrapperRef }
+            className="w-fit h-fit relative flex justify-center"
+            onMouseEnter={ handleMouseOver }
+            onMouseLeave={ handleMouseLeft }>
             <div
-                onClick={() => setShow(!show)}
+                onClick={ () => setShow(!show) }
             >
-                {children}
+                { children }
             </div>
             <div
-                hidden={!show}
-                className="min-w-fit w-[200px] h-fit absolute bottom-[100%] z-50 transition-all">
+                className="min-w-fit w-[200px] h-fit absolute bottom-[100%] z-50 transition-all"
+                hidden={ !show }>
                 <div className="rounded bg-white p-3 shadow-[10px_30px_150px_rgba(46,38,92,0.25)] mb-[10px]">
-                    {content}
+                    { content }
                 </div>
             </div>
         </div>

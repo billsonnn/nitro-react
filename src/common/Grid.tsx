@@ -43,7 +43,7 @@ export const Grid: FC<GridProps> = props =>
         if (classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [inline, gap, maxContent, alignSelf, alignItems, justifyContent, center, classNames]);
+    }, [ inline, gap, maxContent, alignSelf, alignItems, justifyContent, center, classNames ]);
 
     const getStyle = useMemo(() =>
     {
@@ -54,11 +54,11 @@ export const Grid: FC<GridProps> = props =>
         if (Object.keys(style).length) newStyle = { ...newStyle, ...style };
 
         return newStyle;
-    }, [columnCount, style]);
+    }, [ columnCount, style ]);
 
     return (
-        <GridContextProvider value={{ isCssGrid: true }}>
-            <Base classNames={getClassNames} fullHeight={fullHeight} style={getStyle} {...rest} />
+        <GridContextProvider value={ { isCssGrid: true } }>
+            <Base classNames={ getClassNames } fullHeight={ fullHeight } style={ getStyle } { ...rest } />
         </GridContextProvider>
     );
 }

@@ -11,7 +11,7 @@ export const CatalogLimitedItemWidgetView: FC = props =>
 
     return (
         <div className="w-full">
-            <LayoutLimitedEditionCompletePlateView className="mx-auto" uniqueLimitedItemsLeft={currentOffer.product.uniqueLimitedItemsLeft} uniqueLimitedSeriesSize={currentOffer.product.uniqueLimitedItemSeriesSize} />
+            <LayoutLimitedEditionCompletePlateView className="mx-auto" uniqueLimitedItemsLeft={ currentOffer.product.uniqueLimitedItemsLeft } uniqueLimitedSeriesSize={ currentOffer.product.uniqueLimitedItemSeriesSize } />
         </div>
     );
 }

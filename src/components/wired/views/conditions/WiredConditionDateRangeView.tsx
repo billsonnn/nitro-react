@@ -2,12 +2,13 @@ import { FC, useEffect, useState } from 'react';
 import { LocalizeText, WiredDateToString, WiredFurniType } from '../../../../api';
 import { Text } from '../../../../common';
 import { useWired } from '../../../../hooks';
+import { NitroInput } from '../../../../layout';
 import { WiredConditionBaseView } from './WiredConditionBaseView';
 
 export const WiredConditionDateRangeView: FC<{}> = props =>
 {
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
+    const [ startDate, setStartDate ] = useState('');
+    const [ endDate, setEndDate ] = useState('');
     const { trigger = null, setIntParams = null } = useWired();
 
     const save = () =>
@@ -24,7 +25,7 @@ export const WiredConditionDateRangeView: FC<{}> = props =>
             endDateMili = endDateInstance.getTime() / 1000;
         }
 
-        setIntParams([startDateMili, endDateMili]);
+        setIntParams([ startDateMili, endDateMili ]);
     }
 
     useEffect(() =>
@@ -41,17 +42,17 @@ export const WiredConditionDateRangeView: FC<{}> = props =>
             setStartDate(WiredDateToString(startDate));
             setEndDate(WiredDateToString(endDate));
         }
-    }, [trigger]);
+    }, [ trigger ]);
 
     return (
-        <WiredConditionBaseView hasSpecialInput={true} requiresFurni={WiredFurniType.STUFF_SELECTION_OPTION_NONE} save={save}>
+        <WiredConditionBaseView hasSpecialInput={ true } requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
             <div className="flex flex-col gap-1">
-                <Text bold>{LocalizeText('wiredfurni.params.startdate')}</Text>
-                <NitroInput type="text" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+                <Text bold>{ LocalizeText('wiredfurni.params.startdate') }</Text>
+                <NitroInput type="text" value={ startDate } onChange={ (e) => setStartDate(e.target.value) } />
             </div>
             <div className="flex flex-col gap-1">
-                <Text bold>{LocalizeText('wiredfurni.params.enddate')}</Text>
-                <NitroInput type="text" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+                <Text bold>{ LocalizeText('wiredfurni.params.enddate') }</Text>
+                <NitroInput type="text" value={ endDate } onChange={ (e) => setEndDate(e.target.value) } />
             </div>
         </WiredConditionBaseView>
     );

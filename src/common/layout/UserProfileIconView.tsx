@@ -14,16 +14,16 @@ export const UserProfileIconView: FC<UserProfileIconViewProps> = props =>
 
     const getClassNames = useMemo(() =>
     {
-        const newClassNames: string[] = ['bg-[url("@/assets/images/friends/friends-spritesheet.png")]', 'w-[13px] h-[11px] bg-[-51px_-91px]'];
+        const newClassNames: string[] = [ 'bg-[url("@/assets/images/friends/friends-spritesheet.png")]', 'w-[13px] h-[11px] bg-[-51px_-91px]' ];
 
         if (classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [classNames]);
+    }, [ classNames ]);
 
     return (
-        <Base classNames={getClassNames} pointer={pointer} onClick={event => GetUserProfile(userId)} {...rest}>
-            {children}
+        <Base classNames={ getClassNames } pointer={ pointer } onClick={ event => GetUserProfile(userId) } { ...rest }>
+            { children }
         </Base>
     );
 }

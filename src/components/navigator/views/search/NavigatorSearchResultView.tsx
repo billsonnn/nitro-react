@@ -14,8 +14,8 @@ export interface NavigatorSearchResultViewProps extends AutoGridProps
 export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = props =>
 {
     const { searchResult = null, ...rest } = props;
-    const [isExtended, setIsExtended] = useState(true);
-    const [displayMode, setDisplayMode] = useState<number>(0);
+    const [ isExtended, setIsExtended ] = useState(true);
+    const [ displayMode, setDisplayMode ] = useState<number>(0);
 
     const { topLevelContext = null } = useNavigator();
 
@@ -53,32 +53,32 @@ export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = pro
         setIsExtended(!searchResult.closed);
 
         setDisplayMode(searchResult.mode);
-    }, [searchResult]);
+    }, [ searchResult ]);
 
     const gridHasTwoColumns = (displayMode >= NavigatorSearchResultViewDisplayMode.THUMBNAILS);
 
     return (
-        <Column className="bg-white rounded border border-muted" gap={0}>
+        <Column className="bg-white rounded border border-muted" gap={ 0 }>
             <Flex fullWidth alignItems="center" className="px-2 py-1" justifyContent="between">
-                <Flex grow pointer alignItems="center" gap={1} onClick={event => setIsExtended(prevValue => !prevValue)}>
-                    {isExtended && <FaMinus className="text-secondary fa-icon" />}
-                    {!isExtended && <FaPlus className="text-secondary fa-icon" />}
-                    <Text>{LocalizeText(getResultTitle())}</Text>
+                <Flex grow pointer alignItems="center" gap={ 1 } onClick={ event => setIsExtended(prevValue => !prevValue) }>
+                    { isExtended && <FaMinus className="text-secondary fa-icon" /> }
+                    { !isExtended && <FaPlus className="text-secondary fa-icon" /> }
+                    <Text>{ LocalizeText(getResultTitle()) }</Text>
                 </Flex>
                 <div className="flex gap-2">
-                    {(displayMode === NavigatorSearchResultViewDisplayMode.LIST) && <FaTh className="text-secondary fa-icon" onClick={toggleDisplayMode} />}
-                    {(displayMode >= NavigatorSearchResultViewDisplayMode.THUMBNAILS) && <FaBars className="text-secondary fa-icon" onClick={toggleDisplayMode} />}
-                    {(searchResult.action > 0) && (searchResult.action === 1) && <FaWindowMaximize className="text-secondary fa-icon" onClick={showMore} />}
-                    {(searchResult.action > 0) && (searchResult.action !== 1) && <FaWindowRestore className="text-secondary fa-icon" onClick={showMore} />}
+                    { (displayMode === NavigatorSearchResultViewDisplayMode.LIST) && <FaTh className="text-secondary fa-icon" onClick={ toggleDisplayMode } /> }
+                    { (displayMode >= NavigatorSearchResultViewDisplayMode.THUMBNAILS) && <FaBars className="text-secondary fa-icon" onClick={ toggleDisplayMode } /> }
+                    { (searchResult.action > 0) && (searchResult.action === 1) && <FaWindowMaximize className="text-secondary fa-icon" onClick={ showMore } /> }
+                    { (searchResult.action > 0) && (searchResult.action !== 1) && <FaWindowRestore className="text-secondary fa-icon" onClick={ showMore } /> }
                 </div>
 
-            </Flex> {isExtended &&
+            </Flex> { isExtended &&
                 <>
                     {
-                        gridHasTwoColumns ? <AutoGrid columnCount={3} {...rest} className="mx-2" columnMinHeight={130} columnMinWidth={110}>
-                            {searchResult.rooms.length > 0 && searchResult.rooms.map((room, index) => <NavigatorSearchResultItemView key={index} roomData={room} thumbnail={true} />)}
-                        </AutoGrid> : <Grid className="navigator-grid" columnCount={1} gap={0}>
-                            {searchResult.rooms.length > 0 && searchResult.rooms.map((room, index) => <NavigatorSearchResultItemView key={index} roomData={room} />)}
+                        gridHasTwoColumns ? <AutoGrid columnCount={ 3 } { ...rest } className="mx-2" columnMinHeight={ 130 } columnMinWidth={ 110 }>
+                            { searchResult.rooms.length > 0 && searchResult.rooms.map((room, index) => <NavigatorSearchResultItemView key={ index } roomData={ room } thumbnail={ true } />) }
+                        </AutoGrid> : <Grid className="navigator-grid" columnCount={ 1 } gap={ 0 }>
+                            { searchResult.rooms.length > 0 && searchResult.rooms.map((room, index) => <NavigatorSearchResultItemView key={ index } roomData={ room } />) }
                         </Grid>
                     }
                 </>
