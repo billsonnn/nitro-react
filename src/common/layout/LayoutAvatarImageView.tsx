@@ -16,44 +16,44 @@ export interface LayoutAvatarImageViewProps extends BaseProps<HTMLDivElement>
 export const LayoutAvatarImageView: FC<LayoutAvatarImageViewProps> = props =>
 {
     const { figure = '', gender = 'M', headOnly = false, direction = 0, scale = 1, classNames = [], style = {}, ...rest } = props;
-    const [ avatarUrl, setAvatarUrl ] = useState<string>(null);
-    const [ isReady, setIsReady ] = useState<boolean>(false);
+    const [avatarUrl, setAvatarUrl] = useState<string>(null);
+    const [isReady, setIsReady] = useState<boolean>(false);
     const isDisposed = useRef(false);
 
     const getClassNames = useMemo(() =>
     {
-        const newClassNames: string[] = [ 'avatar-image' ];
+        const newClassNames: string[] = ['avatar-image relative w-[90px] h-[130px] bg-no-repeat bg-[center_-8px] pointer-events-none'];
 
-        if(classNames.length) newClassNames.push(...classNames);
+        if (classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ classNames ]);
+    }, [classNames]);
 
     const getStyle = useMemo(() =>
     {
         let newStyle: CSSProperties = {};
 
-        if(avatarUrl && avatarUrl.length) newStyle.backgroundImage = `url('${ avatarUrl }')`;
+        if (avatarUrl && avatarUrl.length) newStyle.backgroundImage = `url('${avatarUrl}')`;
 
-        if(scale !== 1)
+        if (scale !== 1)
         {
-            newStyle.transform = `scale(${ scale })`;
+            newStyle.transform = `scale(${scale})`;
 
-            if(!(scale % 1)) newStyle.imageRendering = 'pixelated';
+            if (!(scale % 1)) newStyle.imageRendering = 'pixelated';
         }
 
-        if(Object.keys(style).length) newStyle = { ...newStyle, ...style };
+        if (Object.keys(style).length) newStyle = { ...newStyle, ...style };
 
         return newStyle;
-    }, [ avatarUrl, scale, style ]);
+    }, [avatarUrl, scale, style]);
 
     useEffect(() =>
     {
-        if(!isReady) return;
+        if (!isReady) return;
 
-        const figureKey = [ figure, gender, direction, headOnly ].join('-');
+        const figureKey = [figure, gender, direction, headOnly].join('-');
 
-        if(AVATAR_IMAGE_CACHE.has(figureKey))
+        if (AVATAR_IMAGE_CACHE.has(figureKey))
         {
             setAvatarUrl(AVATAR_IMAGE_CACHE.get(figureKey));
         }
@@ -61,21 +61,21 @@ export const LayoutAvatarImageView: FC<LayoutAvatarImageViewProps> = props =>
         {
             const resetFigure = (_figure: string) =>
             {
-                if(isDisposed.current) return;
-                
+                if (isDisposed.current) return;
+
                 const avatarImage = GetAvatarRenderManager().createAvatarImage(_figure, AvatarScaleType.LARGE, gender, { resetFigure: (figure: string) => resetFigure(figure), dispose: null, disposed: false });
 
                 let setType = AvatarSetType.FULL;
 
-                if(headOnly) setType = AvatarSetType.HEAD;
+                if (headOnly) setType = AvatarSetType.HEAD;
 
                 avatarImage.setDirection(setType, direction);
 
                 const imageUrl = avatarImage.processAsImageUrl(setType);
 
-                if(imageUrl && !isDisposed.current)
+                if (imageUrl && !isDisposed.current)
                 {
-                    if(!avatarImage.isPlaceholder()) AVATAR_IMAGE_CACHE.set(figureKey, imageUrl);
+                    if (!avatarImage.isPlaceholder()) AVATAR_IMAGE_CACHE.set(figureKey, imageUrl);
 
                     setAvatarUrl(imageUrl);
                 }
@@ -85,12 +85,12 @@ export const LayoutAvatarImageView: FC<LayoutAvatarImageViewProps> = props =>
 
             resetFigure(figure);
         }
-    }, [ figure, gender, direction, headOnly, isReady ]);
+    }, [figure, gender, direction, headOnly, isReady]);
 
     useEffect(() =>
     {
         isDisposed.current = false;
-        
+
         setIsReady(true);
 
         return () =>
@@ -98,6 +98,6 @@ export const LayoutAvatarImageView: FC<LayoutAvatarImageViewProps> = props =>
             isDisposed.current = true;
         }
     }, []);
-        
-    return <Base classNames={ getClassNames } style={ getStyle } { ...rest } />;
+
+    return <Base classNames={getClassNames} style={getStyle} {...rest} />;
 }

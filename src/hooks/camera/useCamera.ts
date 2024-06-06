@@ -6,11 +6,11 @@ import { useMessageEvent, useNitroEvent } from '../events';
 
 const useCameraState = () =>
 {
-    const [ availableEffects, setAvailableEffects ] = useState<IRoomCameraWidgetEffect[]>([]);
-    const [ cameraRoll, setCameraRoll ] = useState<CameraPicture[]>([]);
-    const [ selectedPictureIndex, setSelectedPictureIndex ] = useState(-1);
-    const [ myLevel, setMyLevel ] = useState(10);
-    const [ price, setPrice ] = useState<{ credits: number, duckets: number, publishDucketPrice: number }>(null);
+    const [availableEffects, setAvailableEffects] = useState<IRoomCameraWidgetEffect[]>([]);
+    const [cameraRoll, setCameraRoll] = useState<CameraPicture[]>([]);
+    const [selectedPictureIndex, setSelectedPictureIndex] = useState(-1);
+    const [myLevel, setMyLevel] = useState(10);
+    const [price, setPrice] = useState<{ credits: number, duckets: number, publishDucketPrice: number }>(null);
 
     useNitroEvent<RoomCameraWidgetManagerEvent>(RoomCameraWidgetManagerEvent.INITIALIZED, event =>
     {
@@ -19,14 +19,15 @@ const useCameraState = () =>
 
     useMessageEvent<InitCameraMessageEvent>(InitCameraMessageEvent, event =>
     {
+
         const parser = event.getParser();
-        
+
         setPrice({ credits: parser.creditPrice, duckets: parser.ducketPrice, publishDucketPrice: parser.publishDucketPrice });
     });
 
     useEffect(() =>
     {
-        if(!GetRoomCameraWidgetManager().isLoaded)
+        if (!GetRoomCameraWidgetManager().isLoaded)
         {
             GetRoomCameraWidgetManager().init();
 

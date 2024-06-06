@@ -23,41 +23,42 @@ export const Grid: FC<GridProps> = props =>
     {
         const newClassNames: string[] = [];
 
-        if(inline) newClassNames.push('inline-grid');
-        else newClassNames.push('grid');
 
-        if(gap) newClassNames.push('gap-' + gap);
-        else if(gap === 0) newClassNames.push('gap-0');
+        if (inline) newClassNames.push('inline-grid');
+        else newClassNames.push('grid grid-rows-[repeat(var(--bs-rows,_1),_1fr)] grid-cols-[repeat(var(--bs-columns,_12),_1fr)]');
 
-        if(maxContent) newClassNames.push('flex-basis-max-content');
+        if (gap) newClassNames.push('gap-' + gap);
+        else if (gap === 0) newClassNames.push('gap-0');
 
-        if(alignSelf) newClassNames.push('align-self-' + alignSelf);
+        if (maxContent) newClassNames.push('[flex-basis:max-content]');
 
-        if(alignItems) newClassNames.push('align-items-' + alignItems);
+        if (alignSelf) newClassNames.push('self-' + alignSelf);
 
-        if(justifyContent) newClassNames.push('justify-content-' + justifyContent);
+        if (alignItems) newClassNames.push('items-' + alignItems);
 
-        if(!alignItems && !justifyContent && center) newClassNames.push('items-center', 'justify-center');
+        if (justifyContent) newClassNames.push('justify-' + justifyContent);
 
-        if(classNames.length) newClassNames.push(...classNames);
+        if (!alignItems && !justifyContent && center) newClassNames.push('items-center', 'justify-center');
+
+        if (classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ inline, gap, maxContent, alignSelf, alignItems, justifyContent, center, classNames ]);
+    }, [inline, gap, maxContent, alignSelf, alignItems, justifyContent, center, classNames]);
 
     const getStyle = useMemo(() =>
     {
         let newStyle: CSSProperties = {};
 
-        if(columnCount) newStyle['--bs-columns'] = columnCount.toString();
+        if (columnCount) newStyle['--bs-columns'] = columnCount.toString();
 
-        if(Object.keys(style).length) newStyle = { ...newStyle, ...style };
+        if (Object.keys(style).length) newStyle = { ...newStyle, ...style };
 
         return newStyle;
-    }, [ columnCount, style ]);
+    }, [columnCount, style]);
 
     return (
-        <GridContextProvider value={ { isCssGrid: true } }>
-            <Base classNames={ getClassNames } fullHeight={ fullHeight } style={ getStyle } { ...rest } />
+        <GridContextProvider value={{ isCssGrid: true }}>
+            <Base classNames={getClassNames} fullHeight={fullHeight} style={getStyle} {...rest} />
         </GridContextProvider>
     );
 }

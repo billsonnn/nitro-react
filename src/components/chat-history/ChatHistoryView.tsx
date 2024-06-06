@@ -6,8 +6,8 @@ import { useChatHistory } from '../../hooks';
 
 export const ChatHistoryView: FC<{}> = props =>
 {
-    const [ isVisible, setIsVisible ] = useState(false);
-    const [ searchText, setSearchText ] = useState<string>('');
+    const [isVisible, setIsVisible] = useState(false);
+    const [searchText, setSearchText] = useState<string>('');
     const { chatHistory = [] } = useChatHistory();
     const elementRef = useRef<HTMLDivElement>(null);
 
@@ -18,12 +18,12 @@ export const ChatHistoryView: FC<{}> = props =>
         let text = searchText.toLowerCase();
 
         return chatHistory.filter(entry => ((entry.message && entry.message.toLowerCase().includes(text))) || (entry.name && entry.name.toLowerCase().includes(text)));
-    }, [ chatHistory, searchText ]);
+    }, [chatHistory, searchText]);
 
     useEffect(() =>
     {
-        if(elementRef && elementRef.current && isVisible) elementRef.current.scrollTop = elementRef.current.scrollHeight;
-    }, [ isVisible ]);
+        if (elementRef && elementRef.current && isVisible) elementRef.current.scrollTop = elementRef.current.scrollHeight;
+    }, [isVisible]);
 
     useEffect(() =>
     {
@@ -31,10 +31,10 @@ export const ChatHistoryView: FC<{}> = props =>
             linkReceived: (url: string) =>
             {
                 const parts = url.split('/');
-        
-                if(parts.length < 2) return;
-        
-                switch(parts[1])
+
+                if (parts.length < 2) return;
+
+                switch (parts[1])
                 {
                     case 'show':
                         setIsVisible(true);
@@ -55,41 +55,41 @@ export const ChatHistoryView: FC<{}> = props =>
         return () => RemoveLinkEventTracker(linkTracker);
     }, []);
 
-    if(!isVisible) return null;
+    if (!isVisible) return null;
 
     return (
         <NitroCardView className="nitro-chat-history" theme="primary-slim" uniqueKey="chat-history">
-            <NitroCardHeaderView headerText={ LocalizeText('room.chathistory.button.text') } onCloseClick={ event => setIsVisible(false) }/>
-            <NitroCardContentView gap={ 2 } innerRef={ elementRef } overflow="hidden">
-                <input className="form-control form-control-sm" placeholder={ LocalizeText('generic.search') } type="text" value={ searchText } onChange={ event => setSearchText(event.target.value) } />
-                <InfiniteScroll rowRender={ row =>
+            <NitroCardHeaderView headerText={LocalizeText('room.chathistory.button.text')} onCloseClick={event => setIsVisible(false)} />
+            <NitroCardContentView gap={2} innerRef={elementRef} overflow="hidden">
+                <NitroInput placeholder={LocalizeText('generic.search')} type="text" value={searchText} onChange={event => setSearchText(event.target.value)} />
+                <InfiniteScroll rowRender={row =>
                 {
                     return (
-                        <Flex alignItems="center" className="p-1" gap={ 2 }>
-                            <Text variant="muted">{ row.timestamp }</Text>
-                            { (row.type === ChatEntryType.TYPE_CHAT) &&
-                                <div className="bubble-container" style={ { position: 'relative' } }>
-                                    { (row.style === 0) &&
-                                    <div className="user-container-bg" style={ { backgroundColor: row.color } } /> }
-                                    <div className={ `chat-bubble bubble-${ row.style } type-${ row.chatType }` } style={ { maxWidth: '100%' } }>
+                        <Flex alignItems="center" className="p-1" gap={2}>
+                            <Text variant="muted">{row.timestamp}</Text>
+                            {(row.type === ChatEntryType.TYPE_CHAT) &&
+                                <div className="bubble-container" style={{ position: 'relative' }}>
+                                    {(row.style === 0) &&
+                                        <div className="user-container-bg" style={{ backgroundColor: row.color }} />}
+                                    <div className={`chat-bubble bubble-${row.style} type-${row.chatType}`} style={{ maxWidth: '100%' }}>
                                         <div className="user-container">
-                                            { row.imageUrl && (row.imageUrl.length > 0) &&
-                                <div className="user-image" style={ { backgroundImage: `url(${ row.imageUrl })` } } /> }
+                                            {row.imageUrl && (row.imageUrl.length > 0) &&
+                                                <div className="user-image" style={{ backgroundImage: `url(${row.imageUrl})` }} />}
                                         </div>
                                         <div className="chat-content">
-                                            <b className="username mr-1" dangerouslySetInnerHTML={ { __html: `${ row.name }: ` } } />
-                                            <span className="message" dangerouslySetInnerHTML={ { __html: `${ row.message }` } } />
+                                            <b className="username mr-1" dangerouslySetInnerHTML={{ __html: `${row.name}: ` }} />
+                                            <span className="message" dangerouslySetInnerHTML={{ __html: `${row.message}` }} />
                                         </div>
                                     </div>
-                                </div> }
-                            { (row.type === ChatEntryType.TYPE_ROOM_INFO) &&
+                                </div>}
+                            {(row.type === ChatEntryType.TYPE_ROOM_INFO) &&
                                 <>
-                                    <i className="icon icon-small-room" />
-                                    <Text grow textBreak wrap>{ row.name }</Text>
-                                </> }
+                                    <i className="nitro-icon icon-small-room" />
+                                    <Text grow textBreak wrap>{row.name}</Text>
+                                </>}
                         </Flex>
                     )
-                } } rows={ filteredChatHistory } scrollToBottom={ true } />
+                }} rows={filteredChatHistory} scrollToBottom={true} />
             </NitroCardContentView>
         </NitroCardView>
     );

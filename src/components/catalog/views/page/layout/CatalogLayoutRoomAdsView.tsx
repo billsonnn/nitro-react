@@ -3,24 +3,25 @@ import { FC, useEffect, useState } from 'react';
 import { LocalizeText, SendMessageComposer } from '../../../../../api';
 import { Button, Column, Text } from '../../../../../common';
 import { useCatalog, useMessageEvent, useNavigator, useRoomPromote } from '../../../../../hooks';
+import { NitroInput } from '../../../../../layout';
 import { CatalogLayoutProps } from './CatalogLayout.types';
 
 export const CatalogLayoutRoomAdsView: FC<CatalogLayoutProps> = props =>
 {
     const { page = null } = props;
-    const [ eventName, setEventName ] = useState<string>('');
-    const [ eventDesc, setEventDesc ] = useState<string>('');
-    const [ roomId, setRoomId ] = useState<number>(-1);
-    const [ availableRooms, setAvailableRooms ] = useState<RoomEntryData[]>([]);
-    const [ extended, setExtended ] = useState<boolean>(false);
-    const [ categoryId, setCategoryId ] = useState<number>(1);
+    const [eventName, setEventName] = useState<string>('');
+    const [eventDesc, setEventDesc] = useState<string>('');
+    const [roomId, setRoomId] = useState<number>(-1);
+    const [availableRooms, setAvailableRooms] = useState<RoomEntryData[]>([]);
+    const [extended, setExtended] = useState<boolean>(false);
+    const [categoryId, setCategoryId] = useState<number>(1);
     const { categories = null } = useNavigator();
     const { setIsVisible = null } = useCatalog();
     const { promoteInformation, isExtended, setIsExtended } = useRoomPromote();
 
     useEffect(() =>
     {
-        if(isExtended)
+        if (isExtended)
         {
             setRoomId(promoteInformation.data.flatId);
             setEventName(promoteInformation.data.eventName);
@@ -30,7 +31,7 @@ export const CatalogLayoutRoomAdsView: FC<CatalogLayoutProps> = props =>
             setIsExtended(false); // This is from hook useRoomPromotte
         }
 
-    }, [ isExtended, eventName, eventDesc, categoryId ]);
+    }, [isExtended, eventName, eventDesc, categoryId]);
 
     const resetData = () =>
     {
@@ -59,7 +60,7 @@ export const CatalogLayoutRoomAdsView: FC<CatalogLayoutProps> = props =>
     {
         const parser = event.getParser();
 
-        if(!parser) return;
+        if (!parser) return;
 
         setAvailableRooms(parser.rooms);
     });
@@ -72,33 +73,38 @@ export const CatalogLayoutRoomAdsView: FC<CatalogLayoutProps> = props =>
     }, []);
 
     return (<>
-        <Text bold center>{ LocalizeText('roomad.catalog_header') }</Text>
-        <Column className="text-black" overflow="hidden" size={ 12 }>
-            <div>{ LocalizeText('roomad.catalog_text', [ 'duration' ], [ '120' ]) }</div>
+        <Text bold center>{LocalizeText('roomad.catalog_header')}</Text>
+        <Column className="text-black" overflow="hidden" size={12}>
+            <div>{LocalizeText('roomad.catalog_text', ['duration'], ['120'])}</div>
             <div className="bg-muted rounded p-1">
-                <Column gap={ 2 }>
-                    <Text bold>{ LocalizeText('navigator.category') }</Text>
-                    <select className="form-select form-select-sm" disabled={ extended } value={ categoryId } onChange={ event => setCategoryId(parseInt(event.target.value)) }>
-                        { categories && categories.map((cat, index) => <option key={ index } value={ cat.id }>{ LocalizeText(cat.name) }</option>) }
+                <Column gap={2}>
+                    <Text bold>{LocalizeText('navigator.category')}</Text>
+                    <select className="form-select form-select-sm" disabled={extended} value={categoryId} onChange={event => setCategoryId(parseInt(event.target.value))}>
+                        {categories && categories.map((cat, index) => <option key={index} value={cat.id}>{LocalizeText(cat.name)}</option>)}
                     </select>
                 </Column>
                 <div className="flex flex-col gap-1">
-                    <Text bold>{ LocalizeText('roomad.catalog_name') }</Text>
-                    <input className="form-control form-control-sm" maxLength={ 64 } readOnly={ extended } type="text" value={ eventName } onChange={ event => setEventName(event.target.value) } />
+                    <Text bold>{LocalizeText('roomad.catalog_name')}</Text>
+
+
+
+
+                    <NitroInput maxLength={64} readOnly={extended} value={eventName} onChange={event => setEventName(event.target.value)} />
+
                 </div>
                 <div className="flex flex-col gap-1">
-                    <Text bold>{ LocalizeText('roomad.catalog_description') }</Text>
-                    <textarea className="form-control form-control-sm" maxLength={ 64 } readOnly={ extended } value={ eventDesc } onChange={ event => setEventDesc(event.target.value) } />
+                    <Text bold>{LocalizeText('roomad.catalog_description')}</Text>
+                    <textarea className="min-h-[calc(1.5em+ .5rem+2px)] px-[.5rem] py-[.25rem]  rounded-[.2rem] form-control-sm" maxLength={64} readOnly={extended} value={eventDesc} onChange={event => setEventDesc(event.target.value)} />
                 </div>
                 <div className="flex flex-col gap-1">
-                    <Text bold>{ LocalizeText('roomad.catalog_roomname') }</Text>
-                    <select className="form-select form-select-sm" disabled={ extended } value={ roomId } onChange={ event => setRoomId(parseInt(event.target.value)) }>
-                        <option disabled value={ -1 }>{ LocalizeText('roomad.catalog_roomname') }</option>
-                        { availableRooms && availableRooms.map((room, index) => <option key={ index } value={ room.roomId }>{ room.roomName }</option>) }
+                    <Text bold>{LocalizeText('roomad.catalog_roomname')}</Text>
+                    <select className="form-select form-select-sm" disabled={extended} value={roomId} onChange={event => setRoomId(parseInt(event.target.value))}>
+                        <option disabled value={-1}>{LocalizeText('roomad.catalog_roomname')}</option>
+                        {availableRooms && availableRooms.map((room, index) => <option key={index} value={room.roomId}>{room.roomName}</option>)}
                     </select>
                 </div>
                 <div className="flex flex-col gap-1">
-                    <Button disabled={ (!eventName || !eventDesc || roomId === -1) } variant={ (!eventName || !eventDesc || roomId === -1) ? 'danger' : 'success' } onClick={ purchaseAd }>{ extended ? LocalizeText('roomad.extend.event') : LocalizeText('buy') }</Button>
+                    <Button disabled={(!eventName || !eventDesc || roomId === -1)} variant={(!eventName || !eventDesc || roomId === -1) ? 'danger' : 'success'} onClick={purchaseAd}>{extended ? LocalizeText('roomad.extend.event') : LocalizeText('buy')}</Button>
                 </div>
             </div>
         </Column>
@@ -106,7 +112,8 @@ export const CatalogLayoutRoomAdsView: FC<CatalogLayoutProps> = props =>
     );
 }
 
-interface INavigatorCategory {
+interface INavigatorCategory
+{
     id: number;
     name: string;
     visible: boolean;

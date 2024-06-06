@@ -13,21 +13,21 @@ export const LayoutCurrencyIcon: FC<CurrencyIconProps> = props =>
 
     const getClassNames = useMemo(() =>
     {
-        const newClassNames: string[] = [ 'nitro-currency-icon' ];
+        const newClassNames: string[] = ['nitro-currency-icon', 'bg-center bg-no-repeat w-[15px] h-[15px]'];
 
-        if(classNames.length) newClassNames.push(...classNames);
+        if (classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ classNames ]);
+    }, [classNames]);
 
     const urlString = useMemo(() =>
     {
         let url = GetConfigurationValue<string>('currency.asset.icon.url', '');
-    
+
         url = url.replace('%type%', type.toString());
 
-        return `url(${ url })`;
-    }, [ type ]);
+        return `url(${url})`;
+    }, [type]);
 
     const getStyle = useMemo(() =>
     {
@@ -35,10 +35,10 @@ export const LayoutCurrencyIcon: FC<CurrencyIconProps> = props =>
 
         newStyle.backgroundImage = urlString;
 
-        if(Object.keys(style).length) newStyle = { ...newStyle, ...style };
+        if (Object.keys(style).length) newStyle = { ...newStyle, ...style };
 
         return newStyle;
-    }, [ style, urlString ]);
+    }, [style, urlString]);
 
-    return <Base classNames={ getClassNames } style={ getStyle } { ...rest } />
+    return <Base classNames={getClassNames} style={getStyle} {...rest} />
 }

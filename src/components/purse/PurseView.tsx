@@ -15,27 +15,27 @@ export const PurseView: FC<{}> = props =>
 
     const getClubText = (() =>
     {
-        if(!purse) return null;
+        if (!purse) return null;
 
         const totalDays = ((purse.clubPeriods * 31) + purse.clubDays);
         const minutesUntilExpiration = purse.minutesUntilExpiration;
 
-        if(purse.clubLevel === HabboClubLevelEnum.NO_CLUB) return LocalizeText('purse.clubdays.zero.amount.text');
+        if (purse.clubLevel === HabboClubLevelEnum.NO_CLUB) return LocalizeText('purse.clubdays.zero.amount.text');
 
-        else if((minutesUntilExpiration > -1) && (minutesUntilExpiration < (60 * 24))) return FriendlyTime.shortFormat(minutesUntilExpiration * 60);
-        
+        else if ((minutesUntilExpiration > -1) && (minutesUntilExpiration < (60 * 24))) return FriendlyTime.shortFormat(minutesUntilExpiration * 60);
+
         else return FriendlyTime.shortFormat(totalDays * 86400);
     })();
 
     const getCurrencyElements = (offset: number, limit: number = -1, seasonal: boolean = false) =>
     {
-        if(!purse || !purse.activityPoints || !purse.activityPoints.size) return null;
+        if (!purse || !purse.activityPoints || !purse.activityPoints.size) return null;
 
         const types = Array.from(purse.activityPoints.keys()).filter(type => (displayedCurrencies.indexOf(type) >= 0));
 
         let count = 0;
 
-        while(count < offset)
+        while (count < offset)
         {
             types.shift();
 
@@ -46,12 +46,12 @@ export const PurseView: FC<{}> = props =>
 
         const elements: JSX.Element[] = [];
 
-        for(const type of types)
+        for (const type of types)
         {
-            if((limit > -1) && (count === limit)) break;
+            if ((limit > -1) && (count === limit)) break;
 
-            if(seasonal) elements.push(<SeasonalView key={ type } amount={ purse.activityPoints.get(type) } type={ type } />);
-            else elements.push(<CurrencyView key={ type } amount={ purse.activityPoints.get(type) } short={ currencyDisplayNumberShort } type={ type } />);
+            if (seasonal) elements.push(<SeasonalView key={type} amount={purse.activityPoints.get(type)} type={type} />);
+            else elements.push(<CurrencyView key={type} amount={purse.activityPoints.get(type)} short={currencyDisplayNumberShort} type={type} />);
 
             count++;
         }
@@ -59,32 +59,32 @@ export const PurseView: FC<{}> = props =>
         return elements;
     }
 
-    if(!purse) return null;
+    if (!purse) return null;
 
     return (
-        <Column alignItems="end" className="nitro-purse-container" gap={ 1 }>
-            <Flex className="nitro-purse rounded-bottom p-1">
-                <Grid fullWidth gap={ 1 }>
-                    <Column gap={ 0 } justifyContent="center" size={ hcDisabled ? 10 : 6 }>
-                        <CurrencyView amount={ purse.credits } short={ currencyDisplayNumberShort } type={ -1 } />
-                        { getCurrencyElements(0, 2) }
+        <Column alignItems="end" className="pointer-events-auto text-sm" gap={1}>
+            <Flex className="bg-[#1c1c20f2] [box-shadow:inset_0_5px_#22222799,_inset_0_-4px_#12121599] rounded-b p-1">
+                <Grid fullWidth gap={1}>
+                    <Column gap={0} justifyContent="center" size={hcDisabled ? 10 : 6}>
+                        <CurrencyView amount={purse.credits} short={currencyDisplayNumberShort} type={-1} />
+                        {getCurrencyElements(0, 2)}
                     </Column>
-                    { !hcDisabled &&
-                        <Column center pointer className="nitro-purse-subscription rounded" gap={ 1 } size={ 4 } onClick={ event => CreateLinkEvent('habboUI/open/hccenter') }>
+                    {!hcDisabled &&
+                        <Column center pointer className="nitro-purse-subscription rounded" gap={1} size={4} onClick={event => CreateLinkEvent('habboUI/open/hccenter')}>
                             <LayoutCurrencyIcon type="hc" />
-                            <Text variant="white">{ getClubText }</Text>
-                        </Column> }
-                    <Column gap={ 0 } justifyContent="center" size={ 2 }>
-                        <Flex center fullHeight pointer className="nitro-purse-button p-1 rounded" onClick={ event => CreateLinkEvent('help/show') }>
-                            <i className="icon icon-help"/>
+                            <Text variant="white">{getClubText}</Text>
+                        </Column>}
+                    <Column gap={0} justifyContent="center" size={2}>
+                        <Flex center fullHeight pointer className="px-[2px] py-[3px] p-1 rounded" onClick={event => CreateLinkEvent('help/show')}>
+                            <i className="nitro-icon icon-help" />
                         </Flex>
-                        <Flex center fullHeight pointer className="nitro-purse-button p-1 rounded" onClick={ event => CreateLinkEvent('user-settings/toggle') } >
-                            <i className="icon icon-cog"/>
+                        <Flex center fullHeight pointer className="px-[2px] py-[3px] p-1 rounded" onClick={event => CreateLinkEvent('user-settings/toggle')} >
+                            <i className="nitro-icon icon-cog" />
                         </Flex>
                     </Column>
                 </Grid>
             </Flex>
-            { getCurrencyElements(2, -1, true) }
+            {getCurrencyElements(2, -1, true)}
         </Column>
     );
 }

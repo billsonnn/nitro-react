@@ -34,9 +34,18 @@
         "css": "css"
     },
     "tailwindCSS.experimental.classRegex": [
-        ["classes \\=([^;]*);", "'([^']*)'"],
-        ["classes \\=([^;]*);", "\"([^\"]*)\""],
-        ["classes \\=([^;]*);", "\\`([^\\`]*)\\`"]
+        [
+            "classes \\=([^;]*);",
+            "'([^']*)'"
+        ],
+        [
+            "classes \\=([^;]*);",
+            "\"([^\"]*)\""
+        ],
+        [
+            "classes \\=([^;]*);",
+            "\\`([^\\`]*)\\`"
+        ]
     ],
     "editor.quickSuggestions": {
         "strings": true

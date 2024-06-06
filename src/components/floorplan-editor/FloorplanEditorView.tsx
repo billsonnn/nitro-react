@@ -14,18 +14,18 @@ import { FloorplanOptionsView } from './views/FloorplanOptionsView';
 
 export const FloorplanEditorView: FC<{}> = props =>
 {
-    const [ isVisible, setIsVisible ] = useState(false);
-    const [ importExportVisible, setImportExportVisible ] = useState(false);
-    const [ originalFloorplanSettings, setOriginalFloorplanSettings ] = useState<IFloorplanSettings>({
+    const [isVisible, setIsVisible] = useState(false);
+    const [importExportVisible, setImportExportVisible] = useState(false);
+    const [originalFloorplanSettings, setOriginalFloorplanSettings] = useState<IFloorplanSettings>({
         tilemap: '',
         reservedTiles: [],
-        entryPoint: [ 0, 0 ],
+        entryPoint: [0, 0],
         entryPointDir: 2,
         wallHeight: -1,
         thicknessWall: 1,
         thicknessFloor: 1
     });
-    const [ visualizationSettings, setVisualizationSettings ] = useState<IVisualizationSettings>({
+    const [visualizationSettings, setVisualizationSettings] = useState<IVisualizationSettings>({
         entryPointDir: 2,
         wallHeight: -1,
         thicknessWall: 1,
@@ -48,7 +48,7 @@ export const FloorplanEditorView: FC<{}> = props =>
     const revertChanges = () =>
     {
         setVisualizationSettings({ wallHeight: originalFloorplanSettings.wallHeight, thicknessWall: originalFloorplanSettings.thicknessWall, thicknessFloor: originalFloorplanSettings.thicknessFloor, entryPointDir: originalFloorplanSettings.entryPointDir });
-        
+
         FloorplanEditor.instance.doorLocation = { x: originalFloorplanSettings.entryPoint[0], y: originalFloorplanSettings.entryPoint[1] };
         FloorplanEditor.instance.setTilemap(originalFloorplanSettings.tilemap, originalFloorplanSettings.reservedTiles);
         FloorplanEditor.instance.renderTiles();
@@ -112,9 +112,9 @@ export const FloorplanEditorView: FC<{}> = props =>
             {
                 const parts = url.split('/');
 
-                if(parts.length < 2) return;
-        
-                switch(parts[1])
+                if (parts.length < 2) return;
+
+                switch (parts[1])
                 {
                     case 'show':
                         setIsVisible(true);
@@ -136,25 +136,25 @@ export const FloorplanEditorView: FC<{}> = props =>
     }, []);
 
     return (
-        <FloorplanEditorContextProvider value={ { originalFloorplanSettings: originalFloorplanSettings, setOriginalFloorplanSettings: setOriginalFloorplanSettings, visualizationSettings: visualizationSettings, setVisualizationSettings: setVisualizationSettings } }>
-            { isVisible &&
-                <NitroCardView className="nitro-floorplan-editor" theme="primary-slim" uniqueKey="floorpan-editor">
-                    <NitroCardHeaderView headerText={ LocalizeText('floor.plan.editor.title') } onCloseClick={ () => setIsVisible(false) } />
+        <FloorplanEditorContextProvider value={{ originalFloorplanSettings: originalFloorplanSettings, setOriginalFloorplanSettings: setOriginalFloorplanSettings, visualizationSettings: visualizationSettings, setVisualizationSettings: setVisualizationSettings }}>
+            {isVisible &&
+                <NitroCardView className="w-[760px] h-[500px]" theme="primary-slim" uniqueKey="floorpan-editor">
+                    <NitroCardHeaderView headerText={LocalizeText('floor.plan.editor.title')} onCloseClick={() => setIsVisible(false)} />
                     <NitroCardContentView overflow="hidden">
                         <FloorplanOptionsView />
                         <FloorplanCanvasView overflow="hidden" />
-                        <div className="flex justify-content-between">
-                            <Button onClick={ revertChanges }>{ LocalizeText('floor.plan.editor.reload') }</Button>
-                            <div className="btn-group">
-                                <Button disabled={ true }>{ LocalizeText('floor.plan.editor.preview') }</Button>
-                                <Button onClick={ event => setImportExportVisible(true) }>{ LocalizeText('floor.plan.editor.import.export') }</Button>
-                                <Button onClick={ saveFloorChanges }>{ LocalizeText('floor.plan.editor.save') }</Button>
+                        <div className="flex justify-between">
+                            <Button onClick={revertChanges}>{LocalizeText('floor.plan.editor.reload')}</Button>
+                            <div className="relative inline-flex align-middle">
+                                <Button disabled={true}>{LocalizeText('floor.plan.editor.preview')}</Button>
+                                <Button onClick={event => setImportExportVisible(true)}>{LocalizeText('floor.plan.editor.import.export')}</Button>
+                                <Button onClick={saveFloorChanges}>{LocalizeText('floor.plan.editor.save')}</Button>
                             </div>
                         </div>
                     </NitroCardContentView>
-                </NitroCardView> }
-            { importExportVisible &&
-                <FloorplanImportExportView onCloseClick={ () => setImportExportVisible(false) } /> }
+                </NitroCardView>}
+            {importExportVisible &&
+                <FloorplanImportExportView onCloseClick={() => setImportExportVisible(false)} />}
         </FloorplanEditorContextProvider>
     );
 }

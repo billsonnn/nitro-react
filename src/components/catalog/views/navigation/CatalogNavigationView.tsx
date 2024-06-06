@@ -15,18 +15,18 @@ export const CatalogNavigationView: FC<CatalogNavigationViewProps> = props =>
 {
     const { node = null } = props;
     const { searchResult = null } = useCatalog();
-    
+
     return (
         <>
             <CatalogSearchView />
-            <Column fullHeight className="nitro-catalog-navigation-grid-container rounded p-1" overflow="hidden">
-                <AutoGrid columnCount={ 1 } gap={ 1 } id="nitro-catalog-main-navigation">
-                    { searchResult && (searchResult.filteredNodes.length > 0) && searchResult.filteredNodes.map((n, index) =>
+            <Column fullHeight className="!border-[#b6bec5] bg-[#cdd3d9] border-[2px] border-[solid] rounded p-1" overflow="hidden">
+                <AutoGrid columnCount={1} gap={1} id="nitro-catalog-main-navigation">
+                    {searchResult && (searchResult.filteredNodes.length > 0) && searchResult.filteredNodes.map((n, index) =>
                     {
-                        return <CatalogNavigationItemView key={ index } node={ n } />;
-                    }) }
-                    { !searchResult &&
-                        <CatalogNavigationSetView node={ node } /> }
+                        return <CatalogNavigationItemView key={index} node={n} />;
+                    })}
+                    {!searchResult &&
+                        <CatalogNavigationSetView node={node} />}
                 </AutoGrid>
             </Column>
         </>

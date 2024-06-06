@@ -7,12 +7,12 @@ export const ContextMenuHeaderView: FC<FlexProps> = props =>
 
     const getClassNames = useMemo(() =>
     {
-        const newClassNames: string[] = [ 'menu-header', 'p-1' ];
+        const newClassNames: string[] = ['bg-[#3d5f6e] text-[#fff] min-w-[117px] h-[25px] max-h-[25px] text-[16px] mb-[2px]', 'p-1'];
 
-        if(classNames.length) newClassNames.push(...classNames);
+        if (classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ classNames ]);
+    }, [classNames]);
 
-    return <Flex alignItems={ alignItems } classNames={ getClassNames } justifyContent={ justifyContent } { ...rest } />;
+    return <Flex alignItems={alignItems} classNames={getClassNames} justifyContent={justifyContent} {...rest} />;
 }

@@ -15,32 +15,32 @@ export const CatalogLayoutSpacesView: FC<CatalogLayoutProps> = props =>
     useEffect(() =>
     {
         roomPreviewer.updatePreviewObjectBoundingRectangle();
-    }, [ roomPreviewer ]);
+    }, [roomPreviewer]);
 
     return (
         <Grid>
-            <Column overflow="hidden" size={ 7 }>
+            <Column overflow="hidden" size={7}>
                 <CatalogSpacesWidgetView />
             </Column>
-            <Column center={ !currentOffer } overflow="hidden" size={ 5 }>
-                { !currentOffer &&
+            <Column center={!currentOffer} overflow="hidden" size={5}>
+                {!currentOffer &&
                     <>
-                        { !!page.localization.getImage(1) && <img alt="" src={ page.localization.getImage(1) } /> }
-                        <Text center dangerouslySetInnerHTML={ { __html: page.localization.getText(0) } } />
-                    </> }
-                { currentOffer &&
+                        {!!page.localization.getImage(1) && <img alt="" src={page.localization.getImage(1)} />}
+                        <Text center dangerouslySetInnerHTML={{ __html: page.localization.getText(0) }} />
+                    </>}
+                {currentOffer &&
                     <>
                         <div className="relative overflow-hidden">
                             <CatalogViewProductWidgetView />
                         </div>
-                        <Column grow gap={ 1 }>
-                            <Text grow truncate>{ currentOffer.localizationName }</Text>
-                            <div className="flex justify-content-end">
+                        <Column grow gap={1}>
+                            <Text grow truncate>{currentOffer.localizationName}</Text>
+                            <div className="flex justify-end">
                                 <CatalogTotalPriceWidget alignItems="end" />
                             </div>
                             <CatalogPurchaseWidgetView />
                         </Column>
-                    </> }
+                    </>}
             </Column>
         </Grid>
     );

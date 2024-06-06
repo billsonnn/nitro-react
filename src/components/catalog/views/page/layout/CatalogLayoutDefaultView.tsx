@@ -20,32 +20,32 @@ export const CatalogLayoutDefaultView: FC<CatalogLayoutProps> = props =>
     return (
         <>
             <Grid>
-                <Column overflow="hidden" size={ 7 }>
-                    { GetConfigurationValue('catalog.headers') &&
-                        <CatalogHeaderView imageUrl={ currentPage.localization.getImage(0) }/> }
+                <Column overflow="hidden" size={7}>
+                    {GetConfigurationValue('catalog.headers') &&
+                        <CatalogHeaderView imageUrl={currentPage.localization.getImage(0)} />}
                     <CatalogItemGridWidgetView />
                 </Column>
-                <Column center={ !currentOffer } overflow="hidden" size={ 5 }>
-                    { !currentOffer &&
+                <Column center={!currentOffer} overflow="hidden" size={5}>
+                    {!currentOffer &&
                         <>
-                            { !!page.localization.getImage(1) && 
-                                <LayoutImage imageUrl={ page.localization.getImage(1) } /> }
-                            <Text center dangerouslySetInnerHTML={ { __html: page.localization.getText(0) } } />
-                        </> }
-                    { currentOffer &&
+                            {!!page.localization.getImage(1) &&
+                                <LayoutImage imageUrl={page.localization.getImage(1)} />}
+                            <Text center dangerouslySetInnerHTML={{ __html: page.localization.getText(0) }} />
+                        </>}
+                    {currentOffer &&
                         <>
-                            <Flex center overflow="hidden" style={ { height: 140 } }>
-                                { (currentOffer.product.productType !== ProductTypeEnum.BADGE) &&
+                            <Flex center overflow="hidden" style={{ height: 140 }}>
+                                {(currentOffer.product.productType !== ProductTypeEnum.BADGE) &&
                                     <>
                                         <CatalogViewProductWidgetView />
                                         <CatalogAddOnBadgeWidgetView className="bg-muted rounded bottom-1 end-1" />
-                                    </> }
-                                { (currentOffer.product.productType === ProductTypeEnum.BADGE) && <CatalogAddOnBadgeWidgetView className="scale-2" /> }
+                                    </>}
+                                {(currentOffer.product.productType === ProductTypeEnum.BADGE) && <CatalogAddOnBadgeWidgetView className="scale-2" />}
                             </Flex>
-                            <Column grow gap={ 1 }>
+                            <Column grow gap={1}>
                                 <CatalogLimitedItemWidgetView />
-                                <Text grow truncate>{ currentOffer.localizationName }</Text>
-                                <div className="flex justify-content-between">
+                                <Text grow truncate>{currentOffer.localizationName}</Text>
+                                <div className="flex justify-between">
                                     <div className="flex flex-col gap-1">
                                         <CatalogSpinnerWidgetView />
                                     </div>
@@ -53,7 +53,7 @@ export const CatalogLayoutDefaultView: FC<CatalogLayoutProps> = props =>
                                 </div>
                                 <CatalogPurchaseWidgetView />
                             </Column>
-                        </> }
+                        </>}
                 </Column>
             </Grid>
         </>

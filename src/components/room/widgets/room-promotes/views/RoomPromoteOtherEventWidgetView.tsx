@@ -13,14 +13,14 @@ export const RoomPromoteOtherEventWidgetView: FC<RoomPromoteOtherEventWidgetView
 
     return (
         <>
-            <Flex alignItems="center" gap={ 2 } style={ { overflowWrap: 'anywhere' } }>
-                <Text variant="white">{ eventDescription }</Text>
+            <Flex alignItems="center" gap={2} style={{ overflowWrap: 'anywhere' }}>
+                <Text variant="white">{eventDescription}</Text>
             </Flex>
             <br /><br />
-            <Column alignItems="center" gap={ 1 }>
-                <div className="bg-light-dark rounded relative overflow-hidden w-100">
+            <Column alignItems="center" gap={1}>
+                <div className="bg-light-dark rounded relative overflow-hidden w-full">
                     <div className="flex justify-center items-center size-full absolute">
-                        <Text center variant="white">{ LocalizeText('navigator.eventinprogress') }</Text>
+                        <Text center variant="white">{LocalizeText('navigator.eventinprogress')}</Text>
                     </div>
                     <Text>&nbsp;</Text>
                 </div>

@@ -15,7 +15,42 @@ const colors = {
     'card-grid-item-active': '#ECECEC',
     'card-grid-item-border': '#B6BEC5',
     'card-grid-item-border-active': '#FFFFFF',
-    'loading': '#393A85'
+    'loading': '#393A85',
+    'muted': 'rgba(182, 190, 197)',
+    'blue': '#0d6efd',
+    'indigo': '#6610f2',
+    'pink': '#d63384',
+    'red': '#a81a12',
+    'orange': '#fd7e14',
+    'yellow': '#ffc107',
+    'green': '#00800b',
+    'teal': '#20c997',
+    'cyan': '#0dcaf0',
+    'gray': '#6c757d',
+    'gray-dark': '#343a40',
+    'gray-100': '#f8f9fa',
+    'gray-200': '#e9ecef',
+    'gray-300': '#dee2e6',
+    'gray-400': '#ced4da',
+    'gray-500': '#adb5bd',
+    'gray-600': '#6c757d',
+    'gray-700': '#495057',
+    'gray-800': '#343a40',
+    'gray-900': '#212529',
+    'primary': '#1E7295',
+    'secondary': '#185D79',
+    'success': '#00800b',
+    'info': '#0dcaf0',
+    'warning': '#ffc107',
+    'danger': '#a81a12',
+    'light': '#DFDFDF',
+    'dark': 'rgba(28, 28, 32, .9803921569)',
+    'light-dark': '#343a40',
+    'white': '#fff',
+    'black': '#000',
+    'muted': '#B6BEC5',
+    'purple': '#6f42c1',
+    'gainsboro': '#d9d9d9'
 };
 
 const boxShadow = {
@@ -25,10 +60,22 @@ const boxShadow = {
 
 
 module.exports = {
+
+
     theme: {
         extend: {
+            fontSize: {
+                base: '0.9rem',
+                sm: '0.7875rem',
+                xl: '1.25rem',
+                '2xl': '1.563rem',
+                '3xl': '1.953rem',
+                '4xl': '2.441rem',
+                '5xl': '3.052rem',
+              },
+          
             fontFamily: {
-                sans: [ 'Ubuntu', 'sans-serif' ],
+                sans: [ 'Ubuntu'],
             },
             colors: generateShades(colors),
             boxShadow,
@@ -43,6 +90,11 @@ module.exports = {
                 'inventory-w': '528px',
                 'inventory-h': '320px'
             },
+            borderRadius: {
+               
+                '3': '0.3rem',
+             
+              },
             zIndex: {
                 'toolbar': '',
                 'loading': '100',
@@ -65,12 +117,43 @@ module.exports = {
         'grid-cols-9',
         'grid-cols-10',
         'grid-cols-11',
-        'grid-cols-12'
+        'grid-cols-12',
+        'col-span-1',
+        'col-span-2',
+        'col-span-3',
+        'col-span-4',
+        'col-span-5',
+        'col-span-6',
+        'col-span-7',
+        'col-span-8',
+        'col-span-9',
+        'col-span-10',
+        'col-span-11',
+        'col-span-12', 
+        'grid-rows-1',
+        'grid-rows-2',
+        'grid-rows-3',
+        'grid-rows-4',
+        'grid-rows-5',
+        'grid-rows-6',
+        'grid-rows-7',
+        'grid-rows-8',
+        'grid-rows-9',
+        'grid-rows-10',
+        'grid-rows-11',
+        'grid-rows-12',
+        'justify-end',
+        'items-end'
     ],
     darkMode: 'class',
+    variants: {
+        extend: {
+          divideColor: ['group-hover'],
+          backgroundColor: ['group-focus'],
+        }
+      },
     plugins: [
         require('@tailwindcss/forms'),
-        require('@headlessui/tailwindcss')({ prefix: 'ui' })
     ],
     content: [
         './index.html',

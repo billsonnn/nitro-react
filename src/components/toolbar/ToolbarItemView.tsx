@@ -9,13 +9,13 @@ export const ToolbarItemView = forwardRef<HTMLDivElement, PropsWithChildren<{
 
     return (
         <div
-            ref={ ref }
-            className={ classNames(
-                'cursor-pointer',
-                `nitro-icon icon-${ icon }`,
+            ref={ref}
+            className={classNames(
+                'cursor-pointer relative',
+                `nitro-icon icon-${icon}`,
                 className
-            ) }
-            { ...rest } />
+            )}
+            {...rest} />
     );
 });
 

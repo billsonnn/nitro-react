@@ -10,8 +10,8 @@ import { FloorplanEditor } from '../common/FloorplanEditor';
 export const FloorplanCanvasView: FC<ColumnProps> = props =>
 {
     const { gap = 1, children = null, ...rest } = props;
-    const [ occupiedTilesReceived , setOccupiedTilesReceived ] = useState(false);
-    const [ entryTileReceived, setEntryTileReceived ] = useState(false);
+    const [occupiedTilesReceived, setOccupiedTilesReceived] = useState(false);
+    const [entryTileReceived, setEntryTileReceived] = useState(false);
     const { originalFloorplanSettings = null, setOriginalFloorplanSettings = null, setVisualizationSettings = null } = useFloorplanEditorContext();
     const elementRef = useRef<HTMLDivElement>(null);
 
@@ -31,7 +31,7 @@ export const FloorplanCanvasView: FC<ColumnProps> = props =>
         });
 
         setOccupiedTilesReceived(true);
-        
+
         elementRef.current.scrollTo((FloorplanEditor.instance.renderer.canvas.width / 3), 0);
     });
 
@@ -43,7 +43,7 @@ export const FloorplanCanvasView: FC<ColumnProps> = props =>
         {
             const newValue = { ...prevValue };
 
-            newValue.entryPoint = [ parser.x, parser.y ];
+            newValue.entryPoint = [parser.x, parser.y];
             newValue.entryPointDir = parser.direction;
 
             return newValue;
@@ -57,7 +57,7 @@ export const FloorplanCanvasView: FC<ColumnProps> = props =>
 
             return newValue;
         });
-        
+
         FloorplanEditor.instance.doorLocation = { x: parser.x, y: parser.y };
 
         setEntryTileReceived(true);
@@ -67,9 +67,9 @@ export const FloorplanCanvasView: FC<ColumnProps> = props =>
     {
         const element = elementRef.current;
 
-        if(!element) return;
+        if (!element) return;
 
-        switch(scrollDirection)
+        switch (scrollDirection)
         {
             case 'up':
                 element.scrollBy({ top: -10 });
@@ -89,8 +89,8 @@ export const FloorplanCanvasView: FC<ColumnProps> = props =>
     const onPointerEvent = (event: PointerEvent) =>
     {
         event.preventDefault();
-        
-        switch(event.type)
+
+        switch (event.type)
         {
             case 'pointerout':
             case 'pointerup':
@@ -121,14 +121,14 @@ export const FloorplanCanvasView: FC<ColumnProps> = props =>
                 }
             });
         }
-    }, [ originalFloorplanSettings.thicknessFloor, originalFloorplanSettings.thicknessWall, originalFloorplanSettings.wallHeight, setVisualizationSettings ]);
+    }, [originalFloorplanSettings.thicknessFloor, originalFloorplanSettings.thicknessWall, originalFloorplanSettings.wallHeight, setVisualizationSettings]);
 
     useEffect(() =>
     {
-        if(!entryTileReceived || !occupiedTilesReceived) return;
-        
+        if (!entryTileReceived || !occupiedTilesReceived) return;
+
         FloorplanEditor.instance.renderTiles();
-    }, [ entryTileReceived, occupiedTilesReceived ]);
+    }, [entryTileReceived, occupiedTilesReceived]);
 
     useEffect(() =>
     {
@@ -137,8 +137,8 @@ export const FloorplanCanvasView: FC<ColumnProps> = props =>
 
         const currentElement = elementRef.current;
 
-        if(!currentElement) return;
-                
+        if (!currentElement) return;
+
         currentElement.appendChild(FloorplanEditor.instance.renderer.canvas);
 
         currentElement.addEventListener('pointerup', onPointerEvent);
@@ -151,7 +151,7 @@ export const FloorplanCanvasView: FC<ColumnProps> = props =>
 
         return () => 
         {
-            if(currentElement)
+            if (currentElement)
             {
                 currentElement.removeEventListener('pointerup', onPointerEvent);
 
@@ -167,33 +167,33 @@ export const FloorplanCanvasView: FC<ColumnProps> = props =>
     const isSmallScreen = () => window.innerWidth < 768;
 
     return (
-        <Column gap={ gap } { ...rest }>
-            <Grid gap={ 1 } overflow="hidden">
-                <Column center className="d-md-none" size={ 1 }>
-                    <Button className="d-md-none" onClick={ event => onClickArrowButton('left') }>
+        <Column gap={gap} {...rest}>
+            <Grid gap={1} overflow="hidden">
+                <Column center className="hidden" size={1}>
+                    <Button className="hidden" onClick={event => onClickArrowButton('left')}>
                         <FaArrowLeft className="fa-icon" />
                     </Button>
                 </Column>
-                <Column gap={ 1 } overflow="hidden" size={ isSmallScreen() ? 10: 12 }>
-                    <div className="flex d-md-none justify-content-enter" >
-                        <Button shrink onClick={ event => onClickArrowButton('up') }>
+                <Column gap={1} overflow="hidden" size={isSmallScreen() ? 10 : 12}>
+                    <div className="flex hidden justify-content-enter" >
+                        <Button shrink onClick={event => onClickArrowButton('up')}>
                             <FaArrowUp className="fa-icon" />
                         </Button>
                     </div>
-                    <div ref={ elementRef } className="overflow-auto" />
-                    <div className="flex d-md-none justify-center">
-                        <Button shrink onClick={ event => onClickArrowButton('down') }>
+                    <div ref={elementRef} className="overflow-auto" />
+                    <div className="flex hidden justify-center">
+                        <Button shrink onClick={event => onClickArrowButton('down')}>
                             <FaArrowDown className="fa-icon" />
                         </Button>
                     </div>
                 </Column>
-                <Column center className="d-md-none" size={ 1 }>
-                    <Button className="d-md-none" onClick={ event => onClickArrowButton('right') }>
+                <Column center className="hidden" size={1}>
+                    <Button className="hidden" onClick={event => onClickArrowButton('right')}>
                         <FaArrowRight className="fa-icon" />
                     </Button>
                 </Column>
             </Grid>
-            { children }
+            {children}
         </Column>
     );
 }

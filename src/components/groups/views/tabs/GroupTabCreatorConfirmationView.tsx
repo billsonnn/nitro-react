@@ -17,7 +17,7 @@ export const GroupTabCreatorConfirmationView: FC<GroupTabCreatorConfirmationView
 
     const getCompleteBadgeCode = () =>
     {
-        if(!groupData || !groupData.groupBadgeParts || !groupData.groupBadgeParts.length) return '';
+        if (!groupData || !groupData.groupBadgeParts || !groupData.groupBadgeParts.length) return '';
 
         let badgeCode = '';
 
@@ -25,41 +25,41 @@ export const GroupTabCreatorConfirmationView: FC<GroupTabCreatorConfirmationView
 
         return badgeCode;
     }
-    
+
     const getGroupColor = (colorIndex: number) =>
     {
-        if(colorIndex === 0) return groupCustomize.groupColorsA.find(c => c.id === groupData.groupColors[colorIndex]).color;
+        if (colorIndex === 0) return groupCustomize.groupColorsA.find(c => c.id === groupData.groupColors[colorIndex]).color;
 
         return groupCustomize.groupColorsB.find(c => c.id === groupData.groupColors[colorIndex]).color;
     }
 
-    if(!groupData) return null;
+    if (!groupData) return null;
 
     return (
-        <Grid gap={ 1 } overflow="hidden">
-            <Column size={ 3 }>
-                <Column center className="bg-muted rounded p-1" gap={ 2 }>
-                    <Text bold center>{ LocalizeText('group.create.confirm.guildbadge') }</Text>
-                    <LayoutBadgeImageView badgeCode={ getCompleteBadgeCode() } isGroup={ true } />
+        <Grid gap={1} overflow="hidden">
+            <Column size={3}>
+                <Column center className="bg-muted rounded p-1" gap={2}>
+                    <Text bold center>{LocalizeText('group.create.confirm.guildbadge')}</Text>
+                    <LayoutBadgeImageView badgeCode={getCompleteBadgeCode()} isGroup={true} />
                 </Column>
-                <Column center className="bg-muted rounded p-1" gap={ 2 }>
-                    <Text bold center>{ LocalizeText('group.edit.color.guild.color') }</Text>
+                <Column center className="bg-muted rounded p-1" gap={2}>
+                    <Text bold center>{LocalizeText('group.edit.color.guild.color')}</Text>
                     <Flex className="rounded border" overflow="hidden">
-                        <div className="group-color-swatch" style={ { backgroundColor: '#' + getGroupColor(0) } } />
-                        <div className="group-color-swatch" style={ { backgroundColor: '#' + getGroupColor(1) } } />
+                        <div className="w-[30px] h-[40px]" style={{ backgroundColor: '#' + getGroupColor(0) }} />
+                        <div className="w-[30px] h-[40px]" style={{ backgroundColor: '#' + getGroupColor(1) }} />
                     </Flex>
                 </Column>
             </Column>
-            <Column justifyContent="between" size={ 9 }>
+            <Column justifyContent="between" size={9}>
                 <div className="flex flex-col">
                     <div className="flex flex-col gap-1">
-                        <Text bold>{ groupData.groupName }</Text>
-                        <Text>{ groupData.groupDescription }</Text>
+                        <Text bold>{groupData.groupName}</Text>
+                        <Text>{groupData.groupDescription}</Text>
                     </div>
-                    <Text overflow="auto">{ LocalizeText('group.create.confirm.info') }</Text>
+                    <Text overflow="auto">{LocalizeText('group.create.confirm.info')}</Text>
                 </div>
                 <Text center className="bg-primary rounded p-1" variant="white">
-                    { LocalizeText('group.create.confirm.buyinfo', [ 'amount' ], [ purchaseCost.toString() ]) }
+                    {LocalizeText('group.create.confirm.buyinfo', ['amount'], [purchaseCost.toString()])}
                 </Text>
             </Column>
         </Grid>

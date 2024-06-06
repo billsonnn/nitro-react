@@ -10,9 +10,9 @@ import { UserContainerView } from './views/UserContainerView';
 
 export const UserProfileView: FC<{}> = props =>
 {
-    const [ userProfile, setUserProfile ] = useState<UserProfileParser>(null);
-    const [ userBadges, setUserBadges ] = useState<string[]>([]);
-    const [ userRelationships, setUserRelationships ] = useState<RelationshipStatusInfoMessageParser>(null);
+    const [userProfile, setUserProfile] = useState<UserProfileParser>(null);
+    const [userBadges, setUserBadges] = useState<string[]>([]);
+    const [userRelationships, setUserRelationships] = useState<RelationshipStatusInfoMessageParser>(null);
 
     const onClose = () =>
     {
@@ -23,7 +23,7 @@ export const UserProfileView: FC<{}> = props =>
 
     const onLeaveGroup = () =>
     {
-        if(!userProfile || (userProfile.id !== GetSessionDataManager().userId)) return;
+        if (!userProfile || (userProfile.id !== GetSessionDataManager().userId)) return;
 
         GetUserProfile(userProfile.id);
     }
@@ -32,7 +32,7 @@ export const UserProfileView: FC<{}> = props =>
     {
         const parser = event.getParser();
 
-        if(!userProfile || (parser.userId !== userProfile.id)) return;
+        if (!userProfile || (parser.userId !== userProfile.id)) return;
 
         setUserBadges(parser.badges);
     });
@@ -41,7 +41,7 @@ export const UserProfileView: FC<{}> = props =>
     {
         const parser = event.getParser();
 
-        if(!userProfile || (parser.userId !== userProfile.id)) return;
+        if (!userProfile || (parser.userId !== userProfile.id)) return;
 
         setUserRelationships(parser);
     });
@@ -54,12 +54,12 @@ export const UserProfileView: FC<{}> = props =>
 
         setUserProfile(prevValue =>
         {
-            if(prevValue && prevValue.id) isSameProfile = (prevValue.id === parser.id);
+            if (prevValue && prevValue.id) isSameProfile = (prevValue.id === parser.id);
 
             return parser;
         });
 
-        if(!isSameProfile)
+        if (!isSameProfile)
         {
             setUserBadges([]);
             setUserRelationships(null);
@@ -73,49 +73,49 @@ export const UserProfileView: FC<{}> = props =>
     {
         const parser = event.getParser();
 
-        if(parser.userId != userProfile?.id) return;
+        if (parser.userId != userProfile?.id) return;
 
         GetUserProfile(parser.userId);
     });
 
     useNitroEvent<RoomEngineObjectEvent>(RoomEngineObjectEvent.SELECTED, event =>
     {
-        if(!userProfile) return;
+        if (!userProfile) return;
 
-        if(event.category !== RoomObjectCategory.UNIT) return;
+        if (event.category !== RoomObjectCategory.UNIT) return;
 
         const userData = GetRoomSession().userDataManager.getUserDataByIndex(event.objectId);
 
-        if(userData.type !== RoomObjectType.USER) return;
+        if (userData.type !== RoomObjectType.USER) return;
 
         GetUserProfile(userData.webID);
     });
 
-    if(!userProfile) return null;
+    if (!userProfile) return null;
 
     return (
-        <NitroCardView className="user-profile" theme="primary-slim" uniqueKey="nitro-user-profile">
-            <NitroCardHeaderView headerText={ LocalizeText('extendedprofile.caption') } onCloseClick={ onClose } />
+        <NitroCardView className="w-[470px] h-[460px]" theme="primary-slim" uniqueKey="nitro-user-profile">
+            <NitroCardHeaderView headerText={LocalizeText('extendedprofile.caption')} onCloseClick={onClose} />
             <NitroCardContentView overflow="hidden">
-                <Grid fullHeight={ false } gap={ 2 }>
-                    <Column className="user-container pe-2" gap={ 1 } size={ 7 }>
-                        <UserContainerView userProfile={ userProfile } />
-                        <Grid fullHeight className="bg-muted rounded px-2 py-1" columnCount={ 5 }>
-                            <BadgesContainerView center fullWidth badges={ userBadges } />
+                <Grid fullHeight={false} gap={2}>
+                    <Column className="border-r border-r-gray pe-2" gap={1} size={7}>
+                        <UserContainerView userProfile={userProfile} />
+                        <Grid fullHeight className="bg-muted rounded px-2 py-1" columnCount={5}>
+                            <BadgesContainerView center fullWidth badges={userBadges} />
                         </Grid>
                     </Column>
-                    <Column size={ 5 }>
-                        { userRelationships &&
-                            <FriendsContainerView friendsCount={ userProfile.friendsCount } relationships={ userRelationships } /> }
+                    <Column size={5}>
+                        {userRelationships &&
+                            <FriendsContainerView friendsCount={userProfile.friendsCount} relationships={userRelationships} />}
                     </Column>
                 </Grid>
-                <Flex alignItems="center" className="rooms-button-container px-2 py-1">
-                    <Flex alignItems="center" gap={ 1 } onClick={ event => CreateLinkEvent(`navigator/search/hotel_view/owner:${ userProfile.username }`) }>
-                        <i className="icon icon-rooms" />
-                        <Text bold pointer underline>{ LocalizeText('extendedprofile.rooms') }</Text>
+                <Flex alignItems="center" className=" border-t border-t-gray border-b border-b-gray  px-2 py-1">
+                    <Flex alignItems="center" gap={1} onClick={event => CreateLinkEvent(`navigator/search/hotel_view/owner:${userProfile.username}`)}>
+                        <i className="nitro-icon icon-rooms" />
+                        <Text bold pointer underline>{LocalizeText('extendedprofile.rooms')}</Text>
                     </Flex>
                 </Flex>
-                <GroupsContainerView fullWidth groups={ userProfile.groups } itsMe={ userProfile.id === GetSessionDataManager().userId } onLeaveGroup={ onLeaveGroup } />
+                <GroupsContainerView fullWidth groups={userProfile.groups} itsMe={userProfile.id === GetSessionDataManager().userId} onLeaveGroup={onLeaveGroup} />
             </NitroCardContentView>
         </NitroCardView>
     )

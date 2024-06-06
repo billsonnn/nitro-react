@@ -16,23 +16,23 @@ export const LayoutLimitedEditionCompletePlateView: FC<LayoutLimitedEditionCompl
 
     const getClassNames = useMemo(() =>
     {
-        const newClassNames: string[] = [ 'unique-complete-plate' ];
+        const newClassNames: string[] = ['unique-complete-plate'];
 
-        if(classNames.length) newClassNames.push(...classNames);
+        if (classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
-    }, [ classNames ]);
+    }, [classNames]);
 
     return (
-        <Base classNames={ getClassNames } { ...rest }>
-            <Column className="plate-container" gap={ 0 }>
-                <div className="flex justify-content-between items-center">
-                    { LocalizeText('unique.items.left') }
-                    <div><LayoutLimitedEditionStyledNumberView value={ uniqueLimitedItemsLeft } /></div>
+        <Base classNames={getClassNames} {...rest}>
+            <Column className="plate-container" gap={0}>
+                <div className="flex justify-between items-center">
+                    {LocalizeText('unique.items.left')}
+                    <div><LayoutLimitedEditionStyledNumberView value={uniqueLimitedItemsLeft} /></div>
                 </div>
-                <div className="flex justify-content-between items-center">
-                    { LocalizeText('unique.items.number.sold') }
-                    <div><LayoutLimitedEditionStyledNumberView value={ uniqueLimitedSeriesSize } /></div>
+                <div className="flex justify-between items-center">
+                    {LocalizeText('unique.items.number.sold')}
+                    <div><LayoutLimitedEditionStyledNumberView value={uniqueLimitedSeriesSize} /></div>
                 </div>
             </Column>
         </Base>

@@ -15,8 +15,8 @@ interface ChooserWidgetViewProps
 export const ChooserWidgetView: FC<ChooserWidgetViewProps> = props =>
 {
     const { title = null, items = [], selectItem = null, onClose = null } = props;
-    const [ selectedItem, setSelectedItem ] = useState<RoomObjectItem>(null);
-    const [ searchValue, setSearchValue ] = useState('');
+    const [selectedItem, setSelectedItem] = useState<RoomObjectItem>(null);
+    const [searchValue, setSearchValue] = useState('');
     const canSeeId = GetSessionDataManager().isModerator;
 
     const filteredItems = useMemo(() =>
@@ -24,28 +24,28 @@ export const ChooserWidgetView: FC<ChooserWidgetViewProps> = props =>
         const value = searchValue.toLocaleLowerCase();
 
         return items.filter(item => item.name?.toLocaleLowerCase().includes(value));
-    }, [ items, searchValue ]);
+    }, [items, searchValue]);
 
     useEffect(() =>
     {
-        if(!selectedItem) return;
+        if (!selectedItem) return;
 
         selectItem(selectedItem);
-    }, [ selectedItem, selectItem ]);
+    }, [selectedItem, selectItem]);
 
     return (
         <NitroCardView className="nitro-chooser-widget" theme="primary-slim">
-            <NitroCardHeaderView headerText={ title } onCloseClick={ onClose } />
-            <NitroCardContentView gap={ 2 } overflow="hidden">
-                <input className="form-control form-control-sm" placeholder={ LocalizeText('generic.search') } type="text" value={ searchValue } onChange={ event => setSearchValue(event.target.value) } />
-                <InfiniteScroll rowRender={ row =>
+            <NitroCardHeaderView headerText={title} onCloseClick={onClose} />
+            <NitroCardContentView gap={2} overflow="hidden">
+                <NitroInput placeholder={LocalizeText('generic.search')} type="text" value={searchValue} onChange={event => setSearchValue(event.target.value)} />
+                <InfiniteScroll rowRender={row =>
                 {
                     return (
-                        <Flex pointer alignItems="center" className={ classNames('rounded p-1', (selectedItem === row) && 'bg-muted') } onClick={ event => setSelectedItem(row) }>
-                            <Text truncate>{ row.name } { canSeeId && (' - ' + row.id) }</Text>
+                        <Flex pointer alignItems="center" className={classNames('rounded p-1', (selectedItem === row) && 'bg-muted')} onClick={event => setSelectedItem(row)}>
+                            <Text truncate>{row.name} {canSeeId && (' - ' + row.id)}</Text>
                         </Flex>
                     );
-                } } rows={ filteredItems } />
+                }} rows={filteredItems} />
             </NitroCardContentView>
         </NitroCardView>
     );

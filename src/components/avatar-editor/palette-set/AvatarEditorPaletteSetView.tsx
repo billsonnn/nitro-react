@@ -10,27 +10,27 @@ export const AvatarEditorPaletteSetView: FC<{
     paletteIndex: number;
     columnCount: number;
 }> = props =>
-{
-    const { category = null, paletteIndex = -1, columnCount = 3 } = props;
-    const { selectedColorParts = null, selectEditorColor = null } = useAvatarEditor();
-
-    const isPartColorSelected = (partColor: IPartColor) =>
     {
-        if(!category || !category.setType || !selectedColorParts || !selectedColorParts[category.setType] || !selectedColorParts[category.setType][paletteIndex]) return false;
+        const { category = null, paletteIndex = -1, columnCount = 3 } = props;
+        const { selectedColorParts = null, selectEditorColor = null } = useAvatarEditor();
 
-        const selectedColorPart = selectedColorParts[category.setType][paletteIndex];
-
-        return (selectedColorPart.id === partColor.id);
-    }
-
-    return (
-        <InfiniteGrid<IPartColor> columnCount={ columnCount } itemRender={ (item: IPartColor) =>
+        const isPartColorSelected = (partColor: IPartColor) =>
         {
-            if(!item) return null;
+            if (!category || !category.setType || !selectedColorParts || !selectedColorParts[category.setType] || !selectedColorParts[category.setType][paletteIndex]) return false;
 
-            return (
-                <AvatarEditorPaletteSetItem isSelected={ isPartColorSelected(item) } partColor={ item } setType={ category.setType } width={ `calc(100% / ${ columnCount }` } onClick={ event => selectEditorColor(category.setType, paletteIndex, item.id) } />
-            )
-        } } items={ category.colorItems[paletteIndex] } overscan={ columnCount } />
-    );
-}
+            const selectedColorPart = selectedColorParts[category.setType][paletteIndex];
+
+            return (selectedColorPart.id === partColor.id);
+        }
+
+        return (
+            <InfiniteGrid<IPartColor> columnCount={columnCount} itemRender={(item: IPartColor) =>
+            {
+                if (!item) return null;
+
+                return (
+                    <AvatarEditorPaletteSetItem isSelected={isPartColorSelected(item)} partColor={item} setType={category.setType} width={`calc(100% / ${columnCount}`} onClick={event => selectEditorColor(category.setType, paletteIndex, item.id)} />
+                )
+            }} items={category.colorItems[paletteIndex]} overscan={columnCount} />
+        );
+    }
