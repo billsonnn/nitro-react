@@ -30,7 +30,6 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
 
     const getColorMatrixEffects = useMemo(() =>
     {
-        console.log(availableEffects + "hurentzopcherxd");
         return availableEffects.filter(effect => effect.colorMatrix);
     }, [availableEffects]);
 
@@ -162,7 +161,6 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
         (async () =>
         {
             const thumbnails: CameraPictureThumbnail[] = [];
-            console.log("fotzenkuchen1255454")
 
             for await (const effect of availableEffects)
             {
@@ -182,7 +180,6 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
             const imageUrl = await GetRoomCameraWidgetManager().applyEffects(picture.texture, selectedEffects, isZoomed);
 
 
-            console.log(imageUrl)
 
             setCurrentPictureUrl(imageUrl.src);
         })();

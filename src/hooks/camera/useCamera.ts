@@ -14,13 +14,11 @@ const useCameraState = () =>
 
     useNitroEvent<RoomCameraWidgetManagerEvent>(RoomCameraWidgetManagerEvent.INITIALIZED, event =>
     {
-        console.log("fickenm1212313311313")
         setAvailableEffects(Array.from(GetRoomCameraWidgetManager().effects.values()));
     });
 
     useMessageEvent<InitCameraMessageEvent>(InitCameraMessageEvent, event =>
     {
-        console.log("roomgagasadhisadhudshjjdhsakdsajsdadsa")
 
         const parser = event.getParser();
 

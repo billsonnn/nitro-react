@@ -17,7 +17,6 @@ export const CameraWidgetView: FC<{}> = props =>
     const { availableEffects = [], selectedPictureIndex = -1, cameraRoll = [], setCameraRoll = null, myLevel = 0, price = { credits: 0, duckets: 0, publishDucketPrice: 0 } } = useCamera();
 
 
-    console.log(availableEffects + 'bastardxasasasasficken');
     const processAction = (type: string) =>
     {
         switch (type)

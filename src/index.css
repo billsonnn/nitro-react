@@ -25,59 +25,51 @@ body {
 }
 
 ::-webkit-scrollbar {
-    width: 0.25rem;
-}
-
-::-webkit-scrollbar-track {
-    @apply rounded-md;
-}
-
-::-webkit-scrollbar-thumb {
-    @apply rounded-md;
+    width: .5rem
 }
 
 ::-webkit-scrollbar:horizontal {
-    @apply h-1;
+    height: .5rem
 }
 
 ::-webkit-scrollbar:not(:horizontal) {
-    @apply h-1;
+    width: .5rem
 }
 
 ::-webkit-scrollbar-track:horizontal {
-    border-bottom: 0.25rem solid rgba(0, 0, 0, 0.1);
+    border-bottom: .25rem solid rgba(0, 0, 0, .1)
 }
 
 ::-webkit-scrollbar-track:not(:horizontal) {
-    border-right: 0.25rem solid rgba(0, 0, 0, 0.1);
+    border-right: .25rem solid rgba(0, 0, 0, .1)
 }
 
 ::-webkit-scrollbar-thumb:horizontal {
-    border-bottom: 0.25rem solid rgba(30, 114, 149, 0.4);
+    border-bottom: .25rem solid rgba(30, 114, 149, .4)
 }
 
 ::-webkit-scrollbar-thumb:horizontal:hover {
-    border-bottom: 0.25rem solid rgba(30, 114, 149, 0.8);
+    border-bottom: .25rem solid rgba(30, 114, 149, .8)
 }
 
 ::-webkit-scrollbar-thumb:horizontal:active {
-    border-bottom: 0.25rem solid #185d79;
+    border-bottom: .25rem solid #185D79
 }
 
 ::-webkit-scrollbar-thumb:not(:horizontal) {
-    border-right: 0.25rem solid rgba(30, 114, 149, 0.4);
+    border-right: .25rem solid rgba(30, 114, 149, .4)
 }
 
 ::-webkit-scrollbar-thumb:not(:horizontal):hover {
-    border-right: 0.25rem solid rgba(30, 114, 149, 0.8);
+    border-right: .25rem solid rgba(30, 114, 149, .8)
 }
 
 ::-webkit-scrollbar-thumb:not(:horizontal):active {
-    border-right: 0.25rem solid #185d79;
+    border-right: .25rem solid #185D79
 }
 
 ::-webkit-scrollbar-corner {
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, .1)
 }
 
 @layer components {
