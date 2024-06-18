@@ -23,4 +23,4 @@ export const NotificationClubGiftBubbleView: FC<NotificationClubGiftBubbleViewPr
             </div>
         </LayoutNotificationBubbleView>
     );
-}
+};

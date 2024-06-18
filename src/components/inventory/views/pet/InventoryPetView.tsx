@@ -19,7 +19,7 @@ export const InventoryPetView: FC<{
 
     useEffect(() =>
     {
-        if (!selectedPet || !roomPreviewer) return;
+        if(!selectedPet || !roomPreviewer) return;
 
         const petData = selectedPet.petData;
         const roomEngine = GetRoomEngine();
@@ -40,14 +40,14 @@ export const InventoryPetView: FC<{
 
     useEffect(() =>
     {
-        if (!selectedPet || !isUnseen(UnseenItemCategory.PET, selectedPet.petData.id)) return;
+        if(!selectedPet || !isUnseen(UnseenItemCategory.PET, selectedPet.petData.id)) return;
 
         removeUnseen(UnseenItemCategory.PET, selectedPet.petData.id);
     }, [ selectedPet, isUnseen, removeUnseen ]);
 
     useEffect(() =>
     {
-        if (!isVisible) return;
+        if(!isVisible) return;
 
         const id = activate();
 
@@ -61,7 +61,7 @@ export const InventoryPetView: FC<{
         return () => setIsVisible(false);
     }, []);
 
-    if (!petItems || !petItems.length) return <InventoryCategoryEmptyView desc={ LocalizeText('inventory.empty.pets.desc') } title={ LocalizeText('inventory.empty.pets.title') } />;
+    if(!petItems || !petItems.length) return <InventoryCategoryEmptyView desc={ LocalizeText('inventory.empty.pets.desc') } title={ LocalizeText('inventory.empty.pets.title') } />;
 
     return (
         <div className="grid h-full grid-cols-12 gap-2">
@@ -86,4 +86,4 @@ export const InventoryPetView: FC<{
             </div>
         </div>
     );
-}
+};

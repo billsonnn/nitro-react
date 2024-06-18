@@ -46,4 +46,4 @@ export const CatalogLayouGuildForumView: FC<CatalogLayoutProps> = props =>
             </Grid>
         </>
     );
-}
+};

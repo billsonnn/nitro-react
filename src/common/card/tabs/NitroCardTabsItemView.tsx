@@ -19,7 +19,7 @@ export const NitroCardTabsItemView: FC<NitroCardTabsItemViewProps> = props =>
 
         //if (isActive) newClassNames.push('bg-[#dfdfdf] border-b-[1px_solid_black]');
 
-        if (classNames.length) newClassNames.push(...classNames);
+        if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
     }, [ isActive, classNames ]);
@@ -33,4 +33,4 @@ export const NitroCardTabsItemView: FC<NitroCardTabsItemViewProps> = props =>
                 <LayoutItemCountView count={ count } /> }
         </Flex>
     );
-}
+};

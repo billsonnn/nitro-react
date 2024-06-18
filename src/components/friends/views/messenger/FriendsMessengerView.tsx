@@ -21,19 +21,19 @@ export const FriendsMessengerView: FC<{}> = props =>
 
     const send = () =>
     {
-        if (!activeThread || !messageText.length) return;
+        if(!activeThread || !messageText.length) return;
 
         sendMessage(activeThread, GetSessionDataManager().userId, messageText);
 
         setMessageText('');
-    }
+    };
 
     const onKeyDown = (event: KeyboardEvent<HTMLInputElement>) =>
     {
-        if (event.key !== 'Enter') return;
+        if(event.key !== 'Enter') return;
 
         send();
-    }
+    };
 
     useEffect(() =>
     {
@@ -42,16 +42,16 @@ export const FriendsMessengerView: FC<{}> = props =>
             {
                 const parts = url.split('/');
 
-                if (parts.length === 2)
+                if(parts.length === 2)
                 {
-                    if (parts[1] === 'open')
+                    if(parts[1] === 'open')
                     {
                         setIsVisible(true);
 
                         return;
                     }
 
-                    if (parts[1] === 'toggle')
+                    if(parts[1] === 'toggle')
                     {
                         setIsVisible(prevValue => !prevValue);
 
@@ -60,7 +60,7 @@ export const FriendsMessengerView: FC<{}> = props =>
 
                     const thread = getMessageThread(parseInt(parts[1]));
 
-                    if (!thread) return;
+                    if(!thread) return;
 
                     setActiveThreadId(thread.threadId);
                     setIsVisible(true);
@@ -76,35 +76,35 @@ export const FriendsMessengerView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        if (!isVisible || !activeThread) return;
+        if(!isVisible || !activeThread) return;
 
         messagesBox.current.scrollTop = messagesBox.current.scrollHeight;
     }, [ isVisible, activeThread ]);
 
     useEffect(() =>
     {
-        if (isVisible && !activeThread)
+        if(isVisible && !activeThread)
         {
-            if (lastThreadId > 0)
+            if(lastThreadId > 0)
             {
                 setActiveThreadId(lastThreadId);
             }
             else
             {
-                if (visibleThreads.length > 0) setActiveThreadId(visibleThreads[0].threadId);
+                if(visibleThreads.length > 0) setActiveThreadId(visibleThreads[0].threadId);
             }
 
             return;
         }
 
-        if (!isVisible && activeThread)
+        if(!isVisible && activeThread)
         {
             setLastThreadId(activeThread.threadId);
             setActiveThreadId(-1);
         }
     }, [ isVisible, activeThread, lastThreadId, visibleThreads, setActiveThreadId ]);
 
-    if (!isVisible) return null;
+    if(!isVisible) return null;
 
     return (
         <NitroCardView className="nitro-friends-messenger" theme="primary-slim" uniqueKey="nitro-friends-messenger">
@@ -175,4 +175,4 @@ export const FriendsMessengerView: FC<{}> = props =>
             </NitroCardContentView>
         </NitroCardView>
     );
-}
+};

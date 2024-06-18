@@ -56,4 +56,4 @@ export const LayoutRoomObjectImageView: FC<LayoutRoomObjectImageViewProps> = pro
     if(!imageElement) return null;
 
     return <Base classNames={ [ 'furni-image' ] } style={ getStyle } { ...rest } />;
-}
+};

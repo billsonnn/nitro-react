@@ -20,10 +20,10 @@ export const GroupTabColorsView: FC<GroupTabColorsViewProps> = props =>
 
     const getGroupColor = (colorIndex: number) =>
     {
-        if (colorIndex === 0) return groupCustomize.groupColorsA.find(color => (color.id === colors[colorIndex])).color;
+        if(colorIndex === 0) return groupCustomize.groupColorsA.find(color => (color.id === colors[colorIndex])).color;
 
         return groupCustomize.groupColorsB.find(color => (color.id === colors[colorIndex])).color;
-    }
+    };
 
     const selectColor = (colorIndex: number, colorId: number) =>
     {
@@ -35,15 +35,15 @@ export const GroupTabColorsView: FC<GroupTabColorsViewProps> = props =>
 
             return newColors;
         });
-    }
+    };
 
     const saveColors = useCallback(() =>
     {
-        if (!groupData || !colors || !colors.length) return false;
+        if(!groupData || !colors || !colors.length) return false;
 
-        if (groupData.groupColors === colors) return true;
+        if(groupData.groupColors === colors) return true;
 
-        if (groupData.groupId <= 0)
+        if(groupData.groupId <= 0)
         {
             setGroupData(prevValue =>
             {
@@ -64,7 +64,7 @@ export const GroupTabColorsView: FC<GroupTabColorsViewProps> = props =>
 
     useEffect(() =>
     {
-        if (!groupCustomize.groupColorsA || !groupCustomize.groupColorsB || groupData.groupColors) return;
+        if(!groupCustomize.groupColorsA || !groupCustomize.groupColorsB || groupData.groupColors) return;
 
         const groupColors = [ groupCustomize.groupColorsA[0].id, groupCustomize.groupColorsB[0].id ];
 
@@ -76,7 +76,7 @@ export const GroupTabColorsView: FC<GroupTabColorsViewProps> = props =>
 
     useEffect(() =>
     {
-        if (groupData.groupId <= 0)
+        if(groupData.groupId <= 0)
         {
             setColors(groupData.groupColors ? [ ...groupData.groupColors ] : null);
 
@@ -93,7 +93,7 @@ export const GroupTabColorsView: FC<GroupTabColorsViewProps> = props =>
         return () => setCloseAction(null);
     }, [ setCloseAction, saveColors ]);
 
-    if (!colors) return null;
+    if(!colors) return null;
 
     return (
         <Grid overflow="hidden">
@@ -110,7 +110,7 @@ export const GroupTabColorsView: FC<GroupTabColorsViewProps> = props =>
                 <AutoGrid columnCount={ 7 } columnMinHeight={ 16 } columnMinWidth={ 16 } gap={ 1 }>
                     { groupData.groupColors && groupCustomize.groupColorsA && groupCustomize.groupColorsA.map((item, index) =>
                     {
-                        return <div key={ index } className={ classNames('relative rounded-[.25rem] w-[16px] h-[16px] bg-[#fff] border-[2px] border-[solid] border-[#fff] [box-shadow:inset_3px_3px_#0000001a] [box-shadow:inset_2px_2px_#0003] cursor-pointer', ((groupData.groupColors[0] === item.id) && 'bg-primary [box-shadow:none]')) } style={ { backgroundColor: '#' + item.color } } onClick={ () => selectColor(0, item.id) }></div>
+                        return <div key={ index } className={ classNames('relative rounded-[.25rem] w-[16px] h-[16px] bg-[#fff] border-[2px] border-[solid] border-[#fff] [box-shadow:inset_3px_3px_#0000001a] [box-shadow:inset_2px_2px_#0003] cursor-pointer', ((groupData.groupColors[0] === item.id) && 'bg-primary [box-shadow:none]')) } style={ { backgroundColor: '#' + item.color } } onClick={ () => selectColor(0, item.id) }></div>;
                     }) }
                 </AutoGrid>
             </Column>
@@ -119,7 +119,7 @@ export const GroupTabColorsView: FC<GroupTabColorsViewProps> = props =>
                 <AutoGrid columnCount={ 7 } columnMinHeight={ 16 } columnMinWidth={ 16 } gap={ 1 }>
                     { groupData.groupColors && groupCustomize.groupColorsB && groupCustomize.groupColorsB.map((item, index) =>
                     {
-                        return <div key={ index } className={ classNames('relative rounded-[.25rem] w-[16px] h-[16px] bg-[#fff] border-[2px] border-[solid] border-[#fff] [box-shadow:inset_3px_3px_#0000001a] [box-shadow:inset_2px_2px_#0003] cursor-pointer', ((groupData.groupColors[1] === item.id) && 'bg-primary [box-shadow:none]')) } style={ { backgroundColor: '#' + item.color } } onClick={ () => selectColor(1, item.id) }></div>
+                        return <div key={ index } className={ classNames('relative rounded-[.25rem] w-[16px] h-[16px] bg-[#fff] border-[2px] border-[solid] border-[#fff] [box-shadow:inset_3px_3px_#0000001a] [box-shadow:inset_2px_2px_#0003] cursor-pointer', ((groupData.groupColors[1] === item.id) && 'bg-primary [box-shadow:none]')) } style={ { backgroundColor: '#' + item.color } } onClick={ () => selectColor(1, item.id) }></div>;
                     }) }
                 </AutoGrid>
             </Column>

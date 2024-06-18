@@ -39,7 +39,7 @@ export class AvatarInfoUser implements IAvatarInfo
     public targetRoomControllerLevel: number = 0;
     public isAmbassador: boolean = false;
 
-    constructor(public readonly type: string) 
+    constructor(public readonly type: string)
     {}
 
     public get isOwnUser(): boolean

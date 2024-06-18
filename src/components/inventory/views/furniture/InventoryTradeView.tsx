@@ -27,21 +27,21 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
 
     const canTradeItem = (isWallItem: boolean, spriteId: number, category: number, groupable: boolean, stuffData: IObjectData) =>
     {
-        if (!ownUser || ownUser.accepts || !ownUser.userItems) return false;
+        if(!ownUser || ownUser.accepts || !ownUser.userItems) return false;
 
-        if (ownUser.userItems.length < MAX_ITEMS_TO_TRADE) return true;
+        if(ownUser.userItems.length < MAX_ITEMS_TO_TRADE) return true;
 
-        if (!groupable) return false;
+        if(!groupable) return false;
 
         let type = spriteId.toString();
 
-        if (category === FurniCategory.POSTER)
+        if(category === FurniCategory.POSTER)
         {
             type = ((type + 'poster') + stuffData.getLegacyString());
         }
         else
         {
-            if (category === FurniCategory.GUILD_FURNI)
+            if(category === FurniCategory.GUILD_FURNI)
             {
                 type = getGuildFurniType(spriteId, stuffData);
             }
@@ -52,31 +52,31 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
         }
 
         return !!ownUser.userItems.getValue(type);
-    }
+    };
 
     const attemptItemOffer = (count: number) =>
     {
-        if (!groupItem) return;
+        if(!groupItem) return;
 
         const tradeItems = groupItem.getTradeItems(count);
 
-        if (!tradeItems || !tradeItems.length) return;
+        if(!tradeItems || !tradeItems.length) return;
 
         let coreItem: IFurnitureItem = null;
         const itemIds: number[] = [];
 
-        for (const item of tradeItems)
+        for(const item of tradeItems)
         {
             itemIds.push(item.id);
 
-            if (!coreItem) coreItem = item;
+            if(!coreItem) coreItem = item;
         }
 
         const ownItemCount = ownUser.userItems.length;
 
-        if ((ownItemCount + itemIds.length) <= 1500)
+        if((ownItemCount + itemIds.length) <= 1500)
         {
-            if (!coreItem.isGroupable && (itemIds.length))
+            if(!coreItem.isGroupable && (itemIds.length))
             {
                 SendMessageComposer(new TradingListAddItemComposer(itemIds.pop()));
             }
@@ -84,17 +84,17 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
             {
                 const tradeIds: number[] = [];
 
-                for (const itemId of itemIds)
+                for(const itemId of itemIds)
                 {
-                    if (canTradeItem(coreItem.isWallItem, coreItem.type, coreItem.category, coreItem.isGroupable, coreItem.stuffData))
+                    if(canTradeItem(coreItem.isWallItem, coreItem.type, coreItem.category, coreItem.isGroupable, coreItem.stuffData))
                     {
                         tradeIds.push(itemId);
                     }
                 }
 
-                if (tradeIds.length)
+                if(tradeIds.length)
                 {
-                    if (tradeIds.length === 1)
+                    if(tradeIds.length === 1)
                     {
                         SendMessageComposer(new TradingListAddItemComposer(tradeIds.pop()));
                     }
@@ -109,37 +109,37 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
         {
             simpleAlert(LocalizeText('trading.items.too_many_items.desc'), NotificationAlertType.DEFAULT, null, null, LocalizeText('trading.items.too_many_items.title'));
         }
-    }
+    };
 
     const getLockIcon = (accepts: boolean) =>
     {
-        if (accepts)
+        if(accepts)
         {
-            return <FaLock className="text-success fa-icon" />
+            return <FaLock className="text-success fa-icon" />;
         }
         else
         {
-            return <FaUnlock className="text-danger fa-icon" />
+            return <FaUnlock className="text-danger fa-icon" />;
         }
-    }
+    };
 
     const updateQuantity = (value: number, totalItemCount: number) =>
     {
-        if (isNaN(Number(value)) || Number(value) < 0 || !value) value = 1;
+        if(isNaN(Number(value)) || Number(value) < 0 || !value) value = 1;
 
         value = Math.max(Number(value), 1);
         value = Math.min(Number(value), totalItemCount);
 
-        if (value === quantity) return;
+        if(value === quantity) return;
 
         setQuantity(value);
-    }
+    };
 
     const changeCount = (totalItemCount: number) =>
     {
         updateQuantity(quantity, totalItemCount);
         attemptItemOffer(quantity);
-    }
+    };
 
     useEffect(() =>
     {
@@ -148,7 +148,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
 
     useEffect(() =>
     {
-        if (tradeState !== TradeState.TRADING_STATE_COUNTDOWN) return;
+        if(tradeState !== TradeState.TRADING_STATE_COUNTDOWN) return;
 
         setCountdownTick(3);
 
@@ -158,7 +158,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
             {
                 const newValue = (prevValue - 1);
 
-                if (newValue === 0) clearInterval(interval);
+                if(newValue === 0) clearInterval(interval);
 
                 return newValue;
             });
@@ -169,12 +169,12 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
 
     useEffect(() =>
     {
-        if (countdownTick !== 0) return;
+        if(countdownTick !== 0) return;
 
         setTradeState(TradeState.TRADING_STATE_CONFIRMING);
     }, [ countdownTick, setTradeState ]);
 
-    if ((tradeState === TradeState.TRADING_STATE_READY) || !ownUser || !otherUser) return null;
+    if((tradeState === TradeState.TRADING_STATE_READY) || !ownUser || !otherUser) return null;
 
     return (
         <Grid>
@@ -224,7 +224,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                             {
                                 const item = (ownUser.userItems.getWithIndex(i) || null);
 
-                                if (!item) return <LayoutGridItem key={ i } />;
+                                if(!item) return <LayoutGridItem key={ i } />;
 
                                 return (
                                     <LayoutGridItem key={ i } itemActive={ (ownGroupItem === item) } itemCount={ item.getTotalCount() } itemImage={ item.iconUrl } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setOwnGroupItem(item) } onDoubleClick={ event => removeItem(item) }>
@@ -250,7 +250,7 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
                             {
                                 const item = (otherUser.userItems.getWithIndex(i) || null);
 
-                                if (!item) return <LayoutGridItem key={ i } />;
+                                if(!item) return <LayoutGridItem key={ i } />;
 
                                 return <LayoutGridItem key={ i } itemActive={ (otherGroupItem === item) } itemCount={ item.getTotalCount() } itemImage={ item.iconUrl } itemUniqueNumber={ item.stuffData.uniqueNumber } onClick={ event => setOtherGroupItem(item) } />;
                             }) }
@@ -276,4 +276,4 @@ export const InventoryTradeView: FC<InventoryTradeViewProps> = props =>
             </Column>
         </Grid>
     );
-}
+};

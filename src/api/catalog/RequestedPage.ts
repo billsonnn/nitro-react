@@ -1,4 +1,4 @@
-export class RequestedPage 
+export class RequestedPage
 {
     public static REQUEST_TYPE_NONE: number = 0;
     public static REQUEST_TYPE_ID: number = 1;

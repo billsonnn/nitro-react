@@ -22,7 +22,7 @@ const useUserChooserWidgetState = () =>
             .map(roomObject =>
             {
                 if(roomObject.id < 0) return null;
-                
+
                 const userData = roomSession.userDataManager.getUserDataByIndex(roomObject.id);
 
                 if(!userData) return null;
@@ -30,7 +30,7 @@ const useUserChooserWidgetState = () =>
                 return new RoomObjectItem(userData.roomIndex, RoomObjectCategory.UNIT, userData.name);
             })
             .sort((a, b) => ((a.name < b.name) ? -1 : 1)));
-    }
+    };
 
     useUserAddedEvent(!!items, event =>
     {
@@ -75,6 +75,6 @@ const useUserChooserWidgetState = () =>
     });
 
     return { items, onClose, selectItem, populateChooser };
-}
+};
 
 export const useUserChooserWidget = useUserChooserWidgetState;

@@ -140,7 +140,7 @@ const useInventoryBotsState = () =>
         return () =>
         {
             resetCategory(UnseenItemCategory.BOT);
-        }
+        };
     }, [ isVisible, resetCategory ]);
 
     useEffect(() =>
@@ -153,6 +153,6 @@ const useInventoryBotsState = () =>
     }, [ isVisible, needsUpdate ]);
 
     return { botItems, selectedBot, setSelectedBot, activate, deactivate };
-}
+};
 
 export const useInventoryBots = () => useBetween(useInventoryBotsState);

@@ -26,7 +26,7 @@ export const ObjectLocationView: FC<ObjectLocationViewProps> = props =>
             const objectBounds = GetRoomObjectBounds(roomSession.roomId, objectId, category, 1);
 
             return objectBounds;
-        }
+        };
 
         const updatePosition = () =>
         {
@@ -38,7 +38,7 @@ export const ObjectLocationView: FC<ObjectLocationViewProps> = props =>
                 x: Math.round(((bounds.left + (bounds.width / 2)) - (elementRef.current.offsetWidth / 2))),
                 y: Math.round((bounds.top - elementRef.current.offsetHeight) + 10)
             });
-        }
+        };
 
         if(noFollow)
         {
@@ -54,8 +54,8 @@ export const ObjectLocationView: FC<ObjectLocationViewProps> = props =>
         return () =>
         {
             if(remove) GetTicker().remove(updatePosition);
-        }
+        };
     }, [ objectId, category, noFollow ]);
 
     return <div ref={ elementRef } className="object-location absolute" style={ { left: pos.x, top: pos.y, visibility: ((pos.x + (elementRef.current ? elementRef.current.offsetWidth : 0)) > -1) ? 'visible' : 'hidden' } } { ...rest } />;
-}
+};

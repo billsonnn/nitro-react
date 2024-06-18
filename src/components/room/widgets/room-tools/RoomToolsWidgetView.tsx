@@ -17,7 +17,7 @@ export const RoomToolsWidgetView: FC<{}> = props =>
 
     const handleToolClick = (action: string, value?: string) =>
     {
-        switch (action)
+        switch(action)
         {
             case 'settings':
                 CreateLinkEvent('navigator/toggle-room-info');
@@ -27,7 +27,7 @@ export const RoomToolsWidgetView: FC<{}> = props =>
                 {
                     let scale = GetRoomEngine().getRoomInstanceRenderingCanvasScale(roomSession.roomId, 1);
 
-                    if (!prevValue) scale /= 2;
+                    if(!prevValue) scale /= 2;
                     else scale *= 2;
 
                     GetRoomEngine().setRoomInstanceRenderingCanvasScale(roomSession.roomId, 1, scale);
@@ -49,17 +49,17 @@ export const RoomToolsWidgetView: FC<{}> = props =>
                 SendMessageComposer(new NavigatorSearchComposer('hotel_view', `tag:${ value }`));
                 return;
         }
-    }
+    };
 
     useMessageEvent<GetGuestRoomResultEvent>(GetGuestRoomResultEvent, event =>
     {
         const parser = event.getParser();
 
-        if (!parser.roomEnter || (parser.data.roomId !== roomSession.roomId)) return;
+        if(!parser.roomEnter || (parser.data.roomId !== roomSession.roomId)) return;
 
-        if (roomName !== parser.data.roomName) setRoomName(parser.data.roomName);
-        if (roomOwner !== parser.data.ownerName) setRoomOwner(parser.data.ownerName);
-        if (roomTags !== parser.data.tags) setRoomTags(parser.data.tags);
+        if(roomName !== parser.data.roomName) setRoomName(parser.data.roomName);
+        if(roomOwner !== parser.data.ownerName) setRoomOwner(parser.data.ownerName);
+        if(roomTags !== parser.data.tags) setRoomTags(parser.data.tags);
     });
 
     useEffect(() =>
@@ -98,4 +98,4 @@ export const RoomToolsWidgetView: FC<{}> = props =>
             </div>
         </div>
     );
-}
+};

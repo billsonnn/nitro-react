@@ -10,7 +10,7 @@ export const DescribeReportView: FC<{}> = props =>
 
     const submitMessage = () =>
     {
-        if (message.length < 15) return;
+        if(message.length < 15) return;
 
         setActiveReport(prevValue =>
         {
@@ -18,7 +18,7 @@ export const DescribeReportView: FC<{}> = props =>
 
             return { ...prevValue, message, currentStep };
         });
-    }
+    };
 
     const back = () =>
     {
@@ -26,7 +26,7 @@ export const DescribeReportView: FC<{}> = props =>
         {
             return { ...prevValue, currentStep: (prevValue.currentStep - 1) };
         });
-    }
+    };
 
     return (
         <>
@@ -45,4 +45,4 @@ export const DescribeReportView: FC<{}> = props =>
             </Flex>
         </>
     );
-}
+};

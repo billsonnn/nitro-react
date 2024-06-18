@@ -1,7 +1,7 @@
 import { NodeData } from '@nitrots/nitro-renderer';
 import { ICatalogNode } from './ICatalogNode';
 
-export class CatalogNode implements ICatalogNode 
+export class CatalogNode implements ICatalogNode
 {
     private _depth: number = 0;
     private _localization: string = '';

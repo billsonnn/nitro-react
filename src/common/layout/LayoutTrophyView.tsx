@@ -39,4 +39,4 @@ export const LayoutTrophyView: FC<LayoutTrophyViewProps> = props =>
             </Column>
         </DraggableWindow>
     );
-}
+};

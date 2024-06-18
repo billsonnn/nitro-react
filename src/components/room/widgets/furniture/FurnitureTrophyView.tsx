@@ -9,4 +9,4 @@ export const FurnitureTrophyView: FC<{}> = props =>
     if(objectId === -1) return null;
 
     return <LayoutTrophyView color={ color } date={ date } message={ message } senderName={ senderName } onCloseClick={ onClose } />;
-}
+};

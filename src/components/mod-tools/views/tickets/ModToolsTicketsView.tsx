@@ -40,7 +40,7 @@ export const ModToolsTicketsView: FC<ModToolsTicketsViewProps> = props =>
 
             return newValue;
         });
-    }
+    };
 
     const handleIssue = (issueId: number) =>
     {
@@ -53,8 +53,8 @@ export const ModToolsTicketsView: FC<ModToolsTicketsViewProps> = props =>
             else newValue.splice(existingIndex, 1);
 
             return newValue;
-        })
-    }
+        });
+    };
 
     const CurrentTabComponent = () =>
     {
@@ -66,7 +66,7 @@ export const ModToolsTicketsView: FC<ModToolsTicketsViewProps> = props =>
         }
 
         return null;
-    }
+    };
 
     return (
         <>
@@ -87,4 +87,4 @@ export const ModToolsTicketsView: FC<ModToolsTicketsViewProps> = props =>
             { issueInfoWindows && (issueInfoWindows.length > 0) && issueInfoWindows.map(issueId => <ModToolsIssueInfoView key={ issueId } issueId={ issueId } onIssueInfoClosed={ closeIssue } />) }
         </>
     );
-}
+};

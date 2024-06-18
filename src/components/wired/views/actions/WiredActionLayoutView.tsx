@@ -82,4 +82,4 @@ export const WiredActionLayoutView = (code: number) =>
     }
 
     return null;
-}
+};

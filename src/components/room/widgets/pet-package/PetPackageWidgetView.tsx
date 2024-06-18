@@ -38,4 +38,4 @@ export const PetPackageWidgetView: FC<{}> = props =>
             }
         </>
     );
-}
+};

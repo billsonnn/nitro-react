@@ -35,7 +35,7 @@ export const InventoryBotItemView: FC<PropsWithChildren<{
                 attemptBotPlacement(botItem);
                 return;
         }
-    }
+    };
 
     return (
         <InfiniteGrid.Item itemActive={ (selectedBot === botItem) } itemUnseen={ unseen } onDoubleClick={ onMouseEvent } onMouseDown={ onMouseEvent } onMouseOut={ onMouseEvent } onMouseUp={ onMouseEvent } { ...rest } className="*:[background-position-y:-32px]">
@@ -43,4 +43,4 @@ export const InventoryBotItemView: FC<PropsWithChildren<{
             { children }
         </InfiniteGrid.Item>
     );
-}
+};

@@ -53,7 +53,7 @@ export const GuideToolOngoingView: FC<GuideToolOngoingViewProps> = props =>
 
     const sendMessage = useCallback(() =>
     {
-        if (!messageText || !messageText.length) return;
+        if(!messageText || !messageText.length) return;
 
         SendMessageComposer(new GuideSessionMessageMessageComposer(messageText));
         setMessageText('');
@@ -61,7 +61,7 @@ export const GuideToolOngoingView: FC<GuideToolOngoingViewProps> = props =>
 
     const onKeyDown = useCallback((event: KeyboardEvent<HTMLInputElement>) =>
     {
-        if (event.key !== 'Enter') return;
+        if(event.key !== 'Enter') return;
 
         sendMessage();
     }, [ sendMessage ]);

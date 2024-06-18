@@ -19,7 +19,7 @@ export const UserSettingsView: FC<{}> = props =>
 
         const clone = userSettings.clone();
 
-        switch (type)
+        switch(type)
         {
             case 'close_view':
                 setIsVisible(false);
@@ -54,20 +54,20 @@ export const UserSettingsView: FC<{}> = props =>
                 break;
         }
 
-        if (doUpdate) setUserSettings(clone);
+        if(doUpdate) setUserSettings(clone);
 
-        DispatchMainEvent(clone)
-    }
+        DispatchMainEvent(clone);
+    };
 
     const saveRangeSlider = (type: string) =>
     {
-        switch (type)
+        switch(type)
         {
             case 'volume':
                 SendMessageComposer(new UserSettingsSoundComposer(Math.round(userSettings.volumeSystem), Math.round(userSettings.volumeFurni), Math.round(userSettings.volumeTrax)));
                 break;
         }
-    }
+    };
 
     useMessageEvent<UserSettingsEvent>(UserSettingsEvent, event =>
     {
@@ -94,9 +94,9 @@ export const UserSettingsView: FC<{}> = props =>
             {
                 const parts = url.split('/');
 
-                if (parts.length < 2) return;
+                if(parts.length < 2) return;
 
-                switch (parts[1])
+                switch(parts[1])
                 {
                     case 'show':
                         setIsVisible(true);
@@ -119,12 +119,12 @@ export const UserSettingsView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        if (!userSettings) return;
+        if(!userSettings) return;
 
         DispatchUiEvent(userSettings);
     }, [ userSettings ]);
 
-    if (!isVisible || !userSettings) return null;
+    if(!isVisible || !userSettings) return null;
 
     return (
         <NitroCardView className="user-settings-window" theme="primary-slim" uniqueKey="user-settings">
@@ -185,4 +185,4 @@ export const UserSettingsView: FC<{}> = props =>
             </NitroCardContentView>
         </NitroCardView>
     );
-}
+};

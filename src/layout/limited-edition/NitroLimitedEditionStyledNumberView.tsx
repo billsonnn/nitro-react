@@ -5,7 +5,7 @@ export const NitroLimitedEditionStyledNumberView: FC<{
 }> = props =>
 {
     const { value = 0 } = props;
-    
+
     return (
         <>
             { value.toString().split('').map((number, index) =>
@@ -15,4 +15,4 @@ export const NitroLimitedEditionStyledNumberView: FC<{
             ) }
         </>
     );
-}
+};

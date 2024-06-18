@@ -53,7 +53,7 @@ export const NavigatorRoomSettingsRightsTabView: FC<NavigatorRoomSettingsTabView
             newValue.delete(parser.userId);
 
             return newValue;
-        }); 
+        });
     });
 
     useEffect(() =>
@@ -88,4 +88,4 @@ export const NavigatorRoomSettingsRightsTabView: FC<NavigatorRoomSettingsTabView
             </Column>
         </Grid>
     );
-}
+};

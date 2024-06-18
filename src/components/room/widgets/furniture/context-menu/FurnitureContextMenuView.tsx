@@ -126,5 +126,5 @@ export const FurnitureContextMenuView: FC<{}> = props =>
                         </> }
                 </ContextMenuView> }
         </>
-    )
-}
+    );
+};

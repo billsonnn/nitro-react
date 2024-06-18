@@ -11,18 +11,18 @@ export const FriendsMessengerThreadGroup: FC<{ thread: MessengerThread, group: M
 
     const isOwnChat = useMemo(() =>
     {
-        if (!thread || !group) return false;
+        if(!thread || !group) return false;
 
-        if ((group.type === MessengerGroupType.PRIVATE_CHAT) && (group.userId === GetSessionDataManager().userId)) return true;
+        if((group.type === MessengerGroupType.PRIVATE_CHAT) && (group.userId === GetSessionDataManager().userId)) return true;
 
-        if (groupChatData && group.chats.length && (groupChatData.userId === GetSessionDataManager().userId)) return true;
+        if(groupChatData && group.chats.length && (groupChatData.userId === GetSessionDataManager().userId)) return true;
 
         return false;
     }, [ thread, group, groupChatData ]);
 
-    if (!thread || !group) return null;
+    if(!thread || !group) return null;
 
-    if (!group.userId)
+    if(!group.userId)
     {
         return (
             <>
@@ -70,4 +70,4 @@ export const FriendsMessengerThreadGroup: FC<{ thread: MessengerThread, group: M
                 </Base> }
         </Flex>
     );
-}
+};

@@ -19,7 +19,7 @@ const useFurnitureStackHeightWidgetState = () =>
         setCategory(-1);
         setHeight(0);
         setPendingHeight(-1);
-    }
+    };
 
     const updateHeight = (height: number, server: boolean = false) =>
     {
@@ -32,7 +32,7 @@ const useFurnitureStackHeightWidgetState = () =>
         setHeight(parseFloat(height.toFixed(2)));
 
         if(!server) setPendingHeight(height * 100);
-    }
+    };
 
     useMessageEvent<FurnitureStackHeightEvent>(FurnitureStackHeightEvent, event =>
     {
@@ -74,6 +74,6 @@ const useFurnitureStackHeightWidgetState = () =>
     }, [ objectId, pendingHeight ]);
 
     return { objectId, height, maxHeight: MAX_HEIGHT, onClose, updateHeight };
-}
+};
 
 export const useFurnitureStackHeightWidget = useFurnitureStackHeightWidgetState;

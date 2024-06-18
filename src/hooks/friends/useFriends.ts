@@ -42,12 +42,12 @@ const useFriendsState = () =>
         }
 
         return null;
-    }
+    };
 
     const canRequestFriend = (userId: number) =>
     {
         if(userId === GetSessionDataManager().userId) return false;
-        
+
         if(getFriend(userId)) return false;
 
         if(requests.find(request => (request.requesterUserId === userId))) return false;
@@ -55,7 +55,7 @@ const useFriendsState = () =>
         if(sentRequests.indexOf(userId) >= 0) return false;
 
         return true;
-    }
+    };
 
     const requestFriend = (userId: number, userName: string) =>
     {
@@ -71,7 +71,7 @@ const useFriendsState = () =>
         });
 
         SendMessageComposer(new RequestFriendComposer(userName));
-    }
+    };
 
     const requestResponse = (requestId: number, flag: boolean) =>
     {
@@ -104,7 +104,7 @@ const useFriendsState = () =>
                 return newRequests;
             });
         }
-    }
+    };
 
     useMessageEvent<MessengerInitEvent>(MessengerInitEvent, event =>
     {
@@ -164,7 +164,7 @@ const useFriendsState = () =>
                 {
                     newValue[index].populate(friend);
                 }
-            }
+            };
 
             for(const friend of parser.addedFriends) processUpdate(friend);
 
@@ -243,10 +243,10 @@ const useFriendsState = () =>
         return () =>
         {
             clearInterval(interval);
-        }
+        };
     }, []);
 
     return { friends, requests, sentRequests, dismissedRequestIds, setDismissedRequestIds, settings, onlineFriends, offlineFriends, getFriend, canRequestFriend, requestFriend, requestResponse, followFriend, updateRelationship };
-}
+};
 
 export const useFriends = () => useBetween(useFriendsState);

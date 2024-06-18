@@ -38,4 +38,4 @@ export const CatalogLayoutSingleBundleView: FC<CatalogLayoutProps> = props =>
             </Grid>
         </>
     );
-}
+};

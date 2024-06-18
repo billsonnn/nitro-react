@@ -11,7 +11,7 @@ export const SanctionSatusView: FC<{}> = props =>
     {
         let localizationName = `help.sanction.${ param }`;
 
-        switch (sanctionName)
+        switch(sanctionName)
         {
             case 'ALERT':
                 localizationName = (localizationName + '.alert');
@@ -24,7 +24,7 @@ export const SanctionSatusView: FC<{}> = props =>
                 break;
             default:
                 localizationName = (localizationName + '.ban');
-                if (length > 24)
+                if(length > 24)
                 {
                     localizationName = (localizationName + '.days');
                     return LocalizeText(localizationName, [ 'days' ], [ (length / 24).toString() ]);
@@ -32,9 +32,9 @@ export const SanctionSatusView: FC<{}> = props =>
         }
 
         return LocalizeText(localizationName, [ 'hours' ], [ length.toString() ]);
-    }
+    };
 
-    if (!sanctionInfo) return null;
+    if(!sanctionInfo) return null;
 
     return (
         <NitroCardView className="nitro-help" theme="primary-slim">
@@ -71,5 +71,5 @@ export const SanctionSatusView: FC<{}> = props =>
                 </Grid>
             </NitroCardContentView>
         </NitroCardView>
-    )
-}
+    );
+};

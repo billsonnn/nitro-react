@@ -13,7 +13,7 @@ export const InfoStandWidgetBotView: FC<InfoStandWidgetBotViewProps> = props =>
 {
     const { avatarInfo = null, onClose = null } = props;
 
-    if (!avatarInfo) return null;
+    if(!avatarInfo) return null;
 
     return (
         <Column className="nitro-infostand rounded">
@@ -52,4 +52,4 @@ export const InfoStandWidgetBotView: FC<InfoStandWidgetBotViewProps> = props =>
             </Column>
         </Column>
     );
-}
+};

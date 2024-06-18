@@ -38,4 +38,4 @@ export const CatalogLayoutRoomBundleView: FC<CatalogLayoutProps> = props =>
             </Grid>
         </>
     );
-}
+};

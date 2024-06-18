@@ -11,7 +11,7 @@ const GridContext = createContext<IGridContext>({
 
 export const GridContextProvider: FC<ProviderProps<IGridContext>> = props =>
 {
-    return <GridContext.Provider value={ props.value }>{ props.children }</GridContext.Provider>
-}
+    return <GridContext.Provider value={ props.value }>{ props.children }</GridContext.Provider>;
+};
 
 export const useGridContext = () => useContext(GridContext);

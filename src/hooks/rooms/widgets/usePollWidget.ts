@@ -47,6 +47,6 @@ const usePollWidgetState = () =>
     });
 
     return { startPoll, rejectPoll, answerPoll };
-}
+};
 
 export const usePollWidget = usePollWidgetState;

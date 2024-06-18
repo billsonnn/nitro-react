@@ -19,7 +19,7 @@ export const ChatInputStyleSelectorView: FC<ChatInputStyleSelectorViewProps> = p
     {
         selectChatStyleId(styleId);
         setSelectorVisible(false);
-    }
+    };
 
     const toggleSelector = (event: MouseEvent<HTMLElement>) =>
     {
@@ -32,12 +32,12 @@ export const ChatInputStyleSelectorView: FC<ChatInputStyleSelectorViewProps> = p
             return visible;
         });
 
-        if (visible) setTarget((event.target as (EventTarget & HTMLElement)));
-    }
+        if(visible) setTarget((event.target as (EventTarget & HTMLElement)));
+    };
 
     useEffect(() =>
     {
-        if (selectorVisible) return;
+        if(selectorVisible) return;
 
         setTarget(null);
     }, [ selectorVisible ]);
@@ -82,4 +82,4 @@ export const ChatInputStyleSelectorView: FC<ChatInputStyleSelectorViewProps> = p
 
         </>
     );
-}
+};

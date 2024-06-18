@@ -17,14 +17,14 @@ export const NotificationDefaultConfirmView: FC<NotificationDefaultConfirmViewPr
         if(onConfirm) onConfirm();
 
         onClose();
-    }
+    };
 
     const cancel = () =>
     {
         if(onCancel) onCancel();
-        
+
         onClose();
-    }
+    };
 
     return (
         <LayoutNotificationAlertView title={ title } onClose={ onClose } { ...rest } type={ NotificationAlertType.ALERT }>
@@ -37,4 +37,4 @@ export const NotificationDefaultConfirmView: FC<NotificationDefaultConfirmViewPr
             </div>
         </LayoutNotificationAlertView>
     );
-}
+};

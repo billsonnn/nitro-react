@@ -15,7 +15,7 @@ const classes = {
     color: {
         default: 'bg-button-gradient-gray border border-gray-500',
     }
-}
+};
 
 export const NitroButton = forwardRef<HTMLButtonElement, PropsWithChildren<{
     color?: 'default' | 'dark' | 'ghost';

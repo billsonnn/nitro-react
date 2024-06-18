@@ -15,14 +15,14 @@ export const RoomFilterWordsWidgetView: FC<{}> = props =>
 
     const processAction = (isAddingWord: boolean) =>
     {
-        if ((isSelectingWord) ? (!selectedWord) : (!word)) return;
+        if((isSelectingWord) ? (!selectedWord) : (!word)) return;
 
         SendMessageComposer(new UpdateRoomFilterMessageComposer(navigatorData.enteredGuestRoom.roomId, isAddingWord, (isSelectingWord ? selectedWord : word)));
         setSelectedWord('');
         setWord('bobba');
         setIsSelectingWord(false);
 
-        if (isAddingWord && wordsFilter.includes((isSelectingWord ? selectedWord : word))) return;
+        if(isAddingWord && wordsFilter.includes((isSelectingWord ? selectedWord : word))) return;
 
         setWordsFilter(prevValue =>
         {
@@ -32,21 +32,21 @@ export const RoomFilterWordsWidgetView: FC<{}> = props =>
 
             return newWords;
         });
-    }
+    };
 
     const onTyping = (word: string) =>
     {
         setWord(word);
         setIsSelectingWord(false);
-    }
+    };
 
     const onSelectedWord = (word: string) =>
     {
         setSelectedWord(word);
         setIsSelectingWord(true);
-    }
+    };
 
-    if (!isVisible) return null;
+    if(!isVisible) return null;
 
     return (
         <NitroCardView className="nitro-guide-tool no-resize" theme="primary-slim">
@@ -63,7 +63,7 @@ export const RoomFilterWordsWidgetView: FC<{}> = props =>
                             <Flex key={ index } pointer alignItems="center" className={ classNames('rounded p-1', (selectedWord === word) && 'bg-muted') } onClick={ event => onSelectedWord(word) }>
                                 <Text truncate>{ word }</Text>
                             </Flex>
-                        )
+                        );
                     }) }
                 </Column>
                 <Grid className="flex items-center gap-2 justify-end">

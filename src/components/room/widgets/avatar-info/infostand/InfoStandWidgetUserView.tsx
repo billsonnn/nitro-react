@@ -24,12 +24,12 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
 
     const saveMotto = (motto: string) =>
     {
-        if (!isEditingMotto || (motto.length > GetConfigurationValue<number>('motto.max.length', 38))) return;
+        if(!isEditingMotto || (motto.length > GetConfigurationValue<number>('motto.max.length', 38))) return;
 
         roomSession.sendMottoMessage(motto);
 
         setIsEditingMotto(false);
-    }
+    };
 
     const onMottoBlur = (event: FocusEvent<HTMLInputElement>) => saveMotto(event.target.value);
 
@@ -37,21 +37,21 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
     {
         event.stopPropagation();
 
-        switch (event.key)
+        switch(event.key)
         {
             case 'Enter':
                 saveMotto((event.target as HTMLInputElement).value);
                 return;
         }
-    }
+    };
 
     useNitroEvent<RoomSessionUserBadgesEvent>(RoomSessionUserBadgesEvent.RSUBE_BADGES, event =>
     {
-        if (!avatarInfo || (avatarInfo.webID !== event.userId)) return;
+        if(!avatarInfo || (avatarInfo.webID !== event.userId)) return;
 
         const oldBadges = avatarInfo.badges.join('');
 
-        if (oldBadges === event.badges.join('')) return;
+        if(oldBadges === event.badges.join('')) return;
 
         setAvatarInfo(prevValue =>
         {
@@ -65,7 +65,7 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
 
     useNitroEvent<RoomSessionUserFigureUpdateEvent>(RoomSessionUserFigureUpdateEvent.USER_FIGURE, event =>
     {
-        if (!avatarInfo || (avatarInfo.roomIndex !== event.roomIndex)) return;
+        if(!avatarInfo || (avatarInfo.roomIndex !== event.roomIndex)) return;
 
         setAvatarInfo(prevValue =>
         {
@@ -81,7 +81,7 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
 
     useNitroEvent<RoomSessionFavoriteGroupUpdateEvent>(RoomSessionFavoriteGroupUpdateEvent.FAVOURITE_GROUP_UPDATE, event =>
     {
-        if (!avatarInfo || (avatarInfo.roomIndex !== event.roomIndex)) return;
+        if(!avatarInfo || (avatarInfo.roomIndex !== event.roomIndex)) return;
 
         setAvatarInfo(prevValue =>
         {
@@ -89,7 +89,7 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
             const clearGroup = ((event.status === -1) || (event.habboGroupId <= 0));
 
             newValue.groupId = clearGroup ? -1 : event.habboGroupId;
-            newValue.groupName = clearGroup ? null : event.habboGroupName
+            newValue.groupName = clearGroup ? null : event.habboGroupName;
             newValue.groupBadgeId = clearGroup ? null : GetSessionDataManager().getGroupBadge(event.habboGroupId);
 
             return newValue;
@@ -100,7 +100,7 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
     {
         const parser = event.getParser();
 
-        if (!avatarInfo || (avatarInfo.webID !== parser.userId)) return;
+        if(!avatarInfo || (avatarInfo.webID !== parser.userId)) return;
 
         setRelationships(parser);
     });
@@ -117,10 +117,10 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
             setIsEditingMotto(false);
             setMotto(null);
             setRelationships(null);
-        }
+        };
     }, [ avatarInfo ]);
 
-    if (!avatarInfo) return null;
+    if(!avatarInfo) return null;
 
     return (
         <Column className="relative min-w-[190px] max-w-[190px] z-30 pointer-events-auto bg-[rgba(28,_28,_32,_.95)] [box-shadow:inset_0_5px_#22222799,_inset_0_-4px_#12121599] rounded">
@@ -211,4 +211,4 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
             </Column>
         </Column>
     );
-}
+};

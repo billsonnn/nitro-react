@@ -23,7 +23,7 @@ const useFriendRequestWidgetState = () =>
 
             return newValue;
         });
-    }
+    };
 
     useUserAddedEvent(true, event =>
     {
@@ -32,7 +32,7 @@ const useFriendRequestWidgetState = () =>
         const userData = GetRoomSession().userDataManager.getUserDataByIndex(event.id);
 
         if(!userData || (userData.type !== RoomObjectUserType.getTypeNumber(RoomObjectUserType.USER))) return;
-        
+
         const request = requests.find(request => (request.requesterUserId === userData.webID));
 
         if(!request || activeRequests.find(request => (request.request.requesterUserId === userData.webID))) return;
@@ -76,6 +76,6 @@ const useFriendRequestWidgetState = () =>
     }, [ requests ]);
 
     return { displayedRequests, hideFriendRequest };
-}
+};
 
 export const useFriendRequestWidget = useFriendRequestWidgetState;

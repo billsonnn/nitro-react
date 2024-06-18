@@ -14,30 +14,30 @@ export const FriendsListGroupItemView: FC<{ friend: MessengerFriend, selected: b
         event.stopPropagation();
 
         followFriend(friend);
-    }
+    };
 
     const openMessengerChat = (event: MouseEvent<HTMLDivElement>) =>
     {
         event.stopPropagation();
-        
+
         OpenMessengerChat(friend.id);
-    }
+    };
 
     const openRelationship = (event: MouseEvent<HTMLDivElement>) =>
     {
         event.stopPropagation();
 
         setIsRelationshipOpen(true);
-    }
+    };
 
     const clickUpdateRelationship = (event: MouseEvent<HTMLDivElement>, type: number) =>
     {
         event.stopPropagation();
 
         updateRelationship(friend, type);
-        
+
         setIsRelationshipOpen(false);
-    }
+    };
 
     const getCurrentRelationshipName = () =>
     {
@@ -50,7 +50,7 @@ export const FriendsListGroupItemView: FC<{ friend: MessengerFriend, selected: b
             case MessengerFriend.RELATIONSHIP_BOBBA: return 'bobba';
             default: return 'none';
         }
-    }
+    };
 
     if(!friend) return null;
 
@@ -82,4 +82,4 @@ export const FriendsListGroupItemView: FC<{ friend: MessengerFriend, selected: b
             </div>
         </NitroCardAccordionItemView>
     );
-}
+};

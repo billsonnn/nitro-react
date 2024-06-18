@@ -114,10 +114,10 @@ export const LayoutPetImageView: FC<LayoutPetImageViewProps> = props =>
         return () =>
         {
             isDisposed.current = true;
-        }
+        };
     }, []);
 
     const url = `url('${ petUrl }')`;
 
     return <Base classNames={ [ 'pet-image' ] } style={ getStyle } { ...rest } />;
-}
+};

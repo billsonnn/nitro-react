@@ -21,7 +21,7 @@ export const NitropediaView: FC<{}> = props =>
                 const response = await fetch(link);
 
                 if(!response) return;
-        
+
                 const text = await response.text();
                 const splitData = text.split(NEW_LINE_REGEX);
                 const line = splitData.shift().split('|');
@@ -35,7 +35,7 @@ export const NitropediaView: FC<{}> = props =>
                         return {
                             width: parseInt(line[1].split(';')[0]),
                             height: parseInt(line[1].split(';')[1])
-                        }
+                        };
                     }
 
                     return null;
@@ -48,7 +48,7 @@ export const NitropediaView: FC<{}> = props =>
             {
                 NitroLogger.error(`Failed to fetch ${ link }`);
             }
-        }
+        };
 
         const linkTracker: ILinkEventTracker = {
             linkReceived: (url: string) =>
@@ -82,14 +82,14 @@ export const NitropediaView: FC<{}> = props =>
             if(!link || !link.length) return;
 
             OpenUrl(link);
-        }
+        };
 
         document.addEventListener('click', handle);
 
         return () =>
         {
             document.removeEventListener('click', handle);
-        }
+        };
     }, []);
 
     if(!content) return null;
@@ -102,4 +102,4 @@ export const NitropediaView: FC<{}> = props =>
             </NitroCardContentView>
         </NitroCardView>
     );
-}
+};

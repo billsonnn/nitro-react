@@ -39,4 +39,4 @@ export const ModToolsOpenIssuesTabView: FC<ModToolsOpenIssuesTabViewProps> = pro
             </Column>
         </Column>
     );
-}
+};

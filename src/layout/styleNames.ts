@@ -5,4 +5,4 @@ export const styleNames = (...styles: object[]) =>
     styles.filter(Boolean).forEach(style => mergedStyle = { ...mergedStyle, ...style });
 
     return mergedStyle;
-}
+};

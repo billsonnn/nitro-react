@@ -22,4 +22,4 @@ export const CatalogLayoutPets3View: FC<CatalogLayoutProps> = props =>
             </div>
         </Column>
     );
-}
+};

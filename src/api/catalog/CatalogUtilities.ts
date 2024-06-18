@@ -4,12 +4,12 @@ import { ICatalogNode } from './ICatalogNode';
 export const GetPixelEffectIcon = (id: number) =>
 {
     return '';
-}
+};
 
 export const GetSubscriptionProductIcon = (id: number) =>
 {
     return '';
-}
+};
 
 export const GetOfferNodes = (offerNodes: Map<number, ICatalogNode[]>, offerId: number) =>
 {
@@ -21,20 +21,20 @@ export const GetOfferNodes = (offerNodes: Map<number, ICatalogNode[]>, offerId: 
         for(const node of nodes)
         {
             if(!node.isVisible) continue;
-    
+
             allowedNodes.push(node);
         }
     }
 
     return allowedNodes;
-}
+};
 
 export const FilterCatalogNode = (search: string, furniLines: string[], node: ICatalogNode, nodes: ICatalogNode[]) =>
 {
     if(node.isVisible && (node.pageId > 0))
     {
         let nodeAdded = false;
-        
+
         const hayStack = [ node.pageName, node.localization ].join(' ').toLowerCase().replace(/ /gi, '');
 
         if(hayStack.indexOf(search) > -1)
@@ -59,7 +59,7 @@ export const FilterCatalogNode = (search: string, furniLines: string[], node: IC
     }
 
     for(const child of node.children) FilterCatalogNode(search, furniLines, child, nodes);
-}
+};
 
 export function GetPetIndexFromLocalization(localization: string)
 {

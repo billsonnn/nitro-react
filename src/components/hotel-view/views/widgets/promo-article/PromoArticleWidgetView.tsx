@@ -19,7 +19,7 @@ export const PromoArticleWidgetView: FC<{}> = props =>
         SendMessageComposer(new GetPromoArticlesComposer());
     }, []);
 
-    if (!articles) return null;
+    if(!articles) return null;
 
     return (
         <div className="promo-articles widget mb-2">
@@ -43,4 +43,4 @@ export const PromoArticleWidgetView: FC<{}> = props =>
                 </div> }
         </div>
     );
-}
+};

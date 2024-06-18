@@ -22,9 +22,9 @@ export const CurrencyView: FC<CurrencyViewProps> = props =>
             </Flex>);
     }, [ amount, short, type ]);
 
-    if (!short) return element;
+    if(!short) return element;
 
     return (
         <></>
     );
-}
+};

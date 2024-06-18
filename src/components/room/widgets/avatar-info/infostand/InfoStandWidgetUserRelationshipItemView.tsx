@@ -28,4 +28,4 @@ export const InfoStandWidgetUserRelationshipsRelationshipItemView: FC<InfoStandW
             </Flex>
         </div>
     );
-}
+};

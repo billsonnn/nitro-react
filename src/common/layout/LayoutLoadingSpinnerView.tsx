@@ -4,7 +4,7 @@ import { Base, BaseProps } from '../Base';
 export const LayoutLoadingSpinnerView: FC<BaseProps<HTMLDivElement>> = props =>
 {
     const { ...rest } = props;
-    
+
     return (
         <Base classNames={ [ 'spinner-container' ] } { ...rest } >
             <Base className="spinner" />
@@ -12,4 +12,4 @@ export const LayoutLoadingSpinnerView: FC<BaseProps<HTMLDivElement>> = props =>
             <Base className="spinner" />
         </Base>
     );
-}
+};

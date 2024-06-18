@@ -19,4 +19,4 @@ export const FormGroup: FC<FormGroupProps> = props =>
     }, [ classNames ]);
 
     return <Flex classNames={ getClassNames } { ...rest } />;
-}
+};

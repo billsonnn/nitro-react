@@ -16,14 +16,14 @@ export const WiredActionBotTalkToAvatarView: FC<{}> = props =>
     {
         setStringParam(botName + WIRED_STRING_DELIMETER + message);
         setIntParams([ talkMode ]);
-    }
+    };
 
     useEffect(() =>
     {
         const data = trigger.stringData.split(WIRED_STRING_DELIMETER);
 
-        if (data.length > 0) setBotName(data[0]);
-        if (data.length > 1) setMessage(data[1].length > 0 ? data[1] : '');
+        if(data.length > 0) setBotName(data[0]);
+        if(data.length > 1) setMessage(data[1].length > 0 ? data[1] : '');
 
         setTalkMode((trigger.intData.length > 0) ? trigger.intData[0] : 0);
     }, [ trigger ]);
@@ -50,4 +50,4 @@ export const WiredActionBotTalkToAvatarView: FC<{}> = props =>
             </div>
         </WiredActionBaseView>
     );
-}
+};

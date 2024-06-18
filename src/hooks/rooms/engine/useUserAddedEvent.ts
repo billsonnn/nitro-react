@@ -14,6 +14,6 @@ export const useUserAddedEvent = (isActive: boolean, handler: (event: RoomWidget
         return () =>
         {
             UI_EVENT_DISPATCHER.removeEventListener(RoomWidgetUpdateRoomObjectEvent.USER_ADDED, onRoomWidgetUpdateRoomObjectEvent);
-        }
+        };
     }, [ isActive, handler ]);
-}
+};

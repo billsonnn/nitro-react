@@ -28,36 +28,36 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
 
     const getColor = useMemo(() =>
     {
-        if (!sellableColors.length || (selectedColorIndex === -1)) return 0xFFFFFF;
+        if(!sellableColors.length || (selectedColorIndex === -1)) return 0xFFFFFF;
 
         return sellableColors[selectedColorIndex][0];
     }, [ sellableColors, selectedColorIndex ]);
 
     const petBreedName = useMemo(() =>
     {
-        if ((petIndex === -1) || !sellablePalettes.length || (selectedPaletteIndex === -1)) return '';
+        if((petIndex === -1) || !sellablePalettes.length || (selectedPaletteIndex === -1)) return '';
 
         return LocalizeText(`pet.breed.${ petIndex }.${ sellablePalettes[selectedPaletteIndex].breedId }`);
     }, [ petIndex, sellablePalettes, selectedPaletteIndex ]);
 
     const petPurchaseString = useMemo(() =>
     {
-        if (!sellablePalettes.length || (selectedPaletteIndex === -1)) return '';
+        if(!sellablePalettes.length || (selectedPaletteIndex === -1)) return '';
 
         const paletteId = sellablePalettes[selectedPaletteIndex].paletteId;
 
         let color = 0xFFFFFF;
 
-        if (petIndex <= 7)
+        if(petIndex <= 7)
         {
-            if (selectedColorIndex === -1) return '';
+            if(selectedColorIndex === -1) return '';
 
             color = sellableColors[selectedColorIndex][0];
         }
 
         let colorString = color.toString(16).toUpperCase();
 
-        while (colorString.length < 6) colorString = ('0' + colorString);
+        while(colorString.length < 6) colorString = ('0' + colorString);
 
         return `${ paletteId }\n${ colorString }`;
     }, [ sellablePalettes, selectedPaletteIndex, petIndex, sellableColors, selectedColorIndex ]);
@@ -66,7 +66,7 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
     {
         let key: string = '';
 
-        switch (approvalResult)
+        switch(approvalResult)
         {
             case 1:
                 key = 'catalog.alert.petname.long';
@@ -82,21 +82,21 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
                 break;
         }
 
-        if (!key || !key.length) return '';
+        if(!key || !key.length) return '';
 
         return LocalizeText(key);
     }, [ approvalResult ]);
 
     const purchasePet = useCallback(() =>
     {
-        if (approvalResult === -1)
+        if(approvalResult === -1)
         {
             SendMessageComposer(new ApproveNameMessageComposer(petName, 1));
 
             return;
         }
 
-        if (approvalResult === 0)
+        if(approvalResult === 0)
         {
             SendMessageComposer(new PurchaseFromCatalogComposer(page.pageId, currentOffer.offerId, `${ petName }\n${ petPurchaseString }`, 1));
 
@@ -110,13 +110,13 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
 
         setApprovalResult(parser.result);
 
-        if (parser.result === 0) purchasePet();
+        if(parser.result === 0) purchasePet();
         else DispatchUiEvent(new CatalogPurchaseFailureEvent(-1));
     });
 
     useEffect(() =>
     {
-        if (!page || !page.offers.length) return;
+        if(!page || !page.offers.length) return;
 
         const offer = page.offers[0];
 
@@ -127,23 +127,23 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
 
     useEffect(() =>
     {
-        if (!currentOffer) return;
+        if(!currentOffer) return;
 
         const productData = currentOffer.product.productData;
 
-        if (!productData) return;
+        if(!productData) return;
 
-        if (petPalettes)
+        if(petPalettes)
         {
-            for (const paletteData of petPalettes)
+            for(const paletteData of petPalettes)
             {
-                if (paletteData.breed !== productData.type) continue;
+                if(paletteData.breed !== productData.type) continue;
 
                 const palettes: SellablePetPaletteData[] = [];
 
-                for (const palette of paletteData.palettes)
+                for(const palette of paletteData.palettes)
                 {
-                    if (!palette.sellable) continue;
+                    if(!palette.sellable) continue;
 
                     palettes.push(palette);
                 }
@@ -163,7 +163,7 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
 
     useEffect(() =>
     {
-        if (petIndex === -1) return;
+        if(petIndex === -1) return;
 
         const colors = GetPetAvailableColors(petIndex, sellablePalettes);
 
@@ -173,15 +173,15 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
 
     useEffect(() =>
     {
-        if (!roomPreviewer) return;
+        if(!roomPreviewer) return;
 
         roomPreviewer.reset(false);
 
-        if ((petIndex === -1) || !sellablePalettes.length || (selectedPaletteIndex === -1)) return;
+        if((petIndex === -1) || !sellablePalettes.length || (selectedPaletteIndex === -1)) return;
 
         let petFigureString = `${ petIndex } ${ sellablePalettes[selectedPaletteIndex].paletteId }`;
 
-        if (petIndex <= 7) petFigureString += ` ${ getColor.toString(16) }`;
+        if(petIndex <= 7) petFigureString += ` ${ getColor.toString(16) }`;
 
         roomPreviewer.addPetIntoRoom(petFigureString);
     }, [ roomPreviewer, petIndex, sellablePalettes, selectedPaletteIndex, getColor ]);
@@ -191,7 +191,7 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
         setApprovalResult(-1);
     }, [ petName ]);
 
-    if (!currentOffer) return null;
+    if(!currentOffer) return null;
 
     return (
         <Grid>
@@ -240,4 +240,4 @@ export const CatalogLayoutPetView: FC<CatalogLayoutProps> = props =>
             </Column>
         </Grid>
     );
-}
+};

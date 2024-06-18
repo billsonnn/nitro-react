@@ -31,4 +31,4 @@ export const CatalogNavigationView: FC<CatalogNavigationViewProps> = props =>
             </Column>
         </>
     );
-}
+};

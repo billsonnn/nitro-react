@@ -23,7 +23,7 @@ export const WiredBaseView: FC<PropsWithChildren<WiredBaseViewProps>> = props =>
     const { trigger = null, setTrigger = null, setIntParams = null, setStringParam = null, setFurniIds = null, setAllowsFurni = null, saveWired = null } = useWired();
 
     const onClose = () => setTrigger(null);
-    
+
     const onSave = () =>
     {
         if(validate && !validate()) return;
@@ -31,7 +31,7 @@ export const WiredBaseView: FC<PropsWithChildren<WiredBaseViewProps>> = props =>
         if(save) save();
 
         setNeedsSave(true);
-    }
+    };
 
     useEffect(() =>
     {
@@ -65,7 +65,7 @@ export const WiredBaseView: FC<PropsWithChildren<WiredBaseViewProps>> = props =>
             setIntParams(trigger.intData);
             setStringParam(trigger.stringData);
         }
-        
+
         if(requiresFurni > WiredFurniType.STUFF_SELECTION_OPTION_NONE)
         {
             setFurniIds(prevValue =>
@@ -111,4 +111,4 @@ export const WiredBaseView: FC<PropsWithChildren<WiredBaseViewProps>> = props =>
             </NitroCardContentView>
         </NitroCardView>
     );
-}
+};

@@ -60,8 +60,6 @@ const boxShadow = {
 
 
 module.exports = {
-
-
     theme: {
         extend: {
             fontSize: {

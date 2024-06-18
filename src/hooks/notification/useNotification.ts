@@ -11,7 +11,7 @@ const getTimeZeroPadded = (time: number) =>
     const text = ('0' + time);
 
     return text.substr((text.length - 2), text.length);
-}
+};
 
 let modDisclaimerTimeout: ReturnType<typeof setTimeout> = null;
 
@@ -32,7 +32,7 @@ const useNotificationState = () =>
         if(!mainConfig) return null;
 
         return mainConfig[key];
-    }
+    };
 
     const getNotificationPart = (options: Map<string, string>, type: string, key: string, localize: boolean) =>
     {
@@ -43,7 +43,7 @@ const useNotificationState = () =>
         if(GetLocalizationManager().hasValue(localizeKey) || localize) return LocalizeText(localizeKey, Array.from(options.keys()), Array.from(options.values()));
 
         return null;
-    }
+    };
 
     const getNotificationImageUrl = (options: Map<string, string>, type: string) =>
     {
@@ -52,7 +52,7 @@ const useNotificationState = () =>
         if(!imageUrl) imageUrl = GetConfigurationValue<string>('image.library.notifications.url', '').replace('%image%', type.replace(/\./g, '_'));
 
         return LocalizeText(imageUrl);
-    }
+    };
 
     const simpleAlert = useCallback((message: string, type: string = null, clickUrl: string = null, clickUrlText: string = null, title: string = null, imageUrl: string = null) =>
     {
@@ -84,7 +84,7 @@ const useNotificationState = () =>
 
         if(configuration) for(const key in configuration) options.set(key, configuration[key]);
 
-        if (type === 'floorplan_editor.error') options.set('message', options.get('message').replace(/[^a-zA-Z._ ]/g, ''));
+        if(type === 'floorplan_editor.error') options.set('message', options.get('message').replace(/[^a-zA-Z._ ]/g, ''));
 
         const title = getNotificationPart(options, type, 'title', true);
         const message = getNotificationPart(options, type, 'message', true).replace(/\\r/g, '\r');
@@ -102,7 +102,7 @@ const useNotificationState = () =>
         }
 
         if(options.get('sound')) PlaySound(options.get('sound'));
-    }
+    };
 
     const showConfirm = useCallback((message: string, onConfirm: () => void, onCancel: () => void, confirmText: string = null, cancelText: string = null, title: string = null, type: string = null) =>
     {
@@ -120,7 +120,7 @@ const useNotificationState = () =>
     const showModeratorMessage = (message: string, url: string = null, showHabboWay: boolean = true) =>
     {
         simpleAlert(message, NotificationAlertType.DEFAULT, url, LocalizeText('mod.alert.link'), LocalizeText('mod.alert.title'));
-    }
+    };
 
     const showTradeAlert = useCallback((type: number, otherUsername: string = '') =>
     {
@@ -169,7 +169,7 @@ const useNotificationState = () =>
             if(index >= 0) newAlerts.splice(index, 1);
 
             return newAlerts;
-        })
+        });
     }, []);
 
     const closeConfirm = useCallback((item: NotificationConfirmItem) =>
@@ -182,7 +182,7 @@ const useNotificationState = () =>
             if(index >= 0) newConfirms.splice(index, 1);
 
             return newConfirms;
-        })
+        });
     }, []);
 
     useMessageEvent<RespectReceivedEvent>(RespectReceivedEvent, event =>
@@ -428,6 +428,6 @@ const useNotificationState = () =>
     useMessageEvent<RoomEnterEvent>(RoomEnterEvent, onRoomEnterEvent);
 
     return { alerts, bubbleAlerts, confirms, simpleAlert, showNitroAlert, showTradeAlert, showConfirm, showSingleBubble, closeAlert, closeBubbleAlert, closeConfirm };
-}
+};
 
 export const useNotification = () => useBetween(useNotificationState);

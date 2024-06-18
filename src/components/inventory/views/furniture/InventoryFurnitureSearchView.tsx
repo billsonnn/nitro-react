@@ -44,4 +44,4 @@ export const InventoryFurnitureSearchView: FC<{
             </NitroButton>
         </div>
     );
-}
+};

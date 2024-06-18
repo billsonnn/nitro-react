@@ -51,13 +51,13 @@ const useChatInputWidgetState = () =>
                 case ':shake':
                     RoomShakingEffect.init(2500, 5000);
                     RoomShakingEffect.turnVisualizationOn();
-                    
+
                     return null;
 
                 case ':rotate':
                     RoomRotatingEffect.init(2500, 5000);
                     RoomRotatingEffect.turnVisualizationOn();
-                    
+
                     return null;
                 case ':d':
                 case ';d':
@@ -117,9 +117,9 @@ const useChatInputWidgetState = () =>
                     (async () =>
                     {
                         const image = new Image();
-                    
+
                         image.src = await TextureUtils.generateImageUrl(texture);
-                        
+
                         const newWindow = window.open('');
                         newWindow.document.write(image.outerHTML);
                     })();
@@ -136,9 +136,9 @@ const useChatInputWidgetState = () =>
 
                     return null;
                 case ':ejectall':
-                    if (roomSession.isRoomOwner || GetSessionDataManager().isModerator || roomSession.controllerLevel >= RoomControllerLevel.GUEST)
+                    if(roomSession.isRoomOwner || GetSessionDataManager().isModerator || roomSession.controllerLevel >= RoomControllerLevel.GUEST)
                     {
-                        showConfirm(LocalizeText('room.confirm.eject_all'), () => 
+                        showConfirm(LocalizeText('room.confirm.eject_all'), () =>
                         {
                             GetSessionDataManager().sendSpecialCommandMessage(':ejectall');
                         },
@@ -154,7 +154,7 @@ const useChatInputWidgetState = () =>
                 case ':floor':
                 case ':bcfloor':
                     if(roomSession.controllerLevel >= RoomControllerLevel.ROOM_OWNER) CreateLinkEvent('floor-editor/show');
-                    
+
                     return null;
                 case ':togglefps': {
                     if(GetTicker().maxFPS > 0) GetTicker().maxFPS = 0;
@@ -189,7 +189,7 @@ const useChatInputWidgetState = () =>
                 roomSession.sendWhisperMessage(recipientName, text, styleId);
                 break;
         }
-    }
+    };
 
     useNitroEvent<RoomSessionChatEvent>(RoomSessionChatEvent.FLOOD_EVENT, event =>
     {
@@ -247,7 +247,7 @@ const useChatInputWidgetState = () =>
             timeout = setTimeout(() =>
             {
                 setIsIdle(false);
-                setIsTyping(false)
+                setIsTyping(false);
             }, 10000);
         }
 
@@ -277,6 +277,6 @@ const useChatInputWidgetState = () =>
     }, [ roomSession, isTyping, typingStartedSent ]);
 
     return { selectedUsername, floodBlocked, floodBlockedSeconds, setIsTyping, setIsIdle, sendChat };
-}
+};
 
 export const useChatInputWidget = useChatInputWidgetState;

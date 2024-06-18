@@ -66,7 +66,7 @@ const useHelpState = () =>
         }
 
         setActiveReport(newReport);
-    }
+    };
 
     useMessageEvent<CallForHelpResultMessageEvent>(CallForHelpResultMessageEvent, event =>
     {
@@ -133,7 +133,7 @@ const useHelpState = () =>
     {
         const parser = event.getParser();
 
-        simpleAlert(LocalizeText('help.emergency.global_mute.message'), NotificationAlertType.MODERATION, parser.infoUrl, LocalizeText('help.emergency.global_mute.link'), LocalizeText('help.emergency.global_mute.subtitle'))
+        simpleAlert(LocalizeText('help.emergency.global_mute.message'), NotificationAlertType.MODERATION, parser.infoUrl, LocalizeText('help.emergency.global_mute.link'), LocalizeText('help.emergency.global_mute.subtitle'));
     });
 
     useMessageEvent<SanctionStatusEvent>(SanctionStatusEvent, event =>
@@ -144,6 +144,6 @@ const useHelpState = () =>
     });
 
     return { activeReport, setActiveReport, sanctionInfo, setSanctionInfo, report };
-}
+};
 
 export const useHelp = () => useBetween(useHelpState);

@@ -136,7 +136,7 @@ const useAchievementsState = () =>
     {
         const parser = event.getParser();
         const categories: AchievementCategory[] = [];
-        
+
         for(const achievement of parser.achievements)
         {
             const categoryName = achievement.category;
@@ -180,6 +180,6 @@ const useAchievementsState = () =>
     }, [ selectedCategoryCode, selectedAchievementId, setAchievementSeen ]);
 
     return { achievementCategories, selectedCategoryCode, setSelectedCategoryCode, selectedAchievementId, setSelectedAchievementId, achievementScore, getTotalUnseen, getProgress, getMaxProgress, scaledProgressPercent, selectedCategory, selectedAchievement, setAchievementSeen };
-}
+};
 
 export const useAchievements = () => useBetween(useAchievementsState);

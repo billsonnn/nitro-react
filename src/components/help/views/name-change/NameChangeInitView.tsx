@@ -17,4 +17,4 @@ export const NameChangeInitView: FC<NameChangeLayoutViewProps> = props =>
             </div>
         </div>
     );
-}
+};

@@ -47,7 +47,7 @@ export const WiredActionMoveFurniView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        if (trigger.intData.length >= 2)
+        if(trigger.intData.length >= 2)
         {
             setMovement(trigger.intData[0]);
             setRotation(trigger.intData[1]);
@@ -75,7 +75,7 @@ export const WiredActionMoveFurniView: FC<{}> = props =>
                                 <input checked={ (movement === option.value) } className="form-check-input" id={ `movement${ option.value }` } name="movement" type="radio" onChange={ event => setMovement(option.value) } />
                                 <i className={ `nitro.icon icon-${ option.icon }` } />
                             </div>
-                        )
+                        );
                     }) }
                     <div className="col" />
                 </div>
@@ -92,9 +92,9 @@ export const WiredActionMoveFurniView: FC<{}> = props =>
                                 { LocalizeText(`wiredfurni.params.rotatefurni.${ option }`) }
                             </Text>
                         </div>
-                    )
+                    );
                 }) }
             </div>
         </WiredActionBaseView>
     );
-}
+};

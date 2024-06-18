@@ -30,7 +30,7 @@ const useAvatarInfoWidgetState = () =>
 
             return newValue;
         });
-    }
+    };
 
     const removeProductBubble = (index: number) =>
     {
@@ -43,13 +43,13 @@ const useAvatarInfoWidgetState = () =>
 
             return newValue;
         });
-    }
+    };
 
     const updateConfirmingProduct = (product: UseProductItem) =>
     {
         setConfirmingProduct(product);
         setProductBubbles([]);
-    }
+    };
 
     const getObjectName = (objectId: number, category: number) =>
     {
@@ -60,7 +60,7 @@ const useAvatarInfoWidgetState = () =>
         setActiveNameBubble(name);
 
         if(category !== RoomObjectCategory.UNIT) setProductBubbles([]);
-    }
+    };
 
     const getObjectInfo = (objectId: number, category: number) =>
     {
@@ -102,16 +102,16 @@ const useAvatarInfoWidgetState = () =>
         if(!info) return;
 
         setAvatarInfo(info);
-    }
+    };
 
     const processUsableRoomObject = (objectId: number) =>
     {
-    }
+    };
 
     const refreshPetInfo = () =>
     {
         // roomSession.userDataManager.requestPetInfo(petData.id);
-    }
+    };
 
     useNitroEvent<RoomSessionUserDataUpdateEvent>(RoomSessionUserDataUpdateEvent.USER_DATA_UPDATED, event =>
     {
@@ -350,6 +350,6 @@ const useAvatarInfoWidgetState = () =>
     }, [ roomSession, isDecorating ]);
 
     return { avatarInfo, setAvatarInfo, activeNameBubble, setActiveNameBubble, nameBubbles, productBubbles, confirmingProduct, isDecorating, setIsDecorating, removeNameBubble, removeProductBubble, updateConfirmingProduct, getObjectName };
-}
+};
 
 export const useAvatarInfoWidget = useAvatarInfoWidgetState;

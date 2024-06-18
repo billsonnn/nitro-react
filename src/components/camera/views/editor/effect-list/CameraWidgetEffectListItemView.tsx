@@ -41,4 +41,4 @@ export const CameraWidgetEffectListItemView: FC<CameraWidgetEffectListItemViewPr
             </LayoutGridItem>
         </>
     );
-}
+};

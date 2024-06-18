@@ -28,7 +28,7 @@ export const BonusRareWidgetView: FC<BonusRareWidgetViewProps> = props =>
         SendMessageComposer(new GetBonusRareInfoMessageComposer());
     }, []);
 
-    if (!productType) return null;
+    if(!productType) return null;
 
     return (
         <div className="bonus-rare widget flex">
@@ -39,4 +39,4 @@ export const BonusRareWidgetView: FC<BonusRareWidgetViewProps> = props =>
             </div>
         </div>
     );
-}
+};

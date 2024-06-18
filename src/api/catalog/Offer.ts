@@ -60,7 +60,7 @@ export class Offer implements IPurchasableOffer
 
     public activate(): void
     {
-        
+
     }
 
     public get clubLevel(): number
@@ -228,7 +228,7 @@ export class Offer implements IPurchasableOffer
     {
         const products: IProduct[] = [];
         const productData = GetProductDataForLocalization(this.localizationId);
-        
+
         for(const product of this._products)
         {
             const furnitureData = GetFurnitureData(product.productClassId, product.productType);

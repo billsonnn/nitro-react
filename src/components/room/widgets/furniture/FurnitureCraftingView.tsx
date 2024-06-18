@@ -18,14 +18,14 @@ export const FurnitureCraftingView: FC<{}> = props =>
 
     const canCraft = useMemo(() =>
     {
-        if (!requiredIngredients || !requiredIngredients.length) return false;
+        if(!requiredIngredients || !requiredIngredients.length) return false;
 
-        for (const ingredient of requiredIngredients) 
+        for(const ingredient of requiredIngredients)
         {
             const ingredientData = ingredients.find(data => (data.name === ingredient.itemName));
 
 
-            if (!ingredientData || ingredientData.count < ingredient.count) return false;
+            if(!ingredientData || ingredientData.count < ingredient.count) return false;
         }
 
         return true;
@@ -33,7 +33,7 @@ export const FurnitureCraftingView: FC<{}> = props =>
 
     const tryCraft = () =>
     {
-        if (!waitingToConfirm) 
+        if(!waitingToConfirm)
         {
             setWaitingToConfirm(true);
 
@@ -49,7 +49,7 @@ export const FurnitureCraftingView: FC<{}> = props =>
         setWaitingToConfirm(false);
     }, [ selectedRecipe ]);
 
-    if (objectId === -1) return null;
+    if(objectId === -1) return null;
 
     return (
         <NitroCardView className="nitro-widget-crafting" theme="primary-slim">
@@ -82,7 +82,7 @@ export const FurnitureCraftingView: FC<{}> = props =>
 
                                         const elements: ReactElement[] = [];
 
-                                        for (let i = 0; i < ingredient.count; i++)
+                                        for(let i = 0; i < ingredient.count; i++)
                                         {
                                             elements.push(<LayoutGridItem key={ i } className={ (ingredientData.count - (i) <= 0 ? 'opacity-0-5 ' : '') + 'cursor-default' } itemImage={ ingredientData.iconUrl } />);
                                         }
@@ -112,4 +112,4 @@ export const FurnitureCraftingView: FC<{}> = props =>
             </NitroCardContentView>
         </NitroCardView>
     );
-}
+};

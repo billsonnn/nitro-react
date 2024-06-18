@@ -15,4 +15,4 @@ export const CatalogAddOnBadgeWidgetView: FC<CatalogAddOnBadgeWidgetViewProps> =
     if(!currentOffer || !currentOffer.badgeCode || !currentOffer.badgeCode.length) return null;
 
     return <LayoutBadgeImageView badgeCode={ currentOffer.badgeCode } { ...rest } />;
-}
+};

@@ -22,11 +22,11 @@ export const CameraWidgetShowPhotoView: FC<CameraWidgetShowPhotoViewProps> = pro
         {
             let newIndex = (prevValue + 1);
 
-            if (newIndex >= currentPhotos.length) newIndex = 0;
+            if(newIndex >= currentPhotos.length) newIndex = 0;
 
             return newIndex;
         });
-    }
+    };
 
     const previous = () =>
     {
@@ -34,18 +34,18 @@ export const CameraWidgetShowPhotoView: FC<CameraWidgetShowPhotoViewProps> = pro
         {
             let newIndex = (prevValue - 1);
 
-            if (newIndex < 0) newIndex = (currentPhotos.length - 1);
+            if(newIndex < 0) newIndex = (currentPhotos.length - 1);
 
             return newIndex;
         });
-    }
+    };
 
     useEffect(() =>
     {
         setImageIndex(currentIndex);
     }, [ currentIndex ]);
 
-    if (!currentImage) return null;
+    if(!currentImage) return null;
 
     return (
         <Grid style={ { display: 'flex', flexDirection: 'column' } }>
@@ -68,4 +68,4 @@ export const CameraWidgetShowPhotoView: FC<CameraWidgetShowPhotoViewProps> = pro
             }
         </Grid>
     );
-}
+};

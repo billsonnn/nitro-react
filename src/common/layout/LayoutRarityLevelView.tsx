@@ -25,4 +25,4 @@ export const LayoutRarityLevelView: FC<LayoutRarityLevelViewProps> = props =>
             { children }
         </Base>
     );
-}
+};

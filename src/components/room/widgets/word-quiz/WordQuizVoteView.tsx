@@ -21,4 +21,4 @@ export const WordQuizVoteView: FC<WordQuizVoteViewProps> = props =>
             </div>
         </ObjectLocationView>
     );
-}
+};

@@ -49,4 +49,4 @@ export const WiredActionGiveScoreView: FC<{}> = props =>
             </div>
         </WiredActionBaseView>
     );
-}
+};

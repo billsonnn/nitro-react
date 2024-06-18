@@ -18,6 +18,6 @@ export const FriendsListGroupView: FC<FriendsListGroupViewProps> = props =>
     return (
         <>
             { list.map((item, index) => <FriendsListGroupItemView key={ index } friend={ item } selected={ selectedFriendsIds && (selectedFriendsIds.indexOf(item.id) >= 0) } selectFriend={ selectFriend } />) }
-        </>  
+        </>
     );
-}
+};

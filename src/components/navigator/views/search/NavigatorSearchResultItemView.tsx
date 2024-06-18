@@ -23,34 +23,34 @@ export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProp
 
         let bg = 'bg-primary';
 
-        if (num >= 92)
+        if(num >= 92)
         {
             bg = 'bg-danger';
         }
-        else if (num >= 50)
+        else if(num >= 50)
         {
             bg = 'bg-warning';
         }
-        else if (num > 0)
+        else if(num > 0)
         {
             bg = 'bg-success';
         }
 
         return bg;
-    }
+    };
 
     const visitRoom = (event: MouseEvent) =>
     {
-        if (roomData.ownerId !== GetSessionDataManager().userId)
+        if(roomData.ownerId !== GetSessionDataManager().userId)
         {
-            if (roomData.habboGroupId !== 0)
+            if(roomData.habboGroupId !== 0)
             {
                 TryVisitRoom(roomData.roomId);
 
                 return;
             }
 
-            switch (roomData.doorMode)
+            switch(roomData.doorMode)
             {
                 case RoomDataParser.DOORBELL_STATE:
                     setDoorData(prevValue =>
@@ -78,9 +78,9 @@ export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProp
         }
 
         CreateRoomSession(roomData.roomId);
-    }
+    };
 
-    if (thumbnail) return (
+    if(thumbnail) return (
         <Column pointer alignItems="center" className="navigator-item p-1 bg-light rounded-3 small mb-1 flex-col border border-muted" gap={ 0 } overflow="hidden" onClick={ visitRoom } { ...rest }>
             <LayoutRoomThumbnailView className="flex flex-col items-center justify-end mb-1" customUrl={ roomData.officialRoomPicRef } roomId={ roomData.roomId }>
                 { roomData.habboGroupId > 0 && <LayoutBadgeImageView badgeCode={ roomData.groupBadgeCode } className={ 'absolute top-0 start-0 m-1' } isGroup={ true } /> }
@@ -118,4 +118,4 @@ export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProp
             { children }
         </Flex>
     );
-}
+};

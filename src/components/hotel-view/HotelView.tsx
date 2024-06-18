@@ -16,7 +16,7 @@ export const HotelView: FC<{}> = props =>
         RoomSessionEvent.CREATED,
         RoomSessionEvent.ENDED ], event =>
     {
-        switch (event.type)
+        switch(event.type)
         {
             case RoomSessionEvent.CREATED:
                 setIsVisible(false);
@@ -27,7 +27,7 @@ export const HotelView: FC<{}> = props =>
         }
     });
 
-    if (!isVisible) return null;
+    if(!isVisible) return null;
 
     const backgroundColor = GetConfigurationValue('hotelview')['images']['background.colour'];
     const background = GetConfiguration().interpolate(GetConfigurationValue('hotelview')['images']['background']);
@@ -103,4 +103,4 @@ export const HotelView: FC<{}> = props =>
             ) }
         </div>
     );
-}
+};

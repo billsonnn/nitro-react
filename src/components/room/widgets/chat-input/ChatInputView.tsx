@@ -23,11 +23,11 @@ export const ChatInputView: FC<{}> = props =>
     {
         const activeElement = document.activeElement;
 
-        if (!activeElement) return false;
+        if(!activeElement) return false;
 
-        if (inputRef && (inputRef.current === activeElement)) return false;
+        if(inputRef && (inputRef.current === activeElement)) return false;
 
-        if (!(activeElement instanceof HTMLInputElement) && !(activeElement instanceof HTMLTextAreaElement)) return false;
+        if(!(activeElement instanceof HTMLInputElement) && !(activeElement instanceof HTMLTextAreaElement)) return false;
 
         return true;
     }, [ inputRef ]);
@@ -43,7 +43,7 @@ export const ChatInputView: FC<{}> = props =>
     {
         setChatValue(prevValue =>
         {
-            if ((prevValue !== chatModeIdWhisper) || !selectedUsername.length) return prevValue;
+            if((prevValue !== chatModeIdWhisper) || !selectedUsername.length) return prevValue;
 
             return (`${ prevValue } ${ selectedUsername }`);
         });
@@ -51,7 +51,7 @@ export const ChatInputView: FC<{}> = props =>
 
     const sendChatValue = useCallback((value: string, shiftKey: boolean = false) =>
     {
-        if (!value || (value === '')) return;
+        if(!value || (value === '')) return;
 
         let chatType = (shiftKey ? ChatMessageTypeEnum.CHAT_SHOUT : ChatMessageTypeEnum.CHAT_DEFAULT);
         let text = value;
@@ -61,7 +61,7 @@ export const ChatInputView: FC<{}> = props =>
         let recipientName = '';
         let append = '';
 
-        switch (parts[0])
+        switch(parts[0])
         {
             case chatModeIdWhisper:
                 chatType = ChatMessageTypeEnum.CHAT_WHISPER;
@@ -88,9 +88,9 @@ export const ChatInputView: FC<{}> = props =>
         setIsTyping(false);
         setIsIdle(false);
 
-        if (text.length <= maxChatLength)
+        if(text.length <= maxChatLength)
         {
-            if (/%CC%/g.test(encodeURIComponent(text)))
+            if(/%CC%/g.test(encodeURIComponent(text)))
             {
                 setChatValue('');
             }
@@ -106,7 +106,7 @@ export const ChatInputView: FC<{}> = props =>
 
     const updateChatInput = useCallback((value: string) =>
     {
-        if (!value || !value.length)
+        if(!value || !value.length)
         {
             setIsTyping(false);
         }
@@ -121,13 +121,13 @@ export const ChatInputView: FC<{}> = props =>
 
     const onKeyDownEvent = useCallback((event: KeyboardEvent) =>
     {
-        if (floodBlocked || !inputRef.current || anotherInputHasFocus()) return;
+        if(floodBlocked || !inputRef.current || anotherInputHasFocus()) return;
 
-        if (document.activeElement !== inputRef.current) setInputFocus();
+        if(document.activeElement !== inputRef.current) setInputFocus();
 
         const value = (event.target as HTMLInputElement).value;
 
-        switch (event.key)
+        switch(event.key)
         {
             case ' ':
             case 'Space':
@@ -138,11 +138,11 @@ export const ChatInputView: FC<{}> = props =>
                 sendChatValue(value, event.shiftKey);
                 return;
             case 'Backspace':
-                if (value)
+                if(value)
                 {
                     const parts = value.split(' ');
 
-                    if ((parts[0] === chatModeIdWhisper) && (parts.length === 3) && (parts[2] === ''))
+                    if((parts[0] === chatModeIdWhisper) && (parts.length === 3) && (parts[2] === ''))
                     {
                         setChatValue('');
                     }
@@ -154,7 +154,7 @@ export const ChatInputView: FC<{}> = props =>
 
     useUiEvent<RoomWidgetUpdateChatInputContentEvent>(RoomWidgetUpdateChatInputContentEvent.CHAT_INPUT_CONTENT, event =>
     {
-        switch (event.chatMode)
+        switch(event.chatMode)
         {
             case RoomWidgetUpdateChatInputContentEvent.WHISPER: {
                 setChatValue(`${ chatModeIdWhisper } ${ event.userName } `);
@@ -171,20 +171,20 @@ export const ChatInputView: FC<{}> = props =>
 
         const styles = GetConfigurationValue<{ styleId: number, minRank: number, isSystemStyle: boolean, isHcOnly: boolean, isAmbassadorOnly: boolean }[]>('chat.styles');
 
-        for (const style of styles)
+        for(const style of styles)
         {
-            if (!style) continue;
+            if(!style) continue;
 
-            if (style.minRank > 0)
+            if(style.minRank > 0)
             {
-                if (GetSessionDataManager().hasSecurity(style.minRank)) styleIds.push(style.styleId);
+                if(GetSessionDataManager().hasSecurity(style.minRank)) styleIds.push(style.styleId);
 
                 continue;
             }
 
-            if (style.isSystemStyle)
+            if(style.isSystemStyle)
             {
-                if (GetSessionDataManager().hasSecurity(RoomControllerLevel.MODERATOR))
+                if(GetSessionDataManager().hasSecurity(RoomControllerLevel.MODERATOR))
                 {
                     styleIds.push(style.styleId);
 
@@ -192,23 +192,23 @@ export const ChatInputView: FC<{}> = props =>
                 }
             }
 
-            if (GetConfigurationValue<number[]>('chat.styles.disabled').indexOf(style.styleId) >= 0) continue;
+            if(GetConfigurationValue<number[]>('chat.styles.disabled').indexOf(style.styleId) >= 0) continue;
 
-            if (style.isHcOnly && (GetClubMemberLevel() >= HabboClubLevelEnum.CLUB))
+            if(style.isHcOnly && (GetClubMemberLevel() >= HabboClubLevelEnum.CLUB))
             {
                 styleIds.push(style.styleId);
 
                 continue;
             }
 
-            if (style.isAmbassadorOnly && GetSessionDataManager().isAmbassador)
+            if(style.isAmbassadorOnly && GetSessionDataManager().isAmbassador)
             {
                 styleIds.push(style.styleId);
 
                 continue;
             }
 
-            if (!style.isHcOnly && !style.isAmbassadorOnly) styleIds.push(style.styleId);
+            if(!style.isHcOnly && !style.isAmbassadorOnly) styleIds.push(style.styleId);
         }
 
         return styleIds;
@@ -221,17 +221,17 @@ export const ChatInputView: FC<{}> = props =>
         return () =>
         {
             document.body.removeEventListener('keydown', onKeyDownEvent);
-        }
+        };
     }, [ onKeyDownEvent ]);
 
     useEffect(() =>
     {
-        if (!inputRef.current) return;
+        if(!inputRef.current) return;
 
         inputRef.current.parentElement.dataset.value = chatValue;
     }, [ chatValue ]);
 
-    if (!roomSession || roomSession.isSpectator) return null;
+    if(!roomSession || roomSession.isSpectator) return null;
 
     return (
         createPortal(
@@ -245,4 +245,4 @@ export const ChatInputView: FC<{}> = props =>
                 <ChatInputStyleSelectorView chatStyleId={ chatStyleId } chatStyleIds={ chatStyleIds } selectChatStyleId={ updateChatStyleId } />
             </div>, document.getElementById('toolbar-chat-input-container'))
     );
-}
+};

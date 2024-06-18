@@ -21,16 +21,16 @@ const usePurseState = () =>
     const getCurrencyAmount = (type: number) =>
     {
         if(type === -1) return purse.credits;
-    
+
         for(const [ key, value ] of purse.activityPoints.entries())
         {
             if(key !== type) continue;
-    
+
             return value;
         }
-    
+
         return 0;
-    }
+    };
 
     useMessageEvent<UserCreditsEvent>(UserCreditsEvent, event =>
     {
@@ -74,7 +74,7 @@ const usePurseState = () =>
 
             newValue.activityPoints.set(parser.type, parser.amount);
 
-            if(parser.type === 0) PlaySound(SoundNames.DUCKETS)
+            if(parser.type === 0) PlaySound(SoundNames.DUCKETS);
 
             return newValue;
         });
@@ -121,6 +121,6 @@ const usePurseState = () =>
     }, []);
 
     return { purse, hcDisabled, clubStatus, getCurrencyAmount };
-}
+};
 
 export const usePurse = () => useBetween(usePurseState);

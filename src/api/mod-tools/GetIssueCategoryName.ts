@@ -32,4 +32,4 @@ export const GetIssueCategoryName = (categoryId: number) =>
     }
 
     return 'Unknown';
-}
+};

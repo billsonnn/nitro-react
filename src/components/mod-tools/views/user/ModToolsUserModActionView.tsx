@@ -38,11 +38,11 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
     {
         const values: CallForHelpTopicData[] = [];
 
-        if (cfhCategories && cfhCategories.length)
+        if(cfhCategories && cfhCategories.length)
         {
-            for (const category of cfhCategories)
+            for(const category of cfhCategories)
             {
-                for (const topic of category.topics) values.push(topic);
+                for(const topic of category.topics) values.push(topic);
             }
         }
 
@@ -57,16 +57,16 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
 
         const category = topics[selectedTopic];
 
-        if (selectedTopic === -1) errorMessage = 'You must select a CFH topic';
+        if(selectedTopic === -1) errorMessage = 'You must select a CFH topic';
 
-        if (errorMessage) return sendAlert(errorMessage);
+        if(errorMessage) return sendAlert(errorMessage);
 
         const messageOrDefault = (message.trim().length === 0) ? LocalizeText(`help.cfh.topic.${ category.id }`) : message;
 
         SendMessageComposer(new DefaultSanctionMessageComposer(user.userId, selectedTopic, messageOrDefault));
 
         onCloseClick();
-    }
+    };
 
     const sendSanction = () =>
     {
@@ -75,12 +75,12 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
         const category = topics[selectedTopic];
         const sanction = MOD_ACTION_DEFINITIONS[selectedAction];
 
-        if ((selectedTopic === -1) || (selectedAction === -1)) errorMessage = 'You must select a CFH topic and Sanction';
-        else if (!settings || !settings.cfhPermission) errorMessage = 'You do not have permission to do this';
-        else if (!category) errorMessage = 'You must select a CFH topic';
-        else if (!sanction) errorMessage = 'You must select a sanction';
+        if((selectedTopic === -1) || (selectedAction === -1)) errorMessage = 'You must select a CFH topic and Sanction';
+        else if(!settings || !settings.cfhPermission) errorMessage = 'You do not have permission to do this';
+        else if(!category) errorMessage = 'You must select a CFH topic';
+        else if(!sanction) errorMessage = 'You must select a sanction';
 
-        if (errorMessage)
+        if(errorMessage)
         {
             sendAlert(errorMessage);
 
@@ -89,10 +89,10 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
 
         const messageOrDefault = (message.trim().length === 0) ? LocalizeText(`help.cfh.topic.${ category.id }`) : message;
 
-        switch (sanction.actionType)
+        switch(sanction.actionType)
         {
             case ModActionDefinition.ALERT: {
-                if (!settings.alertPermission)
+                if(!settings.alertPermission)
                 {
                     sendAlert('You have insufficient permissions');
 
@@ -106,7 +106,7 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
                 SendMessageComposer(new ModMuteMessageComposer(user.userId, messageOrDefault, category.id));
                 break;
             case ModActionDefinition.BAN: {
-                if (!settings.banPermission)
+                if(!settings.banPermission)
                 {
                     sendAlert('You have insufficient permissions');
 
@@ -117,7 +117,7 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
                 break;
             }
             case ModActionDefinition.KICK: {
-                if (!settings.kickPermission)
+                if(!settings.kickPermission)
                 {
                     sendAlert('You have insufficient permissions');
                     return;
@@ -133,7 +133,7 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
                 break;
             }
             case ModActionDefinition.MESSAGE: {
-                if (message.trim().length === 0)
+                if(message.trim().length === 0)
                 {
                     sendAlert('Please write a message to user');
 
@@ -146,9 +146,9 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
         }
 
         onCloseClick();
-    }
+    };
 
-    if (!user) return null;
+    if(!user) return null;
 
     return (
         <NitroCardView className="nitro-mod-tools-user-action" theme="primary-slim" windowPosition={ DraggableWindowPosition.TOP_LEFT }>
@@ -173,4 +173,4 @@ export const ModToolsUserModActionView: FC<ModToolsUserModActionViewProps> = pro
             </NitroCardContentView>
         </NitroCardView>
     );
-}
+};

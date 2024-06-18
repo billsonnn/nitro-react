@@ -11,7 +11,7 @@ const NitroCardContext = createContext<INitroCardContext>({
 
 export const NitroCardContextProvider: FC<ProviderProps<INitroCardContext>> = props =>
 {
-    return <NitroCardContext.Provider value={ props.value }>{ props.children }</NitroCardContext.Provider>
-}
+    return <NitroCardContext.Provider value={ props.value }>{ props.children }</NitroCardContext.Provider>;
+};
 
 export const useNitroCardContext = () => useContext(NitroCardContext);

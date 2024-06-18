@@ -106,7 +106,7 @@ export const DraggableWindow: FC<DraggableWindowProps> = props =>
     const completeDrag = useCallback(() =>
     {
         if(!elementRef.current || !dragHandler) return;
-        
+
         let offsetX = (offset.x + delta.x);
         let offsetY = (offset.y + delta.y);
 
@@ -169,7 +169,7 @@ export const DraggableWindow: FC<DraggableWindowProps> = props =>
 
         if(!disableDrag)
         {
-            const handle = (element.querySelector(handleSelector) as HTMLElement);
+            const handle = (element.querySelector(handleSelector));
 
             if(handle) setDragHandler(handle);
         }
@@ -201,13 +201,13 @@ export const DraggableWindow: FC<DraggableWindowProps> = props =>
             const index = CURRENT_WINDOWS.indexOf(element);
 
             if(index >= 0) CURRENT_WINDOWS.splice(index, 1);
-        }
+        };
     }, [ handleSelector, windowPosition, uniqueKey, disableDrag, offsetLeft, offsetTop, bringToTop ]);
 
     useEffect(() =>
     {
         if(!offset && !delta) return;
-        
+
         const element = (elementRef.current as HTMLElement);
 
         if(!element) return;
@@ -227,7 +227,7 @@ export const DraggableWindow: FC<DraggableWindowProps> = props =>
         {
             dragHandler.removeEventListener(MouseEventType.MOUSE_DOWN, onDragMouseDown);
             dragHandler.removeEventListener(TouchEventType.TOUCH_START, onTouchDown);
-        }
+        };
     }, [ dragHandler, onDragMouseDown, onTouchDown ]);
 
     useEffect(() =>
@@ -245,7 +245,7 @@ export const DraggableWindow: FC<DraggableWindowProps> = props =>
             document.removeEventListener(TouchEventType.TOUCH_END, onDragTouchUp);
             document.removeEventListener(MouseEventType.MOUSE_MOVE, onDragMouseMove);
             document.removeEventListener(TouchEventType.TOUCH_MOVE, onDragTouchMove);
-        }
+        };
     }, [ isDragging, onDragMouseUp, onDragMouseMove, onDragTouchUp, onDragTouchMove ]);
 
     useEffect(() =>
@@ -266,4 +266,4 @@ export const DraggableWindow: FC<DraggableWindowProps> = props =>
                 { children }
             </div>, document.getElementById('draggable-windows-container'))
     );
-}
+};

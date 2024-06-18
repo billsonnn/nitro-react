@@ -7,7 +7,7 @@ export const FurnitureExchangeCreditView: FC<{}> = props =>
 {
     const { objectId = -1, value = 0, onClose = null, redeem = null } = useFurnitureExchangeWidget();
 
-    if (objectId === -1) return null;
+    if(objectId === -1) return null;
 
     return (
         <NitroCardView className="nitro-widget-exchange-credit" theme="primary-slim">
@@ -30,4 +30,4 @@ export const FurnitureExchangeCreditView: FC<{}> = props =>
             </NitroCardContentView>
         </NitroCardView>
     );
-}
+};

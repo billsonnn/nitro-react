@@ -16,7 +16,7 @@ interface AvatarInfoWidgetDecorateViewProps
 export const AvatarInfoWidgetDecorateView: FC<AvatarInfoWidgetDecorateViewProps> = props =>
 {
     const { userId = -1, userName = '', roomIndex = -1, setIsDecorating = null } = props;
-    
+
     return (
         <ContextMenuView category={ RoomObjectCategory.UNIT } objectId={ roomIndex } onClose={ null }>
             <ContextMenuListView>
@@ -25,5 +25,5 @@ export const AvatarInfoWidgetDecorateView: FC<AvatarInfoWidgetDecorateViewProps>
                 </ContextMenuListItemView>
             </ContextMenuListView>
         </ContextMenuView>
-    )
-}
+    );
+};

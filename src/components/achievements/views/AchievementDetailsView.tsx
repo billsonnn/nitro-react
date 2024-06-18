@@ -13,7 +13,7 @@ export const AchievementDetailsView: FC<AchievementDetailsViewProps> = props =>
 {
     const { achievement = null } = props;
 
-    if (!achievement) return null;
+    if(!achievement) return null;
 
     return (
         <Flex shrink className="bg-muted rounded p-2 text-black" gap={ 2 } overflow="hidden">
@@ -49,5 +49,5 @@ export const AchievementDetailsView: FC<AchievementDetailsViewProps> = props =>
                     </div> }
             </Column>
         </Flex>
-    )
-}
+    );
+};

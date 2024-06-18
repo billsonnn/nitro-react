@@ -32,4 +32,4 @@ export const CatalogNavigationItemView: FC<CatalogNavigationItemViewProps> = pro
                 <CatalogNavigationSetView child={ true } node={ node } /> }
         </div>
     );
-}
+};

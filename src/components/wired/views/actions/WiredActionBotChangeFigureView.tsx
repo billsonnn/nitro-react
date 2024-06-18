@@ -20,8 +20,8 @@ export const WiredActionBotChangeFigureView: FC<{}> = props =>
     {
         const data = trigger.stringData.split(WIRED_STRING_DELIMETER);
 
-        if (data.length > 0) setBotName(data[0]);
-        if (data.length > 1) setFigure(data[1].length > 0 ? data[1] : DEFAULT_FIGURE);
+        if(data.length > 0) setBotName(data[0]);
+        if(data.length > 1) setFigure(data[1].length > 0 ? data[1] : DEFAULT_FIGURE);
     }, [ trigger ]);
 
     return (
@@ -36,4 +36,4 @@ export const WiredActionBotChangeFigureView: FC<{}> = props =>
             </div>
         </WiredActionBaseView>
     );
-}
+};

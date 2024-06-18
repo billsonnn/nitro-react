@@ -6,20 +6,20 @@ import { useNitroEvent, useUiEvent } from '../events';
 
 const useRoomState = () =>
 {
-    const [ roomSession, setRoomSession ] = useState<IRoomSession>(null);
-    const [ roomBackground, setRoomBackground ] = useState<NitroSprite>(null);
-    const [ roomFilter, setRoomFilter ] = useState<NitroAdjustmentFilter>(null);
-    const [ originalRoomBackgroundColor, setOriginalRoomBackgroundColor ] = useState(0);
+    const [roomSession, setRoomSession] = useState<IRoomSession>(null);
+    const [roomBackground, setRoomBackground] = useState<NitroSprite>(null);
+    const [roomFilter, setRoomFilter] = useState<NitroAdjustmentFilter>(null);
+    const [originalRoomBackgroundColor, setOriginalRoomBackgroundColor] = useState(0);
 
     const updateRoomBackgroundColor = (hue: number, saturation: number, lightness: number, original: boolean = false) =>
     {
-        if(!roomBackground) return;
+        if (!roomBackground) return;
 
         const newColor = ColorConverter.hslToRGB(((((hue & 0xFF) << 16) + ((saturation & 0xFF) << 8)) + (lightness & 0xFF)));
 
-        if(original) setOriginalRoomBackgroundColor(newColor);
+        if (original) setOriginalRoomBackgroundColor(newColor);
 
-        if(!hue && !saturation && !lightness)
+        if (!hue && !saturation && !lightness)
         {
             roomBackground.tint = 0;
         }
@@ -27,11 +27,11 @@ const useRoomState = () =>
         {
             roomBackground.tint = newColor;
         }
-    }
+    };
 
     const updateRoomFilter = (color: number) =>
     {
-        if(!roomFilter) return;
+        if (!roomFilter) return;
 
         const r = ((color >> 16) & 0xFF);
         const g = ((color >> 8) & 0xFF);
@@ -40,33 +40,33 @@ const useRoomState = () =>
         roomFilter.red = (r / 255);
         roomFilter.green = (g / 255);
         roomFilter.blue = (b / 255);
-    }
+    };
 
     useUiEvent<RoomWidgetUpdateBackgroundColorPreviewEvent>(RoomWidgetUpdateBackgroundColorPreviewEvent.PREVIEW, event => updateRoomBackgroundColor(event.hue, event.saturation, event.lightness));
 
     useUiEvent<RoomWidgetUpdateBackgroundColorPreviewEvent>(RoomWidgetUpdateBackgroundColorPreviewEvent.CLEAR_PREVIEW, event =>
     {
-        if(!roomBackground) return;
+        if (!roomBackground) return;
 
         roomBackground.tint = originalRoomBackgroundColor;
     });
 
     useNitroEvent<RoomObjectHSLColorEnabledEvent>(RoomObjectHSLColorEnabledEvent.ROOM_BACKGROUND_COLOR, event =>
     {
-        if(RoomId.isRoomPreviewerId(event.roomId)) return;
+        if (RoomId.isRoomPreviewerId(event.roomId)) return;
 
-        if(event.enable) updateRoomBackgroundColor(event.hue, event.saturation, event.lightness, true);
+        if (event.enable) updateRoomBackgroundColor(event.hue, event.saturation, event.lightness, true);
         else updateRoomBackgroundColor(0, 0, 0, true);
     });
 
     useNitroEvent<RoomBackgroundColorEvent>(RoomBackgroundColorEvent.ROOM_COLOR, event =>
     {
-        if(RoomId.isRoomPreviewerId(event.roomId)) return;
+        if (RoomId.isRoomPreviewerId(event.roomId)) return;
 
         let color = 0x000000;
         let brightness = 0xFF;
 
-        if(!event.bgOnly)
+        if (!event.bgOnly)
         {
             color = event.color;
             brightness = event.brightness;
@@ -80,13 +80,13 @@ const useRoomState = () =>
         RoomEngineEvent.DISPOSED
     ], event =>
     {
-        if(RoomId.isRoomPreviewerId(event.roomId)) return;
+        if (RoomId.isRoomPreviewerId(event.roomId)) return;
 
         const session = GetRoomSession();
 
-        if(!session) return;
+        if (!session) return;
 
-        switch(event.type)
+        switch (event.type)
         {
             case RoomEngineEvent.INITIALIZED:
                 SetActiveRoomId(event.roomId);
@@ -103,7 +103,7 @@ const useRoomState = () =>
         RoomSessionEvent.ENDED
     ], event =>
     {
-        switch(event.type)
+        switch (event.type)
         {
             case RoomSessionEvent.CREATED:
                 StartRoomSession(event.session);
@@ -127,14 +127,14 @@ const useRoomState = () =>
         RoomEngineObjectEvent.DOUBLE_CLICK
     ], event =>
     {
-        if(RoomId.isRoomPreviewerId(event.roomId)) return;
+        if (RoomId.isRoomPreviewerId(event.roomId)) return;
 
         let updateEvent: RoomWidgetUpdateRoomObjectEvent = null;
 
-        switch(event.type)
+        switch (event.type)
         {
             case RoomEngineObjectEvent.SELECTED:
-                if(!IsFurnitureSelectionDisabled(event)) updateEvent = new RoomWidgetUpdateRoomObjectEvent(RoomWidgetUpdateRoomObjectEvent.OBJECT_SELECTED, event.objectId, event.category, event.roomId);
+                if (!IsFurnitureSelectionDisabled(event)) updateEvent = new RoomWidgetUpdateRoomObjectEvent(RoomWidgetUpdateRoomObjectEvent.OBJECT_SELECTED, event.objectId, event.category, event.roomId);
                 break;
             case RoomEngineObjectEvent.DESELECTED:
                 updateEvent = new RoomWidgetUpdateRoomObjectEvent(RoomWidgetUpdateRoomObjectEvent.OBJECT_DESELECTED, event.objectId, event.category, event.roomId);
@@ -142,7 +142,7 @@ const useRoomState = () =>
             case RoomEngineObjectEvent.ADDED: {
                 let addedEventType: string = null;
 
-                switch(event.category)
+                switch (event.category)
                 {
                     case RoomObjectCategory.FLOOR:
                     case RoomObjectCategory.WALL:
@@ -153,13 +153,13 @@ const useRoomState = () =>
                         break;
                 }
 
-                if(addedEventType) updateEvent = new RoomWidgetUpdateRoomObjectEvent(addedEventType, event.objectId, event.category, event.roomId);
+                if (addedEventType) updateEvent = new RoomWidgetUpdateRoomObjectEvent(addedEventType, event.objectId, event.category, event.roomId);
                 break;
             }
             case RoomEngineObjectEvent.REMOVED: {
                 let removedEventType: string = null;
 
-                switch(event.category)
+                switch (event.category)
                 {
                     case RoomObjectCategory.FLOOR:
                     case RoomObjectCategory.WALL:
@@ -170,14 +170,14 @@ const useRoomState = () =>
                         break;
                 }
 
-                if(removedEventType) updateEvent = new RoomWidgetUpdateRoomObjectEvent(removedEventType, event.objectId, event.category, event.roomId);
+                if (removedEventType) updateEvent = new RoomWidgetUpdateRoomObjectEvent(removedEventType, event.objectId, event.category, event.roomId);
                 break;
             }
             case RoomEngineObjectEvent.REQUEST_MOVE:
-                if(CanManipulateFurniture(roomSession, event.objectId, event.category)) ProcessRoomObjectOperation(event.objectId, event.category, RoomObjectOperationType.OBJECT_MOVE);
+                if (CanManipulateFurniture(roomSession, event.objectId, event.category)) ProcessRoomObjectOperation(event.objectId, event.category, RoomObjectOperationType.OBJECT_MOVE);
                 break;
             case RoomEngineObjectEvent.REQUEST_ROTATE:
-                if(CanManipulateFurniture(roomSession, event.objectId, event.category)) ProcessRoomObjectOperation(event.objectId, event.category, RoomObjectOperationType.OBJECT_ROTATE_POSITIVE);
+                if (CanManipulateFurniture(roomSession, event.objectId, event.category)) ProcessRoomObjectOperation(event.objectId, event.category, RoomObjectOperationType.OBJECT_ROTATE_POSITIVE);
                 break;
             case RoomEngineObjectEvent.MOUSE_ENTER:
                 updateEvent = new RoomWidgetUpdateRoomObjectEvent(RoomWidgetUpdateRoomObjectEvent.OBJECT_ROLL_OVER, event.objectId, event.category, event.roomId);
@@ -190,12 +190,12 @@ const useRoomState = () =>
                 break;
         }
 
-        if(updateEvent) DispatchUiEvent(updateEvent);
+        if (updateEvent) DispatchUiEvent(updateEvent);
     });
 
     useEffect(() =>
     {
-        if(!roomSession) return;
+        if (!roomSession) return;
 
         const roomEngine = GetRoomEngine();
         const roomId = roomSession.roomId;
@@ -204,12 +204,12 @@ const useRoomState = () =>
         const height = Math.floor(window.innerHeight);
         const renderer = GetRenderer();
 
-        if(renderer) renderer.resize(width, height);
+        if (renderer) renderer.resize(width, height);
 
         const displayObject = roomEngine.getRoomInstanceDisplay(roomId, canvasId, width, height, RoomGeometry.SCALE_ZOOMED_IN);
         const canvas = GetRoomEngine().getRoomInstanceRenderingCanvas(roomId, canvasId);
 
-        if(!displayObject || !canvas) return;
+        if (!displayObject || !canvas) return;
 
         const background = new NitroSprite(NitroTexture.WHITE);
         const filter = new NitroAdjustmentFilter();
@@ -220,14 +220,14 @@ const useRoomState = () =>
         background.height = height;
 
         master.addChildAt(background, 0);
-        master.filters = [ filter ];
+        master.filters = [filter];
 
         setRoomBackground(background);
         setRoomFilter(filter);
 
         const geometry = (roomEngine.getRoomInstanceGeometry(roomId, canvasId) as RoomGeometry);
 
-        if(geometry)
+        if (geometry)
         {
             const minX = (roomEngine.getRoomInstanceVariable<number>(roomId, RoomVariableEnum.ROOM_MIN_X) || 0);
             const maxX = (roomEngine.getRoomInstanceVariable<number>(roomId, RoomVariableEnum.ROOM_MAX_X) || 0);
@@ -256,14 +256,13 @@ const useRoomState = () =>
             const width = Math.floor(window.innerWidth);
             const height = Math.floor(window.innerHeight);
 
-            renderer.resolution = window.devicePixelRatio;
-            renderer.resize(width, height);
+            renderer.resize(width, height, window.devicePixelRatio);
 
             background.width = width;
             background.height = height;
 
             InitializeRoomInstanceRenderingCanvas(width, height, 1);
-        }
+        };
 
         window.addEventListener('resize', resize);
 
@@ -274,10 +273,10 @@ const useRoomState = () =>
             setOriginalRoomBackgroundColor(0);
 
             window.removeEventListener('resize', resize);
-        }
-    }, [ roomSession ]);
+        };
+    }, [roomSession]);
 
     return { roomSession };
-}
+};
 
 export const useRoom = () => useBetween(useRoomState);

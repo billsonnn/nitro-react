@@ -29,31 +29,31 @@ export const Base: FC<BaseProps<HTMLDivElement>> = props =>
     {
         const newClassNames: string[] = [];
 
-        if (display && display.length) newClassNames.push(display);
+        if(display && display.length) newClassNames.push(display);
 
-        if (fit || fullWidth) newClassNames.push('w-full');
+        if(fit || fullWidth) newClassNames.push('w-full');
 
-        if (fit || fullHeight) newClassNames.push('h-full');
+        if(fit || fullHeight) newClassNames.push('h-full');
 
-        if (fitV) newClassNames.push('vw-full', 'vh-full');
+        if(fitV) newClassNames.push('vw-full', 'vh-full');
 
-        if (grow) newClassNames.push('!flex-grow');
+        if(grow) newClassNames.push('!flex-grow');
 
-        if (shrink) newClassNames.push('!flex-shrink-0');
+        if(shrink) newClassNames.push('!flex-shrink-0');
 
-        if (overflow) newClassNames.push('overflow-' + overflow);
+        if(overflow) newClassNames.push('overflow-' + overflow);
 
-        if (position) newClassNames.push(position);
+        if(position) newClassNames.push(position);
 
-        if (float) newClassNames.push('float-' + float);
+        if(float) newClassNames.push('float-' + float);
 
-        if (pointer) newClassNames.push('cursor-pointer');
+        if(pointer) newClassNames.push('cursor-pointer');
 
-        if (visible !== null) newClassNames.push(visible ? 'visible' : 'invisible');
+        if(visible !== null) newClassNames.push(visible ? 'visible' : 'invisible');
 
-        if (textColor) newClassNames.push('text-' + textColor);
+        if(textColor) newClassNames.push('text-' + textColor);
 
-        if (classNames.length) newClassNames.push(...classNames);
+        if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
     }, [ display, fit, fitV, grow, shrink, fullWidth, fullHeight, overflow, position, float, pointer, visible, textColor, classNames ]);
@@ -62,7 +62,7 @@ export const Base: FC<BaseProps<HTMLDivElement>> = props =>
     {
         let newClassName = getClassNames.join(' ');
 
-        if (className.length) newClassName += (' ' + className);
+        if(className.length) newClassName += (' ' + className);
 
         return newClassName.trim();
     }, [ getClassNames, className ]);
@@ -71,7 +71,7 @@ export const Base: FC<BaseProps<HTMLDivElement>> = props =>
     {
         let newStyle: CSSProperties = {};
 
-        if (Object.keys(style).length) newStyle = { ...newStyle, ...style };
+        if(Object.keys(style).length) newStyle = { ...newStyle, ...style };
 
         return newStyle;
     }, [ style ]);
@@ -81,4 +81,4 @@ export const Base: FC<BaseProps<HTMLDivElement>> = props =>
             { children }
         </div>
     );
-}
+};

@@ -21,7 +21,7 @@ export const HelpView: FC<{}> = props =>
     {
         setActiveReport(null);
         setIsVisible(false);
-    }
+    };
 
     useEffect(() =>
     {
@@ -29,9 +29,9 @@ export const HelpView: FC<{}> = props =>
             linkReceived: (url: string) =>
             {
                 const parts = url.split('/');
-        
+
                 if(parts.length < 2) return;
-        
+
                 switch(parts[1])
                 {
                     case 'show':
@@ -70,7 +70,7 @@ export const HelpView: FC<{}> = props =>
 
         setIsVisible(true);
     }, [ activeReport ]);
-    
+
     const CurrentStepView = () =>
     {
         if(activeReport)
@@ -91,7 +91,7 @@ export const HelpView: FC<{}> = props =>
         }
 
         return <HelpIndexView />;
-    }
+    };
 
     return (
         <>
@@ -113,4 +113,4 @@ export const HelpView: FC<{}> = props =>
             <NameChangeView />
         </>
     );
-}
+};

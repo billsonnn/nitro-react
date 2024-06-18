@@ -26,14 +26,14 @@ export const GroupManagerView: FC<{}> = props =>
         });
 
         setGroupData(null);
-    }
+    };
 
     const changeTab = (tab: number) =>
     {
         if(closeAction && closeAction.action) closeAction.action();
 
         setCurrentTab(tab);
-    }
+    };
 
     useMessageEvent<GroupInformationEvent>(GroupInformationEvent, event =>
     {
@@ -83,7 +83,7 @@ export const GroupManagerView: FC<{}> = props =>
     });
 
     if(!groupData || (groupData.groupId <= 0)) return null;
-    
+
     return (
         <NitroCardView className="nitro-group-manager">
             <NitroCardHeaderView headerText={ LocalizeText('group.window.title') } onCloseClick={ onClose } />

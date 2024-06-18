@@ -15,7 +15,7 @@ export const CatalogLayoutTrophiesView: FC<CatalogLayoutProps> = props =>
 
     useEffect(() =>
     {
-        if (!currentOffer) return;
+        if(!currentOffer) return;
 
         setPurchaseOptions(prevValue =>
         {
@@ -53,4 +53,4 @@ export const CatalogLayoutTrophiesView: FC<CatalogLayoutProps> = props =>
             </Column>
         </Grid>
     );
-}
+};

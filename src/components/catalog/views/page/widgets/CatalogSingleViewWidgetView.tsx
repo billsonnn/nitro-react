@@ -4,4 +4,4 @@ import { CatalogFirstProductSelectorWidgetView } from './CatalogFirstProductSele
 export const CatalogSingleViewWidgetView: FC<{}> = props =>
 {
     return <CatalogFirstProductSelectorWidgetView />;
-}
+};

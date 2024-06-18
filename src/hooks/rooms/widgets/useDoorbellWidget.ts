@@ -12,7 +12,7 @@ const useDoorbellWidgetState = () =>
         if(users.indexOf(userName) >= 0) return;
 
         setUsers([ ...users, userName ]);
-    }
+    };
 
     const removeUser = (userName: string) =>
     {
@@ -25,20 +25,20 @@ const useDoorbellWidgetState = () =>
         newUsers.splice(index, 1);
 
         setUsers(newUsers);
-    }
+    };
 
     const answer = (userName: string, flag: boolean) =>
     {
         GetRoomSession().sendDoorbellApprovalMessage(userName, flag);
 
         removeUser(userName);
-    }
+    };
 
     useNitroEvent<RoomSessionDoorbellEvent>(RoomSessionDoorbellEvent.DOORBELL, event => addUser(event.userName));
     useNitroEvent<RoomSessionDoorbellEvent>(RoomSessionDoorbellEvent.RSDE_REJECTED, event => removeUser(event.userName));
     useNitroEvent<RoomSessionDoorbellEvent>(RoomSessionDoorbellEvent.RSDE_ACCEPTED, event => removeUser(event.userName));
 
     return { users, addUser, removeUser, answer };
-}
+};
 
 export const useDoorbellWidget = useDoorbellWidgetState;

@@ -33,7 +33,7 @@ export const NameChangeView:FC<{}> = props =>
                 setIsVisible(false);
                 break;
         }
-    }
+    };
 
     const titleKey = useMemo(() =>
     {
@@ -50,7 +50,7 @@ export const NameChangeView:FC<{}> = props =>
         setLayout(INIT);
         setIsVisible(true);
     });
-    
+
     if(!isVisible) return null;
 
     return (
@@ -62,5 +62,5 @@ export const NameChangeView:FC<{}> = props =>
                 { layout === CONFIRMATION && <NameChangeConfirmationView username={ newUsername } onAction={ onAction } /> }
             </NitroCardContentView>
         </NitroCardView>
-    )
-}
+    );
+};

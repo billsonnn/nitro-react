@@ -5,4 +5,4 @@ export const GetCloseReasonKey = (code: number) =>
     if(code === 2) return 'abusive';
 
     return 'resolved';
-}
+};

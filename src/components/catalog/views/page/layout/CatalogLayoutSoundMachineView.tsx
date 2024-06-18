@@ -26,24 +26,24 @@ export const CatalogLayoutSoundMachineView: FC<CatalogLayoutProps> = props =>
     {
         const parser = event.getParser();
 
-        if (parser.officialSongId !== officialSongId) return;
+        if(parser.officialSongId !== officialSongId) return;
 
         setSongId(parser.songId);
     });
 
     useEffect(() =>
     {
-        if (!currentOffer) return;
+        if(!currentOffer) return;
 
         const product = currentOffer.product;
 
-        if (!product) return;
+        if(!product) return;
 
-        if (product.extraParam.length > 0)
+        if(product.extraParam.length > 0)
         {
             const id = parseInt(product.extraParam);
 
-            if (id > 0)
+            if(id > 0)
             {
                 setSongId(id);
             }
@@ -110,4 +110,4 @@ export const CatalogLayoutSoundMachineView: FC<CatalogLayoutProps> = props =>
             </Grid>
         </>
     );
-}
+};

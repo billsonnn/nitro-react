@@ -22,7 +22,7 @@ export const NitroCardView: FC<NitroCardViewProps> = props =>
 
 
 
-        if (classNames.length) newClassNames.push(...classNames);
+        if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
     }, [ classNames ]);
@@ -34,4 +34,4 @@ export const NitroCardView: FC<NitroCardViewProps> = props =>
             </DraggableWindow>
         </NitroCardContextProvider>
     );
-}
+};

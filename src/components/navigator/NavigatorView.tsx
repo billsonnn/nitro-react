@@ -43,14 +43,14 @@ export const NavigatorView: FC<{}> = props =>
 
     const reloadCurrentSearch = useCallback(() =>
     {
-        if (!isReady)
+        if(!isReady)
         {
             setNeedsSearch(true);
 
             return;
         }
 
-        if (pendingSearch.current)
+        if(pendingSearch.current)
         {
             sendSearch(pendingSearch.current.value, pendingSearch.current.code);
 
@@ -59,14 +59,14 @@ export const NavigatorView: FC<{}> = props =>
             return;
         }
 
-        if (searchResult)
+        if(searchResult)
         {
             sendSearch(searchResult.data, searchResult.code);
 
             return;
         }
 
-        if (!topLevelContext) return;
+        if(!topLevelContext) return;
 
         sendSearch('', topLevelContext.code);
     }, [ isReady, searchResult, topLevelContext, sendSearch ]);
@@ -78,9 +78,9 @@ export const NavigatorView: FC<{}> = props =>
             {
                 const parts = url.split('/');
 
-                if (parts.length < 2) return;
+                if(parts.length < 2) return;
 
-                switch (parts[1])
+                switch(parts[1])
                 {
                     case 'show': {
                         setIsVisible(true);
@@ -91,7 +91,7 @@ export const NavigatorView: FC<{}> = props =>
                         setIsVisible(false);
                         return;
                     case 'toggle': {
-                        if (isVisible)
+                        if(isVisible)
                         {
                             setIsVisible(false);
 
@@ -109,12 +109,12 @@ export const NavigatorView: FC<{}> = props =>
                         setRoomLinkOpen(value => !value);
                         return;
                     case 'goto':
-                        if (parts.length <= 2) return;
+                        if(parts.length <= 2) return;
 
-                        switch (parts[2])
+                        switch(parts[2])
                         {
                             case 'home':
-                                if (navigatorData.homeRoomId <= 0) return;
+                                if(navigatorData.homeRoomId <= 0) return;
 
                                 TryVisitRoom(navigatorData.homeRoomId);
                                 break;
@@ -130,13 +130,13 @@ export const NavigatorView: FC<{}> = props =>
                         setCreatorOpen(true);
                         return;
                     case 'search':
-                        if (parts.length > 2)
+                        if(parts.length > 2)
                         {
                             const topLevelContextCode = parts[2];
 
                             let searchValue = '';
 
-                            if (parts.length > 3) searchValue = parts[3];
+                            if(parts.length > 3) searchValue = parts[3];
 
                             pendingSearch.current = { value: searchValue, code: topLevelContextCode };
 
@@ -156,16 +156,16 @@ export const NavigatorView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        if (!searchResult) return;
+        if(!searchResult) return;
 
         setIsLoading(false);
 
-        if (elementRef && elementRef.current) elementRef.current.scrollTop = 0;
+        if(elementRef && elementRef.current) elementRef.current.scrollTop = 0;
     }, [ searchResult ]);
 
     useEffect(() =>
     {
-        if (!isVisible || !isReady || !needsSearch) return;
+        if(!isVisible || !isReady || !needsSearch) return;
 
         reloadCurrentSearch();
 
@@ -174,14 +174,14 @@ export const NavigatorView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        if (isReady || !topLevelContext) return;
+        if(isReady || !topLevelContext) return;
 
         setIsReady(true);
     }, [ isReady, topLevelContext ]);
 
     useEffect(() =>
     {
-        if (!isVisible || !needsInit) return;
+        if(!isVisible || !needsInit) return;
 
         SendMessageComposer(new NavigatorInitComposer());
 
@@ -237,4 +237,4 @@ export const NavigatorView: FC<{}> = props =>
             <NavigatorRoomSettingsView />
         </>
     );
-}
+};

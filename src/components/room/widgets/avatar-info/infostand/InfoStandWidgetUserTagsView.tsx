@@ -12,7 +12,7 @@ const processAction = (tag: string) =>
 {
     CreateLinkEvent(`navigator/search/${ tag }`);
     SendMessageComposer(new NavigatorSearchComposer('hotel_view', `tag:${ tag }`));
-}
+};
 
 export const InfoStandWidgetUserTagsView: FC<InfoStandWidgetUserTagsViewProps> = props =>
 {
@@ -28,4 +28,4 @@ export const InfoStandWidgetUserTagsView: FC<InfoStandWidgetUserTagsViewProps> =
             </Flex>
         </>
     );
-}
+};

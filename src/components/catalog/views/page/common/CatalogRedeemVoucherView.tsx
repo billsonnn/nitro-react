@@ -20,12 +20,12 @@ export const CatalogRedeemVoucherView: FC<CatalogRedeemVoucherViewProps> = props
 
     const redeemVoucher = () =>
     {
-        if (!voucher || !voucher.length || isWaiting) return;
+        if(!voucher || !voucher.length || isWaiting) return;
 
         SendMessageComposer(new RedeemVoucherMessageComposer(voucher));
 
         setIsWaiting(true);
-    }
+    };
 
     useMessageEvent<VoucherRedeemOkMessageEvent>(VoucherRedeemOkMessageEvent, event =>
     {
@@ -33,7 +33,7 @@ export const CatalogRedeemVoucherView: FC<CatalogRedeemVoucherViewProps> = props
 
         let message = LocalizeText('catalog.alert.voucherredeem.ok.description');
 
-        if (parser.productName) message = LocalizeText('catalog.alert.voucherredeem.ok.description.furni', [ 'productName', 'productDescription' ], [ parser.productName, parser.productDescription ]);
+        if(parser.productName) message = LocalizeText('catalog.alert.voucherredeem.ok.description.furni', [ 'productName', 'productDescription' ], [ parser.productName, parser.productDescription ]);
 
         simpleAlert(message, null, null, null, LocalizeText('catalog.alert.voucherredeem.ok.title'));
 
@@ -64,4 +64,4 @@ export const CatalogRedeemVoucherView: FC<CatalogRedeemVoucherViewProps> = props
             </Button>
         </div>
     );
-}
+};

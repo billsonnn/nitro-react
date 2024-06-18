@@ -10,4 +10,4 @@ export const CreateTransitionToIcon = (image: HTMLImageElement, fromElement: HTM
     event.iconName = icon;
 
     GetEventDispatcher().dispatchEvent(event);
-}
+};

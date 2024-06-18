@@ -14,12 +14,12 @@ const attemptPlaceMarketplaceOffer = (groupItem: GroupItem) =>
 {
     const item = groupItem.getLastItem();
 
-    if (!item) return false;
+    if(!item) return false;
 
-    if (!item.sellable) return false;
+    if(!item.sellable) return false;
 
     DispatchUiEvent(new CatalogPostMarketplaceOfferEvent(item));
-}
+};
 
 export const InventoryFurnitureView: FC<{
     roomSession: IRoomSession;
@@ -34,11 +34,11 @@ export const InventoryFurnitureView: FC<{
 
     useEffect(() =>
     {
-        if (!selectedItem || !roomPreviewer) return;
+        if(!selectedItem || !roomPreviewer) return;
 
         const furnitureItem = selectedItem.getLastItem();
 
-        if (!furnitureItem) return;
+        if(!furnitureItem) return;
 
         const roomEngine = GetRoomEngine();
 
@@ -54,7 +54,7 @@ export const InventoryFurnitureView: FC<{
         roomPreviewer.updateObjectRoom(floorType, wallType, landscapeType);
         roomPreviewer.updateRoomWallsAndFloorVisibility(true, true);
 
-        if ((furnitureItem.category === FurniCategory.WALL_PAPER) || (furnitureItem.category === FurniCategory.FLOOR) || (furnitureItem.category === FurniCategory.LANDSCAPE))
+        if((furnitureItem.category === FurniCategory.WALL_PAPER) || (furnitureItem.category === FurniCategory.FLOOR) || (furnitureItem.category === FurniCategory.LANDSCAPE))
         {
             floorType = ((furnitureItem.category === FurniCategory.FLOOR) ? selectedItem.stuffData.getLegacyString() : floorType);
             wallType = ((furnitureItem.category === FurniCategory.WALL_PAPER) ? selectedItem.stuffData.getLegacyString() : wallType);
@@ -62,16 +62,16 @@ export const InventoryFurnitureView: FC<{
 
             roomPreviewer.updateObjectRoom(floorType, wallType, landscapeType);
 
-            if (furnitureItem.category === FurniCategory.LANDSCAPE)
+            if(furnitureItem.category === FurniCategory.LANDSCAPE)
             {
                 const data = GetSessionDataManager().getWallItemDataByName('window_double_default');
 
-                if (data) roomPreviewer.addWallItemIntoRoom(data.id, new Vector3d(90, 0, 0), data.customParams);
+                if(data) roomPreviewer.addWallItemIntoRoom(data.id, new Vector3d(90, 0, 0), data.customParams);
             }
         }
         else
         {
-            if (selectedItem.isWallItem)
+            if(selectedItem.isWallItem)
             {
                 roomPreviewer.addWallItemIntoRoom(selectedItem.type, new Vector3d(90), furnitureItem.stuffData.getLegacyString());
             }
@@ -84,7 +84,7 @@ export const InventoryFurnitureView: FC<{
 
     useEffect(() =>
     {
-        if (!selectedItem || !selectedItem.hasUnseenItems) return;
+        if(!selectedItem || !selectedItem.hasUnseenItems) return;
 
         resetItems(UnseenItemCategory.FURNI, selectedItem.items.map(item => item.id));
 
@@ -93,7 +93,7 @@ export const InventoryFurnitureView: FC<{
 
     useEffect(() =>
     {
-        if (!isVisible) return;
+        if(!isVisible) return;
 
         const id = activate();
 
@@ -107,7 +107,7 @@ export const InventoryFurnitureView: FC<{
         return () => setIsVisible(false);
     }, []);
 
-    if (!groupItems || !groupItems.length) return <InventoryCategoryEmptyView desc={ LocalizeText('inventory.empty.desc') } title={ LocalizeText('inventory.empty.title') } />;
+    if(!groupItems || !groupItems.length) return <InventoryCategoryEmptyView desc={ LocalizeText('inventory.empty.desc') } title={ LocalizeText('inventory.empty.title') } />;
 
     return (
         <div className="grid h-full grid-cols-12 gap-2">
@@ -143,4 +143,4 @@ export const InventoryFurnitureView: FC<{
             </div>
         </div>
     );
-}
+};

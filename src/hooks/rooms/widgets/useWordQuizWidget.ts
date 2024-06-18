@@ -23,7 +23,7 @@ const useWordQuizWidgetState = () =>
     {
         setPollId(-1);
         setQuestion(null);
-    }
+    };
 
     const vote = (vote: string) =>
     {
@@ -32,7 +32,7 @@ const useWordQuizWidgetState = () =>
         answerPoll(pollId, question.id, [ vote ]);
 
         setAnswerSent(true);
-    }
+    };
 
     useNitroEvent<RoomSessionWordQuizEvent>(RoomSessionWordQuizEvent.ANSWERED, event =>
     {
@@ -123,7 +123,7 @@ const useWordQuizWidgetState = () =>
 
                 return copy;
             });
-        }
+        };
 
         const interval = setInterval(() => checkSignFade(), 1000);
 
@@ -140,10 +140,10 @@ const useWordQuizWidgetState = () =>
 
                 return null;
             });
-        }
+        };
     }, []);
 
     return { question, answerSent, answerCounts, userAnswers, vote };
-}
+};
 
 export const useWordQuizWidget = useWordQuizWidgetState;

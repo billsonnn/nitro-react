@@ -20,7 +20,7 @@ export const NotificationSeachAlertView: FC<NotificationDefaultAlertViewProps> =
         OpenUrl(item.clickUrl);
 
         onClose();
-    }
+    };
 
     const updateSearchValue = (value: string) =>
     {
@@ -28,7 +28,7 @@ export const NotificationSeachAlertView: FC<NotificationDefaultAlertViewProps> =
 
         setResults(res.filter((val: string) => val.includes(value)));
         setSearchValue(value);
-    }
+    };
 
     useEffect(() =>
     {
@@ -46,7 +46,7 @@ export const NotificationSeachAlertView: FC<NotificationDefaultAlertViewProps> =
                 <AutoGrid columnCount={ 1 } gap={ 1 }>
                     { results && results.map((n, index) =>
                     {
-                        return <span key={ index }>{ n }</span>
+                        return <span key={ index }>{ n }</span>;
                     }) }
                 </AutoGrid>
             </Column>
@@ -59,4 +59,4 @@ export const NotificationSeachAlertView: FC<NotificationDefaultAlertViewProps> =
             </Column>
         </LayoutNotificationAlertView>
     );
-}
+};

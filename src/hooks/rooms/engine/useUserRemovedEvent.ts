@@ -14,6 +14,6 @@ export const useUserRemovedEvent = (isActive: boolean, handler: (event: RoomWidg
         return () =>
         {
             UI_EVENT_DISPATCHER.removeEventListener(RoomWidgetUpdateRoomObjectEvent.USER_REMOVED, onRoomWidgetUpdateRoomObjectEvent);
-        }
+        };
     }, [ isActive, handler ]);
-}
+};

@@ -29,9 +29,9 @@ export const AvatarInfoWidgetRentableBotView: FC<AvatarInfoWidgetRentableBotView
     {
         const parser = event.getParser();
 
-        if (parser.botId !== avatarInfo.webID) return;
+        if(parser.botId !== avatarInfo.webID) return;
 
-        switch (parser.commandId)
+        switch(parser.commandId)
         {
             case BotSkillsEnum.CHANGE_BOT_NAME:
                 setNewName(parser.data);
@@ -45,7 +45,7 @@ export const AvatarInfoWidgetRentableBotView: FC<AvatarInfoWidgetRentableBotView
                 const data = parser.data;
                 const pieces = data.split(((data.indexOf(';#;') === -1) ? ';' : ';#;'));
 
-                if ((pieces.length === 3) || (pieces.length === 4))
+                if((pieces.length === 3) || (pieces.length === 4))
                 {
                     DispatchUiEvent(new RoomWidgetUpdateRentableBotChatEvent(
                         avatarInfo.roomIndex,
@@ -70,9 +70,9 @@ export const AvatarInfoWidgetRentableBotView: FC<AvatarInfoWidgetRentableBotView
     {
         let hideMenu = true;
 
-        if (name)
+        if(name)
         {
-            switch (name)
+            switch(name)
             {
                 case 'donate_to_all':
                     requestBotCommandConfiguration(BotSkillsEnum.DONATE_TO_ALL);
@@ -121,8 +121,8 @@ export const AvatarInfoWidgetRentableBotView: FC<AvatarInfoWidgetRentableBotView
             }
         }
 
-        if (hideMenu) onClose();
-    }
+        if(hideMenu) onClose();
+    };
 
     useEffect(() =>
     {
@@ -195,4 +195,4 @@ export const AvatarInfoWidgetRentableBotView: FC<AvatarInfoWidgetRentableBotView
                 </Column> }
         </ContextMenuView>
     );
-}
+};

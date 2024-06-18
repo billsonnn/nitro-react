@@ -4,7 +4,7 @@ import { NitroCardAccordionContextProvider } from './NitroCardAccordionContext';
 
 interface NitroCardAccordionViewProps extends ColumnProps
 {
-    
+
 }
 
 export const NitroCardAccordionView: FC<NitroCardAccordionViewProps> = props =>
@@ -22,4 +22,4 @@ export const NitroCardAccordionView: FC<NitroCardAccordionViewProps> = props =>
             <Column gap={ 0 } { ...rest } />
         </NitroCardAccordionContextProvider>
     );
-}
+};

@@ -5,4 +5,4 @@ export const GetWiredTimeLocale = (value: number) =>
     if(!(value % 2)) return time.toString();
 
     return (time + 0.5).toString();
-}
+};

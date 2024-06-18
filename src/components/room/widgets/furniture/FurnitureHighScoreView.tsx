@@ -11,7 +11,7 @@ export const FurnitureHighScoreView: FC<{}> = props =>
 {
     const { stuffDatas = null, getScoreType = null, getClearType = null } = useFurnitureHighScoreWidget();
 
-    if (!stuffDatas || !stuffDatas.size) return null;
+    if(!stuffDatas || !stuffDatas.size) return null;
 
     return (
         <>
@@ -57,4 +57,4 @@ export const FurnitureHighScoreView: FC<{}> = props =>
             }) }
         </>
     );
-}
+};

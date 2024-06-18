@@ -29,60 +29,60 @@ export const WiredActionGiveRewardView: FC<{}> = props =>
 
             return newValues;
         });
-    }
+    };
 
     const updateReward = (index: number, isBadge: boolean, itemCode: string, probability: number) =>
     {
         const rewardsClone = Array.from(rewards);
         const reward = rewardsClone[index];
 
-        if (!reward) return;
+        if(!reward) return;
 
         reward.isBadge = isBadge;
         reward.itemCode = itemCode;
         reward.probability = probability;
 
         setRewards(rewardsClone);
-    }
+    };
 
     const save = () =>
     {
         let stringRewards = [];
 
-        for (const reward of rewards)
+        for(const reward of rewards)
         {
-            if (!reward.itemCode) continue;
+            if(!reward.itemCode) continue;
 
             const rewardsString = [ reward.isBadge ? '0' : '1', reward.itemCode, reward.probability.toString() ];
             stringRewards.push(rewardsString.join(','));
         }
 
-        if (stringRewards.length > 0)
+        if(stringRewards.length > 0)
         {
             setStringParam(stringRewards.join(';'));
             setIntParams([ rewardTime, uniqueRewards ? 1 : 0, rewardsLimit, limitationInterval ]);
         }
-    }
+    };
 
     useEffect(() =>
     {
         const readRewards: { isBadge: boolean, itemCode: string, probability: number }[] = [];
 
-        if (trigger.stringData.length > 0 && trigger.stringData.includes(';'))
+        if(trigger.stringData.length > 0 && trigger.stringData.includes(';'))
         {
             const splittedRewards = trigger.stringData.split(';');
 
-            for (const rawReward of splittedRewards)
+            for(const rawReward of splittedRewards)
             {
                 const reward = rawReward.split(',');
 
-                if (reward.length !== 3) continue;
+                if(reward.length !== 3) continue;
 
                 readRewards.push({ isBadge: reward[0] === '0', itemCode: reward[1], probability: Number(reward[2]) });
             }
         }
 
-        if (readRewards.length === 0) readRewards.push({ isBadge: false, itemCode: '', probability: null });
+        if(readRewards.length === 0) readRewards.push({ isBadge: false, itemCode: '', probability: null });
 
         setRewardTime((trigger.intData.length > 0) ? trigger.intData[0] : 0);
         setUniqueRewards((trigger.intData.length > 1) ? (trigger.intData[1] === 1) : false);
@@ -153,9 +153,9 @@ export const WiredActionGiveRewardView: FC<{}> = props =>
                                     <FaTrash className="fa-icon" />
                                 </Button> }
                         </div>
-                    )
+                    );
                 }) }
             </div>
         </WiredActionBaseView>
     );
-}
+};

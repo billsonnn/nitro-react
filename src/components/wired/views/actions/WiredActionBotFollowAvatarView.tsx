@@ -15,7 +15,7 @@ export const WiredActionBotFollowAvatarView: FC<{}> = props =>
     {
         setStringParam(botName);
         setIntParams([ followMode ]);
-    }
+    };
 
     useEffect(() =>
     {
@@ -41,4 +41,4 @@ export const WiredActionBotFollowAvatarView: FC<{}> = props =>
             </div>
         </WiredActionBaseView>
     );
-}
+};

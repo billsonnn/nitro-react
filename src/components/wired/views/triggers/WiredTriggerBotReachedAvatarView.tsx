@@ -25,4 +25,4 @@ export const WiredTriggerBotReachedAvatarView: FC<{}> = props =>
             </div>
         </WiredTriggerBaseView>
     );
-}
+};

@@ -17,9 +17,9 @@ export const CatalogHeaderView: FC<CatalogHeaderViewProps> = props =>
     }, [ imageUrl ]);
 
     return <div className="flex justify-center items-center w-full nitro-catalog-header">
-        <img src={ displayImageUrl } onError={ ({ currentTarget }) => 
+        <img src={ displayImageUrl } onError={ ({ currentTarget }) =>
         {
             currentTarget.src = GetConfigurationValue<string>('catalog.asset.image.url').replace('%name%', 'catalog_header_roombuilder');
         } } />
     </div>;
-}
+};

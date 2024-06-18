@@ -12,9 +12,9 @@ export const GetDiskColor = (name: string) =>
     let b: number = 0;
     let index: number = 0;
 
-    while (index < name.length)
+    while(index < name.length)
     {
-        switch ((index % 3))
+        switch((index % 3))
         {
             case 0:
                 r = (r + ( name.charCodeAt(index) * 37) );
@@ -34,4 +34,4 @@ export const GetDiskColor = (name: string) =>
     b = ((b % DISK_COLOR_BLUE_RANGE) + DISK_COLOR_BLUE_MIN);
 
     return `rgb(${ r },${ g },${ b })`;
-}
+};

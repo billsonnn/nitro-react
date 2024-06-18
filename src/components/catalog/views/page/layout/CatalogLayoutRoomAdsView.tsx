@@ -21,7 +21,7 @@ export const CatalogLayoutRoomAdsView: FC<CatalogLayoutProps> = props =>
 
     useEffect(() =>
     {
-        if (isExtended)
+        if(isExtended)
         {
             setRoomId(promoteInformation.data.flatId);
             setEventName(promoteInformation.data.eventName);
@@ -41,7 +41,7 @@ export const CatalogLayoutRoomAdsView: FC<CatalogLayoutProps> = props =>
         setCategoryId(1);
         setIsExtended(false);
         setIsVisible(false);
-    }
+    };
 
     const purchaseAd = () =>
     {
@@ -54,13 +54,13 @@ export const CatalogLayoutRoomAdsView: FC<CatalogLayoutProps> = props =>
 
         SendMessageComposer(new PurchaseRoomAdMessageComposer(pageId, offerId, flatId, name, extended, desc, catId));
         resetData();
-    }
+    };
 
     useMessageEvent<RoomAdPurchaseInfoEvent>(RoomAdPurchaseInfoEvent, event =>
     {
         const parser = event.getParser();
 
-        if (!parser) return;
+        if(!parser) return;
 
         setAvailableRooms(parser.rooms);
     });
@@ -106,7 +106,7 @@ export const CatalogLayoutRoomAdsView: FC<CatalogLayoutProps> = props =>
         </Column>
     </>
     );
-}
+};
 
 interface INavigatorCategory
 {

@@ -67,7 +67,7 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
     {
         setRoomData(null);
         setCurrentTab(TABS[0]);
-    }
+    };
 
     const handleChange = (field: string, value: string | number | boolean | string[]) =>
     {
@@ -176,7 +176,7 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
 
             return newValue;
         });
-    }
+    };
 
     if(!roomData) return null;
 
@@ -186,7 +186,7 @@ export const NavigatorRoomSettingsView: FC<{}> = props =>
             <NitroCardTabsView>
                 { TABS.map(tab =>
                 {
-                    return <NitroCardTabsItemView key={ tab } isActive={ (currentTab === tab) } onClick={ event => setCurrentTab(tab) }>{ LocalizeText(tab) }</NitroCardTabsItemView>
+                    return <NitroCardTabsItemView key={ tab } isActive={ (currentTab === tab) } onClick={ event => setCurrentTab(tab) }>{ LocalizeText(tab) }</NitroCardTabsItemView>;
                 }) }
             </NitroCardTabsView>
             <NitroCardContentView>

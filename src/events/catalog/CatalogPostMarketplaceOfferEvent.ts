@@ -4,7 +4,7 @@ import { FurnitureItem } from '../../api';
 export class CatalogPostMarketplaceOfferEvent extends CatalogEvent
 {
     public static readonly POST_MARKETPLACE = 'CE_POST_MARKETPLACE';
-    
+
     private _item: FurnitureItem;
 
     constructor(item: FurnitureItem)

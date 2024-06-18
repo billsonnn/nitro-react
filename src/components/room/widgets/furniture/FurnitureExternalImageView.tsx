@@ -20,4 +20,4 @@ export const FurnitureExternalImageView: FC<{}> = props =>
             </NitroCardContentView>
         </NitroCardView>
     );
-}
+};

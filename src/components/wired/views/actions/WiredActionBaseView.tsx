@@ -38,4 +38,4 @@ export const WiredActionBaseView: FC<PropsWithChildren<WiredActionBaseViewProps>
             </div>
         </WiredBaseView>
     );
-}
+};

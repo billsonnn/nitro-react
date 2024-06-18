@@ -4,7 +4,7 @@ import { useBetween } from 'use-between';
 import { SendMessageComposer, VisitDesktop } from '../../api';
 import { useMessageEvent } from '../events';
 
-const useGameCenterState = () => 
+const useGameCenterState = () =>
 {
     const [ isVisible, setIsVisible ] = useState<boolean>(false);
     const [ games, setGames ] = useState<GameConfigurationData[]>(null);
@@ -13,7 +13,7 @@ const useGameCenterState = () =>
     const [ gameOffline, setGameOffline ] = useState<boolean>(false);
     const [ gameURL, setGameURL ] = useState<string>(null);
 
-    useMessageEvent<GameListMessageEvent>(GameListMessageEvent, event => 
+    useMessageEvent<GameListMessageEvent>(GameListMessageEvent, event =>
     {
         let parser = event.getParser();
 
@@ -24,7 +24,7 @@ const useGameCenterState = () =>
         setGames(parser.games);
     });
 
-    useMessageEvent<Game2AccountGameStatusMessageEvent>(Game2AccountGameStatusMessageEvent, event => 
+    useMessageEvent<Game2AccountGameStatusMessageEvent>(Game2AccountGameStatusMessageEvent, event =>
     {
         let parser = event.getParser();
 
@@ -33,25 +33,25 @@ const useGameCenterState = () =>
         setAccountStatus(parser);
     });
 
-    useMessageEvent<GameStatusMessageEvent>(GameStatusMessageEvent, event => 
+    useMessageEvent<GameStatusMessageEvent>(GameStatusMessageEvent, event =>
     {
         let parser = event.getParser();
 
         if(!parser) return;
 
         setGameOffline(parser.isInMaintenance);
-    })
+    });
 
-    useMessageEvent<LoadGameUrlEvent>(LoadGameUrlEvent, event => 
+    useMessageEvent<LoadGameUrlEvent>(LoadGameUrlEvent, event =>
     {
         let parser = event.getParser();
 
         if(!parser) return;
 
-        switch(parser.gameTypeId) 
+        switch(parser.gameTypeId)
         {
             case 2:
-                return console.log('snowwar')
+                return console.log('snowwar');
             default:
                 return setGameURL(parser.url);
         }
@@ -59,12 +59,12 @@ const useGameCenterState = () =>
 
     useEffect(()=>
     {
-        if(isVisible) 
+        if(isVisible)
         {
             SendMessageComposer(new GetGameListMessageComposer());
             VisitDesktop();
         }
-        else 
+        else
         {
             // dispose or wtv
         }
@@ -77,7 +77,7 @@ const useGameCenterState = () =>
         selectedGame, setSelectedGame,
         gameOffline,
         gameURL, setGameURL
-    }
-}
+    };
+};
 
 export const useGameCenter = () => useBetween(useGameCenterState);

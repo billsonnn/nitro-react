@@ -20,7 +20,7 @@ const useFurnitureTrophyWidgetState = () =>
         setSenderName('');
         setDate('');
         setMessage('');
-    }
+    };
 
     useNitroEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_TROPHY, event =>
     {
@@ -57,6 +57,6 @@ const useFurnitureTrophyWidgetState = () =>
     });
 
     return { objectId, color, senderName, date, message, onClose };
-}
+};
 
 export const useFurnitureTrophyWidget = useFurnitureTrophyWidgetState;

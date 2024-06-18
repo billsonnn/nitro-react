@@ -26,10 +26,10 @@ export const GroupBadgeCreatorView: FC<GroupBadgeCreatorViewProps> = props =>
 
         setBadgeParts(newBadgeParts);
 
-        if (property === 'key') setSelectedIndex(-1);
-    }
+        if(property === 'key') setSelectedIndex(-1);
+    };
 
-    if (!badgeParts || !badgeParts.length) return null;
+    if(!badgeParts || !badgeParts.length) return null;
 
     return (
         <>
@@ -49,13 +49,13 @@ export const GroupBadgeCreatorView: FC<GroupBadgeCreatorViewProps> = props =>
                             <Grid columnCount={ 3 } gap={ 1 }>
                                 { POSITIONS.map((position, posIndex) =>
                                 {
-                                    return <div key={ posIndex } className={ `relative rounded-[.25rem] w-[16px] h-[16px] bg-[#fff] border-[2px] border-[solid] border-[#fff] [box-shadow:inset_3px_3px_#0000001a] cursor-pointer ${ (badgeParts[index].position === position) ? 'bg-primary [box-shadow:none]' : '' }` } onClick={ event => setPartProperty(index, 'position', position) } />
+                                    return <div key={ posIndex } className={ `relative rounded-[.25rem] w-[16px] h-[16px] bg-[#fff] border-[2px] border-[solid] border-[#fff] [box-shadow:inset_3px_3px_#0000001a] cursor-pointer ${ (badgeParts[index].position === position) ? 'bg-primary [box-shadow:none]' : '' }` } onClick={ event => setPartProperty(index, 'position', position) } />;
                                 }) }
                             </Grid> }
                         <Grid columnCount={ 8 } gap={ 1 }>
                             { (groupCustomize.badgePartColors.length > 0) && groupCustomize.badgePartColors.map((item, colorIndex) =>
                             {
-                                return <div key={ colorIndex } className={ `relative [box-shadow:inset_2px_2px_#0003] rounded-[.25rem] w-[16px] h-[16px] bg-[#fff] border-[2px] border-[solid] border-[#fff] [box-shadow:inset_3px_3px_#0000001a]cursor-pointer ${ (badgeParts[index].color === (colorIndex + 1)) ? 'bg-primary [box-shadow:none]' : '' }` } style={ { backgroundColor: '#' + item.color } } onClick={ event => setPartProperty(index, 'color', (colorIndex + 1)) } />
+                                return <div key={ colorIndex } className={ `relative [box-shadow:inset_2px_2px_#0003] rounded-[.25rem] w-[16px] h-[16px] bg-[#fff] border-[2px] border-[solid] border-[#fff] [box-shadow:inset_3px_3px_#0000001a]cursor-pointer ${ (badgeParts[index].color === (colorIndex + 1)) ? 'bg-primary [box-shadow:none]' : '' }` } style={ { backgroundColor: '#' + item.color } } onClick={ event => setPartProperty(index, 'color', (colorIndex + 1)) } />;
                             }) }
                         </Grid>
                     </Flex>
@@ -80,4 +80,4 @@ export const GroupBadgeCreatorView: FC<GroupBadgeCreatorViewProps> = props =>
                 </Grid> }
         </>
     );
-}
+};

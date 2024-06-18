@@ -16,7 +16,7 @@ export const LayoutProgressBar: FC<LayoutProgressBarProps> = props =>
     {
         const newClassNames: string[] = [ 'border-[1px] border-[solid] border-[#fff] p-[2px] h-[20px] rounded-[.25rem] overflow-hidden bg-[#1E7295]        ', 'text-white' ];
 
-        if (classNames.length) newClassNames.push(...classNames);
+        if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
     }, [ classNames ]);
@@ -29,4 +29,4 @@ export const LayoutProgressBar: FC<LayoutProgressBarProps> = props =>
             { children }
         </Column>
     );
-}
+};

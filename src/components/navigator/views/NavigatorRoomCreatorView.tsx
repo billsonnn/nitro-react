@@ -1,4 +1,4 @@
-/* eslint-disable no-template-curly-in-string */
+
 import { CreateFlatMessageComposer, HabboClubLevelEnum } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
 import { GetClubMemberLevel, GetConfigurationValue, IRoomModel, LocalizeText, SendMessageComposer } from '../../../api';
@@ -24,7 +24,7 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
 
     const selectModel = (model: IRoomModel, index: number) =>
     {
-        if (!model || (model.clubLevel > GetClubMemberLevel())) return;
+        if(!model || (model.clubLevel > GetClubMemberLevel())) return;
 
         setSelectedModelName(roomModels[index].name);
     };
@@ -36,11 +36,11 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        if (!maxVisitorsList)
+        if(!maxVisitorsList)
         {
             const list = [];
 
-            for (let i = 10; i <= 100; i = i + 10) list.push(i);
+            for(let i = 10; i <= 100; i = i + 10) list.push(i);
 
             setMaxVisitorsList(list);
             setVisitorsCount(list[0]);
@@ -49,14 +49,14 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        if (categories && categories.length) setCategory(categories[0].id);
+        if(categories && categories.length) setCategory(categories[0].id);
     }, [ categories ]);
 
     useEffect(() =>
     {
         const models = GetConfigurationValue<IRoomModel[]>('navigator.room.models');
 
-        if (models && models.length)
+        if(models && models.length)
         {
             setRoomModels(models);
             setSelectedModelName(models[0].name);
@@ -80,7 +80,7 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
                         <select className="form-select form-select-sm" onChange={ event => setCategory(Number(event.target.value)) }>
                             { categories && (categories.length > 0) && categories.map(category =>
                             {
-                                return <option key={ category.id } value={ category.id }>{ LocalizeText(category.name) }</option>
+                                return <option key={ category.id } value={ category.id }>{ LocalizeText(category.name) }</option>;
                             }) }
                         </select>
                     </div>
@@ -89,7 +89,7 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
                         <select className="form-select form-select-sm" onChange={ event => setVisitorsCount(Number(event.target.value)) }>
                             { maxVisitorsList && maxVisitorsList.map(value =>
                             {
-                                return <option key={ value } value={ value }>{ value }</option>
+                                return <option key={ value } value={ value }>{ value }</option>;
                             }) }
                         </select>
                     </div>
@@ -120,4 +120,4 @@ export const NavigatorRoomCreatorView: FC<{}> = props =>
             <Button fullWidth disabled={ (!name || (name.length < 3)) } variant={ (!name || (name.length < 3)) ? 'danger' : 'success' } onClick={ createRoom }>{ LocalizeText('navigator.createroom.create') }</Button>
         </div>
     );
-}
+};

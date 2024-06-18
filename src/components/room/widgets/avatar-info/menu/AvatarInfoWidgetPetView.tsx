@@ -77,7 +77,7 @@ export const AvatarInfoWidgetPetView: FC<AvatarInfoWidgetPetViewProps> = props =
         }
 
         if(hideMenu) onClose();
-    }
+    };
 
     useEffect(() =>
     {
@@ -135,4 +135,4 @@ export const AvatarInfoWidgetPetView: FC<AvatarInfoWidgetPetViewProps> = props =
                 </ContextMenuListItemView> }
         </ContextMenuView>
     );
-}
+};

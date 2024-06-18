@@ -7,9 +7,9 @@ export const FurnitureFriendFurniView: FC<{}> = props =>
 {
     const { objectId = -1, type = 0, stage = 0, usernames = [], figures = [], date = null, onClose = null, respond = null } = useFurnitureFriendFurniWidget();
 
-    if (objectId === -1) return null;
+    if(objectId === -1) return null;
 
-    if (stage > 0)
+    if(stage > 0)
     {
         return (
             <NitroCardView className="nitro-engraving-lock" theme="primary-slim">
@@ -32,7 +32,7 @@ export const FurnitureFriendFurniView: FC<{}> = props =>
         );
     }
 
-    if (usernames.length > 0)
+    if(usernames.length > 0)
     {
         return (
             <DraggableWindow handleSelector=".nitro-engraving-lock-view">
@@ -63,4 +63,4 @@ export const FurnitureFriendFurniView: FC<{}> = props =>
             </DraggableWindow>
         );
     }
-}
+};

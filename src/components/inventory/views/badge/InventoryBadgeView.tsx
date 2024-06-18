@@ -13,14 +13,14 @@ export const InventoryBadgeView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        if (!selectedBadgeCode || !isUnseen(UnseenItemCategory.BADGE, getBadgeId(selectedBadgeCode))) return;
+        if(!selectedBadgeCode || !isUnseen(UnseenItemCategory.BADGE, getBadgeId(selectedBadgeCode))) return;
 
         removeUnseen(UnseenItemCategory.BADGE, getBadgeId(selectedBadgeCode));
     }, [ selectedBadgeCode, isUnseen, removeUnseen, getBadgeId ]);
 
     useEffect(() =>
     {
-        if (!isVisible) return;
+        if(!isVisible) return;
 
         const id = activate();
 
@@ -67,4 +67,4 @@ export const InventoryBadgeView: FC<{}> = props =>
             </div>
         </div>
     );
-}
+};

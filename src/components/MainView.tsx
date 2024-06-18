@@ -44,13 +44,13 @@ export const MainView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        const linkTracker: ILinkEventTracker = { 
+        const linkTracker: ILinkEventTracker = {
             linkReceived: (url: string) =>
             {
                 const parts = url.split('/');
-        
+
                 if(parts.length < 2) return;
-        
+
                 switch(parts[1])
                 {
                     case 'open':
@@ -108,4 +108,4 @@ export const MainView: FC<{}> = props =>
             <FloorplanEditorView />
         </>
     );
-}
+};

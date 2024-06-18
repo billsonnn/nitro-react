@@ -121,7 +121,7 @@ const useAvatarEditorState = () =>
             options = options.filter(option => (requiredSets.indexOf(option) === -1));
 
             return [ ...requiredSets, ...Randomizer.getRandomElements(options, (Randomizer.getRandomNumber(options.length) + 1)) ];
-        }
+        };
 
         const requiredSets = getRandomSetTypes(structure.getMandatorySetTypeIds(gender, GetClubMemberLevel()), AvatarFigurePartType.FIGURE_SETS);
 
@@ -130,24 +130,24 @@ const useAvatarEditorState = () =>
             const options = setType.partSets.getValues().filter(option =>
             {
                 if(!option.isSelectable || ((option.gender !== 'U') && (option.gender !== gender)) || (option.clubLevel > clubLevel) || (option.isSellable && (figureSetIds.indexOf(option.id) === -1))) return null;
-        
+
                 return option;
             });
-        
+
             if(!options || !options.length) return null;
-        
+
             return Randomizer.getRandomElement(options);
-        }
+        };
 
         const getRandomColors = (palette: IPalette, partSet: IFigurePartSet, clubLevel: number) =>
         {
             const options = palette.colors.getValues().filter(option =>
             {
                 if(!option.isSelectable || (option.clubLevel > clubLevel)) return null;
-        
+
                 return option;
             });
-        
+
             if(!options || !options.length) return null;
 
             const getTotalColors = (partSet: IFigurePartSet) =>
@@ -159,10 +159,10 @@ const useAvatarEditorState = () =>
                 for(const part of parts) totalColors = Math.max(totalColors, part.colorLayerIndex);
 
                 return totalColors;
-            }
-        
+            };
+
             return Randomizer.getRandomElements(options, getTotalColors(partSet));
-        }
+        };
 
         for(const setType of ignoredSets)
         {
@@ -175,7 +175,7 @@ const useAvatarEditorState = () =>
         for(const type of requiredSets)
         {
             if(figureContainer.hasPartType(type)) continue;
-            
+
             const setType = (structure.figureData.getSetType(type) as SetType);
             const selectedSet = getRandomPartSet(setType, gender, GetClubMemberLevel(), figureSetIds);
 
@@ -285,7 +285,7 @@ const useAvatarEditorState = () =>
             for(let i = 0; i < MAX_PALETTES; i++) colorItems[i].sort(AvatarEditorColorSorter);
 
             return { setType, partItems, colorItems };
-        }
+        };
 
         newAvatarModels[AvatarEditorFigureCategory.GENERIC] = [ AvatarFigurePartType.HEAD ].map(setType => buildCategory(setType));
         newAvatarModels[AvatarEditorFigureCategory.HEAD] = [ AvatarFigurePartType.HAIR, AvatarFigurePartType.HEAD_ACCESSORY, AvatarFigurePartType.HEAD_ACCESSORY_EXTRA, AvatarFigurePartType.EYE_ACCESSORY, AvatarFigurePartType.FACE_ACCESSORY ].map(setType => buildCategory(setType));
@@ -313,6 +313,6 @@ const useAvatarEditorState = () =>
     }, [ isVisible, savedFigures ]);
 
     return { isVisible, setIsVisible, avatarModels, activeModelKey, setActiveModelKey, maxPaletteCount, selectedColorParts, selectEditorColor, selectEditorPart, loadAvatarData, getFigureString, getFigureStringWithFace, selectedParts, gender, setGender, figureSetIds, randomizeCurrentFigure, savedFigures, setSavedFigures, getFirstSelectableColor };
-}
+};
 
 export const useAvatarEditor = () => useBetween(useAvatarEditorState);

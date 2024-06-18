@@ -26,6 +26,6 @@ export const useEventDispatcher = <T extends NitroEvent>(type: string | string[]
             {
                 eventDispatcher.removeEventListener(type, handler);
             }
-        }
+        };
     }, [ type, eventDispatcher, enabled, handler ]);
-}
+};

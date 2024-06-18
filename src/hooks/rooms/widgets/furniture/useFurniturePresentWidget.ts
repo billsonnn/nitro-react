@@ -38,16 +38,16 @@ const useFurniturePresentWidgetState = () =>
         setPlacedItemType(null);
         setPlacedInRoom(false);
         setImageUrl(null);
-    }
+    };
 
     const openPresent = () =>
     {
         if(objectId === -1) return;
 
         roomSession.openGift(objectId);
-        
+
         GetRoomEngine().changeObjectModelData(GetRoomEngine().activeRoomId, objectId, RoomObjectCategory.FLOOR, RoomObjectVariable.FURNITURE_DISABLE_PICKING_ANIMATION, 1);
-    }
+    };
 
     const imageListener: IGetImageListener = useMemo(() =>
     {
@@ -66,7 +66,7 @@ const useFurniturePresentWidgetState = () =>
                 })();
             },
             imageFailed: null
-        }
+        };
     }, []);
 
     useNitroEvent<RoomSessionPresentEvent>(RoomSessionPresentEvent.RSPE_PRESENT_OPENED, event =>
@@ -123,7 +123,7 @@ const useFurniturePresentWidgetState = () =>
                                 imageType = 'packagecard_icon_wallpaper';
                                 message = LocalizeText('inventory.furni.item.wallpaper.name');
                             }
-                           
+
                             setText(message);
                             //setImageUrl(getGiftImageUrl(imageType));
                             break;
@@ -230,6 +230,6 @@ const useFurniturePresentWidgetState = () =>
     });
 
     return { objectId, classId, itemType, text, isOwnerOfFurniture, senderName, senderFigure, placedItemId, placedItemType, placedInRoom, imageUrl, openPresent, onClose };
-}
+};
 
 export const useFurniturePresentWidget = useFurniturePresentWidgetState;

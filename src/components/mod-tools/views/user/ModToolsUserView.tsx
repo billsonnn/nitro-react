@@ -89,9 +89,9 @@ export const ModToolsUserView: FC<ModToolsUserViewProps> = props =>
     useMessageEvent<ModeratorUserInfoEvent>(ModeratorUserInfoEvent, event =>
     {
         const parser = event.getParser();
-    
+
         if(!parser || parser.data.userId !== userId) return;
-    
+
         setUserInfo(parser.data);
     });
 
@@ -153,4 +153,4 @@ export const ModToolsUserView: FC<ModToolsUserViewProps> = props =>
                 <ModToolsUserRoomVisitsView userId={ userId } onCloseClick={ () => setRoomVisitsVisible(false) } /> }
         </>
     );
-}
+};

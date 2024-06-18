@@ -1,8 +1,7 @@
 import { UpdateFloorPropertiesMessageComposer } from '@nitrots/nitro-renderer';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { LocalizeText, SendMessageComposer } from '../../../api';
 import { Button, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../common';
-import { UseMountEffect } from '../../../hooks';
 import { useFloorplanEditorContext } from '../FloorplanEditorContext';
 import { ConvertTileMapToString } from '../common/ConvertMapToString';
 import { convertNumbersForSaving } from '../common/Utils';
@@ -29,12 +28,13 @@ export const FloorplanImportExportView: FC<FloorplanImportExportViewProps> = pro
             convertNumbersForSaving(originalFloorplanSettings.thicknessFloor),
             originalFloorplanSettings.wallHeight - 1
         ));
-    }
+    };
 
-    UseMountEffect(() =>
+    useEffect(() =>
     {
+        // changed from UseMountEffect
         setMap(ConvertTileMapToString(originalFloorplanSettings.tilemap));
-    });
+    }, []);
 
     return (
         <NitroCardView className="floorplan-import-export" theme="primary-slim">
@@ -52,4 +52,4 @@ export const FloorplanImportExportView: FC<FloorplanImportExportViewProps> = pro
             </NitroCardContentView>
         </NitroCardView>
     );
-}
+};

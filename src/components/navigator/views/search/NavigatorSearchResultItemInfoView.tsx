@@ -20,21 +20,21 @@ export const NavigatorSearchResultItemInfoView: FC<{
 
         let bg = 'bg-primary';
 
-        if (num >= 92)
+        if(num >= 92)
         {
             bg = 'bg-danger';
         }
-        else if (num >= 50)
+        else if(num >= 50)
         {
             bg = 'bg-warning';
         }
-        else if (num > 0)
+        else if(num > 0)
         {
             bg = 'bg-success';
         }
 
         return bg;
-    }
+    };
 
     function dispatch(arg0: string): void
     {
@@ -103,4 +103,4 @@ export const NavigatorSearchResultItemInfoView: FC<{
 
         </>
     );
-}
+};

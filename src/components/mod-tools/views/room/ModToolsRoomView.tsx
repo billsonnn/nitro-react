@@ -27,30 +27,30 @@ export const ModToolsRoomView: FC<ModToolsRoomViewProps> = props =>
 
     const handleClick = (action: string, value?: string) =>
     {
-        if (!action) return;
+        if(!action) return;
 
-        switch (action)
+        switch(action)
         {
             case 'alert_only':
-                if (message.trim().length === 0) return;
+                if(message.trim().length === 0) return;
 
                 SendMessageComposer(new ModeratorActionMessageComposer(ModeratorActionMessageComposer.ACTION_ALERT, message, ''));
                 SendMessageComposer(new ModerateRoomMessageComposer(roomId, lockRoom ? 1 : 0, changeRoomName ? 1 : 0, kickUsers ? 1 : 0));
                 return;
             case 'send_message':
-                if (message.trim().length === 0) return;
+                if(message.trim().length === 0) return;
 
                 SendMessageComposer(new ModeratorActionMessageComposer(ModeratorActionMessageComposer.ACTION_MESSAGE, message, ''));
                 SendMessageComposer(new ModerateRoomMessageComposer(roomId, lockRoom ? 1 : 0, changeRoomName ? 1 : 0, kickUsers ? 1 : 0));
                 return;
         }
-    }
+    };
 
     useMessageEvent<ModeratorRoomInfoEvent>(ModeratorRoomInfoEvent, event =>
     {
         const parser = event.getParser();
 
-        if (!parser || parser.data.flatId !== roomId) return;
+        if(!parser || parser.data.flatId !== roomId) return;
 
         setLoadedRoomId(parser.data.flatId);
         setName(parser.data.room.name);
@@ -62,7 +62,7 @@ export const ModToolsRoomView: FC<ModToolsRoomViewProps> = props =>
 
     useEffect(() =>
     {
-        if (infoRequested) return;
+        if(infoRequested) return;
 
         SendMessageComposer(new GetModeratorRoomInfoMessageComposer(roomId));
         setInfoRequested(true);
@@ -114,4 +114,4 @@ export const ModToolsRoomView: FC<ModToolsRoomViewProps> = props =>
             </NitroCardContentView>
         </NitroCardView>
     );
-}
+};

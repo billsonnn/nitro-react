@@ -18,7 +18,7 @@ export const LayoutLimitedEditionCompletePlateView: FC<LayoutLimitedEditionCompl
     {
         const newClassNames: string[] = [ 'unique-complete-plate' ];
 
-        if (classNames.length) newClassNames.push(...classNames);
+        if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
     }, [ classNames ]);
@@ -37,4 +37,4 @@ export const LayoutLimitedEditionCompletePlateView: FC<LayoutLimitedEditionCompl
             </Column>
         </Base>
     );
-}
+};

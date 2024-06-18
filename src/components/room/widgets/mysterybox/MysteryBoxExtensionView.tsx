@@ -14,7 +14,7 @@ const colorMap = {
     'orange': 10841125,
     'turquoise': 2661026,
     'red': 10104881
-}
+};
 
 export const MysteryBoxExtensionView: FC<{}> = props =>
 {
@@ -33,9 +33,9 @@ export const MysteryBoxExtensionView: FC<{}> = props =>
         const colorInt = colorMap[color];
 
         return ColorUtils.int2rgb(colorInt);
-    }
+    };
 
-    if (keyColor === '' && boxColor === '') return null;
+    if(keyColor === '' && boxColor === '') return null;
 
     return (
         <div className="px-[5px] py-[6px] [box-shadow:inset_0_5px_#22222799,_inset_0_-4px_#12121599]  text-sm bg-[#1c1c20f2] rounded mysterybox-extension">
@@ -64,4 +64,4 @@ export const MysteryBoxExtensionView: FC<{}> = props =>
             </div>
         </div>
     );
-}
+};

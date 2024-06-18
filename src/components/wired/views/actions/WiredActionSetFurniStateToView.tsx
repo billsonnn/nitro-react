@@ -39,4 +39,4 @@ export const WiredActionSetFurniStateToView: FC<{}> = props =>
             </div>
         </WiredActionBaseView>
     );
-}
+};

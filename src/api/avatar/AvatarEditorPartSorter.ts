@@ -31,5 +31,5 @@ export const AvatarEditorPartSorter = (hcFirst: boolean) =>
         if(a.partSet.id > b.partSet.id) return 1;
 
         return 0;
-    }
-}
+    };
+};

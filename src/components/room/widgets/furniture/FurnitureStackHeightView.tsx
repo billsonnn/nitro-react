@@ -19,7 +19,7 @@ export const FurnitureStackHeightView: FC<{}> = props =>
         if(isNaN(newValue) || (newValue === height)) return;
 
         updateHeight(newValue);
-    }
+    };
 
     useEffect(() =>
     {
@@ -55,4 +55,4 @@ export const FurnitureStackHeightView: FC<{}> = props =>
             </NitroCardContentView>
         </NitroCardView>
     );
-}
+};

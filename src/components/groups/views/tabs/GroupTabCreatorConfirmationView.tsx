@@ -17,23 +17,23 @@ export const GroupTabCreatorConfirmationView: FC<GroupTabCreatorConfirmationView
 
     const getCompleteBadgeCode = () =>
     {
-        if (!groupData || !groupData.groupBadgeParts || !groupData.groupBadgeParts.length) return '';
+        if(!groupData || !groupData.groupBadgeParts || !groupData.groupBadgeParts.length) return '';
 
         let badgeCode = '';
 
         groupData.groupBadgeParts.forEach(part => (part.code && (badgeCode += part.code)));
 
         return badgeCode;
-    }
+    };
 
     const getGroupColor = (colorIndex: number) =>
     {
-        if (colorIndex === 0) return groupCustomize.groupColorsA.find(c => c.id === groupData.groupColors[colorIndex]).color;
+        if(colorIndex === 0) return groupCustomize.groupColorsA.find(c => c.id === groupData.groupColors[colorIndex]).color;
 
         return groupCustomize.groupColorsB.find(c => c.id === groupData.groupColors[colorIndex]).color;
-    }
+    };
 
-    if (!groupData) return null;
+    if(!groupData) return null;
 
     return (
         <Grid gap={ 1 } overflow="hidden">

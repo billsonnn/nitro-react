@@ -11,4 +11,4 @@ export const CatalogSimplePriceWidgetView: FC<{}> = props =>
             <CatalogPriceDisplayWidgetView offer={ currentOffer } separator={ true } />
         </div>
     );
-}
+};

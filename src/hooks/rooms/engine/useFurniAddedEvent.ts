@@ -14,6 +14,6 @@ export const useFurniAddedEvent = (isActive: boolean, handler: (event: RoomWidge
         return () =>
         {
             UI_EVENT_DISPATCHER.removeEventListener(RoomWidgetUpdateRoomObjectEvent.FURNI_ADDED, onRoomWidgetUpdateRoomObjectEvent);
-        }
+        };
     }, [ isActive, handler ]);
-}
+};

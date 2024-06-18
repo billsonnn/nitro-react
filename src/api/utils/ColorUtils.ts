@@ -30,7 +30,7 @@ export class ColorUtils
      */
     public static int_to_8BitVals(value: number): [number, number, number, number]
     {
-        const val1 = ((value >> 24) & 0xFF)
+        const val1 = ((value >> 24) & 0xFF);
         const val2 = ((value >> 16) & 0xFF);
         const val3 = ((value >> 8) & 0xFF);
         const val4 = (value & 0xFF);

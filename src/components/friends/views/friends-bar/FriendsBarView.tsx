@@ -23,4 +23,4 @@ export const FriendBarView: FC<{ onlineFriends: MessengerFriend[] }> = props =>
             </Button>
         </div>
     );
-}
+};

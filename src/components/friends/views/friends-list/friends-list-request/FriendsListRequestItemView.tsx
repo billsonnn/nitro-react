@@ -22,4 +22,4 @@ export const FriendsListRequestItemView: FC<{ request: MessengerRequest }> = pro
             </div>
         </NitroCardAccordionItemView>
     );
-}
+};

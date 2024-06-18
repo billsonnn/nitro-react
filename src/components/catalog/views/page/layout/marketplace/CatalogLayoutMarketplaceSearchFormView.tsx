@@ -22,7 +22,7 @@ export const SearchFormView: FC<SearchFormViewProps> = props =>
     {
         setSortType(sortType);
 
-        if ((searchType === MarketplaceSearchType.BY_ACTIVITY) || (searchType === MarketplaceSearchType.BY_VALUE)) onSearch({ minPrice: -1, maxPrice: -1, query: '', type: sortType });
+        if((searchType === MarketplaceSearchType.BY_ACTIVITY) || (searchType === MarketplaceSearchType.BY_VALUE)) onSearch({ minPrice: -1, maxPrice: -1, query: '', type: sortType });
     }, [ onSearch, searchType ]);
 
     const onClickSearch = useCallback(() =>
@@ -30,18 +30,18 @@ export const SearchFormView: FC<SearchFormViewProps> = props =>
         const minPrice = ((min > 0) ? min : -1);
         const maxPrice = ((max > 0) ? max : -1);
 
-        onSearch({ minPrice: minPrice, maxPrice: maxPrice, type: sortType, query: searchQuery })
+        onSearch({ minPrice: minPrice, maxPrice: maxPrice, type: sortType, query: searchQuery });
     }, [ max, min, onSearch, searchQuery, sortType ]);
 
-    useEffect(() => 
+    useEffect(() =>
     {
-        if (!sortTypes || !sortTypes.length) return;
+        if(!sortTypes || !sortTypes.length) return;
 
         const sortType = sortTypes[0];
 
         setSortType(sortType);
 
-        if (searchType === MarketplaceSearchType.BY_ACTIVITY || MarketplaceSearchType.BY_VALUE === searchType) onSearch({ minPrice: -1, maxPrice: -1, query: '', type: sortType });
+        if(searchType === MarketplaceSearchType.BY_ACTIVITY || MarketplaceSearchType.BY_VALUE === searchType) onSearch({ minPrice: -1, maxPrice: -1, query: '', type: sortType });
     }, [ onSearch, searchType, sortTypes ]);
 
     return (
@@ -83,4 +83,4 @@ export const SearchFormView: FC<SearchFormViewProps> = props =>
                 </> }
         </div>
     );
-}
+};

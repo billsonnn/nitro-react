@@ -28,7 +28,7 @@ export const CatalogLayoutMarketplaceOwnItemsView: FC<CatalogLayoutProps> = prop
         });
 
         setCreditsWaiting(parser.creditsWaiting);
-        setOffers(offers); 
+        setOffers(offers);
     });
 
     useMessageEvent<MarketplaceCancelOfferResultEvent>(MarketplaceCancelOfferResultEvent, event =>
@@ -51,7 +51,7 @@ export const CatalogLayoutMarketplaceOwnItemsView: FC<CatalogLayoutProps> = prop
     {
         return offers.filter(value => (value.status === MarketPlaceOfferState.SOLD));
     }, [ offers ]);
-    
+
     const redeemSoldOffers = useCallback(() =>
     {
         setOffers(prevValue =>
@@ -59,8 +59,8 @@ export const CatalogLayoutMarketplaceOwnItemsView: FC<CatalogLayoutProps> = prop
             const idsToDelete = soldOffers.map(value => value.offerId);
 
             return prevValue.filter(value => (idsToDelete.indexOf(value.offerId) === -1));
-        })
-        
+        });
+
         SendMessageComposer(new RedeemMarketplaceOfferCreditsMessageComposer());
     }, [ soldOffers ]);
 
@@ -99,4 +99,4 @@ export const CatalogLayoutMarketplaceOwnItemsView: FC<CatalogLayoutProps> = prop
             </Column>
         </Column>
     );
-}
+};

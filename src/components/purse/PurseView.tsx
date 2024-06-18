@@ -15,27 +15,27 @@ export const PurseView: FC<{}> = props =>
 
     const getClubText = (() =>
     {
-        if (!purse) return null;
+        if(!purse) return null;
 
         const totalDays = ((purse.clubPeriods * 31) + purse.clubDays);
         const minutesUntilExpiration = purse.minutesUntilExpiration;
 
-        if (purse.clubLevel === HabboClubLevelEnum.NO_CLUB) return LocalizeText('purse.clubdays.zero.amount.text');
+        if(purse.clubLevel === HabboClubLevelEnum.NO_CLUB) return LocalizeText('purse.clubdays.zero.amount.text');
 
-        else if ((minutesUntilExpiration > -1) && (minutesUntilExpiration < (60 * 24))) return FriendlyTime.shortFormat(minutesUntilExpiration * 60);
+        else if((minutesUntilExpiration > -1) && (minutesUntilExpiration < (60 * 24))) return FriendlyTime.shortFormat(minutesUntilExpiration * 60);
 
         else return FriendlyTime.shortFormat(totalDays * 86400);
     })();
 
     const getCurrencyElements = (offset: number, limit: number = -1, seasonal: boolean = false) =>
     {
-        if (!purse || !purse.activityPoints || !purse.activityPoints.size) return null;
+        if(!purse || !purse.activityPoints || !purse.activityPoints.size) return null;
 
         const types = Array.from(purse.activityPoints.keys()).filter(type => (displayedCurrencies.indexOf(type) >= 0));
 
         let count = 0;
 
-        while (count < offset)
+        while(count < offset)
         {
             types.shift();
 
@@ -46,20 +46,20 @@ export const PurseView: FC<{}> = props =>
 
         const elements: JSX.Element[] = [];
 
-        for (const type of types)
+        for(const type of types)
         {
-            if ((limit > -1) && (count === limit)) break;
+            if((limit > -1) && (count === limit)) break;
 
-            if (seasonal) elements.push(<SeasonalView key={ type } amount={ purse.activityPoints.get(type) } type={ type } />);
+            if(seasonal) elements.push(<SeasonalView key={ type } amount={ purse.activityPoints.get(type) } type={ type } />);
             else elements.push(<CurrencyView key={ type } amount={ purse.activityPoints.get(type) } short={ currencyDisplayNumberShort } type={ type } />);
 
             count++;
         }
 
         return elements;
-    }
+    };
 
-    if (!purse) return null;
+    if(!purse) return null;
 
     return (
         <Column alignItems="end" className="pointer-events-auto text-sm" gap={ 1 }>
@@ -87,4 +87,4 @@ export const PurseView: FC<{}> = props =>
             { getCurrencyElements(2, -1, true) }
         </Column>
     );
-}
+};

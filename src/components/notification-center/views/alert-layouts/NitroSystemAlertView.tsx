@@ -36,4 +36,4 @@ export const NitroSystemAlertView: FC<NotificationDefaultAlertViewProps> = props
             </Grid>
         </LayoutNotificationAlertView>
     );
-}
+};

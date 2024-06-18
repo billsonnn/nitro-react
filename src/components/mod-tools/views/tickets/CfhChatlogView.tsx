@@ -19,9 +19,9 @@ export const CfhChatlogView: FC<CfhChatlogViewProps> = props =>
     useMessageEvent<CfhChatlogEvent>(CfhChatlogEvent, event =>
     {
         const parser = event.getParser();
-    
+
         if(!parser || parser.data.issueId !== issueId) return;
-    
+
         setChatlogData(parser.data);
     });
 
@@ -38,4 +38,4 @@ export const CfhChatlogView: FC<CfhChatlogViewProps> = props =>
             </NitroCardContentView>
         </NitroCardView>
     );
-}
+};

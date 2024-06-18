@@ -38,7 +38,7 @@ export const AvatarEditorWardrobeView: FC<{}> = props =>
         <InfiniteGrid columnCount={ 5 } estimateSize={ 140 } itemRender={ (item: [ IAvatarFigureContainer, string ], index: number) =>
         {
             const [ figureContainer, gender ] = item;
-            
+
             let clubLevel = 0;
 
             if(figureContainer) clubLevel = GetAvatarRenderManager().getFigureClubLevel(figureContainer, gender);
@@ -55,7 +55,7 @@ export const AvatarEditorWardrobeView: FC<{}> = props =>
                         <Button fullWidth disabled={ (clubLevel > GetClubMemberLevel()) } variant="link" onClick={ event => wearFigureAtIndex(index) }>{ LocalizeText('widget.generic_usable.button.use') }</Button> }
                     </div>
                 </InfiniteGrid.Item>
-            )
+            );
         } } items={ savedFigures } overscan={ 5 } />
     );
-}
+};

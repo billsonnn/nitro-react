@@ -33,7 +33,7 @@ const useGroupState = () =>
             if(a.id > b.id) return 1;
 
             return 0;
-        }
+        };
 
         customize.badgeBases.sort(CompareId);
         customize.badgeSymbols.sort(CompareId);
@@ -50,6 +50,6 @@ const useGroupState = () =>
     }, []);
 
     return { groupCustomize };
-}
+};
 
 export const useGroup = () => useBetween(useGroupState);

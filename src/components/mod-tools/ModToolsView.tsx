@@ -23,9 +23,9 @@ export const ModToolsView: FC<{}> = props =>
         RoomEngineEvent.DISPOSED
     ], event =>
     {
-        if (RoomId.isRoomPreviewerId(event.roomId)) return;
+        if(RoomId.isRoomPreviewerId(event.roomId)) return;
 
-        switch (event.type)
+        switch(event.type)
         {
             case RoomEngineEvent.INITIALIZED:
                 setCurrentRoomId(event.roomId);
@@ -38,15 +38,15 @@ export const ModToolsView: FC<{}> = props =>
 
     useObjectSelectedEvent(event =>
     {
-        if (event.category !== RoomObjectCategory.UNIT) return;
+        if(event.category !== RoomObjectCategory.UNIT) return;
 
         const roomSession = GetRoomSession();
 
-        if (!roomSession) return;
+        if(!roomSession) return;
 
         const userData = roomSession.userDataManager.getUserDataByIndex(event.id);
 
-        if (!userData || userData.type !== RoomObjectType.USER) return;
+        if(!userData || userData.type !== RoomObjectType.USER) return;
 
         setSelectedUser({ userId: userData.webID, username: userData.name });
     });
@@ -58,9 +58,9 @@ export const ModToolsView: FC<{}> = props =>
             {
                 const parts = url.split('/');
 
-                if (parts.length < 2) return;
+                if(parts.length < 2) return;
 
-                switch (parts[1])
+                switch(parts[1])
                 {
                     case 'show':
                         setIsVisible(true);
@@ -144,4 +144,4 @@ export const ModToolsView: FC<{}> = props =>
             { isTicketsVisible && <ModToolsTicketsView onCloseClick={ () => setIsTicketsVisible(false) } /> }
         </>
     );
-}
+};

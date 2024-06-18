@@ -19,36 +19,36 @@ export const FurnitureYoutubeDisplayView: FC<{}> = FurnitureYoutubeDisplayViewPr
     {
         setPlayer(event.target);
 
-        if (objectId === -1) return;
+        if(objectId === -1) return;
 
-        switch (event.target.getPlayerState())
+        switch(event.target.getPlayerState())
         {
             case -1:
             case 1:
-                if (currentVideoState === 2)
+                if(currentVideoState === 2)
                 {
                     //event.target.pauseVideo();
                 }
 
-                if (currentVideoState !== 1) play();
+                if(currentVideoState !== 1) play();
                 return;
             case 2:
-                if (currentVideoState !== 2) pause();
+                if(currentVideoState !== 2) pause();
         }
-    }
+    };
 
     useEffect(() =>
     {
-        if ((currentVideoState === null) || !player) return;
+        if((currentVideoState === null) || !player) return;
 
-        if ((currentVideoState === YoutubeVideoPlaybackStateEnum.PLAYING) && (player.getPlayerState() !== YoutubeVideoPlaybackStateEnum.PLAYING))
+        if((currentVideoState === YoutubeVideoPlaybackStateEnum.PLAYING) && (player.getPlayerState() !== YoutubeVideoPlaybackStateEnum.PLAYING))
         {
             player.playVideo();
 
             return;
         }
 
-        if ((currentVideoState === YoutubeVideoPlaybackStateEnum.PAUSED) && (player.getPlayerState() !== YoutubeVideoPlaybackStateEnum.PAUSED))
+        if((currentVideoState === YoutubeVideoPlaybackStateEnum.PAUSED) && (player.getPlayerState() !== YoutubeVideoPlaybackStateEnum.PAUSED))
         {
             player.pauseVideo();
 
@@ -56,7 +56,7 @@ export const FurnitureYoutubeDisplayView: FC<{}> = FurnitureYoutubeDisplayViewPr
         }
     }, [ currentVideoState, player ]);
 
-    if (objectId === -1) return null;
+    if(objectId === -1) return null;
 
     const youtubeOptions: Options = {
         height: '375',
@@ -70,7 +70,7 @@ export const FurnitureYoutubeDisplayView: FC<{}> = FurnitureYoutubeDisplayViewPr
             start: videoStart,
             end: videoEnd
         }
-    }
+    };
 
     return (
         <NitroCardView className="youtube-tv-widget">
@@ -98,12 +98,12 @@ export const FurnitureYoutubeDisplayView: FC<{}> = FurnitureYoutubeDisplayViewPr
                                     <LayoutGridItem key={ index } itemActive={ (entry.video === selectedVideo) } onClick={ event => selectVideo(entry.video) }>
                                         <b>{ entry.title }</b>
                                     </LayoutGridItem>
-                                )
+                                );
                             }) }
                         </AutoGrid>
                     </div>
                 </div>
             </NitroCardContentView>
         </NitroCardView>
-    )
-}
+    );
+};

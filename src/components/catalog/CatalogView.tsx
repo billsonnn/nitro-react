@@ -20,9 +20,9 @@ export const CatalogView: FC<{}> = props =>
             {
                 const parts = url.split('/');
 
-                if (parts.length < 2) return;
+                if(parts.length < 2) return;
 
-                switch (parts[1])
+                switch(parts[1])
                 {
                     case 'show':
                         setIsVisible(true);
@@ -34,11 +34,11 @@ export const CatalogView: FC<{}> = props =>
                         setIsVisible(prevValue => !prevValue);
                         return;
                     case 'open':
-                        if (parts.length > 2)
+                        if(parts.length > 2)
                         {
-                            if (parts.length === 4)
+                            if(parts.length === 4)
                             {
-                                switch (parts[2])
+                                switch(parts[2])
                                 {
                                     case 'offerId':
                                         openPageByOfferId(parseInt(parts[3]));
@@ -74,12 +74,12 @@ export const CatalogView: FC<{}> = props =>
                     <NitroCardTabsView>
                         { rootNode && (rootNode.children.length > 0) && rootNode.children.map(child =>
                         {
-                            if (!child.isVisible) return null;
+                            if(!child.isVisible) return null;
 
                             return (
                                 <NitroCardTabsItemView key={ child.pageId } isActive={ child.isActive } onClick={ event =>
                                 {
-                                    if (searchResult) setSearchResult(null);
+                                    if(searchResult) setSearchResult(null);
 
                                     activateNode(child);
                                 } } >
@@ -108,4 +108,4 @@ export const CatalogView: FC<{}> = props =>
             <MarketplacePostOfferView />
         </>
     );
-}
+};

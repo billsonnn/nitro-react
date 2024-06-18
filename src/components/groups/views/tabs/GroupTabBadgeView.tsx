@@ -28,7 +28,7 @@ export const GroupTabBadgeView: FC<GroupTabBadgeViewProps> = props =>
         badgeParts.forEach(part => (part.code && (badgeCode += part.code)));
 
         return badgeCode;
-    }
+    };
 
     const saveBadge = useCallback(() =>
     {
@@ -55,12 +55,12 @@ export const GroupTabBadgeView: FC<GroupTabBadgeViewProps> = props =>
         badgeParts.forEach(part =>
         {
             if(!part.code) return;
-            
+
             badge.push(part.key);
             badge.push(part.color);
             badge.push(part.position);
         });
-        
+
         SendMessageComposer(new GroupSaveBadgeComposer(groupData.groupId, badge));
 
         return true;
@@ -69,7 +69,7 @@ export const GroupTabBadgeView: FC<GroupTabBadgeViewProps> = props =>
     useEffect(() =>
     {
         if(groupData.groupBadgeParts) return;
-        
+
         const badgeParts = [
             new GroupBadgePart(GroupBadgePart.BASE, groupCustomize.badgeBases[0].id, groupCustomize.badgePartColors[0].id),
             new GroupBadgePart(GroupBadgePart.SYMBOL, 0, groupCustomize.badgePartColors[0].id),
@@ -94,7 +94,7 @@ export const GroupTabBadgeView: FC<GroupTabBadgeViewProps> = props =>
 
             return;
         }
-        
+
         setBadgeParts(groupData.groupBadgeParts);
     }, [ groupData ]);
 
@@ -104,7 +104,7 @@ export const GroupTabBadgeView: FC<GroupTabBadgeViewProps> = props =>
 
         return () => setCloseAction(null);
     }, [ setCloseAction, saveBadge ]);
-    
+
     return (
         <Grid gap={ 1 } overflow="hidden">
             <Column size={ 2 }>

@@ -6,7 +6,7 @@
     "typescript.format.placeOpenBraceOnNewLineForFunctions": true,
     "editor.wordWrap": "on",
     "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": "explicit",
+        "source.fixAll.eslint": "always",
         "source.fixAll.sortJSON": "never",
         "source.organizeImports": "always"
     },
@@ -17,10 +17,7 @@
     "files.trimFinalNewlines": true,
     "emmet.showExpandedAbbreviation": "never",
     "eslint.format.enable": true,
-    "eslint.validate": [
-        "javascript",
-        "typescript"
-    ],
+    "eslint.validate": ["javascript", "typescript"],
     "eslint.workingDirectories": [
         {
             "pattern": "./src"
@@ -34,18 +31,9 @@
         "css": "css"
     },
     "tailwindCSS.experimental.classRegex": [
-        [
-            "classes \\=([^;]*);",
-            "'([^']*)'"
-        ],
-        [
-            "classes \\=([^;]*);",
-            "\"([^\"]*)\""
-        ],
-        [
-            "classes \\=([^;]*);",
-            "\\`([^\\`]*)\\`"
-        ]
+        ["classes \\=([^;]*);", "'([^']*)'"],
+        ["classes \\=([^;]*);", "\"([^\"]*)\""],
+        ["classes \\=([^;]*);", "\\`([^\\`]*)\\`"]
     ],
     "editor.quickSuggestions": {
         "strings": true

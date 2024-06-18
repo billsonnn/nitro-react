@@ -398,7 +398,7 @@ export class AvatarInfoUtilities
                 default:
                     return (userInfo.roomControllerLevel >= RoomControllerLevel.ROOM_OWNER);
             }
-        }
+        };
 
         return this.isValidSetting(userInfo, checkSetting);
     }
@@ -416,7 +416,7 @@ export class AvatarInfoUtilities
                 default:
                     return (userInfo.roomControllerLevel >= RoomControllerLevel.ROOM_OWNER);
             }
-        }
+        };
 
         return this.isValidSetting(userInfo, checkSetting);
     }
@@ -432,7 +432,7 @@ export class AvatarInfoUtilities
                 default:
                     return (userInfo.roomControllerLevel >= RoomControllerLevel.ROOM_OWNER);
             }
-        }
+        };
 
         return this.isValidSetting(userInfo, checkSetting);
     }

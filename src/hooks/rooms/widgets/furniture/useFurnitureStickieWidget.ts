@@ -21,7 +21,7 @@ const useFurnitureStickieWidgetState = () =>
         setText('');
         setType('');
         setCanModify(false);
-    }
+    };
 
     const updateColor = (newColor: string) =>
     {
@@ -30,14 +30,14 @@ const useFurnitureStickieWidgetState = () =>
         setColor(newColor);
 
         GetRoomEngine().modifyRoomObjectData(objectId, category, newColor, text);
-    }
+    };
 
     const updateText = (newText: string) =>
     {
         setText(newText);
 
         GetRoomEngine().modifyRoomObjectData(objectId, category, color, newText);
-    }
+    };
 
     const trash = () => GetRoomEngine().deleteRoomObject(objectId, category);
 
@@ -80,6 +80,6 @@ const useFurnitureStickieWidgetState = () =>
     });
 
     return { objectId, color, text, type, canModify, updateColor, updateText, trash, onClose };
-}
+};
 
 export const useFurnitureStickieWidget = useFurnitureStickieWidgetState;

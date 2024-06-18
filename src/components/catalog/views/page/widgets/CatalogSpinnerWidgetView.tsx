@@ -14,12 +14,12 @@ export const CatalogSpinnerWidgetView: FC<{}> = props =>
 
     const updateQuantity = (value: number) =>
     {
-        if (isNaN(value)) value = 1;
+        if(isNaN(value)) value = 1;
 
         value = Math.max(value, MIN_VALUE);
         value = Math.min(value, MAX_VALUE);
 
-        if (value === quantity) return;
+        if(value === quantity) return;
 
         setPurchaseOptions(prevValue =>
         {
@@ -29,9 +29,9 @@ export const CatalogSpinnerWidgetView: FC<{}> = props =>
 
             return newValue;
         });
-    }
+    };
 
-    if (!currentOffer || !currentOffer.bundlePurchaseAllowed) return null;
+    if(!currentOffer || !currentOffer.bundlePurchaseAllowed) return null;
 
     return (
         <>
@@ -43,4 +43,4 @@ export const CatalogSpinnerWidgetView: FC<{}> = props =>
             </div>
         </>
     );
-}
+};

@@ -25,4 +25,4 @@ export const WiredActionKickFromRoomView: FC<{}> = props =>
             </div>
         </WiredActionBaseView>
     );
-}
+};

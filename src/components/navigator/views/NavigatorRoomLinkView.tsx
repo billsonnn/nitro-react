@@ -13,7 +13,7 @@ export const NavigatorRoomLinkView: FC<NavigatorRoomLinkViewProps> = props =>
     const { onCloseClick = null } = props;
     const { navigatorData = null } = useNavigator();
 
-    if (!navigatorData.enteredGuestRoom) return null;
+    if(!navigatorData.enteredGuestRoom) return null;
 
     return (
         <NitroCardView className="nitro-room-link" theme="primary-slim">

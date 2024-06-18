@@ -16,16 +16,16 @@ export const InfoStandWidgetRentableBotView: FC<InfoStandWidgetRentableBotViewPr
 
     const canPickup = useMemo(() =>
     {
-        if (avatarInfo.botSkills.indexOf(BotSkillsEnum.NO_PICK_UP) >= 0) return false;
+        if(avatarInfo.botSkills.indexOf(BotSkillsEnum.NO_PICK_UP) >= 0) return false;
 
-        if (!avatarInfo.amIOwner && !avatarInfo.amIAnyRoomController) return false;
+        if(!avatarInfo.amIOwner && !avatarInfo.amIAnyRoomController) return false;
 
         return true;
     }, [ avatarInfo ]);
 
     const pickupBot = () => SendMessageComposer(new BotRemoveComposer(avatarInfo.webID));
 
-    if (!avatarInfo) return;
+    if(!avatarInfo) return;
 
     return (
         <div className="flex flex-col gap-1">
@@ -81,4 +81,4 @@ export const InfoStandWidgetRentableBotView: FC<InfoStandWidgetRentableBotViewPr
                 </div> }
         </div>
     );
-}
+};

@@ -20,25 +20,25 @@ export const FurnitureMannequinView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        if (objectId === -1) return;
+        if(objectId === -1) return;
 
         const roomSession = GetRoomSession();
 
-        if (roomSession.isRoomOwner || (roomSession.controllerLevel >= RoomControllerLevel.GUEST) || GetSessionDataManager().isModerator)
+        if(roomSession.isRoomOwner || (roomSession.controllerLevel >= RoomControllerLevel.GUEST) || GetSessionDataManager().isModerator)
         {
             setMode(MODE_CONTROLLER);
 
             return;
         }
 
-        if (GetSessionDataManager().gender.toLowerCase() !== gender.toLowerCase())
+        if(GetSessionDataManager().gender.toLowerCase() !== gender.toLowerCase())
         {
             setMode(MODE_WRONG_GENDER);
 
             return;
         }
 
-        if (GetClubMemberLevel() < clubLevel)
+        if(GetClubMemberLevel() < clubLevel)
         {
             setMode(MODE_NO_CLUB);
 
@@ -50,7 +50,7 @@ export const FurnitureMannequinView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        switch (mode)
+        switch(mode)
         {
             case MODE_CONTROLLER:
             case MODE_WRONG_GENDER: {
@@ -79,7 +79,7 @@ export const FurnitureMannequinView: FC<{}> = props =>
         }
     }, [ mode, figure, clubLevel ]);
 
-    if (objectId === -1) return null;
+    if(objectId === -1) return null;
 
     return (
         <NitroCardView className="nitro-mannequin no-resize" theme="primary-slim">
@@ -142,4 +142,4 @@ export const FurnitureMannequinView: FC<{}> = props =>
             </NitroCardContentView>
         </NitroCardView>
     );
-}
+};

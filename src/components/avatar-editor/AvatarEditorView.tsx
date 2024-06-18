@@ -18,7 +18,7 @@ export const AvatarEditorView: FC<{}> = props =>
 
     const processAction = (action: string) =>
     {
-        switch (action)
+        switch(action)
         {
             case AvatarEditorAction.ACTION_RESET:
                 loadAvatarData(GetSessionDataManager().figure, GetSessionDataManager().gender);
@@ -34,7 +34,7 @@ export const AvatarEditorView: FC<{}> = props =>
                 setIsVisible(false);
                 return;
         }
-    }
+    };
 
     useEffect(() =>
     {
@@ -43,9 +43,9 @@ export const AvatarEditorView: FC<{}> = props =>
             {
                 const parts = url.split('/');
 
-                if (parts.length < 2) return;
+                if(parts.length < 2) return;
 
-                switch (parts[1])
+                switch(parts[1])
                 {
                     case 'show':
                         setIsVisible(true);
@@ -68,10 +68,10 @@ export const AvatarEditorView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        setEditorVisibility(isVisible)
+        setEditorVisibility(isVisible);
     }, [ isVisible, setEditorVisibility ]);
 
-    if (!isVisible) return null;
+    if(!isVisible) return null;
 
     return (
         <NitroCardView className="w-[620px] h-[374px] nitro-avatar-editor" uniqueKey="avatar-editor">
@@ -119,4 +119,4 @@ export const AvatarEditorView: FC<{}> = props =>
             </NitroCardContentView>
         </NitroCardView>
     );
-}
+};

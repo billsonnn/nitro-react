@@ -19,7 +19,7 @@ const useFurnitureExternalImageWidgetState = () =>
         setCategory(-1);
         setCurrentPhotoIndex(-1);
         setCurrentPhotos([]);
-    }
+    };
 
     useNitroEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_EXTERNAL_IMAGE, event =>
     {
@@ -32,7 +32,7 @@ const useFurnitureExternalImageWidgetState = () =>
 
         roomTotalImages.forEach(object =>
         {
-            if (object.type !== 'external_image_wallitem_poster_small') return null;
+            if(object.type !== 'external_image_wallitem_poster_small') return null;
 
             const data = object.model.getValue<string>(RoomObjectVariable.FURNITURE_DATA);
             const jsonData: IPhotoData = JSON.parse(data);
@@ -52,7 +52,7 @@ const useFurnitureExternalImageWidgetState = () =>
 
             if(roomObjectPhotoData)
             {
-                index = datas.findIndex(data => (data.u === roomObjectPhotoData.u))
+                index = datas.findIndex(data => (data.u === roomObjectPhotoData.u));
             }
 
             if(index < 0) index = 0;
@@ -69,6 +69,6 @@ const useFurnitureExternalImageWidgetState = () =>
     });
 
     return { objectId, currentPhotoIndex, currentPhotos, onClose };
-}
+};
 
 export const useFurnitureExternalImageWidget = useFurnitureExternalImageWidgetState;

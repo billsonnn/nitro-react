@@ -23,7 +23,7 @@ export const HallOfFameWidgetView: FC<HallOfFameWidgetViewProps> = props =>
         SendMessageComposer(new GetCommunityGoalHallOfFameMessageComposer(campaign));
     }, [ conf ]);
 
-    if (!data) return null;
+    if(!data) return null;
 
     return (
         <div className="bg-[#0000004d] rounded-[.25rem] justify-center flex">
@@ -34,4 +34,4 @@ export const HallOfFameWidgetView: FC<HallOfFameWidgetViewProps> = props =>
             ) }
         </div>
     );
-}
+};

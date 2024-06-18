@@ -27,12 +27,12 @@ export const CatalogLayoutMarketplacePublicItemsView: FC<CatalogLayoutMarketplac
     const requestOffers = useCallback((options: IMarketplaceSearchOptions) =>
     {
         setLastSearch(options);
-        SendMessageComposer(new GetMarketplaceOffersMessageComposer(options.minPrice, options.maxPrice, options.query, options.type))
+        SendMessageComposer(new GetMarketplaceOffersMessageComposer(options.minPrice, options.maxPrice, options.query, options.type));
     }, []);
 
     const getSortTypes = useMemo(() =>
     {
-        switch (searchType)
+        switch(searchType)
         {
             case MarketplaceSearchType.BY_ACTIVITY:
                 return SORT_TYPES_ACTIVITY;
@@ -46,7 +46,7 @@ export const CatalogLayoutMarketplacePublicItemsView: FC<CatalogLayoutMarketplac
 
     const purchaseItem = useCallback((offerData: MarketplaceOfferData) =>
     {
-        if (offerData.price > getCurrencyAmount(-1))
+        if(offerData.price > getCurrencyAmount(-1))
         {
             simpleAlert(LocalizeText('catalog.alert.notenough.credits.description'), NotificationAlertType.DEFAULT, null, null, LocalizeText('catalog.alert.notenough.title'));
             return;
@@ -65,7 +65,7 @@ export const CatalogLayoutMarketplacePublicItemsView: FC<CatalogLayoutMarketplac
     {
         const parser = event.getParser();
 
-        if (!parser) return;
+        if(!parser) return;
 
         const latestOffers = new Map<number, MarketplaceOfferData>();
         parser.offers.forEach(entry =>
@@ -83,9 +83,9 @@ export const CatalogLayoutMarketplacePublicItemsView: FC<CatalogLayoutMarketplac
     {
         const parser = event.getParser();
 
-        if (!parser) return;
+        if(!parser) return;
 
-        switch (parser.result)
+        switch(parser.result)
         {
             case 1:
                 requestOffers(lastSearch);
@@ -107,7 +107,7 @@ export const CatalogLayoutMarketplacePublicItemsView: FC<CatalogLayoutMarketplac
                     const newVal = new Map(prev);
 
                     const item = newVal.get(parser.requestedOfferId);
-                    if (item)
+                    if(item)
                     {
                         item.offerId = parser.offerId;
                         item.price = parser.newPrice;
@@ -158,4 +158,4 @@ export const CatalogLayoutMarketplacePublicItemsView: FC<CatalogLayoutMarketplac
             </Column>
         </>
     );
-}
+};

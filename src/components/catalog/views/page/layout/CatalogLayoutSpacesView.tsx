@@ -44,4 +44,4 @@ export const CatalogLayoutSpacesView: FC<CatalogLayoutProps> = props =>
             </Column>
         </Grid>
     );
-}
+};

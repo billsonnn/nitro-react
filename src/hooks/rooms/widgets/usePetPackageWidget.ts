@@ -10,7 +10,7 @@ const usePetPackageWidgetState = () =>
     const [ objectType, setObjectType ] = useState<string>('');
     const [ petName, setPetName ] = useState<string>('');
     const [ errorResult, setErrorResult ] = useState<string>('');
-    
+
     const onClose = () =>
     {
         setErrorResult('');
@@ -18,23 +18,23 @@ const usePetPackageWidgetState = () =>
         setObjectType('');
         setObjectId(-1);
         setIsVisible(false);
-    }
+    };
 
     const onConfirm = () =>
     {
         SendMessageComposer(new OpenPetPackageMessageComposer(objectId, petName));
-    }
+    };
 
     const onChangePetName = (petName: string) =>
     {
         setPetName(petName);
-        if (errorResult.length > 0) setErrorResult('');
-    }
+        if(errorResult.length > 0) setErrorResult('');
+    };
 
     const getErrorResultForCode = (errorCode: number) =>
     {
-        if (!errorCode || errorCode === 0) return;
-        
+        if(!errorCode || errorCode === 0) return;
+
         switch(errorCode)
         {
             case 1:
@@ -47,14 +47,14 @@ const usePetPackageWidgetState = () =>
             default:
                 return LocalizeText('catalog.alert.petname.bobba');
         }
-    }
+    };
 
     useNitroEvent<RoomSessionPetPackageEvent>(RoomSessionPetPackageEvent.RSOPPE_OPEN_PET_PACKAGE_REQUESTED, event =>
     {
-        if (!event) return;
+        if(!event) return;
 
         const roomObject = GetRoomEngine().getRoomObject(event.session.roomId, event.objectId, RoomObjectCategory.FLOOR);
-        
+
         setObjectId(event.objectId);
         setObjectType(roomObject.type);
         setIsVisible(true);
@@ -62,14 +62,14 @@ const usePetPackageWidgetState = () =>
 
     useNitroEvent<RoomSessionPetPackageEvent>(RoomSessionPetPackageEvent.RSOPPE_OPEN_PET_PACKAGE_RESULT, event =>
     {
-        if (!event) return;
+        if(!event) return;
 
-        if (event.nameValidationStatus === 0) onClose();
-        
-        if (event.nameValidationStatus !== 0) setErrorResult(getErrorResultForCode(event.nameValidationStatus));
+        if(event.nameValidationStatus === 0) onClose();
+
+        if(event.nameValidationStatus !== 0) setErrorResult(getErrorResultForCode(event.nameValidationStatus));
     });
 
     return { isVisible, errorResult, petName, objectType, onChangePetName, onConfirm, onClose };
-}
+};
 
 export const usePetPackageWidget = usePetPackageWidgetState;

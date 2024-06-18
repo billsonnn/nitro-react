@@ -18,6 +18,6 @@ const useFilterWordsWidgetState = () =>
     });
 
     return { wordsFilter, isVisible, setWordsFilter, onClose };
-}
+};
 
 export const useFilterWordsWidget = useFilterWordsWidgetState;

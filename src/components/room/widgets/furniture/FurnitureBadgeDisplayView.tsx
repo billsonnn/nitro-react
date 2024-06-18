@@ -9,4 +9,4 @@ export const FurnitureBadgeDisplayView: FC<{}> = props =>
     if(objectId === -1) return null;
 
     return <LayoutTrophyView color={ color } customTitle={ badgeName } date={ date } message={ badgeDesc } senderName={ senderName } onCloseClick={ onClose } />;
-}
+};

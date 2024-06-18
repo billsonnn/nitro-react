@@ -34,9 +34,9 @@ export const NavigatorRoomSettingsBasicTabView: FC<NavigatorRoomSettingsTabViewP
     {
         const parser = event.getParser();
 
-        if (!parser) return;
+        if(!parser) return;
 
-        switch (parser.code)
+        switch(parser.code)
         {
             case RoomSettingsSaveErrorParser.ERROR_INVALID_TAG:
                 setTypeError('navigator.roomsettings.unacceptablewords');
@@ -55,39 +55,39 @@ export const NavigatorRoomSettingsBasicTabView: FC<NavigatorRoomSettingsTabViewP
         {
             SendMessageComposer(new RoomDeleteComposer(roomData.roomId));
 
-            if (onClose) onClose();
+            if(onClose) onClose();
 
             CreateLinkEvent('navigator/search/myworld_view');
         },
         null, null, null, LocalizeText('navigator.roomsettings.deleteroom.confirm.title'));
-    }
+    };
 
     const saveRoomName = () =>
     {
-        if ((roomName === roomData.roomName) || (roomName.length < ROOM_NAME_MIN_LENGTH) || (roomName.length > ROOM_NAME_MAX_LENGTH)) return;
+        if((roomName === roomData.roomName) || (roomName.length < ROOM_NAME_MIN_LENGTH) || (roomName.length > ROOM_NAME_MAX_LENGTH)) return;
 
         handleChange('name', roomName);
-    }
+    };
 
     const saveRoomDescription = () =>
     {
-        if ((roomDescription === roomData.roomDescription) || (roomDescription.length > DESC_MAX_LENGTH)) return;
+        if((roomDescription === roomData.roomDescription) || (roomDescription.length > DESC_MAX_LENGTH)) return;
 
         handleChange('description', roomDescription);
-    }
+    };
 
     const saveTags = (index: number) =>
     {
-        if (index === 0 && (roomTag1 === roomData.tags[0]) || (roomTag1.length > TAGS_MAX_LENGTH)) return;
+        if(index === 0 && (roomTag1 === roomData.tags[0]) || (roomTag1.length > TAGS_MAX_LENGTH)) return;
 
-        if (index === 1 && (roomTag2 === roomData.tags[1]) || (roomTag2.length > TAGS_MAX_LENGTH)) return;
+        if(index === 1 && (roomTag2 === roomData.tags[1]) || (roomTag2.length > TAGS_MAX_LENGTH)) return;
 
-        if (roomTag1 === '' && roomTag2 !== '') setRoomTag2('');
+        if(roomTag1 === '' && roomTag2 !== '') setRoomTag2('');
 
         setTypeError('');
         setTagIndex(index);
         handleChange('tags', (roomTag1 === '' && roomTag2 !== '') ? [ roomTag2 ] : [ roomTag1, roomTag2 ]);
-    }
+    };
 
     useEffect(() =>
     {

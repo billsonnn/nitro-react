@@ -29,10 +29,10 @@ export class MannequinUtilities
         for(const part of figureContainer.getPartTypeIds())
         {
             if(this.MANNEQUIN_CLOTHING_PART_TYPES.indexOf(part) >= 0) continue;
-                
+
             figureContainer.removePart(part);
         }
-        
+
         figureContainer.updatePart((this.MANNEQUIN_FIGURE[0] as string), (this.MANNEQUIN_FIGURE[1] as number), (this.MANNEQUIN_FIGURE[2] as number[]));
     };
 }

@@ -16,20 +16,20 @@ export const FurnitureDimmerView: FC<{}> = props =>
         FurnitureDimmerUtilities.previewDimmer(color, brightness, (effectId === 2));
 
         setIsVisible(false);
-    }
+    };
 
     useNitroEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REMOVE_DIMMER, event => setIsVisible(false));
 
     useEffect(() =>
     {
-        if (!presets || !presets.length) return;
+        if(!presets || !presets.length) return;
 
         setIsVisible(true);
     }, [ presets ]);
 
     const isFreeColorMode = useMemo(() => GetConfigurationValue<boolean>('widget.dimmer.colorwheel', false), []);
 
-    if (!isVisible) return null;
+    if(!isVisible) return null;
 
     return (
         <NitroCardView className="nitro-room-widget-dimmer">
@@ -84,4 +84,4 @@ export const FurnitureDimmerView: FC<{}> = props =>
             </NitroCardContentView>
         </NitroCardView>
     );
-}
+};

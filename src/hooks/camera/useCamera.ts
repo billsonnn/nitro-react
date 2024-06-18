@@ -27,7 +27,7 @@ const useCameraState = () =>
 
     useEffect(() =>
     {
-        if (!GetRoomCameraWidgetManager().isLoaded)
+        if(!GetRoomCameraWidgetManager().isLoaded)
         {
             GetRoomCameraWidgetManager().init();
 
@@ -38,6 +38,6 @@ const useCameraState = () =>
     }, []);
 
     return { availableEffects, cameraRoll, setCameraRoll, selectedPictureIndex, setSelectedPictureIndex, myLevel, price };
-}
+};
 
 export const useCamera = () => useBetween(useCameraState);

@@ -37,7 +37,7 @@ export const CatalogViewProductWidgetView: FC<{}> = props =>
 
                     const figureString = GetAvatarRenderManager().getFigureStringWithFigureIds(GetSessionDataManager().figure, GetSessionDataManager().gender, figureSets);
 
-                    roomPreviewer.addAvatarIntoRoom(figureString, product.productClassId)
+                    roomPreviewer.addAvatarIntoRoom(figureString, product.productClassId);
                 }
                 else
                 {
@@ -94,6 +94,6 @@ export const CatalogViewProductWidgetView: FC<{}> = props =>
             </Column>
         );
     }
-    
+
     return <LayoutRoomPreviewerView height={ 140 } roomPreviewer={ roomPreviewer } />;
-}
+};

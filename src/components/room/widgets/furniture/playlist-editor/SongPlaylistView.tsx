@@ -19,13 +19,13 @@ export const SongPlaylistView: FC<SongPlaylistViewProps> = props =>
 
     const action = (index: number) =>
     {
-        if (selectedItem === index) removeFromPlaylist(index);
-    }
+        if(selectedItem === index) removeFromPlaylist(index);
+    };
 
     const playPause = (furniId: number, selectedItem: number) =>
     {
-        togglePlayPause(furniId, selectedItem !== -1 ? selectedItem : 0)
-    }
+        togglePlayPause(furniId, selectedItem !== -1 ? selectedItem : 0);
+    };
 
     return (<>
         <div className="bg-primary py-3 container-fluid justify-center flex rounded">
@@ -39,7 +39,7 @@ export const SongPlaylistView: FC<SongPlaylistViewProps> = props =>
                     return <div key={ index } className={ 'flex gap-1 items-center text-black cursor-pointer ' + (selectedItem === index ? 'border border-muted border-2 rounded' : 'border-2') } onClick={ () => setSelectedItem(prev => prev === index ? -1 : index) }>
                         <div className={ 'disk-2 ' + (selectedItem === index ? 'selected-song' : '') } style={ { backgroundColor: (selectedItem === index ? '' : GetDiskColor(songInfo.songData)) } } onClick={ () => action(index) } />
                         { songInfo.name }
-                    </div>
+                    </div>;
                 }) }
 
             </div>
@@ -75,4 +75,4 @@ export const SongPlaylistView: FC<SongPlaylistViewProps> = props =>
         }
 
     </>);
-}
+};

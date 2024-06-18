@@ -12,12 +12,12 @@ const useRoomPromoteState = () =>
     {
         const parser = event.getParser();
 
-        if (!parser) return;
+        if(!parser) return;
 
         setPromoteInformation(parser);
     });
 
     return { promoteInformation, isExtended, setPromoteInformation, setIsExtended };
-}
+};
 
 export const useRoomPromote = () => useBetween(useRoomPromoteState);

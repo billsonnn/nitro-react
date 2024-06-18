@@ -10,6 +10,6 @@ export const GetConfirmLayout = (item: NotificationConfirmItem, onClose: () => v
     switch(item.confirmType)
     {
         default:
-            return <NotificationDefaultConfirmView { ...props } />
+            return <NotificationDefaultConfirmView { ...props } />;
     }
-}
+};

@@ -32,7 +32,7 @@ const useFurnitureYoutubeWidgetState = () =>
         setSelectedVideo(null);
         setPlaylists(null);
         setHasControl(false);
-    }
+    };
 
     const previous = () => SendMessageComposer(new ControlYoutubeDisplayPlaybackMessageComposer(objectId, CONTROL_COMMAND_PREVIOUS_VIDEO));
 
@@ -54,14 +54,14 @@ const useFurnitureYoutubeWidgetState = () =>
 
         setSelectedVideo(video);
         SendMessageComposer(new SetYoutubeDisplayPlaylistMessageComposer(objectId, video));
-    }
+    };
 
     useNitroEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_YOUTUBE, event =>
     {
         if(RoomId.isRoomPreviewerId(event.roomId)) return;
 
         const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
-    
+
         if(!roomObject) return;
 
         setObjectId(event.objectId);
@@ -122,6 +122,6 @@ const useFurnitureYoutubeWidgetState = () =>
     });
 
     return { objectId, videoId, videoStart, videoEnd, currentVideoState, selectedVideo, playlists, onClose, previous, next, pause, play, selectVideo };
-}
+};
 
 export const useFurnitureYoutubeWidget = useFurnitureYoutubeWidgetState;

@@ -25,4 +25,4 @@ export const WiredActionBotTeleportView: FC<{}> = props =>
             </div>
         </WiredActionBaseView>
     );
-}
+};

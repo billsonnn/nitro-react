@@ -32,7 +32,7 @@ const useChatHistoryState = () =>
 
             return newValue;
         });
-    }
+    };
 
     const addRoomHistoryEntry = (entry: IRoomHistoryEntry) =>
     {
@@ -46,7 +46,7 @@ const useChatHistoryState = () =>
 
             return newValue;
         });
-    }
+    };
 
     const addMessengerEntry = (entry: IChatEntry) =>
     {
@@ -62,7 +62,7 @@ const useChatHistoryState = () =>
 
             return newValue;
         });
-    }
+    };
 
     useNitroEvent<RoomSessionEvent>(RoomSessionEvent.STARTED, event => setNeedsRoomInsert(true));
 
@@ -97,8 +97,8 @@ const useChatHistoryState = () =>
 
         addMessengerEntry({ id: -1, webId: parser.senderId, entityId: -1, name: '', message: parser.messageText, roomId: -1, timestamp: MessengerHistoryCurrentDate(), type: ChatEntryType.TYPE_IM });
     });
-    
+
     return { addChatEntry, chatHistory, roomHistory, messengerHistory };
-}
+};
 
 export const useChatHistory = () => useBetween(useChatHistoryState);

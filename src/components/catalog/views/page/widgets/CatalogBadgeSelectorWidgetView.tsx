@@ -66,11 +66,11 @@ export const CatalogBadgeSelectorWidgetView: FC<CatalogBadgeSelectorWidgetViewPr
             { badgeCodes && (badgeCodes.length > 0) && badgeCodes.map((badgeCode, index) =>
             {
                 return (
-                    <LayoutGridItem key={ index } itemActive={ (currentBadgeCode === badgeCode) } onClick={ event => setCurrentBadgeCode(badgeCode) }> 
+                    <LayoutGridItem key={ index } itemActive={ (currentBadgeCode === badgeCode) } onClick={ event => setCurrentBadgeCode(badgeCode) }>
                         <LayoutBadgeImageView badgeCode={ badgeCode } />
                     </LayoutGridItem>
                 );
             }) }
         </AutoGrid>
     );
-}
+};

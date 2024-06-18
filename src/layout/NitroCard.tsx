@@ -26,7 +26,7 @@ NitroCardRoot.displayName = 'NitroCardRoot';
 const NitroCardHeader = forwardRef<HTMLDivElement, {
     headerText: string;
     onCloseClick?: (event: MouseEvent) => void;
-} & DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>>((props, ref) =>
+        } & DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>>((props, ref) =>
         {
             const { headerText = '', onCloseClick = null, className = null, ...rest } = props;
 
@@ -34,7 +34,7 @@ const NitroCardHeader = forwardRef<HTMLDivElement, {
             {
                 event.stopPropagation();
                 event.nativeEvent.stopImmediatePropagation();
-            }
+            };
 
             return (
                 <div ref={ ref } className={ classNames('relative flex items-center justify-center flex-col drag-handler min-h-card-header max-h-card-header bg-card-header', className) }>
@@ -43,7 +43,7 @@ const NitroCardHeader = forwardRef<HTMLDivElement, {
                         <div className="absolute flex items-center justify-center cursor-pointer right-2 p-[2px] ubuntu-close-button" onClick={ onCloseClick } onMouseDownCapture={ onMouseDown } />
                     </div>
                 </div>
-            )
+            );
         });
 
 NitroCardHeader.displayName = 'NitroCardHeader';
@@ -84,7 +84,7 @@ const NitroCardTabs = forwardRef<HTMLDivElement, {
                 className)
             }
             { ...rest } />
-    )
+    );
 });
 
 NitroCardTabs.displayName = 'NitroCardTabs';
@@ -111,7 +111,7 @@ const NitroCardTabItem = forwardRef<HTMLDivElement, {
             { (count > 0) &&
                 <NitroItemCountBadge count={ count } /> }
         </div>
-    )
+    );
 });
 
 NitroCardTabItem.displayName = 'NitroCardTabItem';

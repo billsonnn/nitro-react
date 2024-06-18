@@ -44,7 +44,7 @@ export const CatalogGiftView: FC<{}> = props =>
         setIsAutocompleteVisible(false);
         setSuggestions([]);
 
-        if (colors.length) setSelectedColorId(colors[0].id);
+        if(colors.length) setSelectedColorId(colors[0].id);
     }, [ colors ]);
 
     const isBoxDefault = useMemo(() =>
@@ -54,16 +54,16 @@ export const CatalogGiftView: FC<{}> = props =>
 
     const boxExtraData = useMemo(() =>
     {
-        if (!giftConfiguration) return '';
+        if(!giftConfiguration) return '';
 
         return ((boxTypes[selectedBoxIndex] * 1000) + giftConfiguration.ribbonTypes[selectedRibbonIndex]).toString();
     }, [ giftConfiguration, selectedBoxIndex, selectedRibbonIndex, boxTypes ]);
 
     const isColorable = useMemo(() =>
     {
-        if (!giftConfiguration) return false;
+        if(!giftConfiguration) return false;
 
-        if (isBoxDefault) return false;
+        if(isBoxDefault) return false;
 
         const boxType = boxTypes[selectedBoxIndex];
 
@@ -73,7 +73,7 @@ export const CatalogGiftView: FC<{}> = props =>
     const colourId = useMemo(() =>
     {
         return isBoxDefault ? boxTypes[selectedBoxIndex] : selectedColorId;
-    }, [ isBoxDefault, boxTypes, selectedBoxIndex, selectedColorId ])
+    }, [ isBoxDefault, boxTypes, selectedBoxIndex, selectedColorId ]);
 
     const allFriends = friends.filter((friend: MessengerFriend) => friend.id !== -1);
 
@@ -83,7 +83,7 @@ export const CatalogGiftView: FC<{}> = props =>
 
         let suggestions = [];
 
-        if (value.length > 0)
+        if(value.length > 0)
         {
             suggestions = allFriends.sort().filter((friend: MessengerFriend) => friend.name.includes(value));
         }
@@ -97,11 +97,11 @@ export const CatalogGiftView: FC<{}> = props =>
     {
         setReceiverName(friendName);
         setIsAutocompleteVisible(false);
-    }
+    };
 
     const handleAction = useCallback((action: string) =>
     {
-        switch (action)
+        switch(action)
         {
             case 'prev_box':
                 setSelectedBoxIndex(value => (value === 0 ? maxBoxIndex : value - 1));
@@ -116,7 +116,7 @@ export const CatalogGiftView: FC<{}> = props =>
                 setSelectedRibbonIndex(value => (value === maxRibbonIndex ? 0 : value + 1));
                 return;
             case 'buy':
-                if (!receiverName || (receiverName.length === 0))
+                if(!receiverName || (receiverName.length === 0))
                 {
                     setReceiverNotFound(true);
                     return;
@@ -133,7 +133,7 @@ export const CatalogGiftView: FC<{}> = props =>
         CatalogPurchasedEvent.PURCHASE_SUCCESS,
         CatalogEvent.INIT_GIFT ], event =>
     {
-        switch (event.type)
+        switch(event.type)
         {
             case CatalogPurchasedEvent.PURCHASE_SUCCESS:
                 onClose();
@@ -158,7 +158,7 @@ export const CatalogGiftView: FC<{}> = props =>
 
     const createBoxTypes = useCallback(() =>
     {
-        if (!giftConfiguration) return;
+        if(!giftConfiguration) return;
 
         setBoxTypes(prev =>
         {
@@ -170,27 +170,27 @@ export const CatalogGiftView: FC<{}> = props =>
             setMaxRibbonIndex(newPrev.length - 1);
 
             return newPrev;
-        })
-    }, [ giftConfiguration ])
+        });
+    }, [ giftConfiguration ]);
 
     useEffect(() =>
     {
-        if (!giftConfiguration) return;
+        if(!giftConfiguration) return;
 
         const newColors: { id: number, color: string }[] = [];
 
-        for (const colorId of giftConfiguration.stuffTypes)
+        for(const colorId of giftConfiguration.stuffTypes)
         {
             const giftData = GetSessionDataManager().getFloorItemData(colorId);
 
-            if (!giftData) continue;
+            if(!giftData) continue;
 
-            if (giftData.colors && giftData.colors.length > 0) newColors.push({ id: colorId, color: ColorUtils.makeColorNumberHex(giftData.colors[0]) });
+            if(giftData.colors && giftData.colors.length > 0) newColors.push({ id: colorId, color: ColorUtils.makeColorNumberHex(giftData.colors[0]) });
         }
 
         createBoxTypes();
 
-        if (newColors.length)
+        if(newColors.length)
         {
             setSelectedColorId(newColors[0].id);
             setColors(newColors);
@@ -199,12 +199,12 @@ export const CatalogGiftView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        if (!isVisible) return;
+        if(!isVisible) return;
 
         createBoxTypes();
-    }, [ createBoxTypes, isVisible ])
+    }, [ createBoxTypes, isVisible ]);
 
-    if (!giftConfiguration || !giftConfiguration.isEnabled || !isVisible) return null;
+    if(!giftConfiguration || !giftConfiguration.isEnabled || !isVisible) return null;
 
     const boxName = 'catalog.gift_wrapping_new.box.' + (isBoxDefault ? 'default' : boxTypes[selectedBoxIndex]);
     const ribbonName = `catalog.gift_wrapping_new.ribbon.${ selectedRibbonIndex }`;

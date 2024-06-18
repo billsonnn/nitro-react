@@ -223,7 +223,7 @@ const useCatalogState = () =>
 
         for(const child of node.children)
         {
-            const found = (getNodeById(id, child) as ICatalogNode);
+            const found = (getNodeById(id, child));
 
             if(found) return found;
         }
@@ -237,7 +237,7 @@ const useCatalogState = () =>
 
         for(const child of node.children)
         {
-            const found = (getNodeByName(name, child) as ICatalogNode);
+            const found = (getNodeByName(name, child));
 
             if(found) return found;
         }
@@ -286,7 +286,7 @@ const useCatalogState = () =>
             {
                 if(offer.offerId !== offerId) continue;
 
-                setCurrentOffer(offer)
+                setCurrentOffer(offer);
 
                 break;
             }
@@ -436,7 +436,7 @@ const useCatalogState = () =>
             for(const child of node.children) catalogNode.addChild(getCatalogNode(child, depth, catalogNode));
 
             return catalogNode;
-        }
+        };
 
         setRootNode(getCatalogNode(parser.root, 0, null));
         setOffersToNodes(offers);
@@ -904,10 +904,10 @@ const useCatalogState = () =>
 
                 return null;
             });
-        }
+        };
     }, []);
 
     return { isVisible, setIsVisible, isBusy, pageId, previousPageId, currentType, rootNode, offersToNodes, currentPage, setCurrentPage, currentOffer, setCurrentOffer, activeNodes, searchResult, setSearchResult, frontPageItems, roomPreviewer, navigationHidden, setNavigationHidden, purchaseOptions, setPurchaseOptions, catalogOptions, setCatalogOptions, getNodeById, getNodeByName, activateNode, openPageById, openPageByName, openPageByOfferId, requestOfferToMover };
-}
+};
 
 export const useCatalog = () => useBetween(useCatalogState);

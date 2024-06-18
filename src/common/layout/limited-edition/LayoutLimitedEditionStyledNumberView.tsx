@@ -9,10 +9,10 @@ export const LayoutLimitedEditionStyledNumberView: FC<LayoutLimitedEditionStyled
 {
     const { value = 0 } = props;
     const numbers = value.toString().split('');
-    
+
     return (
         <>
             { numbers.map((number, index) => <i key={ index } className={ 'limited-edition-number n-' + number } />) }
         </>
     );
-}
+};

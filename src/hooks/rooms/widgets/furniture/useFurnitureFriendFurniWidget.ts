@@ -22,14 +22,14 @@ const useFurnitureFriendFurniWidgetState = () =>
         setUsernames([]);
         setFigures([]);
         setDate(null);
-    }
+    };
 
     const respond = (flag: boolean) =>
     {
         SendMessageComposer(new FriendFurniConfirmLockMessageComposer(objectId, flag));
 
         onClose();
-    }
+    };
 
     useMessageEvent<LoveLockFurniStartEvent>(LoveLockFurniStartEvent, event =>
     {
@@ -52,7 +52,7 @@ const useFurnitureFriendFurniWidgetState = () =>
         const type = roomObject.model.getValue<number>(RoomObjectVariable.FURNITURE_FRIENDFURNI_ENGRAVING);
 
         if((data[0] !== '1') || (data.length !== 6)) return;
-        
+
         setObjectId(event.objectId);
         setCategory(event.category);
         setType(type);
@@ -70,6 +70,6 @@ const useFurnitureFriendFurniWidgetState = () =>
     });
 
     return { objectId, type, usernames, figures, date, stage, onClose, respond };
-}
+};
 
 export const useFurnitureFriendFurniWidget = useFurnitureFriendFurniWidgetState;

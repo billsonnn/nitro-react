@@ -19,7 +19,7 @@ export const RoomPromoteMyOwnEventWidgetView: FC<RoomPromoteMyOwnEventWidgetView
     {
         setIsExtended(true);
         CreateLinkEvent('catalog/open/room_event');
-    }
+    };
 
     return (
         <>

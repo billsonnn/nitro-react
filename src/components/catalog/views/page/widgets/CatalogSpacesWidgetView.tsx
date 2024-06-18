@@ -22,7 +22,7 @@ export const CatalogSpacesWidgetView: FC<CatalogSpacesWidgetViewProps> = props =
 
     const setSelectedOffer = (offer: IPurchasableOffer) =>
     {
-        if (!offer) return;
+        if(!offer) return;
 
         setSelectedOfferForGroup(prevValue =>
         {
@@ -32,25 +32,25 @@ export const CatalogSpacesWidgetView: FC<CatalogSpacesWidgetViewProps> = props =
 
             return newValue;
         });
-    }
+    };
 
     useEffect(() =>
     {
-        if (!currentPage) return;
+        if(!currentPage) return;
 
         const groupedOffers: IPurchasableOffer[][] = [ [], [], [] ];
 
-        for (const offer of currentPage.offers)
+        for(const offer of currentPage.offers)
         {
-            if ((offer.pricingModel !== Offer.PRICING_MODEL_SINGLE) && (offer.pricingModel !== Offer.PRICING_MODEL_MULTI)) continue;
+            if((offer.pricingModel !== Offer.PRICING_MODEL_SINGLE) && (offer.pricingModel !== Offer.PRICING_MODEL_MULTI)) continue;
 
             const product = offer.product;
 
-            if (!product || ((product.productType !== ProductTypeEnum.WALL) && (product.productType !== ProductTypeEnum.FLOOR)) || !product.furnitureData) continue;
+            if(!product || ((product.productType !== ProductTypeEnum.WALL) && (product.productType !== ProductTypeEnum.FLOOR)) || !product.furnitureData) continue;
 
             const className = product.furnitureData.className;
 
-            switch (className)
+            switch(className)
             {
                 case 'floor':
                     groupedOffers[0].push(offer);
@@ -71,7 +71,7 @@ export const CatalogSpacesWidgetView: FC<CatalogSpacesWidgetViewProps> = props =
 
     useEffect(() =>
     {
-        if ((selectedGroupIndex === -1) || !selectedOfferForGroup) return;
+        if((selectedGroupIndex === -1) || !selectedOfferForGroup) return;
 
         setCurrentOffer(selectedOfferForGroup[selectedGroupIndex]);
 
@@ -79,7 +79,7 @@ export const CatalogSpacesWidgetView: FC<CatalogSpacesWidgetViewProps> = props =
 
     useEffect(() =>
     {
-        if ((selectedGroupIndex === -1) || !selectedOfferForGroup || !currentOffer) return;
+        if((selectedGroupIndex === -1) || !selectedOfferForGroup || !currentOffer) return;
 
         setPurchaseOptions(prevValue =>
         {
@@ -94,10 +94,10 @@ export const CatalogSpacesWidgetView: FC<CatalogSpacesWidgetViewProps> = props =
 
     useEffect(() =>
     {
-        if (elementRef && elementRef.current) elementRef.current.scrollTop = 0;
+        if(elementRef && elementRef.current) elementRef.current.scrollTop = 0;
     }, [ selectedGroupIndex ]);
 
-    if (!groupedOffers || (selectedGroupIndex === -1)) return null;
+    if(!groupedOffers || (selectedGroupIndex === -1)) return null;
 
     const offers = groupedOffers[selectedGroupIndex];
 
@@ -112,4 +112,4 @@ export const CatalogSpacesWidgetView: FC<CatalogSpacesWidgetViewProps> = props =
             </AutoGrid>
         </>
     );
-}
+};

@@ -1,4 +1,4 @@
-export class NotificationBubbleType 
+export class NotificationBubbleType
 {
     public static FRIENDOFFLINE: string = 'friendoffline';
     public static FRIENDONLINE: string = 'friendonline';

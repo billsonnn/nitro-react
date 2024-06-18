@@ -15,18 +15,18 @@ export const AvatarEditorFigureSetView: FC<{
     const isPartItemSelected = (partItem: IAvatarEditorCategoryPartItem) =>
     {
         if(!category || !category.setType || !selectedParts) return false;
-        
+
         if(!selectedParts[category.setType])
         {
             if(partItem.isClear) return true;
-            
+
             return false;
         }
 
         const partId = selectedParts[category.setType];
 
         return (partId === partItem.id);
-    }
+    };
 
     return (
         <InfiniteGrid<IAvatarEditorCategoryPartItem> columnCount={ columnCount } itemRender={ (item: IAvatarEditorCategoryPartItem) =>
@@ -35,7 +35,7 @@ export const AvatarEditorFigureSetView: FC<{
 
             return (
                 <AvatarEditorFigureSetItemView isSelected={ isPartItemSelected(item) } partItem={ item } setType={ category.setType } width={ `calc(100% / ${ columnCount }` } onClick={ event => selectEditorPart(category.setType, item.partSet?.id ?? -1) } />
-            )
+            );
         } } items={ category.partItems } overscan={ columnCount } />
     );
-}
+};

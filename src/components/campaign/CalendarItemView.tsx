@@ -15,7 +15,7 @@ interface CalendarItemViewProps
 export const CalendarItemView: FC<CalendarItemViewProps> = props =>
 {
     const { itemId = -1, state = null, product = null, active = false, onClick = null } = props;
-    
+
     const getFurnitureIcon = (name: string) =>
     {
         let furniData = GetSessionDataManager().getFloorItemDataByName(name);
@@ -30,7 +30,7 @@ export const CalendarItemView: FC<CalendarItemViewProps> = props =>
         }
 
         return url;
-    }
+    };
 
     return (
         <Column center fit pointer className={ `campaign-spritesheet campaign-day-generic-bg rounded calendar-item ${ active ? 'active' : '' }` } onClick={ () => onClick(itemId) }>
@@ -50,4 +50,4 @@ export const CalendarItemView: FC<CalendarItemViewProps> = props =>
                 </Flex> }
         </Column>
     );
-}
+};

@@ -15,26 +15,26 @@ export const ChatWidgetView: FC<{}> = props =>
     {
         setChatMessages(prevValue =>
         {
-            if (prevValue)
+            if(prevValue)
             {
                 const newMessages = prevValue.filter(chat => ((chat.top > (-(chat.height) * 2))));
 
-                if (newMessages.length !== prevValue.length) return newMessages;
+                if(newMessages.length !== prevValue.length) return newMessages;
             }
 
             return prevValue;
-        })
+        });
     }, [ setChatMessages ]);
 
-    const checkOverlappingChats = useCallback((chat: ChatBubbleMessage, moved: number, tempChats: ChatBubbleMessage[]) => 
+    const checkOverlappingChats = useCallback((chat: ChatBubbleMessage, moved: number, tempChats: ChatBubbleMessage[]) =>
     {
-        for (let i = (chatMessages.indexOf(chat) - 1); i >= 0; i--)
+        for(let i = (chatMessages.indexOf(chat) - 1); i >= 0; i--)
         {
             const collides = chatMessages[i];
 
-            if (!collides || (chat === collides) || (tempChats.indexOf(collides) >= 0) || (((collides.top + collides.height) - moved) > (chat.top + chat.height))) continue;
+            if(!collides || (chat === collides) || (tempChats.indexOf(collides) >= 0) || (((collides.top + collides.height) - moved) > (chat.top + chat.height))) continue;
 
-            if (DoChatsOverlap(chat, collides, -moved, 0))
+            if(DoChatsOverlap(chat, collides, -moved, 0))
             {
                 const amount = Math.abs((collides.top + collides.height) - chat.top);
 
@@ -50,7 +50,7 @@ export const ChatWidgetView: FC<{}> = props =>
 
     const makeRoom = useCallback((chat: ChatBubbleMessage) =>
     {
-        if (chatSettings.mode === RoomChatSettings.CHAT_MODE_FREE_FLOW)
+        if(chatSettings.mode === RoomChatSettings.CHAT_MODE_FREE_FLOW)
         {
             chat.skipMovement = true;
 
@@ -65,13 +65,13 @@ export const ChatWidgetView: FC<{}> = props =>
             const spaceAvailable = (elementRef.current.offsetHeight - lowestPoint);
             const amount = (requiredSpace - spaceAvailable);
 
-            if (spaceAvailable < requiredSpace)
+            if(spaceAvailable < requiredSpace)
             {
                 setChatMessages(prevValue =>
                 {
                     prevValue.forEach(prevChat =>
                     {
-                        if (prevChat === chat) return;
+                        if(prevChat === chat) return;
 
                         prevChat.top -= amount;
                     });
@@ -88,7 +88,7 @@ export const ChatWidgetView: FC<{}> = props =>
     {
         const resize = (event: UIEvent = null) =>
         {
-            if (!elementRef || !elementRef.current) return;
+            if(!elementRef || !elementRef.current) return;
 
             const currentHeight = elementRef.current.offsetHeight;
             const newHeight = Math.round(document.body.offsetHeight * GetConfigurationValue<number>('chat.viewer.height.percentage'));
@@ -97,14 +97,14 @@ export const ChatWidgetView: FC<{}> = props =>
 
             setChatMessages(prevValue =>
             {
-                if (prevValue)
+                if(prevValue)
                 {
                     prevValue.forEach(chat => (chat.top -= (currentHeight - newHeight)));
                 }
 
                 return prevValue;
             });
-        }
+        };
 
         window.addEventListener('resize', resize);
 
@@ -113,7 +113,7 @@ export const ChatWidgetView: FC<{}> = props =>
         return () =>
         {
             window.removeEventListener('resize', resize);
-        }
+        };
     }, [ setChatMessages ]);
 
     useEffect(() =>
@@ -124,7 +124,7 @@ export const ChatWidgetView: FC<{}> = props =>
             {
                 prevValue.forEach(chat =>
                 {
-                    if (chat.skipMovement)
+                    if(chat.skipMovement)
                     {
                         chat.skipMovement = false;
 
@@ -138,7 +138,7 @@ export const ChatWidgetView: FC<{}> = props =>
             });
 
             removeHiddenChats();
-        }
+        };
 
         const worker = new WorkerBuilder(IntervalWebWorker);
 
@@ -151,7 +151,7 @@ export const ChatWidgetView: FC<{}> = props =>
             worker.postMessage({ action: 'STOP' });
 
             worker.terminate();
-        }
+        };
     }, [ getScrollSpeed, removeHiddenChats, setChatMessages ]);
 
     return (
@@ -159,4 +159,4 @@ export const ChatWidgetView: FC<{}> = props =>
             { chatMessages.map(chat => <ChatWidgetMessageView key={ chat.id } bubbleWidth={ chatSettings.weight } chat={ chat } makeRoom={ makeRoom } />) }
         </div>
     );
-}
+};

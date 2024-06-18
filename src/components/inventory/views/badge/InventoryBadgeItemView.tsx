@@ -17,4 +17,4 @@ export const InventoryBadgeItemView: FC<PropsWithChildren<{ badgeCode: string }>
             { children }
         </InfiniteGrid.Item>
     );
-}
+};

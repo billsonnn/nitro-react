@@ -18,9 +18,9 @@ export const NitroCardAccordionSetView: FC<NitroCardAccordionSetViewProps> = pro
     const onClick = () =>
     {
         closeAll();
-        
+
         setIsOpen(prevValue => !prevValue);
-    }
+    };
 
     const onClose = useCallback(() => setIsOpen(false), []);
 
@@ -62,10 +62,10 @@ export const NitroCardAccordionSetView: FC<NitroCardAccordionSetViewProps> = pro
                 const index = newClosers.indexOf(closeFunction);
 
                 if(index >= 0) newClosers.splice(index, 1);
-    
+
                 return newClosers;
             });
-        }
+        };
     }, [ onClose, setClosers ]);
 
     return (
@@ -81,4 +81,4 @@ export const NitroCardAccordionSetView: FC<NitroCardAccordionSetViewProps> = pro
                 </Column> }
         </Column>
     );
-}
+};

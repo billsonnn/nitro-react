@@ -26,4 +26,4 @@ export const FriendsListRequestView: FC<NitroCardAccordionSetViewProps> = props 
             { children }
         </NitroCardAccordionSetView>
     );
-}
+};

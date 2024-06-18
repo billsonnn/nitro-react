@@ -22,11 +22,11 @@ export const LayoutBadgeImageView: FC<LayoutBadgeImageViewProps> = props =>
     {
         const newClassNames: string[] = [ 'relative w-[40px] h-[40px] bg-no-repeat bg-center' ];
 
-        if (isGroup) newClassNames.push('group-badge');
+        if(isGroup) newClassNames.push('group-badge');
 
-        if (isGrayscale) newClassNames.push('grayscale');
+        if(isGrayscale) newClassNames.push('grayscale');
 
-        if (classNames.length) newClassNames.push(...classNames);
+        if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
     }, [ classNames, isGroup, isGrayscale ]);
@@ -35,37 +35,37 @@ export const LayoutBadgeImageView: FC<LayoutBadgeImageViewProps> = props =>
     {
         let newStyle: CSSProperties = {};
 
-        if (imageElement)
+        if(imageElement)
         {
             newStyle.backgroundImage = `url(${ (isGroup) ? imageElement.src : GetConfigurationValue<string>('badge.asset.url').replace('%badgename%', badgeCode.toString()) })`;
             newStyle.width = imageElement.width;
             newStyle.height = imageElement.height;
 
-            if (scale !== 1)
+            if(scale !== 1)
             {
                 newStyle.transform = `scale(${ scale })`;
 
-                if (!(scale % 1)) newStyle.imageRendering = 'pixelated';
+                if(!(scale % 1)) newStyle.imageRendering = 'pixelated';
 
                 newStyle.width = (imageElement.width * scale);
                 newStyle.height = (imageElement.height * scale);
             }
         }
 
-        if (Object.keys(style).length) newStyle = { ...newStyle, ...style };
+        if(Object.keys(style).length) newStyle = { ...newStyle, ...style };
 
         return newStyle;
     }, [ badgeCode, isGroup, imageElement, scale, style ]);
 
     useEffect(() =>
     {
-        if (!badgeCode || !badgeCode.length) return;
+        if(!badgeCode || !badgeCode.length) return;
 
         let didSetBadge = false;
 
         const onBadgeImageReadyEvent = async (event: BadgeImageReadyEvent) =>
         {
-            if (event.badgeId !== badgeCode) return;
+            if(event.badgeId !== badgeCode) return;
 
             const element = await TextureUtils.generateImage(new NitroSprite(event.image));
 
@@ -74,13 +74,13 @@ export const LayoutBadgeImageView: FC<LayoutBadgeImageViewProps> = props =>
             didSetBadge = true;
 
             GetEventDispatcher().removeEventListener(BadgeImageReadyEvent.IMAGE_READY, onBadgeImageReadyEvent);
-        }
+        };
 
         GetEventDispatcher().addEventListener(BadgeImageReadyEvent.IMAGE_READY, onBadgeImageReadyEvent);
 
         const texture = isGroup ? GetSessionDataManager().getGroupBadgeImage(badgeCode) : GetSessionDataManager().getBadgeImage(badgeCode);
 
-        if (texture && !didSetBadge)
+        if(texture && !didSetBadge)
         {
             (async () =>
             {
@@ -103,4 +103,4 @@ export const LayoutBadgeImageView: FC<LayoutBadgeImageViewProps> = props =>
             { children }
         </Base>
     );
-}
+};

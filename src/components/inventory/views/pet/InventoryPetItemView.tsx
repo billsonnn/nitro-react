@@ -33,7 +33,7 @@ export const InventoryPetItemView: FC<PropsWithChildren<{ petItem: IPetItem }>> 
                 attemptPetPlacement(petItem);
                 return;
         }
-    }
+    };
 
     return (
         <InfiniteGrid.Item itemActive={ (petItem === selectedPet) } itemUnseen={ unseen } onDoubleClick={ onMouseEvent } onMouseDown={ onMouseEvent } onMouseOut={ onMouseEvent } onMouseUp={ onMouseEvent } { ...rest }>
@@ -41,4 +41,4 @@ export const InventoryPetItemView: FC<PropsWithChildren<{ petItem: IPetItem }>> 
             { children }
         </InfiniteGrid.Item>
     );
-}
+};

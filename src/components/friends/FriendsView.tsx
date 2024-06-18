@@ -18,4 +18,4 @@ export const FriendsView: FC<{}> = props =>
             <FriendsMessengerView />
         </>
     );
-}
+};

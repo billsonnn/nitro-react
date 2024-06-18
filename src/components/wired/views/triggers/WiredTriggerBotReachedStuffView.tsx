@@ -25,4 +25,4 @@ export const WiredTriggerBotReachedStuffView: FC<{}> = props =>
             </div>
         </WiredTriggerBaseView>
     );
-}
+};

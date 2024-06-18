@@ -26,20 +26,20 @@ export const CalendarView: FC<CalendarViewProps> = props =>
 
     const getDayState = (day: number) =>
     {
-        if (openedDays.includes(day)) return CalendarItemState.STATE_UNLOCKED;
+        if(openedDays.includes(day)) return CalendarItemState.STATE_UNLOCKED;
 
-        if (day > currentDay) return CalendarItemState.STATE_LOCKED_FUTURE;
+        if(day > currentDay) return CalendarItemState.STATE_LOCKED_FUTURE;
 
-        if (missedDays.includes(day)) return CalendarItemState.STATE_LOCKED_EXPIRED;
+        if(missedDays.includes(day)) return CalendarItemState.STATE_LOCKED_EXPIRED;
 
         return CalendarItemState.STATE_LOCKED_AVAILABLE;
-    }
+    };
 
     const dayMessage = (day: number) =>
     {
         const state = getDayState(day);
 
-        switch (state)
+        switch(state)
         {
             case CalendarItemState.STATE_UNLOCKED:
                 return LocalizeText('campaign.calendar.info.unlocked');
@@ -50,51 +50,51 @@ export const CalendarView: FC<CalendarViewProps> = props =>
             default:
                 return LocalizeText('campaign.calendar.info.available.desktop');
         }
-    }
+    };
 
     const onClickNext = () =>
     {
         const nextDay = (selectedDay + 1);
 
-        if (nextDay === numDays) return;
+        if(nextDay === numDays) return;
 
         setSelectedDay(nextDay);
 
-        if ((index + TOTAL_SHOWN_ITEMS) < (nextDay + 1)) setIndex(index + 1);
-    }
+        if((index + TOTAL_SHOWN_ITEMS) < (nextDay + 1)) setIndex(index + 1);
+    };
 
     const onClickPrev = () =>
     {
         const prevDay = (selectedDay - 1);
 
-        if (prevDay < 0) return;
+        if(prevDay < 0) return;
 
         setSelectedDay(prevDay);
 
-        if (index > prevDay) setIndex(index - 1);
-    }
+        if(index > prevDay) setIndex(index - 1);
+    };
 
     const onClickItem = (item: number) =>
     {
-        if (selectedDay === item)
+        if(selectedDay === item)
         {
             const state = getDayState(item);
 
-            if (state === CalendarItemState.STATE_LOCKED_AVAILABLE) openPackage(item, false);
+            if(state === CalendarItemState.STATE_LOCKED_AVAILABLE) openPackage(item, false);
 
             return;
         }
 
         setSelectedDay(item);
-    }
+    };
 
     const forceOpen = () =>
     {
         const id = selectedDay;
         const state = getDayState(id);
 
-        if (state !== CalendarItemState.STATE_UNLOCKED) openPackage(id, true);
-    }
+        if(state !== CalendarItemState.STATE_UNLOCKED) openPackage(id, true);
+    };
 
     return (
         <NitroCardView className="nitro-campaign-calendar" theme="primary-slim">
@@ -140,5 +140,5 @@ export const CalendarView: FC<CalendarViewProps> = props =>
                 </div>
             </NitroCardContentView>
         </NitroCardView>
-    )
-}
+    );
+};

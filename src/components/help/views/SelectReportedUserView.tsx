@@ -30,7 +30,7 @@ export const SelectReportedUserView: FC<{}> = props =>
         {
             return { ...prevValue, reportedUserId: userId, currentStep: ReportState.SELECT_CHATS };
         });
-    }
+    };
 
     const selectUser = (userId: number) =>
     {
@@ -40,7 +40,7 @@ export const SelectReportedUserView: FC<{}> = props =>
 
             return userId;
         });
-    }
+    };
 
     const back = () =>
     {
@@ -48,7 +48,7 @@ export const SelectReportedUserView: FC<{}> = props =>
         {
             return { ...prevValue, currentStep: (prevValue.currentStep - 1) };
         });
-    }
+    };
 
     return (
         <>
@@ -82,4 +82,4 @@ export const SelectReportedUserView: FC<{}> = props =>
             </Flex>
         </>
     );
-}
+};

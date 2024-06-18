@@ -47,7 +47,7 @@ export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = pro
     const isLimitedSoldOut = useMemo(() =>
     {
         if(!currentOffer) return false;
-        
+
         if(purchaseOptions.extraParamRequired && (!purchaseOptions.extraData || !purchaseOptions.extraData.length)) return false;
 
         if(currentOffer.pricingModel === Offer.PRICING_MODEL_SINGLE)
@@ -97,7 +97,7 @@ export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = pro
         // }
 
         SendMessageComposer(new PurchaseFromCatalogComposer(pageId, currentOffer.offerId, purchaseOptions.extraData, purchaseOptions.quantity));
-    }
+    };
 
     useEffect(() =>
     {
@@ -118,7 +118,7 @@ export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = pro
         return () =>
         {
             if(timeout) clearTimeout(timeout);
-        }
+        };
     }, [ purchaseState ]);
 
     if(!currentOffer) return null;
@@ -150,7 +150,7 @@ export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = pro
             default:
                 return <Button disabled={ (purchaseOptions.extraParamRequired && (!purchaseOptions.extraData || !purchaseOptions.extraData.length)) } onClick={ event => setPurchaseState(CatalogPurchaseState.CONFIRM) }>{ LocalizeText('catalog.purchase_confirmation.' + (currentOffer.isRentOffer ? 'rent' : 'buy')) }</Button>;
         }
-    }
+    };
 
     return (
         <>
@@ -161,4 +161,4 @@ export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = pro
                 </Button> }
         </>
     );
-}
+};

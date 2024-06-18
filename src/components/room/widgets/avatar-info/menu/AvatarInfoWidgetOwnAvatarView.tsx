@@ -33,9 +33,9 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
     {
         let hideMenu = true;
 
-        if (name)
+        if(name)
         {
-            if (name.startsWith('sign_'))
+            if(name.startsWith('sign_'))
             {
                 const sign = parseInt(name.split('_')[1]);
 
@@ -43,7 +43,7 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
             }
             else
             {
-                switch (name)
+                switch(name)
                 {
                     case 'decorate':
                         setIsDecorating(true);
@@ -107,8 +107,8 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
             }
         }
 
-        if (hideMenu) onClose();
-    }
+        if(hideMenu) onClose();
+    };
 
     const isShowDecorate = () => (avatarInfo.amIOwner || avatarInfo.amIAnyRoomController || (avatarInfo.roomControllerLevel > RoomControllerLevel.GUEST));
 
@@ -289,4 +289,4 @@ export const AvatarInfoWidgetOwnAvatarView: FC<AvatarInfoWidgetOwnAvatarViewProp
                 </> }
         </ContextMenuView>
     );
-}
+};

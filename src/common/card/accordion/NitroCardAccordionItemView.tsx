@@ -15,4 +15,4 @@ export const NitroCardAccordionItemView: FC<NitroCardAccordionItemViewProps> = p
             { children }
         </Flex>
     );
-}
+};

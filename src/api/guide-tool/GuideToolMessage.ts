@@ -2,7 +2,7 @@ export class GuideToolMessage
 {
     private _message: string;
     private _roomId: number;
-    
+
     constructor(message: string, roomId?: number)
     {
         this._message = message;

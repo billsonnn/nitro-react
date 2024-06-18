@@ -25,28 +25,28 @@ export const MonsterPlantSeedConfirmView: FC<MonsterPlantSeedConfirmViewProps> =
         roomSession.useMultistateItem(objectId);
 
         onClose();
-    }
+    };
 
     useEffect(() =>
     {
-        if (!roomSession || (objectId === -1)) return;
+        if(!roomSession || (objectId === -1)) return;
 
         const furniData = GetFurnitureDataForRoomObject(roomSession.roomId, objectId, RoomObjectCategory.FLOOR);
 
-        if (!furniData) return;
+        if(!furniData) return;
 
         setFurniData(furniData);
 
         let mode = MODE_DEFAULT;
 
-        switch (furniData.specialType)
+        switch(furniData.specialType)
         {
             case FurniCategory.MONSTERPLANT_SEED:
                 mode = MODE_MONSTERPLANT_SEED;
                 break;
         }
 
-        if (mode === MODE_DEFAULT)
+        if(mode === MODE_DEFAULT)
         {
             onClose();
 
@@ -56,7 +56,7 @@ export const MonsterPlantSeedConfirmView: FC<MonsterPlantSeedConfirmViewProps> =
         setMode(mode);
     }, [ roomSession, objectId, onClose ]);
 
-    if (mode === MODE_DEFAULT) return null;
+    if(mode === MODE_DEFAULT) return null;
 
     return (
         <NitroCardView className="nitro-use-product-confirmation">
@@ -82,4 +82,4 @@ export const MonsterPlantSeedConfirmView: FC<MonsterPlantSeedConfirmViewProps> =
             </NitroCardContentView>
         </NitroCardView>
     );
-}
+};

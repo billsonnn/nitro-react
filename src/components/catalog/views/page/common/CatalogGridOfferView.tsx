@@ -44,7 +44,7 @@ export const CatalogGridOfferView: FC<CatalogGridOfferViewProps> = props =>
                 requestOfferToMover(offer);
                 return;
         }
-    }
+    };
 
     const product = offer.product;
 
@@ -56,4 +56,4 @@ export const CatalogGridOfferView: FC<CatalogGridOfferViewProps> = props =>
                 <LayoutAvatarImageView direction={ 3 } figure={ offer.product.extraParam } headOnly={ true } /> }
         </LayoutGridItem>
     );
-}
+};

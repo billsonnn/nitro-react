@@ -21,10 +21,10 @@ export const MarketplacePostOfferView: FC<{}> = props =>
 
         const newValue = parseInt(price);
 
-        if (isNaN(newValue) || (newValue === askingPrice)) return;
+        if(isNaN(newValue) || (newValue === askingPrice)) return;
 
         setAskingPrice(parseInt(price));
-    }
+    };
 
     useMessageEvent<MarketplaceConfigurationEvent>(MarketplaceConfigurationEvent, event =>
     {
@@ -44,19 +44,19 @@ export const MarketplacePostOfferView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        if (!item || marketplaceConfiguration) return;
+        if(!item || marketplaceConfiguration) return;
 
         SendMessageComposer(new GetMarketplaceConfigurationMessageComposer());
     }, [ item, marketplaceConfiguration ]);
 
     useEffect(() =>
     {
-        if (!item) return;
+        if(!item) return;
 
         return () => setAskingPrice(0);
     }, [ item ]);
 
-    if (!marketplaceConfiguration || !item) return null;
+    if(!marketplaceConfiguration || !item) return null;
 
     const getFurniTitle = (item ? LocalizeText(item.isWallItem ? 'wallItem.name.' + item.type : 'roomItem.name.' + item.type) : '');
     const getFurniDescription = (item ? LocalizeText(item.isWallItem ? 'wallItem.desc.' + item.type : 'roomItem.desc.' + item.type) : '');
@@ -65,18 +65,18 @@ export const MarketplacePostOfferView: FC<{}> = props =>
 
     const postItem = () =>
     {
-        if (!item || (askingPrice < marketplaceConfiguration.minimumPrice)) return;
+        if(!item || (askingPrice < marketplaceConfiguration.minimumPrice)) return;
 
         showConfirm(LocalizeText('inventory.marketplace.confirm_offer.info', [ 'furniname', 'price' ], [ getFurniTitle, askingPrice.toString() ]), () =>
         {
             SendMessageComposer(new MakeOfferMessageComposer(askingPrice, item.isWallItem ? 2 : 1, item.id));
             setItem(null);
         },
-        () => 
+        () =>
         {
-            setItem(null)
+            setItem(null);
         }, null, null, LocalizeText('inventory.marketplace.confirm_offer.title'));
-    }
+    };
 
     return (
         <NitroCardView className="nitro-catalog-layout-marketplace-post-offer" theme="primary-slim">
@@ -120,5 +120,5 @@ export const MarketplacePostOfferView: FC<{}> = props =>
                 </Grid>
             </NitroCardContentView>
         </NitroCardView>
-    )
-}
+    );
+};

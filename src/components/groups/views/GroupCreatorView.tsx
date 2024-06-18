@@ -29,18 +29,18 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
         setCloseAction(null);
         setGroupData(null);
 
-        if (onClose) onClose();
-    }
+        if(onClose) onClose();
+    };
 
     const buyGroup = () =>
     {
-        if (!groupData) return;
+        if(!groupData) return;
 
         const badge = [];
 
         groupData.groupBadgeParts.forEach(part =>
         {
-            if (part.code)
+            if(part.code)
             {
                 badge.push(part.key);
                 badge.push(part.color);
@@ -49,16 +49,16 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
         });
 
         SendMessageComposer(new GroupBuyComposer(groupData.groupName, groupData.groupDescription, groupData.groupHomeroomId, groupData.groupColors[0], groupData.groupColors[1], badge));
-    }
+    };
 
     const previousStep = () =>
     {
-        if (closeAction && closeAction.action)
+        if(closeAction && closeAction.action)
         {
-            if (!closeAction.action()) return;
+            if(!closeAction.action()) return;
         }
 
-        if (currentTab === 1)
+        if(currentTab === 1)
         {
             onClose();
 
@@ -66,16 +66,16 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
         }
 
         setCurrentTab(value => value - 1);
-    }
+    };
 
     const nextStep = () =>
     {
-        if (closeAction && closeAction.action)
+        if(closeAction && closeAction.action)
         {
-            if (!closeAction.action()) return;
+            if(!closeAction.action()) return;
         }
 
-        if (currentTab === 4)
+        if(currentTab === 4)
         {
             buyGroup();
 
@@ -83,7 +83,7 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
         }
 
         setCurrentTab(value => (value === 4 ? value : value + 1));
-    }
+    };
 
     useMessageEvent<GroupBuyDataEvent>(GroupBuyDataEvent, event =>
     {
@@ -115,7 +115,7 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
         SendMessageComposer(new GroupBuyDataComposer());
     }, [ setGroupData ]);
 
-    if (!groupData) return null;
+    if(!groupData) return null;
 
     return (
         <NitroCardView className="h-[355px] w-[390px] border-[1px] border-[solid] border-[#283F5D]        " theme="primary-slim">

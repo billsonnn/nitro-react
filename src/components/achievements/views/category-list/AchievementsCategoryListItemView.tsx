@@ -28,4 +28,4 @@ export const AchievementsCategoryListItemView: FC<AchievementCategoryListItemVie
             </LayoutBackgroundImage>
         </LayoutGridItem>
     );
-}
+};

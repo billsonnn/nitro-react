@@ -16,4 +16,4 @@ export const WordQuizWidgetView: FC<{}> = props =>
                 Array.from(userAnswers.entries()).map(([ key, value ], index) => <WordQuizVoteView key={ index } userIndex={ key } vote={ value.value } />) }
         </>
     );
-}
+};

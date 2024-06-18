@@ -24,7 +24,7 @@ export const FloorplanOptionsView: FC<{}> = props =>
         setFloorAction(action);
 
         FloorplanEditor.instance.actionSettings.currentAction = action;
-    }
+    };
 
     const changeDoorDirection = () =>
     {
@@ -32,7 +32,7 @@ export const FloorplanOptionsView: FC<{}> = props =>
         {
             const newValue = { ...prevValue };
 
-            if (newValue.entryPointDir < 7)
+            if(newValue.entryPointDir < 7)
             {
                 ++newValue.entryPointDir;
             }
@@ -43,18 +43,18 @@ export const FloorplanOptionsView: FC<{}> = props =>
 
             return newValue;
         });
-    }
+    };
 
     const onFloorHeightChange = (value: number) =>
     {
-        if (isNaN(value) || (value <= 0)) value = 0;
+        if(isNaN(value) || (value <= 0)) value = 0;
 
-        if (value > 26) value = 26;
+        if(value > 26) value = 26;
 
         setFloorHeight(value);
 
         FloorplanEditor.instance.actionSettings.currentHeight = value.toString(36);
-    }
+    };
 
     const onFloorThicknessChange = (value: number) =>
     {
@@ -66,7 +66,7 @@ export const FloorplanOptionsView: FC<{}> = props =>
 
             return newValue;
         });
-    }
+    };
 
     const onWallThicknessChange = (value: number) =>
     {
@@ -78,13 +78,13 @@ export const FloorplanOptionsView: FC<{}> = props =>
 
             return newValue;
         });
-    }
+    };
 
     const onWallHeightChange = (value: number) =>
     {
-        if (isNaN(value) || (value <= 0)) value = MIN_WALL_HEIGHT;
+        if(isNaN(value) || (value <= 0)) value = MIN_WALL_HEIGHT;
 
-        if (value > MAX_WALL_HEIGHT) value = MAX_WALL_HEIGHT;
+        if(value > MAX_WALL_HEIGHT) value = MAX_WALL_HEIGHT;
 
         setVisualizationSettings(prevValue =>
         {
@@ -94,25 +94,25 @@ export const FloorplanOptionsView: FC<{}> = props =>
 
             return newValue;
         });
-    }
+    };
 
     const increaseWallHeight = () =>
     {
         let height = (visualizationSettings.wallHeight + 1);
 
-        if (height > MAX_WALL_HEIGHT) height = MAX_WALL_HEIGHT;
+        if(height > MAX_WALL_HEIGHT) height = MAX_WALL_HEIGHT;
 
         onWallHeightChange(height);
-    }
+    };
 
     const decreaseWallHeight = () =>
     {
         let height = (visualizationSettings.wallHeight - 1);
 
-        if (height <= 0) height = MIN_WALL_HEIGHT;
+        if(height <= 0) height = MIN_WALL_HEIGHT;
 
         onWallHeightChange(height);
-    }
+    };
 
     return (
         <div className="flex flex-col">
@@ -186,4 +186,4 @@ export const FloorplanOptionsView: FC<{}> = props =>
             </Grid>
         </div>
     );
-}
+};

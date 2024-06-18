@@ -15,7 +15,7 @@ export const AvatarInfoPetTrainingPanelView: FC<{}> = props =>
     {
         const parser = event.getParser();
 
-        if (!parser) return;
+        if(!parser) return;
 
         const roomPetData = roomSession.userDataManager.getPetData(parser.petId);
 
@@ -27,10 +27,10 @@ export const AvatarInfoPetTrainingPanelView: FC<{}> = props =>
 
     const processPetAction = (petName: string, commandName: string) =>
     {
-        if (!petName || !commandName) return;
+        if(!petName || !commandName) return;
 
         roomSession?.sendChatMessage(`${ petName } ${ commandName }`, chatStyleId);
-    }
+    };
 
     if(!petData || !petTrainInformation) return null;
 

@@ -18,9 +18,9 @@ export const FurnitureMysteryTrophyOpenDialogView: FC<FurnitureMysteryTrophyOpen
     {
         SendMessageComposer(new OpenMysteryTrophyMessageComposer(objectId, description));
         onClose();
-    }
+    };
 
-    if (objectId === -1) return null;
+    if(objectId === -1) return null;
 
     return (
         <NitroCardView className="nitro-mysterytrophy-dialog no-resize" theme="primary-slim">
@@ -47,4 +47,4 @@ export const FurnitureMysteryTrophyOpenDialogView: FC<FurnitureMysteryTrophyOpen
             </NitroCardContentView>
         </NitroCardView>
     );
-}
+};

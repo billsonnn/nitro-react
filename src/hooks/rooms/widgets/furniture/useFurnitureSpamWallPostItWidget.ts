@@ -26,12 +26,12 @@ const useFurnitureSpamWallPostItWidgetState = () =>
         setColor('0');
         setText('');
         setCanModify(false);
-    }
+    };
 
     useMessageEvent<RequestSpamWallPostItMessageEvent>(RequestSpamWallPostItMessageEvent, event =>
     {
         const parser = event.getParser();
-        
+
         setObjectId(parser.itemId);
         setCategory(RoomObjectCategory.WALL);
 
@@ -54,6 +54,6 @@ const useFurnitureSpamWallPostItWidgetState = () =>
     });
 
     return { objectId, color, setColor, text, setText, canModify, onClose };
-}
+};
 
 export const useFurnitureSpamWallPostItWidget = useFurnitureSpamWallPostItWidgetState;

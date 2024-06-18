@@ -12,11 +12,11 @@ export const CatalogGuildSelectorWidgetView: FC<{}> = props =>
 
     const previewStuffData = useMemo(() =>
     {
-        if (!groups || !groups.length) return null;
+        if(!groups || !groups.length) return null;
 
         const group = groups[selectedGroupIndex];
 
-        if (!group) return null;
+        if(!group) return null;
 
         const stuffData = new StringDataType();
 
@@ -27,7 +27,7 @@ export const CatalogGuildSelectorWidgetView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        if (!currentOffer) return;
+        if(!currentOffer) return;
 
         setPurchaseOptions(prevValue =>
         {
@@ -46,7 +46,7 @@ export const CatalogGuildSelectorWidgetView: FC<{}> = props =>
         SendMessageComposer(new CatalogGroupsComposer());
     }, []);
 
-    if (!groups || !groups.length)
+    if(!groups || !groups.length)
     {
         return (
             <div className="bg-muted rounded p-1 text-black text-center">
@@ -72,4 +72,4 @@ export const CatalogGuildSelectorWidgetView: FC<{}> = props =>
             </select>
         </div>
     );
-}
+};

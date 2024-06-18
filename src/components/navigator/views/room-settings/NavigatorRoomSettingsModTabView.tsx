@@ -27,12 +27,12 @@ export const NavigatorRoomSettingsModTabView: FC<NavigatorRoomSettingsTabViewPro
             if(index >= 0) newValue.splice(index, 1);
 
             return newValue;
-        })
+        });
 
         SendMessageComposer(new RoomUnbanUserComposer(userId, roomData.roomId));
 
         setSelectedUserId(-1);
-    }
+    };
 
     useMessageEvent<BannedUsersFromRoomEvent>(BannedUsersFromRoomEvent, event =>
     {
@@ -115,4 +115,4 @@ export const NavigatorRoomSettingsModTabView: FC<NavigatorRoomSettingsTabViewPro
             </Column>
         </Grid>
     );
-}
+};

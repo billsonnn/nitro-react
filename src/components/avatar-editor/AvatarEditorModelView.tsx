@@ -25,14 +25,14 @@ export const AvatarEditorModelView: FC<{
     {
         const selectedPalettes = selectedColorParts[setType];
 
-        if (!selectedPalettes || !selectedPalettes.length) selectEditorColor(setType, 0, getFirstSelectableColor(setType));
+        if(!selectedPalettes || !selectedPalettes.length) selectEditorColor(setType, 0, getFirstSelectableColor(setType));
 
         setActiveSetType(setType);
     }, [ getFirstSelectableColor, selectEditorColor, selectedColorParts ]);
 
     useEffect(() =>
     {
-        if (!categories || !categories.length || !didChange) return;
+        if(!categories || !categories.length || !didChange) return;
 
         selectSet(categories[0]?.setType);
         setDidChange(false);
@@ -43,7 +43,7 @@ export const AvatarEditorModelView: FC<{
         setDidChange(true);
     }, [ categories ]);
 
-    if (!activeCategory) return null;
+    if(!activeCategory) return null;
 
     return (
         <div className="grid grid-cols-12 gap-2 overflow-hidden">
@@ -77,4 +77,4 @@ export const AvatarEditorModelView: FC<{
             </div>
         </div>
     );
-}
+};

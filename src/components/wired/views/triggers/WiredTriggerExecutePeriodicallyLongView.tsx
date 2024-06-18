@@ -30,4 +30,4 @@ export const WiredTriggeExecutePeriodicallyLongView: FC<{}> = props =>
             </div>
         </WiredTriggerBaseView>
     );
-}
+};

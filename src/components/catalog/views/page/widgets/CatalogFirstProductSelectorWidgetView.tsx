@@ -13,4 +13,4 @@ export const CatalogFirstProductSelectorWidgetView: FC<{}> = props =>
     }, [ currentPage, setCurrentOffer ]);
 
     return null;
-}
+};

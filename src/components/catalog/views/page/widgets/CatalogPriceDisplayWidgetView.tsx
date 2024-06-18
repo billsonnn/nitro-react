@@ -34,4 +34,4 @@ export const CatalogPriceDisplayWidgetView: FC<CatalogPriceDisplayWidgetViewProp
                 </div> }
         </>
     );
-}
+};

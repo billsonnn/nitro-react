@@ -29,4 +29,4 @@ export const AvatarInfoWidgetNameView: FC<AvatarInfoWidgetNameViewProps> = props
             </div>
         </ContextMenuView>
     );
-}
+};

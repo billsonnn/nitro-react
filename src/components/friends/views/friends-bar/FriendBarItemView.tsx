@@ -17,20 +17,20 @@ export const FriendBarItemView: FC<{ friend: MessengerFriend }> = props =>
         {
             const element = elementRef.current;
 
-            if (!element) return;
+            if(!element) return;
 
-            if ((event.target !== element) && !element.contains((event.target as Node)))
+            if((event.target !== element) && !element.contains((event.target as Node)))
             {
                 setVisible(false);
             }
-        }
+        };
 
         document.addEventListener(MouseEventType.MOUSE_CLICK, onClick);
 
         return () => document.removeEventListener(MouseEventType.MOUSE_CLICK, onClick);
     }, []);
 
-    if (!friend)
+    if(!friend)
     {
         return (
             <Button className="border w-[130px] mx-[3px] my-[0] z-0 relative pl-[37px] text-left friend-bar-search" justifyContent="start" size="md">
@@ -56,4 +56,4 @@ export const FriendBarItemView: FC<{ friend: MessengerFriend }> = props =>
                 </div> }
         </Button>
     );
-}
+};

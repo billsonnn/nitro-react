@@ -17,7 +17,7 @@ const useFurnitureHighScoreWidgetState = () =>
     useNitroEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_HIGH_SCORE_DISPLAY, event =>
     {
         const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
-    
+
         if(!roomObject) return;
 
         const formatKey = roomObject.model.getValue<number>(RoomObjectVariable.FURNITURE_DATA_FORMAT);
@@ -50,6 +50,6 @@ const useFurnitureHighScoreWidgetState = () =>
     });
 
     return { stuffDatas, getScoreType, getClearType };
-}
+};
 
 export const useFurnitureHighScoreWidget = useFurnitureHighScoreWidgetState;

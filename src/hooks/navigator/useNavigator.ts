@@ -198,7 +198,7 @@ const useNavigatorState = () =>
         });
     });
 
-    useMessageEvent<DoorbellMessageEvent>(DoorbellMessageEvent, event => 
+    useMessageEvent<DoorbellMessageEvent>(DoorbellMessageEvent, event =>
     {
         const parser = event.getParser();
 
@@ -384,7 +384,7 @@ const useNavigatorState = () =>
         if((GetConfigurationValue<number>('forward.type') !== undefined) && (GetConfigurationValue<number>('forward.id') !== undefined))
         {
             forwardType = parseInt(GetConfigurationValue<string>('forward.type'));
-            forwardId = parseInt(GetConfigurationValue<string>('forward.id'))
+            forwardId = parseInt(GetConfigurationValue<string>('forward.id'));
         }
 
         if(forwardType === 2)
@@ -437,6 +437,6 @@ const useNavigatorState = () =>
     useMessageEvent<NavigatorOpenRoomCreatorEvent>(NavigatorOpenRoomCreatorEvent, event => CreateLinkEvent('navigator/show'));
 
     return { categories, doorData, setDoorData, topLevelContext, topLevelContexts, searchResult, navigatorData };
-}
+};
 
 export const useNavigator = () => useBetween(useNavigatorState);

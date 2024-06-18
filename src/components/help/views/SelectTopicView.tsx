@@ -18,7 +18,7 @@ export const SelectTopicView: FC<{}> = props =>
         {
             return { ...prevValue, cfhCategory: selectedCategory, cfhTopic: cfhCategories[selectedCategory].topics[selectedTopic].id, currentStep: ReportState.INPUT_REPORT_MESSAGE };
         });
-    }
+    };
 
     const back = () =>
     {
@@ -26,7 +26,7 @@ export const SelectTopicView: FC<{}> = props =>
         {
             return { ...prevValue, currentStep: (prevValue.currentStep - 1) };
         });
-    }
+    };
 
     return (
         <>
@@ -50,4 +50,4 @@ export const SelectTopicView: FC<{}> = props =>
             </Flex>
         </>
     );
-}
+};

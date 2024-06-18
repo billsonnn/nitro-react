@@ -57,7 +57,7 @@ export const ChatlogView: FC<ChatlogViewProps> = props =>
                 </div>
             </Flex>
         );
-    }
+    };
 
     return (
         <>
@@ -88,4 +88,4 @@ export const ChatlogView: FC<ChatlogViewProps> = props =>
             </Column>
         </>
     );
-}
+};

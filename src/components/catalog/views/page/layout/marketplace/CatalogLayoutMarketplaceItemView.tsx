@@ -15,7 +15,7 @@ export const PUBLIC_OFFER = 2;
 export const CatalogLayoutMarketplaceItemView: FC<MarketplaceItemViewProps> = props =>
 {
     const { offerData = null, type = PUBLIC_OFFER, onClick = null } = props;
-    
+
     const getMarketplaceOfferTitle = useMemo(() =>
     {
         if(!offerData) return '';
@@ -31,7 +31,7 @@ export const CatalogLayoutMarketplaceItemView: FC<MarketplaceItemViewProps> = pr
         if(offerData.status === MarketPlaceOfferState.SOLD) return LocalizeText('catalog.marketplace.offer.sold');
 
         if(offerData.timeLeftMinutes <= 0) return LocalizeText('catalog.marketplace.offer.expired');
-        
+
         const time = Math.max(1, offerData.timeLeftMinutes);
         const hours = Math.floor(time / 60);
         const minutes = time - (hours * 60);
@@ -80,4 +80,4 @@ export const CatalogLayoutMarketplaceItemView: FC<MarketplaceItemViewProps> = pr
             </div>
         </LayoutGridItem>
     );
-}
+};

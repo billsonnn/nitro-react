@@ -73,4 +73,4 @@ export const GuideToolMenuView: FC<GuideToolMenuViewProps> = props =>
             </Flex>
         </div>
     );
-}
+};

@@ -15,7 +15,7 @@ export const CatalogSearchView: FC<{}> = props =>
     {
         let search = searchValue?.toLocaleLowerCase().replace(' ', '');
 
-        if (!search || !search.length)
+        if(!search || !search.length)
         {
             setSearchResult(null);
 
@@ -26,24 +26,24 @@ export const CatalogSearchView: FC<{}> = props =>
         {
             const furnitureDatas = GetSessionDataManager().getAllFurnitureData();
 
-            if (!furnitureDatas || !furnitureDatas.length) return;
+            if(!furnitureDatas || !furnitureDatas.length) return;
 
             const foundFurniture: IFurnitureData[] = [];
             const foundFurniLines: string[] = [];
 
-            for (const furniture of furnitureDatas)
+            for(const furniture of furnitureDatas)
             {
-                if ((currentType === CatalogType.BUILDER) && !furniture.availableForBuildersClub) continue;
+                if((currentType === CatalogType.BUILDER) && !furniture.availableForBuildersClub) continue;
 
-                if ((currentType === CatalogType.NORMAL) && furniture.excludeDynamic) continue;
+                if((currentType === CatalogType.NORMAL) && furniture.excludeDynamic) continue;
 
                 const searchValues = [ furniture.className, furniture.name, furniture.description ].join(' ').replace(/ /gi, '').toLowerCase();
 
-                if ((currentType === CatalogType.BUILDER) && (furniture.purchaseOfferId === -1) && (furniture.rentOfferId === -1))
+                if((currentType === CatalogType.BUILDER) && (furniture.purchaseOfferId === -1) && (furniture.rentOfferId === -1))
                 {
-                    if ((furniture.furniLine !== '') && (foundFurniLines.indexOf(furniture.furniLine) < 0))
+                    if((furniture.furniLine !== '') && (foundFurniLines.indexOf(furniture.furniLine) < 0))
                     {
-                        if (searchValues.indexOf(search) >= 0) foundFurniLines.push(furniture.furniLine);
+                        if(searchValues.indexOf(search) >= 0) foundFurniLines.push(furniture.furniLine);
                     }
                 }
                 else
@@ -53,18 +53,18 @@ export const CatalogSearchView: FC<{}> = props =>
                         ...GetOfferNodes(offersToNodes, furniture.rentOfferId)
                     ];
 
-                    if (foundNodes.length)
+                    if(foundNodes.length)
                     {
-                        if (searchValues.indexOf(search) >= 0) foundFurniture.push(furniture);
+                        if(searchValues.indexOf(search) >= 0) foundFurniture.push(furniture);
 
-                        if (foundFurniture.length === 250) break;
+                        if(foundFurniture.length === 250) break;
                     }
                 }
             }
 
             const offers: IPurchasableOffer[] = [];
 
-            for (const furniture of foundFurniture) offers.push(new FurnitureOffer(furniture));
+            for(const furniture of foundFurniture) offers.push(new FurnitureOffer(furniture));
 
             let nodes: ICatalogNode[] = [];
 
@@ -103,4 +103,4 @@ export const CatalogSearchView: FC<{}> = props =>
                 </Button> }
         </div>
     );
-}
+};

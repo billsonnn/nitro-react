@@ -51,4 +51,4 @@ export const CatalogLayoutBadgeDisplayView: FC<CatalogLayoutProps> = props =>
             </Grid>
         </>
     );
-}
+};

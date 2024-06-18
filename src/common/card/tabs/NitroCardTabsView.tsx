@@ -9,7 +9,7 @@ export const NitroCardTabsView: FC<FlexProps> = props =>
     {
         const newClassNames: string[] = [ 'justify-center gap-0.5 flex bg-card-tabs min-h-card-tabs max-h-card-tabs pt-1 border-b border-card-border px-2' ];
 
-        if (classNames.length) newClassNames.push(...classNames);
+        if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
     }, [ classNames ]);
@@ -19,4 +19,4 @@ export const NitroCardTabsView: FC<FlexProps> = props =>
             { children }
         </Flex>
     );
-}
+};

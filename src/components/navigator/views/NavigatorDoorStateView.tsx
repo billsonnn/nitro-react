@@ -15,14 +15,14 @@ export const NavigatorDoorStateView: FC<{}> = props =>
 
     const onClose = () =>
     {
-        if (doorData && (doorData.state === DoorStateType.STATE_WAITING)) GoToDesktop();
+        if(doorData && (doorData.state === DoorStateType.STATE_WAITING)) GoToDesktop();
 
         setDoorData(null);
-    }
+    };
 
     const ring = () =>
     {
-        if (!doorData || !doorData.roomInfo) return;
+        if(!doorData || !doorData.roomInfo) return;
 
         CreateRoomSession(doorData.roomInfo.roomId);
 
@@ -34,11 +34,11 @@ export const NavigatorDoorStateView: FC<{}> = props =>
 
             return newValue;
         });
-    }
+    };
 
     const tryEntering = () =>
     {
-        if (!doorData || !doorData.roomInfo) return;
+        if(!doorData || !doorData.roomInfo) return;
 
         CreateRoomSession(doorData.roomInfo.roomId, password);
 
@@ -50,16 +50,16 @@ export const NavigatorDoorStateView: FC<{}> = props =>
 
             return newValue;
         });
-    }
+    };
 
     useEffect(() =>
     {
-        if (!doorData || (doorData.state !== DoorStateType.STATE_NO_ANSWER)) return;
+        if(!doorData || (doorData.state !== DoorStateType.STATE_NO_ANSWER)) return;
 
         GoToDesktop();
     }, [ doorData ]);
 
-    if (!doorData || (doorData.state === DoorStateType.NONE) || (VISIBLE_STATES.indexOf(doorData.state) === -1)) return null;
+    if(!doorData || (doorData.state === DoorStateType.NONE) || (VISIBLE_STATES.indexOf(doorData.state) === -1)) return null;
 
     const isDoorbell = (DOORBELL_STATES.indexOf(doorData.state) >= 0);
 
@@ -108,4 +108,4 @@ export const NavigatorDoorStateView: FC<{}> = props =>
             </NitroCardContentView>
         </NitroCardView>
     );
-}
+};

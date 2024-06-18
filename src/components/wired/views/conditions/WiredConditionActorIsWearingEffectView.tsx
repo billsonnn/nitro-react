@@ -25,4 +25,4 @@ export const WiredConditionActorIsWearingEffectView: FC<{}> = props =>
             </div>
         </WiredConditionBaseView>
     );
-}
+};

@@ -16,6 +16,6 @@ const NitroCardAccordionContext = createContext<INitroCardAccordionContext>({
 export const NitroCardAccordionContextProvider: FC<ProviderProps<INitroCardAccordionContext>> = props =>
 {
     return <NitroCardAccordionContext.Provider { ...props } />;
-}
+};
 
 export const useNitroCardAccordionContext = () => useContext(NitroCardAccordionContext);

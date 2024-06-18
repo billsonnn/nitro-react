@@ -41,4 +41,4 @@ export const ModToolsChatlogView: FC<ModToolsChatlogViewProps> = props =>
             </NitroCardContentView>
         </NitroCardView>
     );
-}
+};

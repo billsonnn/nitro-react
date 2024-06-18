@@ -6,4 +6,4 @@ export const FurnitureRoomLinkView: FC<{}> = props =>
     const {} = useFurnitureRoomLinkWidget();
 
     return null;
-}
+};

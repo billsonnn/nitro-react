@@ -194,7 +194,7 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
         }
 
         if(hideMenu) onClose();
-    }
+    };
 
     useEffect(() =>
     {
@@ -369,4 +369,4 @@ export const AvatarInfoWidgetAvatarView: FC<AvatarInfoWidgetAvatarViewProps> = p
                 </> }
         </ContextMenuView>
     );
-}
+};

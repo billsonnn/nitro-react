@@ -22,14 +22,14 @@ export const GroupsContainerView: FC<GroupsContainerViewProps> = props =>
     {
         const parser = event.getParser();
 
-        if (!selectedGroupId || (selectedGroupId !== parser.id) || parser.flag) return;
+        if(!selectedGroupId || (selectedGroupId !== parser.id) || parser.flag) return;
 
         setGroupInformation(parser);
     });
 
     useEffect(() =>
     {
-        if (!selectedGroupId) return;
+        if(!selectedGroupId) return;
 
         SendMessageComposer(new GroupInformationComposer(selectedGroupId, false));
     }, [ selectedGroupId ]);
@@ -38,11 +38,11 @@ export const GroupsContainerView: FC<GroupsContainerViewProps> = props =>
     {
         setGroupInformation(null);
 
-        if (groups.length > 0)
+        if(groups.length > 0)
         {
             setSelectedGroupId(prevValue =>
             {
-                if (prevValue === groups[0].groupId)
+                if(prevValue === groups[0].groupId)
                 {
                     SendMessageComposer(new GroupInformationComposer(groups[0].groupId, false));
                 }
@@ -52,7 +52,7 @@ export const GroupsContainerView: FC<GroupsContainerViewProps> = props =>
         }
     }, [ groups ]);
 
-    if (!groups || !groups.length)
+    if(!groups || !groups.length)
     {
         return (
             <Column center fullHeight>
@@ -77,7 +77,7 @@ export const GroupsContainerView: FC<GroupsContainerViewProps> = props =>
                                     <i className={ 'absolute end-0 top-0 z-20 nitro-icon icon-group-' + (group.favourite ? 'favorite' : 'not-favorite') } onClick={ () => ToggleFavoriteGroup(group) } /> }
                                 <LayoutBadgeImageView badgeCode={ group.badgeCode } isGroup={ true } />
                             </LayoutGridItem>
-                        )
+                        );
                     }) }
                 </AutoGrid>
             </Column>
@@ -87,4 +87,4 @@ export const GroupsContainerView: FC<GroupsContainerViewProps> = props =>
             </Column>
         </Grid>
     );
-}
+};

@@ -29,7 +29,7 @@ export class FurnitureItem implements IFurnitureItem
     constructor(parser: IFurnitureItemData)
     {
         if(!parser) return;
-        
+
         this._locked = false;
         this._id = parser.itemId;
         this._type = parser.spriteId;

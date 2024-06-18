@@ -20,7 +20,7 @@ const useFurnitureMannequinWidgetState = () =>
         setFigure(null);
         setGender(null);
         setName(null);
-    }
+    };
 
     const saveFigure = () =>
     {
@@ -29,7 +29,7 @@ const useFurnitureMannequinWidgetState = () =>
         SendMessageComposer(new FurnitureMannequinSaveLookComposer(objectId));
 
         onClose();
-    }
+    };
 
     const wearFigure = () =>
     {
@@ -38,14 +38,14 @@ const useFurnitureMannequinWidgetState = () =>
         SendMessageComposer(new FurnitureMultiStateComposer(objectId));
 
         onClose();
-    }
+    };
 
     const saveName = () =>
     {
         if(objectId === -1) return;
 
         SendMessageComposer(new FurnitureMannequinSaveNameComposer(objectId, name));
-    }
+    };
 
     useNitroEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_MANNEQUIN, event =>
     {
@@ -75,6 +75,6 @@ const useFurnitureMannequinWidgetState = () =>
     });
 
     return { objectId, figure, gender, clubLevel, name, setName, saveFigure, wearFigure, saveName, onClose };
-}
+};
 
 export const useFurnitureMannequinWidget = useFurnitureMannequinWidgetState;

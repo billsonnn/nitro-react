@@ -1,58 +1,40 @@
-// @flow strict
-'use client'
-import { useEffect, useRef, useState } from 'react';
+import { FC, PropsWithChildren, useEffect, useRef, useState } from 'react';
 
-function ReactPopover({
-    children,
-    content,
-    trigger = 'click'
-})
+export const ReactPopover: FC<PropsWithChildren<{
+    content: JSX.Element;
+    trigger?: 'click' | 'hover';
+}>> = props =>
 {
+    const { content = null, trigger = null, children = null } = props;
     const [ show, setShow ] = useState(false);
     const wrapperRef = useRef(null);
 
-    const handleMouseOver = () =>
-    {
-        if (trigger === 'hover')
-        {
-            setShow(true);
-        };
-    };
+    const handleMouseOver = () => (trigger === 'hover') && setShow(true);
 
-    const handleMouseLeft = () =>
-    {
-        if (trigger === 'hover')
-        {
-            setShow(false);
-        };
-    };
+    const handleMouseLeft = () => (trigger === 'hover') && setShow(false);
 
     useEffect(() =>
     {
-        function handleClickOutside(event)
-        {
-            if (wrapperRef.current && !wrapperRef.current.contains(event.target))
-            {
-                setShow(false);
-            }
-        }
+        if(!show) return;
 
-        if (show)
+        const handleClickOutside = (event: MouseEvent) =>
         {
-            // Bind the event listener
-            document.addEventListener('mousedown', handleClickOutside);
-            return () =>
-            {
-                // Unbind the event listener on clean up
-                document.removeEventListener('mousedown', handleClickOutside);
-            };
-        }
+            if(wrapperRef.current && !wrapperRef.current.contains(event.target)) setShow(false);
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+
+        return () =>
+        {
+            // Unbind the event listener on clean up
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
     }, [ show, wrapperRef ]);
 
     return (
         <div
             ref={ wrapperRef }
-            className="w-fit h-fit relative flex justify-center"
+            className="relative flex justify-center w-fit h-fit"
             onMouseEnter={ handleMouseOver }
             onMouseLeave={ handleMouseLeft }>
             <div
@@ -70,5 +52,3 @@ function ReactPopover({
         </div>
     );
 };
-
-export default ReactPopover;

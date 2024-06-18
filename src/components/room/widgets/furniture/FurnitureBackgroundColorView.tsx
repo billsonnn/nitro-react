@@ -7,7 +7,7 @@ export const FurnitureBackgroundColorView: FC<{}> = props =>
 {
     const { objectId = -1, color = 0, setColor = null, applyToner = null, toggleToner = null, onClose = null } = useFurnitureBackgroundColorWidget();
 
-    if (objectId === -1) return null;
+    if(objectId === -1) return null;
 
     return (
         <NitroCardView className="nitro-room-widget-toner" theme="primary-slim">
@@ -27,4 +27,4 @@ export const FurnitureBackgroundColorView: FC<{}> = props =>
             </NitroCardContentView>
         </NitroCardView>
     );
-}
+};

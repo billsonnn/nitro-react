@@ -39,4 +39,4 @@ export const LayoutCounterTimeView: FC<LayoutCounterTimeViewProps> = props =>
             { children }
         </div>
     );
-}
+};

@@ -22,4 +22,4 @@ export const BadgesContainerView: FC<BadgesContainerViewProps> = props =>
             }) }
         </>
     );
-}
+};

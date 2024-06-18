@@ -42,7 +42,7 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>
         if(offer.extraDays > 0)
         {
             if(offerText !== '') offerText += ' ';
-            
+
             offerText += (' ' + LocalizeText('catalog.vip.item.header.days', [ 'num_days' ], [ offer.extraDays.toString() ]));
         }
 
@@ -188,4 +188,4 @@ export const CatalogLayoutVipBuyView: FC<CatalogLayoutProps> = props =>
             </Column>
         </Grid>
     );
-}
+};

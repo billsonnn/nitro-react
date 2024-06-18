@@ -10,16 +10,16 @@ const getStickieColorName = (color: string) =>
 {
     let index = STICKIE_COLORS.indexOf(color);
 
-    if (index === -1) index = 0;
+    if(index === -1) index = 0;
 
     return STICKIE_COLOR_NAMES[index];
-}
+};
 
 export const FurnitureSpamWallPostItView: FC<{}> = props =>
 {
     const { objectId = -1, color = '0', setColor = null, text = '', setText = null, canModify = false, onClose = null } = useFurnitureSpamWallPostItWidget();
 
-    if (objectId === -1) return null;
+    if(objectId === -1) return null;
 
     return (
         <DraggableWindow handleSelector=".drag-handler" windowPosition={ DraggableWindowPosition.TOP_LEFT }>
@@ -31,7 +31,7 @@ export const FurnitureSpamWallPostItView: FC<{}> = props =>
                                 <div className="nitro-stickie-image stickie-trash header-trash" onClick={ onClose }></div>
                                 { STICKIE_COLORS.map(color =>
                                 {
-                                    return <div key={ color } className="stickie-color ms-1" style={ { backgroundColor: ColorUtils.makeColorHex(color) } } onClick={ event => setColor(color) } />
+                                    return <div key={ color } className="stickie-color ms-1" style={ { backgroundColor: ColorUtils.makeColorHex(color) } } onClick={ event => setColor(color) } />;
                                 }) }
                             </> }
                     </div>
@@ -43,4 +43,4 @@ export const FurnitureSpamWallPostItView: FC<{}> = props =>
             </div>
         </DraggableWindow>
     );
-}
+};

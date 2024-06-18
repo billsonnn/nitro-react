@@ -20,7 +20,7 @@ export const ToolbarMeView: FC<PropsWithChildren<ToolbarMeViewProps>> = props =>
     {
         const roomSession = GetRoomSession();
 
-        if (!roomSession) return;
+        if(!roomSession) return;
 
         GetRoomEngine().selectRoomObject(roomSession.roomId, roomSession.ownRoomIndex, RoomObjectCategory.UNIT);
     }, []);
@@ -49,4 +49,4 @@ export const ToolbarMeView: FC<PropsWithChildren<ToolbarMeViewProps>> = props =>
             { children }
         </Flex>
     );
-}
+};

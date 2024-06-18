@@ -12,7 +12,7 @@ export class ChatBubbleUtilities
     {
         const avatarImage = GetAvatarRenderManager().createAvatarImage(figure, AvatarScaleType.LARGE, null, {
             resetFigure: figure => this.setFigureImage(figure),
-            dispose: () => 
+            dispose: () =>
             {},
             disposed: false
         });

@@ -34,4 +34,4 @@ export const CatalogLayoutFrontPageItemView: FC<CatalogLayoutFrontPageItemViewPr
             { children }
         </LayoutBackgroundImage>
     );
-}
+};

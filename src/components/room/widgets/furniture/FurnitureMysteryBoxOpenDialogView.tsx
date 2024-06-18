@@ -32,7 +32,7 @@ export const FurnitureMysteryBoxOpenDialogView: FC<FurnitureMysteryBoxOpenDialog
         if(mode === ViewMode.WAITING) SendMessageComposer(new MysteryBoxWaitingCanceledMessageComposer(ownerId));
         setMode(ViewMode.HIDDEN);
         setPrizeData(undefined);
-    }
+    };
 
     useMessageEvent<ShowMysteryBoxWaitMessageEvent>(ShowMysteryBoxWaitMessageEvent, event =>
     {
@@ -78,4 +78,4 @@ export const FurnitureMysteryBoxOpenDialogView: FC<FurnitureMysteryBoxOpenDialog
             </NitroCardContentView>
         </NitroCardView>
     );
-}
+};

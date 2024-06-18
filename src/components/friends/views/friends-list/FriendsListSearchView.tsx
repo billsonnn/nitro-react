@@ -27,11 +27,11 @@ export const FriendsSearchView: FC<FriendsSearchViewProps> = props =>
 
     useEffect(() =>
     {
-        if (!searchValue || !searchValue.length) return;
+        if(!searchValue || !searchValue.length) return;
 
         const timeout = setTimeout(() =>
         {
-            if (!searchValue || !searchValue.length) return;
+            if(!searchValue || !searchValue.length) return;
 
             SendMessageComposer(new HabboSearchComposer(searchValue));
         }, 500);
@@ -65,7 +65,7 @@ export const FriendsSearchView: FC<FriendsSearchViewProps> = props =>
                                                         <div className="nitro-friends-spritesheet icon-chat cursor-pointer" title={ LocalizeText('friendlist.tip.im') } onClick={ event => OpenMessengerChat(result.avatarId) } /> }
                                                 </div>
                                             </NitroCardAccordionItemView>
-                                        )
+                                        );
                                     }) }
                                 </Column>
                             </Column> }
@@ -92,7 +92,7 @@ export const FriendsSearchView: FC<FriendsSearchViewProps> = props =>
                                                         <div className="nitro-friends-spritesheet icon-add cursor-pointer" title={ LocalizeText('friendlist.tip.addfriend') } onClick={ event => requestFriend(result.avatarId, result.avatarName) } /> }
                                                 </div>
                                             </NitroCardAccordionItemView>
-                                        )
+                                        );
                                     }) }
                                 </Column>
                             </Column> }
@@ -100,4 +100,4 @@ export const FriendsSearchView: FC<FriendsSearchViewProps> = props =>
             </div>
         </NitroCardAccordionSetView>
     );
-}
+};

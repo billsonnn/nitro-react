@@ -8,4 +8,4 @@ export const VisitDesktop = () =>
 
     GoToDesktop();
     GetRoomSessionManager().removeSession(-1);
-}
+};

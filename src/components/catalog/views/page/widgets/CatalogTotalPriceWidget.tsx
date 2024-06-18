@@ -17,4 +17,4 @@ export const CatalogTotalPriceWidget: FC<CatalogSimplePriceWidgetViewProps> = pr
             <CatalogPriceDisplayWidgetView offer={ currentOffer } />
         </Column>
     );
-}
+};

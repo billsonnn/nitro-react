@@ -2,11 +2,11 @@ import { CatalogPageMessageProductData, FurnitureType, GetSessionDataManager, IF
 
 export function GetFurnitureDataForProductOffer(offer: CatalogPageMessageProductData): IFurnitureData
 {
-    if(!offer) return null;
+    if (!offer) return null;
 
     let furniData: IFurnitureData = null;
 
-    switch((offer.productType.toUpperCase()))
+    switch ((offer.productType.toUpperCase()) as FurnitureType)
     {
         case FurnitureType.FLOOR:
             furniData = GetSessionDataManager().getFloorItemData(offer.furniClassId);

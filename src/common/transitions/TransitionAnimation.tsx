@@ -37,7 +37,7 @@ export const TransitionAnimation: FC<TransitionAnimationProps> = props =>
         return () =>
         {
             if(timeoutData) clearTimeout(timeoutData);
-        }
+        };
     }, [ inProp, timeout ]);
 
     return (
@@ -49,4 +49,4 @@ export const TransitionAnimation: FC<TransitionAnimationProps> = props =>
             ) }
         </Transition>
     );
-}
+};

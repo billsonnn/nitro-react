@@ -12,7 +12,7 @@ export interface WiredTriggerBaseViewProps
 export const WiredTriggerBaseView: FC<PropsWithChildren<WiredTriggerBaseViewProps>> = props =>
 {
     const { requiresFurni = WiredFurniType.STUFF_SELECTION_OPTION_NONE, save = null, hasSpecialInput = false, children = null } = props;
-    
+
     const onSave = () => (save && save());
 
     return (
@@ -20,4 +20,4 @@ export const WiredTriggerBaseView: FC<PropsWithChildren<WiredTriggerBaseViewProp
             { children }
         </WiredBaseView>
     );
-}
+};

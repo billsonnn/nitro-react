@@ -24,7 +24,7 @@ export const LayoutAvatarImageView: FC<LayoutAvatarImageViewProps> = props =>
     {
         const newClassNames: string[] = [ 'avatar-image relative w-[90px] h-[130px] bg-no-repeat bg-[center_-8px] pointer-events-none' ];
 
-        if (classNames.length) newClassNames.push(...classNames);
+        if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
     }, [ classNames ]);
@@ -33,27 +33,27 @@ export const LayoutAvatarImageView: FC<LayoutAvatarImageViewProps> = props =>
     {
         let newStyle: CSSProperties = {};
 
-        if (avatarUrl && avatarUrl.length) newStyle.backgroundImage = `url('${ avatarUrl }')`;
+        if(avatarUrl && avatarUrl.length) newStyle.backgroundImage = `url('${ avatarUrl }')`;
 
-        if (scale !== 1)
+        if(scale !== 1)
         {
             newStyle.transform = `scale(${ scale })`;
 
-            if (!(scale % 1)) newStyle.imageRendering = 'pixelated';
+            if(!(scale % 1)) newStyle.imageRendering = 'pixelated';
         }
 
-        if (Object.keys(style).length) newStyle = { ...newStyle, ...style };
+        if(Object.keys(style).length) newStyle = { ...newStyle, ...style };
 
         return newStyle;
     }, [ avatarUrl, scale, style ]);
 
     useEffect(() =>
     {
-        if (!isReady) return;
+        if(!isReady) return;
 
         const figureKey = [ figure, gender, direction, headOnly ].join('-');
 
-        if (AVATAR_IMAGE_CACHE.has(figureKey))
+        if(AVATAR_IMAGE_CACHE.has(figureKey))
         {
             setAvatarUrl(AVATAR_IMAGE_CACHE.get(figureKey));
         }
@@ -61,27 +61,27 @@ export const LayoutAvatarImageView: FC<LayoutAvatarImageViewProps> = props =>
         {
             const resetFigure = (_figure: string) =>
             {
-                if (isDisposed.current) return;
+                if(isDisposed.current) return;
 
                 const avatarImage = GetAvatarRenderManager().createAvatarImage(_figure, AvatarScaleType.LARGE, gender, { resetFigure: (figure: string) => resetFigure(figure), dispose: null, disposed: false });
 
                 let setType = AvatarSetType.FULL;
 
-                if (headOnly) setType = AvatarSetType.HEAD;
+                if(headOnly) setType = AvatarSetType.HEAD;
 
                 avatarImage.setDirection(setType, direction);
 
                 const imageUrl = avatarImage.processAsImageUrl(setType);
 
-                if (imageUrl && !isDisposed.current)
+                if(imageUrl && !isDisposed.current)
                 {
-                    if (!avatarImage.isPlaceholder()) AVATAR_IMAGE_CACHE.set(figureKey, imageUrl);
+                    if(!avatarImage.isPlaceholder()) AVATAR_IMAGE_CACHE.set(figureKey, imageUrl);
 
                     setAvatarUrl(imageUrl);
                 }
 
                 avatarImage.dispose(true);
-            }
+            };
 
             resetFigure(figure);
         }
@@ -96,8 +96,8 @@ export const LayoutAvatarImageView: FC<LayoutAvatarImageViewProps> = props =>
         return () =>
         {
             isDisposed.current = true;
-        }
+        };
     }, []);
 
     return <Base classNames={ getClassNames } style={ getStyle } { ...rest } />;
-}
+};

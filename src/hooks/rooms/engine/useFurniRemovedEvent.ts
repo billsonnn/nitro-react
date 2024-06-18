@@ -14,6 +14,6 @@ export const useFurniRemovedEvent = (isActive: boolean, handler: (event: RoomWid
         return () =>
         {
             UI_EVENT_DISPATCHER.removeEventListener(RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED, onRoomWidgetUpdateRoomObjectEvent);
-        }
+        };
     }, [ isActive, handler ]);
-}
+};

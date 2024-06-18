@@ -14,8 +14,8 @@ export const WiredView: FC<{}> = props =>
     if(trigger instanceof WiredActionDefinition) return WiredActionLayoutView(trigger.code);
 
     if(trigger instanceof TriggerDefinition) return WiredTriggerLayoutView(trigger.code);
-    
+
     if(trigger instanceof ConditionDefinition) return WiredConditionLayoutView(trigger.code);
-    
+
     return null;
 };

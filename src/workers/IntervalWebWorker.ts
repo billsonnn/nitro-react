@@ -2,7 +2,7 @@ export default () =>
 {
     let interval: ReturnType<typeof setInterval> = null;
 
-    // eslint-disable-next-line no-restricted-globals
+
     self.onmessage = (message: MessageEvent) =>
     {
         if(!message) return;
@@ -22,5 +22,5 @@ export default () =>
                 }
                 break;
         }
-    }
-}
+    };
+};

@@ -41,7 +41,7 @@ export const ReportSummaryView: FC<{}> = props =>
         }
 
         setActiveReport(null);
-    }
+    };
 
     return (
         <>
@@ -53,5 +53,5 @@ export const ReportSummaryView: FC<{}> = props =>
                 { LocalizeText('guide.help.request.emergency.submit.button') }
             </Button>
         </>
-    )
-}
+    );
+};

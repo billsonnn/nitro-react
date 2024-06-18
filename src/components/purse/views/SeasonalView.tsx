@@ -21,4 +21,4 @@ export const SeasonalView: FC<SeasonalViewProps> = props =>
             </div>
         </Flex>
     );
-}
+};

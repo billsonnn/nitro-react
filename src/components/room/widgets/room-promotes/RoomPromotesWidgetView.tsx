@@ -16,7 +16,7 @@ export const RoomPromotesWidgetView: FC<{}> = props =>
         setPromoteInformation(null);
     });
 
-    if (!promoteInformation) return null;
+    if(!promoteInformation) return null;
 
     return (
         <>

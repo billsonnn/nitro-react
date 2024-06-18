@@ -28,14 +28,14 @@ const InfiniteGridRoot = <T,>(props: Props<T>) =>
     {
         const element = parentRef.current;
 
-        if (!element || !items) return;
+        if(!element || !items) return;
 
         const checkAndApplyPadding = () =>
         {
-            if (!element) return;
+            if(!element) return;
 
             element.style.paddingRight = (element.scrollHeight > element.clientHeight) ? '0.25rem' : '0';
-        }
+        };
 
         checkAndApplyPadding();
 
@@ -44,12 +44,12 @@ const InfiniteGridRoot = <T,>(props: Props<T>) =>
         return () =>
         {
             window.removeEventListener('resize', checkAndApplyPadding);
-        }
+        };
     }, [ items ]);
 
     useEffect(() =>
     {
-        if (!items || !items.length) return;
+        if(!items || !items.length) return;
 
         virtualizer.scrollToIndex(0);
     }, [ items, virtualizer ]);
@@ -75,11 +75,11 @@ const InfiniteGridRoot = <T,>(props: Props<T>) =>
                             height: virtualRow.size,
                             transform: `translateY(${ virtualRow.start }px)`
                         } }>
-                        { Array.from(Array(columnCount)).map((e, i) => 
+                        { Array.from(Array(columnCount)).map((e, i) =>
                         {
                             const item = items[i + (virtualRow.index * columnCount)];
 
-                            if (!item) return <Fragment
+                            if(!item) return <Fragment
                                 key={ virtualRow.index + i + 'b' } />;
 
                             return (
@@ -93,7 +93,7 @@ const InfiniteGridRoot = <T,>(props: Props<T>) =>
             </div>
         </div>
     );
-}
+};
 
 const InfiniteGridItem = forwardRef<HTMLDivElement, {
     itemImage?: string;
@@ -114,16 +114,16 @@ const InfiniteGridItem = forwardRef<HTMLDivElement, {
 
     useEffect(() =>
     {
-        if (!itemImage || !itemImage.length) return;
+        if(!itemImage || !itemImage.length) return;
 
         const image = new Image();
 
         image.onload = () =>
         {
-            if (disposed.current) return;
+            if(disposed.current) return;
 
             setBackgroundImageUrl(image.src);
-        }
+        };
 
         image.src = itemImage;
     }, [ itemImage ]);
@@ -135,7 +135,7 @@ const InfiniteGridItem = forwardRef<HTMLDivElement, {
         return () =>
         {
             disposed.current = true;
-        }
+        };
     }, []);
 
     return (

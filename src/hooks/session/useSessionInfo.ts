@@ -17,21 +17,21 @@ const useSessionInfoState = () =>
         setChatStyleId(styleId);
 
         SendMessageComposer(new RoomUnitChatStyleComposer(styleId));
-    }
+    };
 
     const respectUser = (userId: number) =>
     {
         GetSessionDataManager().giveRespect(userId);
 
         setUserRespectRemaining(GetSessionDataManager().respectsLeft);
-    }
+    };
 
     const respectPet = (petId: number) =>
     {
         GetSessionDataManager().givePetRespect(petId);
 
         setPetRespectRemaining(GetSessionDataManager().respectsPetLeft);
-    }
+    };
 
     useMessageEvent<UserInfoEvent>(UserInfoEvent, event =>
     {
@@ -42,7 +42,7 @@ const useSessionInfoState = () =>
         setUserRespectRemaining(parser.userInfo.respectsRemaining);
         setPetRespectRemaining(parser.userInfo.respectsPetRemaining);
     });
-    
+
     useMessageEvent<FigureUpdateEvent>(FigureUpdateEvent, event =>
     {
         const parser = event.getParser();
@@ -58,6 +58,6 @@ const useSessionInfoState = () =>
     });
 
     return { userInfo, userFigure, chatStyleId, userRespectRemaining, petRespectRemaining, respectUser, respectPet, updateChatStyleId };
-}
+};
 
 export const useSessionInfo = () => useBetween(useSessionInfoState);

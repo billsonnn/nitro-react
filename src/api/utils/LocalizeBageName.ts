@@ -7,4 +7,4 @@ export const LocalizeBadgeName = (key: string) =>
     if(!badgeName || !badgeName.length) badgeName = `badge_name_${ key }`;
 
     return badgeName;
-}
+};

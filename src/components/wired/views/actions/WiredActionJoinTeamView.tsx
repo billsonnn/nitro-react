@@ -27,9 +27,9 @@ export const WiredActionJoinTeamView: FC<{}> = props =>
                             <input checked={ (selectedTeam === team) } className="form-check-input" id={ `selectedTeam${ team }` } name="selectedTeam" type="radio" onChange={ event => setSelectedTeam(team) } />
                             <Text>{ LocalizeText(`wiredfurni.params.team.${ team }`) }</Text>
                         </div>
-                    )
+                    );
                 }) }
             </div>
         </WiredActionBaseView>
     );
-}
+};

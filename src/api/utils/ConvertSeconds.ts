@@ -6,4 +6,4 @@ export const ConvertSeconds = (seconds: number) =>
     let numSeconds = ((seconds % 86400) % 3600) % 60;
 
     return numDays.toString().padStart(2, '0') + ':' + numHours.toString().padStart(2, '0') + ':' + numMinutes.toString().padStart(2, '0') + ':' + numSeconds.toString().padStart(2, '0');
-}
+};

@@ -16,7 +16,7 @@ export const LayoutNotificationAlertView: FC<LayoutNotificationAlertViewProps> =
     const getClassNames = useMemo(() =>
     {
         const newClassNames: string[] = [ 'nitro-alert' ];
-        
+
         newClassNames.push('nitro-alert-' + type);
 
         if(classNames.length) newClassNames.push(...classNames);
@@ -32,4 +32,4 @@ export const LayoutNotificationAlertView: FC<LayoutNotificationAlertViewProps> =
             </NitroCardContentView>
         </NitroCardView>
     );
-}
+};

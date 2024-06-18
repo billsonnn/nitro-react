@@ -55,7 +55,7 @@ const useFurniChooserWidgetState = () =>
         });
 
         setItems([ ...wallItems, ...floorItems ].sort((a, b) => ((a.name < b.name) ? -1 : 1)));
-    }
+    };
 
     useFurniAddedEvent(!!items, event =>
     {
@@ -127,6 +127,6 @@ const useFurniChooserWidgetState = () =>
     });
 
     return { items, onClose, selectItem, populateChooser };
-}
+};
 
 export const useFurniChooserWidget = useFurniChooserWidgetState;

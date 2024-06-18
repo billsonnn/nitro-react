@@ -25,4 +25,4 @@ export const WiredActionChatView: FC<{}> = props =>
             </div>
         </WiredActionBaseView>
     );
-}
+};

@@ -25,12 +25,12 @@ const useFurnitureDimmerWidgetState = () =>
         const preset = presets[(id - 1)];
 
         if(!preset) return;
-        
+
         setSelectedPresetId(preset.id);
         setSelectedEffectId(preset.type);
         setSelectedColor(preset.color);
         setSelectedBrightness(preset.light);
-    }
+    };
 
     const applyChanges = () =>
     {
@@ -54,12 +54,12 @@ const useFurnitureDimmerWidgetState = () =>
         });
 
         FurnitureDimmerUtilities.savePreset(preset.id, selectedEffectId, selectedColor, selectedBrightness, true);
-    }
+    };
 
     useNitroEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_DIMMER, event =>
     {
         if(!canOpenWidget()) return;
-        
+
         roomSession.requestMoodlightSettings();
     });
 
@@ -105,6 +105,6 @@ const useFurnitureDimmerWidgetState = () =>
     }, [ dimmerState, lastDimmerState, selectedColor, selectedBrightness, selectedEffectId ]);
 
     return { presets, selectedPresetId, dimmerState, lastDimmerState, effectId, color, brightness, selectedEffectId, setSelectedEffectId, selectedColor, setSelectedColor, selectedBrightness, setSelectedBrightness, selectPresetId, applyChanges };
-}
+};
 
 export const useFurnitureDimmerWidget = useFurnitureDimmerWidgetState;

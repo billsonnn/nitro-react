@@ -14,4 +14,4 @@ export const AvatarEditorColorSorter = (a: IPartColor, b: IPartColor) =>
     if(a.index > b.index) return 1;
 
     return 0;
-}
+};

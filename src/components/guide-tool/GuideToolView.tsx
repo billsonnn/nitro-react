@@ -199,7 +199,7 @@ export const GuideToolView: FC<{}> = props =>
     {
         const parser = event.getParser();
 
-        if (parser.roomId !== 0)
+        if(parser.roomId !== 0)
         {
             const messageGroups = [ ...ongoingMessageGroups ];
 
@@ -241,7 +241,7 @@ export const GuideToolView: FC<{}> = props =>
 
         // SOMETHING_WRONG_REQUEST = 0, NO_HELPERS_AVAILABLE = 1, NO_GUARDIANS_AVAILABLE = 2
 
-        switch (parser['errorCode'])
+        switch(parser['errorCode'])
         {
             case 0:
                 updateSessionState(GuideSessionState.USER_SOMETHING_WRONG);

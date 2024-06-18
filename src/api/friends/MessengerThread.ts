@@ -40,7 +40,7 @@ export class MessengerThread
         group.addChat(chat);
 
         this._lastUpdated = new Date();
-        
+
         this._unreadCount++;
 
         return chat;

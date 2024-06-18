@@ -15,14 +15,14 @@ const useFurnitureExchangeWidgetState = () =>
         setObjectId(-1);
         setCategory(-1);
         setValue(0);
-    }
+    };
 
     const redeem = () =>
     {
         SendMessageComposer(new FurnitureExchangeComposer(objectId));
 
         onClose();
-    }
+    };
 
     useNitroEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_CREDITFURNI, event =>
     {
@@ -43,6 +43,6 @@ const useFurnitureExchangeWidgetState = () =>
     });
 
     return { objectId, value, redeem, onClose };
-}
+};
 
 export const useFurnitureExchangeWidget = useFurnitureExchangeWidgetState;

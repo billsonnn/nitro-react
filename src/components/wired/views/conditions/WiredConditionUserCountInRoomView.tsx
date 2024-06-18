@@ -26,7 +26,7 @@ export const WiredConditionUserCountInRoomView: FC<{}> = props =>
             setMax(0);
         }
     }, [ trigger ]);
-    
+
     return (
         <WiredConditionBaseView hasSpecialInput={ true } requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } save={ save }>
             <div className="flex flex-col gap-1">
@@ -49,4 +49,4 @@ export const WiredConditionUserCountInRoomView: FC<{}> = props =>
             </div>
         </WiredConditionBaseView>
     );
-}
+};

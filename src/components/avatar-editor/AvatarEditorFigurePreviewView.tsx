@@ -13,18 +13,18 @@ export const AvatarEditorFigurePreviewView: FC<{}> = props =>
 
     const rotateFigure = (newDirection: number) =>
     {
-        if (direction < AvatarDirectionAngle.MIN_DIRECTION)
+        if(direction < AvatarDirectionAngle.MIN_DIRECTION)
         {
             newDirection = (AvatarDirectionAngle.MAX_DIRECTION + (direction + 1));
         }
 
-        if (direction > AvatarDirectionAngle.MAX_DIRECTION)
+        if(direction > AvatarDirectionAngle.MAX_DIRECTION)
         {
             newDirection = (direction - (AvatarDirectionAngle.MAX_DIRECTION + 1));
         }
 
         setDirection(newDirection);
-    }
+    };
 
     return (
         <div className="flex flex-col figure-preview-container overflow-hidden relative">
@@ -37,4 +37,4 @@ export const AvatarEditorFigurePreviewView: FC<{}> = props =>
             </div>
         </div>
     );
-}
+};

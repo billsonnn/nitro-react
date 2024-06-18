@@ -40,7 +40,7 @@ const useInventoryTradeState = () =>
                 setTradeState(TradeState.TRADING_STATE_CONFIRMED);
                 return;
         }
-    }
+    };
 
     const removeItem = (group: GroupItem) =>
     {
@@ -49,7 +49,7 @@ const useInventoryTradeState = () =>
         if(!item) return;
 
         SendMessageComposer(new TradingListItemRemoveComposer(item.id));
-    }
+    };
 
     const stopTrading = () =>
     {
@@ -64,7 +64,7 @@ const useInventoryTradeState = () =>
                 SendMessageComposer(new TradingCancelComposer());
                 return;
         }
-    }
+    };
 
     useMessageEvent<TradingAcceptEvent>(TradingAcceptEvent, event =>
     {
@@ -217,7 +217,7 @@ const useInventoryTradeState = () =>
 
         const firstUser = new TradeUserData();
         const firstUserData = GetRoomSession().userDataManager.getUserData(parser.userID);
-        
+
         firstUser.userItems = new AdvancedMap();
 
         const secondUser = new TradeUserData();
@@ -246,7 +246,7 @@ const useInventoryTradeState = () =>
             secondUser.userName = firstUserData.name;
             secondUser.canTrade = parser.userCanTrade;
         }
-        
+
         setOwnUser(firstUser);
         setOtherUser(secondUser);
         setTradeState(TradeState.TRADING_STATE_RUNNING);
@@ -265,7 +265,7 @@ const useInventoryTradeState = () =>
 
         showTradeAlert(TradingNotificationType.THEY_NOT_ALLOWED);
     });
-    
+
     useMessageEvent<TradingYouAreNotAllowedEvent>(TradingYouAreNotAllowedEvent, event =>
     {
         const parser = event.getParser();
@@ -283,6 +283,6 @@ const useInventoryTradeState = () =>
     }, [ tradeState, activate, deactivate ]);
 
     return { ownUser, otherUser, tradeState, setTradeState, isTrading, groupItems, progressTrade, removeItem, stopTrading };
-}
+};
 
 export const useInventoryTrade = () => useBetween(useInventoryTradeState);

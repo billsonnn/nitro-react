@@ -23,32 +23,32 @@ export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = pro
     {
         let name = searchResult.code;
 
-        if (!name || !name.length || LocalizeText('navigator.searchcode.title.' + name) == ('navigator.searchcode.title.' + name)) return searchResult.data;
+        if(!name || !name.length || LocalizeText('navigator.searchcode.title.' + name) == ('navigator.searchcode.title.' + name)) return searchResult.data;
 
-        if (name.startsWith('${')) return name.slice(2, (name.length - 1));
+        if(name.startsWith('${')) return name.slice(2, (name.length - 1));
 
         return ('navigator.searchcode.title.' + name);
-    }
+    };
 
     const toggleDisplayMode = () =>
     {
         setDisplayMode(prevValue =>
         {
-            if (prevValue === NavigatorSearchResultViewDisplayMode.LIST) return NavigatorSearchResultViewDisplayMode.THUMBNAILS;
+            if(prevValue === NavigatorSearchResultViewDisplayMode.LIST) return NavigatorSearchResultViewDisplayMode.THUMBNAILS;
 
             return NavigatorSearchResultViewDisplayMode.LIST;
         });
-    }
+    };
 
-    const showMore = () => 
+    const showMore = () =>
     {
-        if (searchResult.action == 1) SendMessageComposer(new NavigatorSearchComposer(searchResult.code, ''));
-        else if (searchResult.action == 2 && topLevelContext) SendMessageComposer(new NavigatorSearchComposer(topLevelContext.code, ''));
-    }
+        if(searchResult.action == 1) SendMessageComposer(new NavigatorSearchComposer(searchResult.code, ''));
+        else if(searchResult.action == 2 && topLevelContext) SendMessageComposer(new NavigatorSearchComposer(topLevelContext.code, ''));
+    };
 
     useEffect(() =>
     {
-        if (!searchResult) return;
+        if(!searchResult) return;
 
         setIsExtended(!searchResult.closed);
 
@@ -115,4 +115,4 @@ export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = pro
         //     </div>
         // </div>
     );
-}
+};

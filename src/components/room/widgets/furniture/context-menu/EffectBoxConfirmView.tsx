@@ -19,7 +19,7 @@ export const EffectBoxConfirmView: FC<EffectBoxConfirmViewProps> = props =>
         roomSession.useMultistateItem(objectId);
 
         onClose();
-    }
+    };
 
     return (
         <NitroCardView className="nitro-use-product-confirmation">
@@ -37,4 +37,4 @@ export const EffectBoxConfirmView: FC<EffectBoxConfirmViewProps> = props =>
             </NitroCardContentView>
         </NitroCardView>
     );
-}
+};

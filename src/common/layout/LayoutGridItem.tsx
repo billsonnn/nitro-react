@@ -27,21 +27,21 @@ export const LayoutGridItem: FC<LayoutGridItemProps> = props =>
         const newClassNames: string[] = [ 'layout-grid-item', 'border', 'border-2', 'border-muted', 'rounded' ];
 
 
-        if (itemActive) newClassNames.push('!bg-[#ececec] !border-[#fff]');
+        if(itemActive) newClassNames.push('!bg-[#ececec] !border-[#fff]');
 
-        if (itemUniqueSoldout || (itemUniqueNumber > 0)) newClassNames.push('unique-item');
+        if(itemUniqueSoldout || (itemUniqueNumber > 0)) newClassNames.push('unique-item');
 
-        if (itemUniqueSoldout) newClassNames.push('sold-out');
+        if(itemUniqueSoldout) newClassNames.push('sold-out');
 
-        if (itemUnseen) newClassNames.push('unseen');
+        if(itemUnseen) newClassNames.push('unseen');
 
-        if (itemHighlight) newClassNames.push('has-highlight');
+        if(itemHighlight) newClassNames.push('has-highlight');
 
-        if (disabled) newClassNames.push('disabled')
+        if(disabled) newClassNames.push('disabled');
 
-        if (itemImage === null) newClassNames.push('icon', 'loading-icon');
+        if(itemImage === null) newClassNames.push('icon', 'loading-icon');
 
-        if (classNames.length) newClassNames.push(...classNames);
+        if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
     }, [ itemActive, itemUniqueSoldout, itemUniqueNumber, itemUnseen, itemHighlight, disabled, itemImage, classNames ]);
@@ -50,11 +50,11 @@ export const LayoutGridItem: FC<LayoutGridItemProps> = props =>
     {
         let newStyle = { ...style };
 
-        if (itemImage && !(itemUniqueSoldout || (itemUniqueNumber > 0))) newStyle.backgroundImage = `url(${ itemImage })`;
+        if(itemImage && !(itemUniqueSoldout || (itemUniqueNumber > 0))) newStyle.backgroundImage = `url(${ itemImage })`;
 
-        if (itemColor) newStyle.backgroundColor = itemColor;
+        if(itemColor) newStyle.backgroundColor = itemColor;
 
-        if (Object.keys(style).length) newStyle = { ...newStyle, ...style };
+        if(Object.keys(style).length) newStyle = { ...newStyle, ...style };
 
         return newStyle;
     }, [ style, itemImage, itemColor, itemUniqueSoldout, itemUniqueNumber ]);
@@ -73,4 +73,4 @@ export const LayoutGridItem: FC<LayoutGridItemProps> = props =>
             { children }
         </Column>
     );
-}
+};

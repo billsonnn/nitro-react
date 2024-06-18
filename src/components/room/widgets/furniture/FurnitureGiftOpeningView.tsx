@@ -18,7 +18,7 @@ export const FurnitureGiftOpeningView: FC<{}> = props =>
         if(groupItem) attemptItemPlacement(groupItem);
 
         onClose();
-    }
+    };
 
     return (
         <NitroCardView className="nitro-gift-opening" theme="primary-slim">
@@ -70,4 +70,4 @@ export const FurnitureGiftOpeningView: FC<{}> = props =>
             </NitroCardContentView>
         </NitroCardView>
     );
-}
+};

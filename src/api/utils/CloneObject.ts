@@ -11,4 +11,4 @@ export const CloneObject = <T>(object: T): T =>
     }
 
     return copy;
-}
+};

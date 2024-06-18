@@ -21,7 +21,7 @@ export const ModToolsUserChatlogView: FC<ModToolsUserChatlogViewProps> = props =
     {
         const parser = event.getParser();
 
-        if (!parser || parser.data.userId !== userId) return;
+        if(!parser || parser.data.userId !== userId) return;
 
         setUsername(parser.data.username);
         setUserChatlog(parser.data.roomChatlogs);
@@ -41,4 +41,4 @@ export const ModToolsUserChatlogView: FC<ModToolsUserChatlogViewProps> = props =
             </NitroCardContentView>
         </NitroCardView>
     );
-}
+};

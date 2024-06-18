@@ -36,7 +36,7 @@ export const SelectReportedChatsView: FC<{}> = props =>
 
             return newValue;
         });
-    }
+    };
 
     const submitChats = () =>
     {
@@ -46,7 +46,7 @@ export const SelectReportedChatsView: FC<{}> = props =>
         {
             return { ...prevValue, reportedChats: selectedChats, currentStep: ReportState.SELECT_TOPICS };
         });
-    }
+    };
 
     const back = () =>
     {
@@ -54,7 +54,7 @@ export const SelectReportedChatsView: FC<{}> = props =>
         {
             return { ...prevValue, currentStep: (prevValue.currentStep - 1) };
         });
-    }
+    };
 
     return (
         <>
@@ -87,4 +87,4 @@ export const SelectReportedChatsView: FC<{}> = props =>
             </Flex>
         </>
     );
-}
+};

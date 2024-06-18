@@ -29,39 +29,39 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
 
     const selectRoomObject = () =>
     {
-        if (!petData) return;
+        if(!petData) return;
 
         GetRoomEngine().selectRoomObject(roomSession.roomId, petData.roomIndex, RoomObjectCategory.UNIT);
-    }
+    };
 
     const useProduct = () =>
     {
         roomSession.usePetProduct(item.requestRoomObjectId, petData.webID);
 
         onClose();
-    }
+    };
 
     const getPetImage = useMemo(() =>
     {
-        if (!petData || !furniData) return null;
+        if(!petData || !furniData) return null;
 
         const petFigureData = new PetFigureData(petData.figure);
         const customParts = furniData.customParams.split(' ');
         const petIndex = parseInt(customParts[0]);
 
-        switch (furniData.specialType)
+        switch(furniData.specialType)
         {
             case FurniCategory.PET_SHAMPOO: {
-                if (customParts.length < 2) return null;
+                if(customParts.length < 2) return null;
 
                 const currentPalette = GetRoomEngine().getPetColorResult(petIndex, petFigureData.paletteId);
                 const possiblePalettes = GetRoomEngine().getPetColorResultsForTag(petIndex, customParts[1]);
 
                 let paletteId = -1;
 
-                for (const result of possiblePalettes)
+                for(const result of possiblePalettes)
                 {
-                    if (result.breed === currentPalette.breed)
+                    if(result.breed === currentPalette.breed)
                     {
                         paletteId = parseInt(result.id);
 
@@ -69,10 +69,10 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
                     }
                 }
 
-                return <LayoutPetImageView customParts={ petFigureData.customParts } direction={ 2 } paletteId={ paletteId } petColor={ petFigureData.color } typeId={ petFigureData.typeId } />
+                return <LayoutPetImageView customParts={ petFigureData.customParts } direction={ 2 } paletteId={ paletteId } petColor={ petFigureData.color } typeId={ petFigureData.typeId } />;
             }
             case FurniCategory.PET_CUSTOM_PART: {
-                if (customParts.length < 4) return null;
+                if(customParts.length < 4) return null;
 
                 const newCustomParts: IPetCustomPart[] = [];
 
@@ -82,14 +82,14 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
 
                 let _local_10 = 0;
 
-                while (_local_10 < _local_6.length)
+                while(_local_10 < _local_6.length)
                 {
                     const _local_13 = _local_6[_local_10];
                     const _local_15 = petFigureData.getCustomPart(_local_13);
 
                     let _local_12 = _local_8[_local_10];
 
-                    if (_local_15 != null) _local_12 = _local_15.paletteId;
+                    if(_local_15 != null) _local_12 = _local_15.paletteId;
 
                     newCustomParts.push(new PetCustomPart(_local_13, _local_7[_local_10], _local_12));
 
@@ -99,7 +99,7 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
                 return <LayoutPetImageView customParts={ newCustomParts } direction={ 2 } paletteId={ petFigureData.paletteId } petColor={ petFigureData.color } typeId={ petFigureData.typeId } />;
             }
             case FurniCategory.PET_CUSTOM_PART_SHAMPOO: {
-                if (customParts.length < 3) return null;
+                if(customParts.length < 3) return null;
 
                 const newCustomParts: IPetCustomPart[] = [];
 
@@ -108,14 +108,14 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
 
                 let _local_10 = 0;
 
-                while (_local_10 < _local_6.length)
+                while(_local_10 < _local_6.length)
                 {
                     const _local_13 = _local_6[_local_10];
                     const _local_15 = petFigureData.getCustomPart(_local_13);
 
                     let _local_14 = -1;
 
-                    if (_local_15 != null) _local_14 = _local_15.partId;
+                    if(_local_15 != null) _local_14 = _local_15.partId;
 
                     newCustomParts.push(new PetCustomPart(_local_6[_local_10], _local_14, _local_8[_local_10]));
 
@@ -125,7 +125,7 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
                 return <LayoutPetImageView customParts={ newCustomParts } direction={ 2 } paletteId={ petFigureData.paletteId } petColor={ petFigureData.color } typeId={ petFigureData.typeId } />;
             }
             case FurniCategory.PET_SADDLE: {
-                if (customParts.length < 4) return null;
+                if(customParts.length < 4) return null;
 
                 const newCustomParts: IPetCustomPart[] = [];
 
@@ -135,16 +135,16 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
 
                 let _local_10 = 0;
 
-                while (_local_10 < _local_6.length)
+                while(_local_10 < _local_6.length)
                 {
                     newCustomParts.push(new PetCustomPart(_local_6[_local_10], _local_7[_local_10], _local_8[_local_10]));
 
                     _local_10++;
                 }
 
-                for (const _local_21 of petFigureData.customParts)
+                for(const _local_21 of petFigureData.customParts)
                 {
-                    if (_local_6.indexOf(_local_21.layerId) === -1)
+                    if(_local_6.indexOf(_local_21.layerId) === -1)
                     {
                         newCustomParts.push(_local_21);
                     }
@@ -159,15 +159,15 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
 
                 const roomObject = GetRoomEngine().getRoomObject(roomSession.roomId, petData.roomIndex, RoomObjectCategory.UNIT);
 
-                if (roomObject)
+                if(roomObject)
                 {
                     posture = roomObject.model.getValue<string>(RoomObjectVariable.FIGURE_POSTURE);
 
-                    if (posture === 'rip')
+                    if(posture === 'rip')
                     {
                         const level = petData.petLevel;
 
-                        if (level < 7) posture = `grw${ level }`;
+                        if(level < 7) posture = `grw${ level }`;
                         else posture = 'std';
                     }
                 }
@@ -185,13 +185,13 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
 
         const furniData = GetFurnitureDataForRoomObject(roomSession.roomId, item.requestRoomObjectId, RoomObjectCategory.FLOOR);
 
-        if (!furniData) return;
+        if(!furniData) return;
 
         setFurniData(furniData);
 
         let mode = PRODUCT_PAGE_UKNOWN;
 
-        switch (furniData.specialType)
+        switch(furniData.specialType)
         {
             case FurniCategory.PET_SHAMPOO:
                 mode = PRODUCT_PAGE_SHAMPOO;
@@ -219,7 +219,7 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
         setMode(mode);
     }, [ roomSession, item ]);
 
-    if (!petData) return null;
+    if(!petData) return null;
 
     return (
         <NitroCardView className="nitro-use-product-confirmation">
@@ -277,5 +277,5 @@ export const AvatarInfoUseProductConfirmView: FC<AvatarInfoUseProductConfirmView
                 </Flex>
             </NitroCardContentView>
         </NitroCardView>
-    )
-}
+    );
+};

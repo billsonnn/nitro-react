@@ -21,4 +21,4 @@ export const AchievementListItemView: FC<AchievementListItemViewProps> = props =
             <AchievementBadgeView achievement={ achievement } />
         </LayoutGridItem>
     );
-}
+};

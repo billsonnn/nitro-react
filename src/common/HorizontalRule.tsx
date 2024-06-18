@@ -35,4 +35,4 @@ export const HorizontalRule: FC<HorizontalRuleProps> = props =>
     }, [ height, style ]);
 
     return <Base classNames={ getClassNames } style={ getStyle } { ...rest } />;
-}
+};

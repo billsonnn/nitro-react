@@ -27,49 +27,49 @@ export const CatalogLayoutColorGroupingView: FC<CatalogLayoutColorGroupViewProps
 
     const sortByColorIndex = (a: IPurchasableOffer, b: IPurchasableOffer) =>
     {
-        if (((!(a.product.furnitureData.colorIndex)) || (!(b.product.furnitureData.colorIndex))))
+        if(((!(a.product.furnitureData.colorIndex)) || (!(b.product.furnitureData.colorIndex))))
         {
             return 1;
         }
-        if (a.product.furnitureData.colorIndex > b.product.furnitureData.colorIndex)
+        if(a.product.furnitureData.colorIndex > b.product.furnitureData.colorIndex)
         {
             return 1;
         }
-        if (a == b)
+        if(a == b)
         {
             return 0;
         }
         return -1;
-    }
+    };
 
     const sortyByFurnitureClassName = (a: IPurchasableOffer, b: IPurchasableOffer) =>
     {
-        if (a.product.furnitureData.className > b.product.furnitureData.className)
+        if(a.product.furnitureData.className > b.product.furnitureData.className)
         {
             return 1;
         }
-        if (a == b)
+        if(a == b)
         {
             return 0;
         }
         return -1;
-    }
+    };
 
     const selectOffer = (offer: IPurchasableOffer) =>
     {
         offer.activate();
         setCurrentOffer(offer);
-    }
+    };
 
     const selectColor = (colorIndex: number, productName: string) =>
     {
         const fullName = `${ productName }*${ colorIndex }`;
         const index = page.offers.findIndex(offer => offer.product.furnitureData.fullName === fullName);
-        if (index > -1)
+        if(index > -1)
         {
             selectOffer(page.offers[index]);
         }
-    }
+    };
 
     const offers = useMemo(() =>
     {
@@ -81,11 +81,11 @@ export const CatalogLayoutColorGroupingView: FC<CatalogLayoutColorGroupViewProps
 
         page.offers.forEach(offer =>
         {
-            if (!offer.product) return;
+            if(!offer.product) return;
 
             const furniData = offer.product.furnitureData;
 
-            if (!furniData || !furniData.hasIndexedColor)
+            if(!furniData || !furniData.hasIndexedColor)
             {
                 offers.push(offer);
             }
@@ -94,31 +94,31 @@ export const CatalogLayoutColorGroupingView: FC<CatalogLayoutColorGroupViewProps
                 const name = furniData.className;
                 const colorIndex = furniData.colorIndex;
 
-                if (!updatedColorableItems.has(name))
+                if(!updatedColorableItems.has(name))
                 {
                     updatedColorableItems.set(name, []);
                 }
 
                 let selectedColor = 0xFFFFFF;
 
-                if (furniData.colors)
+                if(furniData.colors)
                 {
-                    for (let color of furniData.colors)
+                    for(let color of furniData.colors)
                     {
-                        if (color !== 0xFFFFFF) // skip the white colors
+                        if(color !== 0xFFFFFF) // skip the white colors
                         {
                             selectedColor = color;
                         }
                     }
 
-                    if (updatedColorableItems.get(name).indexOf(selectedColor) === -1)
+                    if(updatedColorableItems.get(name).indexOf(selectedColor) === -1)
                     {
                         updatedColorableItems.get(name)[colorIndex] = selectedColor;
                     }
 
                 }
 
-                if (!addedColorableItems.has(name))
+                if(!addedColorableItems.has(name))
                 {
                     offers.push(offer);
                     addedColorableItems.set(name, true);
@@ -173,4 +173,4 @@ export const CatalogLayoutColorGroupingView: FC<CatalogLayoutColorGroupViewProps
             </Column>
         </Grid>
     );
-}
+};

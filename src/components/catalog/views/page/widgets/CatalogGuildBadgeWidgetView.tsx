@@ -28,4 +28,4 @@ export const CatalogGuildBadgeWidgetView: FC<CatalogGuildBadgeWidgetViewProps> =
     if(!badgeCode) return null;
 
     return <LayoutBadgeImageView badgeCode={ badgeCode } isGroup={ true } { ...rest } />;
-}
+};

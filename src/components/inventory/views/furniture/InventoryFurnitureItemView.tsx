@@ -32,9 +32,9 @@ export const InventoryFurnitureItemView: FC<{
                 attemptItemPlacement(groupItem);
                 return;
         }
-    }
+    };
 
     const count = groupItem.getUnlockedCount();
 
-    return <InfiniteGrid.Item className={ classNames(!count && 'opacity-50') } itemActive={ (groupItem === selectedItem) } itemCount={ groupItem.getUnlockedCount() } itemImage={ groupItem.iconUrl } itemUniqueNumber={ groupItem.stuffData.uniqueNumber } itemUnseen={ groupItem.hasUnseenItems } onDoubleClick={ onMouseEvent } onMouseDown={ onMouseEvent } onMouseOut={ onMouseEvent } onMouseUp={ onMouseEvent } />
-}
+    return <InfiniteGrid.Item className={ classNames(!count && 'opacity-50') } itemActive={ (groupItem === selectedItem) } itemCount={ groupItem.getUnlockedCount() } itemImage={ groupItem.iconUrl } itemUniqueNumber={ groupItem.stuffData.uniqueNumber } itemUnseen={ groupItem.hasUnseenItems } onDoubleClick={ onMouseEvent } onMouseDown={ onMouseEvent } onMouseOut={ onMouseEvent } onMouseUp={ onMouseEvent } />;
+};

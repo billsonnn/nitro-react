@@ -17,4 +17,4 @@ export const AchievementListView: FC<AchievementListViewProps> = props =>
             { achievements && (achievements.length > 0) && achievements.map((achievement, index) => <AchievementListItemView key={ index } achievement={ achievement } />) }
         </AutoGrid>
     );
-}
+};

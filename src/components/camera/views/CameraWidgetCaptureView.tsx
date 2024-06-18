@@ -25,16 +25,16 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
 
     const getCameraBounds = () =>
     {
-        if (!elementRef || !elementRef.current) return null;
+        if(!elementRef || !elementRef.current) return null;
 
         const frameBounds = elementRef.current.getBoundingClientRect();
 
         return new NitroRectangle(Math.floor(frameBounds.x), Math.floor(frameBounds.y), Math.floor(frameBounds.width), Math.floor(frameBounds.height));
-    }
+    };
 
     const takePicture = async () =>
     {
-        if (selectedPictureIndex > -1)
+        if(selectedPictureIndex > -1)
         {
             setSelectedPictureIndex(-1);
             return;
@@ -44,7 +44,7 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
 
         const clone = [ ...cameraRoll ];
 
-        if (clone.length >= CAMERA_ROLL_LIMIT)
+        if(clone.length >= CAMERA_ROLL_LIMIT)
         {
             simpleAlert(LocalizeText('camera.full.body'));
 
@@ -55,7 +55,7 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
         clone.push(new CameraPicture(texture, await TextureUtils.generateImageUrl(texture)));
 
         setCameraRoll(clone);
-    }
+    };
 
     return (
         <DraggableWindow uniqueKey="nitro-camera-capture">
@@ -87,4 +87,4 @@ export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =
             </Column>
         </DraggableWindow>
     );
-}
+};

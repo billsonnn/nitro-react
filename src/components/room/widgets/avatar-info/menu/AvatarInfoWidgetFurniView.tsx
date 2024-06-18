@@ -38,7 +38,7 @@ export const AvatarInfoWidgetFurniView: FC<AvatarInfoWidgetFurniViewProps> = pro
                     break;
             }
         }
-    }
+    };
 
     return (
         <ContextMenuView category={ avatarInfo.category } collapsable={ true } objectId={ avatarInfo.id } onClose={ onClose }>
@@ -63,4 +63,4 @@ export const AvatarInfoWidgetFurniView: FC<AvatarInfoWidgetFurniViewProps> = pro
             </div>
         </ContextMenuView>
     );
-}
+};

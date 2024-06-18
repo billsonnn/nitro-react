@@ -12,4 +12,4 @@ export const CatalogLayoutInfoLoyaltyView: FC<CatalogLayoutProps> = props =>
             </div>
         </div>
     );
-}
+};

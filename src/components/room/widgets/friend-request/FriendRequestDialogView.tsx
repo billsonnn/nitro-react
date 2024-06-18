@@ -25,4 +25,4 @@ export const FriendRequestDialogView: FC<{ roomIndex: number, request: Messenger
             </div>
         </ObjectLocationView>
     );
-}
+};

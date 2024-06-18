@@ -26,4 +26,4 @@ export const CatalogBundleGridWidgetView: FC<CatalogBundleGridWidgetViewProps> =
             { children }
         </AutoGrid>
     );
-}
+};

@@ -28,9 +28,9 @@ export const GroupRoomInformationView: FC<{}> = props =>
     {
         const parser = event.getParser();
 
-        if (!parser.roomEnter) return;
+        if(!parser.roomEnter) return;
 
-        if (parser.data.habboGroupId > 0)
+        if(parser.data.habboGroupId > 0)
         {
             setExpectedGroupId(parser.data.habboGroupId);
             SendMessageComposer(new GroupInformationComposer(parser.data.habboGroupId, false));
@@ -46,7 +46,7 @@ export const GroupRoomInformationView: FC<{}> = props =>
     {
         const parser = event.getParser();
 
-        if (!groupInformation || ((parser.groupId !== groupInformation.id) && (parser.groupId !== expectedGroupId))) return;
+        if(!groupInformation || ((parser.groupId !== groupInformation.id) && (parser.groupId !== expectedGroupId))) return;
 
         setExpectedGroupId(0);
         setGroupInformation(null);
@@ -56,7 +56,7 @@ export const GroupRoomInformationView: FC<{}> = props =>
     {
         const parser = event.getParser();
 
-        if (parser.id !== expectedGroupId) return;
+        if(parser.id !== expectedGroupId) return;
 
         setGroupInformation(parser);
     });
@@ -67,32 +67,32 @@ export const GroupRoomInformationView: FC<{}> = props =>
         {
             SendMessageComposer(new GroupRemoveMemberComposer(groupInformation.id, GetSessionDataManager().userId));
         }, null);
-    }
+    };
 
     const isRealOwner = (groupInformation && (groupInformation.ownerName === GetSessionDataManager().userName));
 
     const getButtonText = () =>
     {
-        if (isRealOwner) return 'group.manage';
+        if(isRealOwner) return 'group.manage';
 
-        if (groupInformation.type === GroupType.PRIVATE) return '';
+        if(groupInformation.type === GroupType.PRIVATE) return '';
 
-        if (groupInformation.membershipType === GroupMembershipType.MEMBER) return 'group.leave';
+        if(groupInformation.membershipType === GroupMembershipType.MEMBER) return 'group.leave';
 
-        if ((groupInformation.membershipType === GroupMembershipType.NOT_MEMBER) && groupInformation.type === GroupType.REGULAR) return 'group.join';
+        if((groupInformation.membershipType === GroupMembershipType.NOT_MEMBER) && groupInformation.type === GroupType.REGULAR) return 'group.join';
 
-        if (groupInformation.membershipType === GroupMembershipType.REQUEST_PENDING) return 'group.membershippending';
+        if(groupInformation.membershipType === GroupMembershipType.REQUEST_PENDING) return 'group.membershippending';
 
-        if ((groupInformation.membershipType === GroupMembershipType.NOT_MEMBER) && groupInformation.type === GroupType.EXCLUSIVE) return 'group.requestmembership';
-    }
+        if((groupInformation.membershipType === GroupMembershipType.NOT_MEMBER) && groupInformation.type === GroupType.EXCLUSIVE) return 'group.requestmembership';
+    };
 
     const handleButtonClick = () =>
     {
-        if (isRealOwner) return GetGroupManager(groupInformation.id);
+        if(isRealOwner) return GetGroupManager(groupInformation.id);
 
-        if ((groupInformation.type === GroupType.PRIVATE) && (groupInformation.membershipType === GroupMembershipType.NOT_MEMBER)) return;
+        if((groupInformation.type === GroupType.PRIVATE) && (groupInformation.membershipType === GroupMembershipType.NOT_MEMBER)) return;
 
-        if (groupInformation.membershipType === GroupMembershipType.MEMBER)
+        if(groupInformation.membershipType === GroupMembershipType.MEMBER)
         {
             leaveGroup();
 
@@ -100,9 +100,9 @@ export const GroupRoomInformationView: FC<{}> = props =>
         }
 
         TryJoinGroup(groupInformation.id);
-    }
+    };
 
-    if (!groupInformation) return null;
+    if(!groupInformation) return null;
 
     return (
         <div className="pointer-events-auto px-[5px] py-[6px] [box-shadow:inset_0_5px_#22222799,_inset_0_-4px_#12121599] bg-[#1c1c20f2] rounded text-sm">

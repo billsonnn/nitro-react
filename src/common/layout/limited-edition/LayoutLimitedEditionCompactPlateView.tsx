@@ -32,4 +32,4 @@ export const LayoutLimitedEditionCompactPlateView: FC<LayoutLimitedEditionCompac
             { children }
         </Base>
     );
-}
+};

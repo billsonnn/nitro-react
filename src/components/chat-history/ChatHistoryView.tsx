@@ -12,9 +12,9 @@ export const ChatHistoryView: FC<{}> = props =>
     const { chatHistory = [] } = useChatHistory();
     const elementRef = useRef<HTMLDivElement>(null);
 
-    const filteredChatHistory = useMemo(() => 
+    const filteredChatHistory = useMemo(() =>
     {
-        if (searchText.length === 0) return chatHistory;
+        if(searchText.length === 0) return chatHistory;
 
         let text = searchText.toLowerCase();
 
@@ -23,7 +23,7 @@ export const ChatHistoryView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        if (elementRef && elementRef.current && isVisible) elementRef.current.scrollTop = elementRef.current.scrollHeight;
+        if(elementRef && elementRef.current && isVisible) elementRef.current.scrollTop = elementRef.current.scrollHeight;
     }, [ isVisible ]);
 
     useEffect(() =>
@@ -33,9 +33,9 @@ export const ChatHistoryView: FC<{}> = props =>
             {
                 const parts = url.split('/');
 
-                if (parts.length < 2) return;
+                if(parts.length < 2) return;
 
-                switch (parts[1])
+                switch(parts[1])
                 {
                     case 'show':
                         setIsVisible(true);
@@ -56,7 +56,7 @@ export const ChatHistoryView: FC<{}> = props =>
         return () => RemoveLinkEventTracker(linkTracker);
     }, []);
 
-    if (!isVisible) return null;
+    if(!isVisible) return null;
 
     return (
         <NitroCardView className="nitro-chat-history" theme="primary-slim" uniqueKey="chat-history">
@@ -89,9 +89,9 @@ export const ChatHistoryView: FC<{}> = props =>
                                     <Text grow textBreak wrap>{ row.name }</Text>
                                 </> }
                         </Flex>
-                    )
+                    );
                 } } rows={ filteredChatHistory } scrollToBottom={ true } />
             </NitroCardContentView>
         </NitroCardView>
     );
-}
+};

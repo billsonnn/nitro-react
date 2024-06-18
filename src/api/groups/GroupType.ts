@@ -1,4 +1,4 @@
-export class GroupType 
+export class GroupType
 {
     public static REGULAR: number = 0;
     public static EXCLUSIVE: number = 1;

@@ -46,4 +46,4 @@ export const CatalogLayoutFrontpage4View: FC<CatalogLayoutProps> = props =>
             </Column>
         </Grid>
     );
-}
+};

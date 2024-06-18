@@ -49,4 +49,4 @@ export const WiredTriggerLayoutView = (code: number) =>
     }
 
     return null;
-}
+};

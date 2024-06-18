@@ -17,19 +17,19 @@ export const HcCenterView: FC<{}> = props =>
 
     const getClubText = () =>
     {
-        if (purse.clubDays <= 0) return LocalizeText('purse.clubdays.zero.amount.text');
+        if(purse.clubDays <= 0) return LocalizeText('purse.clubdays.zero.amount.text');
 
-        if ((purse.minutesUntilExpiration > -1) && (purse.minutesUntilExpiration < (60 * 24)))
+        if((purse.minutesUntilExpiration > -1) && (purse.minutesUntilExpiration < (60 * 24)))
         {
             return FriendlyTime.shortFormat(purse.minutesUntilExpiration * 60);
         }
 
         return FriendlyTime.shortFormat(((purse.clubPeriods * 31) + purse.clubDays) * 86400);
-    }
+    };
 
     const getInfoText = () =>
     {
-        switch (clubStatus)
+        switch(clubStatus)
         {
             case ClubStatus.ACTIVE:
                 return LocalizeText(`hccenter.status.${ clubStatus }.info`, [ 'timeleft', 'joindate', 'streakduration' ], [ getClubText(), kickbackData?.firstSubscriptionDate, FriendlyTime.shortFormat(kickbackData?.currentHcStreak * 86400) ]);
@@ -38,7 +38,7 @@ export const HcCenterView: FC<{}> = props =>
             default:
                 return LocalizeText(`hccenter.status.${ clubStatus }.info`);
         }
-    }
+    };
 
     const getHcPaydayTime = () => (!kickbackData || kickbackData.timeUntilPayday < 60) ? LocalizeText('hccenter.special.time.soon') : FriendlyTime.shortFormat(kickbackData.timeUntilPayday * 60);
     const getHcPaydayAmount = () => LocalizeText('hccenter.special.sum', [ 'credits' ], [ (kickbackData?.creditRewardForStreakBonus + kickbackData?.creditRewardForMonthlySpent).toString() ]);
@@ -64,14 +64,14 @@ export const HcCenterView: FC<{}> = props =>
             {
                 const parts = url.split('/');
 
-                if (parts.length < 2) return;
+                if(parts.length < 2) return;
 
-                switch (parts[1])
+                switch(parts[1])
                 {
                     case 'open':
-                        if (parts.length > 2)
+                        if(parts.length > 2)
                         {
-                            switch (parts[2])
+                            switch(parts[2])
                             {
                                 case 'hccenter':
                                     setIsVisible(true);
@@ -96,7 +96,7 @@ export const HcCenterView: FC<{}> = props =>
 
     useEffect(() =>
     {
-        if (!isVisible) return;
+        if(!isVisible) return;
 
         const id = activate();
 
@@ -109,7 +109,7 @@ export const HcCenterView: FC<{}> = props =>
         SendMessageComposer(new ScrGetKickbackInfoMessageComposer());
     }, []);
 
-    if (!isVisible) return null;
+    if(!isVisible) return null;
 
     const popover = (
         <>
@@ -196,4 +196,4 @@ export const HcCenterView: FC<{}> = props =>
             </NitroCardContentView>
         </NitroCardView>
     );
-}
+};

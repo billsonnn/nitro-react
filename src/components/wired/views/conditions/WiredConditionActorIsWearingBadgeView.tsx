@@ -25,4 +25,4 @@ export const WiredConditionActorIsWearingBadgeView: FC<{}> = props =>
             </div>
         </WiredConditionBaseView>
     );
-}
+};

@@ -15,7 +15,7 @@ export const LayoutRoomPreviewerView: FC<{
 
         if(event.shiftKey) roomPreviewer.changeRoomObjectDirection();
         else roomPreviewer.changeRoomObjectState();
-    }
+    };
 
     useEffect(() =>
     {
@@ -27,7 +27,7 @@ export const LayoutRoomPreviewerView: FC<{
         const update = async (ticker: NitroTicker) =>
         {
             if(!roomPreviewer || !elementRef.current) return;
-        
+
             roomPreviewer.updatePreviewRoomView();
 
             const renderingCanvas = roomPreviewer.getRenderingCanvas();
@@ -42,11 +42,11 @@ export const LayoutRoomPreviewerView: FC<{
 
             let canvas = GetRenderer().texture.generateCanvas(texture);
             const base64 = canvas.toDataURL('image/png');
-    
+
             canvas = null;
 
             elementRef.current.style.backgroundImage = `url(${ base64 })`;
-        }
+        };
 
         GetTicker().add(update);
 
@@ -62,7 +62,7 @@ export const LayoutRoomPreviewerView: FC<{
         });
 
         roomPreviewer.getRoomCanvas(width, height);
-        
+
         resizeObserver.observe(elementRef.current);
 
         return () =>
@@ -72,7 +72,7 @@ export const LayoutRoomPreviewerView: FC<{
             resizeObserver.disconnect();
 
             texture.destroy(true);
-        }
+        };
     }, [ roomPreviewer, elementRef, height ]);
 
     return (
@@ -86,4 +86,4 @@ export const LayoutRoomPreviewerView: FC<{
             } }
             onClick={ onClick } />
     );
-}
+};

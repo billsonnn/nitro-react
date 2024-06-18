@@ -19,7 +19,7 @@ export const WiredConditionFurniMatchesSnapshotView: FC<{}> = props =>
         setDirectionFlag(trigger.getBoolean(1) ? 1 : 0);
         setPositionFlag(trigger.getBoolean(2) ? 1 : 0);
     }, [ trigger ]);
-    
+
     return (
         <WiredConditionBaseView hasSpecialInput={ true } requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_BY_ID } save={ save }>
             <div className="flex flex-col gap-1">
@@ -39,4 +39,4 @@ export const WiredConditionFurniMatchesSnapshotView: FC<{}> = props =>
             </div>
         </WiredConditionBaseView>
     );
-}
+};

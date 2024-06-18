@@ -17,4 +17,4 @@ export const CatalogIconView: FC<CatalogIconViewProps> = props =>
     }, [ icon ]);
 
     return <LayoutImage imageUrl={ getIconUrl } style={ { width: 20, height: 20 } } />;
-}
+};

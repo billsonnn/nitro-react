@@ -40,7 +40,7 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
 
     const getEffectList = useCallback(() =>
     {
-        if (currentTab === CameraEditorTabs.COLORMATRIX)
+        if(currentTab === CameraEditorTabs.COLORMATRIX)
         {
             return getColorMatrixEffects;
         }
@@ -50,19 +50,19 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
 
     const getSelectedEffectIndex = useCallback((name: string) =>
     {
-        if (!name || !name.length || !selectedEffects || !selectedEffects.length) return -1;
+        if(!name || !name.length || !selectedEffects || !selectedEffects.length) return -1;
 
         return selectedEffects.findIndex(effect => (effect.effect.name === name));
-    }, [ selectedEffects ])
+    }, [ selectedEffects ]);
 
     const getCurrentEffectIndex = useMemo(() =>
     {
-        return getSelectedEffectIndex(selectedEffectName)
-    }, [ selectedEffectName, getSelectedEffectIndex ])
+        return getSelectedEffectIndex(selectedEffectName);
+    }, [ selectedEffectName, getSelectedEffectIndex ]);
 
     const getCurrentEffect = useMemo(() =>
     {
-        if (!selectedEffectName) return null;
+        if(!selectedEffectName) return null;
 
         return (selectedEffects[getCurrentEffectIndex] || null);
     }, [ selectedEffectName, getCurrentEffectIndex, selectedEffects ]);
@@ -71,7 +71,7 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
     {
         const index = getCurrentEffectIndex;
 
-        if (index === -1) return;
+        if(index === -1) return;
 
         setSelectedEffects(prevValue =>
         {
@@ -86,7 +86,7 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
 
     const processAction = useCallback((type: string, effectName: string = null) =>
     {
-        switch (type)
+        switch(type)
         {
             case 'close':
                 onClose();
@@ -103,11 +103,11 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
             case 'select_effect': {
                 let existingIndex = getSelectedEffectIndex(effectName);
 
-                if (existingIndex >= 0) return;
+                if(existingIndex >= 0) return;
 
                 const effect = availableEffects.find(effect => (effect.name === effectName));
 
-                if (!effect) return;
+                if(!effect) return;
 
                 setSelectedEffects(prevValue =>
                 {
@@ -120,7 +120,7 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
             case 'remove_effect': {
                 let existingIndex = getSelectedEffectIndex(effectName);
 
-                if (existingIndex === -1) return;
+                if(existingIndex === -1) return;
 
                 setSelectedEffects(prevValue =>
                 {
@@ -131,7 +131,7 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
                     return clone;
                 });
 
-                if (selectedEffectName === effectName) setSelectedEffectName(null);
+                if(selectedEffectName === effectName) setSelectedEffectName(null);
                 return;
             }
             case 'clear_effects':
@@ -143,7 +143,7 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
                 {
                     const image = new Image();
 
-                    image.src = currentPictureUrl
+                    image.src = currentPictureUrl;
 
                     const newWindow = window.open('');
                     newWindow.document.write(image.outerHTML);
@@ -191,7 +191,7 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
             <NitroCardTabsView>
                 { TABS.map(tab =>
                 {
-                    return <NitroCardTabsItemView key={ tab } isActive={ currentTab === tab } onClick={ event => processAction('change_tab', tab) }><i className={ 'nitro-icon icon-camera-' + tab }></i></NitroCardTabsItemView>
+                    return <NitroCardTabsItemView key={ tab } isActive={ currentTab === tab } onClick={ event => processAction('change_tab', tab) }><i className={ 'nitro-icon icon-camera-' + tab }></i></NitroCardTabsItemView>;
                 }) }
             </NitroCardTabsView>
             <NitroCardContentView>
@@ -242,4 +242,4 @@ export const CameraWidgetEditorView: FC<CameraWidgetEditorViewProps> = props =>
             </NitroCardContentView>
         </NitroCardView>
     );
-}
+};

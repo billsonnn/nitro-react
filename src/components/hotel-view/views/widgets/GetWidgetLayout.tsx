@@ -22,8 +22,8 @@ export const GetWidgetLayout: FC<GetWidgetLayoutProps> = props =>
         case 'bonusrare':
             return <BonusRareWidgetView />;
         case 'widgetcontainer':
-            return <WidgetContainerView conf={ props.widgetConf } />
+            return <WidgetContainerView conf={ props.widgetConf } />;
         default:
             return null;
     }
-}
+};

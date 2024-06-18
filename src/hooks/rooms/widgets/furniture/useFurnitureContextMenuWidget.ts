@@ -27,13 +27,13 @@ const useFurnitureContextMenuWidgetState = () =>
         setGroupData(null);
         setIsGroupMember(false);
         setMode(null);
-    }
+    };
 
     const closeConfirm = () =>
     {
         setConfirmMode(null);
         setConfirmingObjectId(-1);
-    }
+    };
 
     const processAction = (name: string) =>
     {
@@ -73,7 +73,7 @@ const useFurnitureContextMenuWidgetState = () =>
         }
 
         onClose();
-    }
+    };
 
     useNitroEvent<RoomEngineTriggerWidgetEvent>([
         RoomEngineTriggerWidgetEvent.OPEN_FURNI_CONTEXT_MENU,
@@ -174,6 +174,6 @@ const useFurnitureContextMenuWidgetState = () =>
     });
 
     return { objectId, mode, confirmMode, confirmingObjectId, groupData, isGroupMember, objectOwnerId, closeConfirm, processAction, onClose };
-}
+};
 
 export const useFurnitureContextMenuWidget = useFurnitureContextMenuWidgetState;

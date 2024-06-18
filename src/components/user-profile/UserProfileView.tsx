@@ -19,20 +19,20 @@ export const UserProfileView: FC<{}> = props =>
         setUserProfile(null);
         setUserBadges([]);
         setUserRelationships(null);
-    }
+    };
 
     const onLeaveGroup = () =>
     {
-        if (!userProfile || (userProfile.id !== GetSessionDataManager().userId)) return;
+        if(!userProfile || (userProfile.id !== GetSessionDataManager().userId)) return;
 
         GetUserProfile(userProfile.id);
-    }
+    };
 
     useMessageEvent<UserCurrentBadgesEvent>(UserCurrentBadgesEvent, event =>
     {
         const parser = event.getParser();
 
-        if (!userProfile || (parser.userId !== userProfile.id)) return;
+        if(!userProfile || (parser.userId !== userProfile.id)) return;
 
         setUserBadges(parser.badges);
     });
@@ -41,7 +41,7 @@ export const UserProfileView: FC<{}> = props =>
     {
         const parser = event.getParser();
 
-        if (!userProfile || (parser.userId !== userProfile.id)) return;
+        if(!userProfile || (parser.userId !== userProfile.id)) return;
 
         setUserRelationships(parser);
     });
@@ -54,12 +54,12 @@ export const UserProfileView: FC<{}> = props =>
 
         setUserProfile(prevValue =>
         {
-            if (prevValue && prevValue.id) isSameProfile = (prevValue.id === parser.id);
+            if(prevValue && prevValue.id) isSameProfile = (prevValue.id === parser.id);
 
             return parser;
         });
 
-        if (!isSameProfile)
+        if(!isSameProfile)
         {
             setUserBadges([]);
             setUserRelationships(null);
@@ -73,25 +73,25 @@ export const UserProfileView: FC<{}> = props =>
     {
         const parser = event.getParser();
 
-        if (parser.userId != userProfile?.id) return;
+        if(parser.userId != userProfile?.id) return;
 
         GetUserProfile(parser.userId);
     });
 
     useNitroEvent<RoomEngineObjectEvent>(RoomEngineObjectEvent.SELECTED, event =>
     {
-        if (!userProfile) return;
+        if(!userProfile) return;
 
-        if (event.category !== RoomObjectCategory.UNIT) return;
+        if(event.category !== RoomObjectCategory.UNIT) return;
 
         const userData = GetRoomSession().userDataManager.getUserDataByIndex(event.objectId);
 
-        if (userData.type !== RoomObjectType.USER) return;
+        if(userData.type !== RoomObjectType.USER) return;
 
         GetUserProfile(userData.webID);
     });
 
-    if (!userProfile) return null;
+    if(!userProfile) return null;
 
     return (
         <NitroCardView className="w-[470px] h-[460px]" theme="primary-slim" uniqueKey="nitro-user-profile">
@@ -118,5 +118,5 @@ export const UserProfileView: FC<{}> = props =>
                 <GroupsContainerView fullWidth groups={ userProfile.groups } itsMe={ userProfile.id === GetSessionDataManager().userId } onLeaveGroup={ onLeaveGroup } />
             </NitroCardContentView>
         </NitroCardView>
-    )
-}
+    );
+};

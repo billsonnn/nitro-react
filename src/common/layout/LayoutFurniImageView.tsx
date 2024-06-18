@@ -67,4 +67,4 @@ export const LayoutFurniImageView: FC<LayoutFurniImageViewProps> = props =>
     if(!imageElement) return null;
 
     return <Base classNames={ [ 'furni-image' ] } style={ getStyle } { ...rest } />;
-}
+};

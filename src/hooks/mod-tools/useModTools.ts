@@ -21,7 +21,7 @@ const useModToolsState = () =>
         if(openRooms.indexOf(roomId) >= 0) return;
 
         setOpenRooms(prevValue => [ ...prevValue, roomId ]);
-    }
+    };
 
     const closeRoomInfo = (roomId: number) =>
     {
@@ -34,20 +34,20 @@ const useModToolsState = () =>
 
             return newValue;
         });
-    }
+    };
 
     const toggleRoomInfo = (roomId: number) =>
     {
         if(openRooms.indexOf(roomId) >= 0) closeRoomInfo(roomId);
         else openRoomInfo(roomId);
-    }
+    };
 
     const openRoomChatlog = (roomId: number) =>
     {
         if(openRoomChatlogs.indexOf(roomId) >= 0) return;
 
         setOpenRoomChatlogs(prevValue => [ ...prevValue, roomId ]);
-    }
+    };
 
     const closeRoomChatlog = (roomId: number) =>
     {
@@ -60,20 +60,20 @@ const useModToolsState = () =>
 
             return newValue;
         });
-    }
+    };
 
     const toggleRoomChatlog = (roomId: number) =>
     {
         if(openRoomChatlogs.indexOf(roomId) >= 0) closeRoomChatlog(roomId);
         else openRoomChatlog(roomId);
-    }
+    };
 
     const openUserInfo = (userId: number) =>
     {
         if(openUserInfos.indexOf(userId) >= 0) return;
 
         setOpenUserInfos(prevValue => [ ...prevValue, userId ]);
-    }
+    };
 
     const closeUserInfo = (userId: number) =>
     {
@@ -86,20 +86,20 @@ const useModToolsState = () =>
 
             return newValue;
         });
-    }
+    };
 
     const toggleUserInfo = (userId: number) =>
     {
         if(openUserInfos.indexOf(userId) >= 0) closeUserInfo(userId);
         else openUserInfo(userId);
-    }
+    };
 
     const openUserChatlog = (userId: number) =>
     {
         if(openUserChatlogs.indexOf(userId) >= 0) return;
 
         setOpenUserChatlogs(prevValue => [ ...prevValue, userId ]);
-    }
+    };
 
     const closeUserChatlog = (userId: number) =>
     {
@@ -112,13 +112,13 @@ const useModToolsState = () =>
 
             return newValue;
         });
-    }
+    };
 
     const toggleUserChatlog = (userId: number) =>
     {
         if(openRoomChatlogs.indexOf(userId) >= 0) closeUserChatlog(userId);
         else openUserChatlog(userId);
-    }
+    };
 
     useMessageEvent<ModeratorInitMessageEvent>(ModeratorInitMessageEvent, event =>
     {
@@ -126,7 +126,7 @@ const useModToolsState = () =>
         const data = parser.data;
 
         setSettings(data);
-        setTickets(data.issues); 
+        setTickets(data.issues);
     });
 
     useMessageEvent<IssueInfoMessageEvent>(IssueInfoMessageEvent, event =>
@@ -161,7 +161,7 @@ const useModToolsState = () =>
 
         if(!parser) return;
 
-        simpleAlert('Failed to pick issue', NotificationAlertType.DEFAULT, null, null, 'Error')
+        simpleAlert('Failed to pick issue', NotificationAlertType.DEFAULT, null, null, 'Error');
     });
 
     useMessageEvent<IssueDeletedMessageEvent>(IssueDeletedMessageEvent, event =>
@@ -197,11 +197,11 @@ const useModToolsState = () =>
     useMessageEvent<CfhSanctionMessageEvent>(CfhSanctionMessageEvent, event =>
     {
         const parser = event.getParser();
-        
+
         // todo: update sanction data
     });
 
     return { settings, openRooms, openRoomChatlogs, openUserChatlogs, openUserInfos, cfhCategories, tickets, openRoomInfo, closeRoomInfo, toggleRoomInfo, openRoomChatlog, closeRoomChatlog, toggleRoomChatlog, openUserInfo, closeUserInfo, toggleUserInfo, openUserChatlog, closeUserChatlog, toggleUserChatlog };
-}
+};
 
 export const useModTools = () => useBetween(useModToolsState);

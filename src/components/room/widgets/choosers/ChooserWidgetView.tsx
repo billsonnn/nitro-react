@@ -28,7 +28,7 @@ export const ChooserWidgetView: FC<ChooserWidgetViewProps> = props =>
 
     useEffect(() =>
     {
-        if (!selectedItem) return;
+        if(!selectedItem) return;
 
         selectItem(selectedItem);
     }, [ selectedItem, selectItem ]);
@@ -49,4 +49,4 @@ export const ChooserWidgetView: FC<ChooserWidgetViewProps> = props =>
             </NitroCardContentView>
         </NitroCardView>
     );
-}
+};

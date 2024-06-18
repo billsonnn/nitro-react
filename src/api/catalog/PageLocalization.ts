@@ -4,7 +4,7 @@ import { IPageLocalization } from './IPageLocalization';
 export class PageLocalization implements IPageLocalization
 {
     private _images: string[];
-    private _texts: string[]
+    private _texts: string[];
 
     constructor(images: string[], texts: string[])
     {

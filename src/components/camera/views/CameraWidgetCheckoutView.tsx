@@ -49,19 +49,19 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
 
     const processAction = (type: string, value: string | number = null) =>
     {
-        switch (type)
+        switch(type)
         {
             case 'close':
                 onCloseClick();
                 return;
             case 'buy':
-                if (isWaiting) return;
+                if(isWaiting) return;
 
                 setIsWaiting(true);
                 SendMessageComposer(new PurchasePhotoMessageComposer(''));
                 return;
             case 'publish':
-                if (isWaiting) return;
+                if(isWaiting) return;
 
                 setIsWaiting(true);
                 SendMessageComposer(new PublishPhotoMessageComposer());
@@ -70,16 +70,16 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
                 onCancelClick();
                 return;
         }
-    }
+    };
 
     useEffect(() =>
     {
-        if (!base64Url) return;
+        if(!base64Url) return;
 
         GetRoomEngine().saveBase64AsScreenshot(base64Url);
     }, [ base64Url ]);
 
-    if (!price) return null;
+    if(!price) return null;
 
     return (
         <NitroCardView className="nitro-camera-checkout" theme="primary-slim">
@@ -156,4 +156,4 @@ export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props
             </NitroCardContentView>
         </NitroCardView>
     );
-}
+};

@@ -20,4 +20,4 @@ export const LayoutBackgroundImage: FC<LayoutBackgroundImageProps> = props =>
     }, [ style, imageUrl ]);
 
     return <Base fit={ fit } style={ getStyle } { ...rest } />;
-}
+};

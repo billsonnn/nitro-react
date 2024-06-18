@@ -11,19 +11,19 @@ export const NameChangeConfirmationView: FC<NameChangeLayoutViewProps> = props =
 
     const confirm = () =>
     {
-        if (isConfirming) return;
+        if(isConfirming) return;
 
         setIsConfirming(true);
         SendMessageComposer(new ChangeUserNameMessageComposer(username));
-    }
+    };
 
     useMessageEvent<UserNameChangeMessageEvent>(UserNameChangeMessageEvent, event =>
     {
         const parser = event.getParser();
 
-        if (!parser) return;
+        if(!parser) return;
 
-        if (parser.webId !== GetSessionDataManager().userId) return;
+        if(parser.webId !== GetSessionDataManager().userId) return;
 
         onAction('close');
     });
@@ -41,4 +41,4 @@ export const NameChangeConfirmationView: FC<NameChangeLayoutViewProps> = props =
             </div>
         </div>
     );
-}
+};

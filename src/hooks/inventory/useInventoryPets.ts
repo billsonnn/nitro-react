@@ -89,7 +89,7 @@ const useInventoryPetsState = () =>
         return () =>
         {
             resetCategory(UnseenItemCategory.PET);
-        }
+        };
     }, [ isVisible, resetCategory ]);
 
     useEffect(() =>
@@ -102,6 +102,6 @@ const useInventoryPetsState = () =>
     }, [ isVisible, needsUpdate ]);
 
     return { petItems, selectedPet, setSelectedPet, activate, deactivate };
-}
+};
 
 export const useInventoryPets = () => useBetween(useInventoryPetsState);

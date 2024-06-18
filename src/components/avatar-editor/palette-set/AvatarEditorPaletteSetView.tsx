@@ -16,21 +16,21 @@ export const AvatarEditorPaletteSetView: FC<{
 
     const isPartColorSelected = (partColor: IPartColor) =>
     {
-        if (!category || !category.setType || !selectedColorParts || !selectedColorParts[category.setType] || !selectedColorParts[category.setType][paletteIndex]) return false;
+        if(!category || !category.setType || !selectedColorParts || !selectedColorParts[category.setType] || !selectedColorParts[category.setType][paletteIndex]) return false;
 
         const selectedColorPart = selectedColorParts[category.setType][paletteIndex];
 
         return (selectedColorPart.id === partColor.id);
-    }
+    };
 
     return (
         <InfiniteGrid<IPartColor> columnCount={ columnCount } itemRender={ (item: IPartColor) =>
         {
-            if (!item) return null;
+            if(!item) return null;
 
             return (
                 <AvatarEditorPaletteSetItem isSelected={ isPartColorSelected(item) } partColor={ item } setType={ category.setType } width={ `calc(100% / ${ columnCount }` } onClick={ event => selectEditorColor(category.setType, paletteIndex, item.id) } />
-            )
+            );
         } } items={ category.colorItems[paletteIndex] } overscan={ columnCount } />
     );
-}
+};

@@ -13,7 +13,7 @@ export const AvatarEditorPaletteSetItem: FC<{
 {
     const { setType = null, partColor = null, isSelected = false, width = '100%', ...rest } = props;
 
-    if (!partColor) return null;
+    if(!partColor) return null;
 
     const isHC = !GetConfigurationValue<boolean>('hc.disabled', false) && (partColor.clubLevel > 0);
 
@@ -22,4 +22,4 @@ export const AvatarEditorPaletteSetItem: FC<{
             { isHC && <LayoutCurrencyIcon className="absolute end-1 bottom-1" type="hc" /> }
         </InfiniteGrid.Item>
     );
-}
+};

@@ -12,7 +12,7 @@ interface GuideToolAcceptViewProps
 export const GuideToolAcceptView: FC<GuideToolAcceptViewProps> = props =>
 {
     const { helpRequestDescription = null, helpRequestAverageTime = 0 } = props;
-    
+
     const answerRequest = (response: boolean) => SendMessageComposer(new GuideSessionGuideDecidesMessageComposer(response));
 
     return (

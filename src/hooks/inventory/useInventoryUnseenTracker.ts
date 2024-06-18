@@ -127,6 +127,6 @@ const useInventoryUnseenTrackerState = () =>
     });
 
     return { getCount, getFullCount, resetCategory, resetItems, isUnseen, removeUnseen };
-}
+};
 
 export const useInventoryUnseenTracker = () => useBetween(useInventoryUnseenTrackerState);

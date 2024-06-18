@@ -13,7 +13,7 @@ export const DoorbellWidgetView: FC<{}> = props =>
         setIsVisible(!!users.length);
     }, [ users ]);
 
-    if (!isVisible) return null;
+    if(!isVisible) return null;
 
     return (
         <NitroCardView className="nitro-widget-doorbell" theme="primary-slim">
@@ -48,4 +48,4 @@ export const DoorbellWidgetView: FC<{}> = props =>
             </NitroCardContentView>
         </NitroCardView>
     );
-}
+};

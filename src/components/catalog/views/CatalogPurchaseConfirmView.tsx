@@ -7,4 +7,4 @@ export const CatalogPurchaseConfirmView: FC<{}> = props =>
     return (
         <div></div>
     );
-}
+};

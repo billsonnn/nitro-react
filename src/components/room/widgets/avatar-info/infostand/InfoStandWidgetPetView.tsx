@@ -27,7 +27,7 @@ export const InfoStandWidgetPetView: FC<InfoStandWidgetPetViewProps> = props =>
 
     useEffect(() =>
     {
-        if ((avatarInfo.petType !== PetType.MONSTERPLANT) || avatarInfo.dead) return;
+        if((avatarInfo.petType !== PetType.MONSTERPLANT) || avatarInfo.dead) return;
 
         const interval = setInterval(() =>
         {
@@ -38,20 +38,20 @@ export const InfoStandWidgetPetView: FC<InfoStandWidgetPetViewProps> = props =>
         return () => clearInterval(interval);
     }, [ avatarInfo ]);
 
-    if (!avatarInfo) return null;
+    if(!avatarInfo) return null;
 
     const processButtonAction = (action: string) =>
     {
         let hideMenu = true;
 
-        if (!action || action == '') return;
+        if(!action || action == '') return;
 
-        switch (action)
+        switch(action)
         {
             case 'respect':
                 respectPet(avatarInfo.id);
 
-                if ((petRespectRemaining - 1) >= 1) hideMenu = false;
+                if((petRespectRemaining - 1) >= 1) hideMenu = false;
                 break;
             case 'buyfood':
                 CreateLinkEvent('catalog/open/' + GetConfigurationValue('catalog.links')['pets.buy_food']);
@@ -70,8 +70,8 @@ export const InfoStandWidgetPetView: FC<InfoStandWidgetPetViewProps> = props =>
                 break;
         }
 
-        if (hideMenu) onClose();
-    }
+        if(hideMenu) onClose();
+    };
 
     return (
         <Column alignItems="end" gap={ 1 }>
@@ -206,4 +206,4 @@ export const InfoStandWidgetPetView: FC<InfoStandWidgetPetViewProps> = props =>
             </Flex>
         </Column>
     );
-}
+};

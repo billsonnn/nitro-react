@@ -30,4 +30,4 @@ export const WiredTriggeExecuteOnceView: FC<{}> = props =>
             </div>
         </WiredTriggerBaseView>
     );
-}
+};

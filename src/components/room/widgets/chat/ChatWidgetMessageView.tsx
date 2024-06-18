@@ -10,18 +10,18 @@ interface ChatWidgetMessageViewProps
 }
 
 export const ChatWidgetMessageView: FC<ChatWidgetMessageViewProps> = ({
-    chat = null, 
-    makeRoom = null, 
-    bubbleWidth = RoomChatSettings.CHAT_BUBBLE_WIDTH_NORMAL 
-}) => 
+    chat = null,
+    makeRoom = null,
+    bubbleWidth = RoomChatSettings.CHAT_BUBBLE_WIDTH_NORMAL
+}) =>
 {
     const [ isVisible, setIsVisible ] = useState(false);
     const [ isReady, setIsReady ] = useState(false);
     const elementRef = useRef<HTMLDivElement>(null);
 
-    const getBubbleWidth = useMemo(() => 
+    const getBubbleWidth = useMemo(() =>
     {
-        switch(bubbleWidth) 
+        switch(bubbleWidth)
         {
             case RoomChatSettings.CHAT_BUBBLE_WIDTH_NORMAL:
                 return 'w-350';
@@ -34,10 +34,10 @@ export const ChatWidgetMessageView: FC<ChatWidgetMessageViewProps> = ({
         }
     }, [ bubbleWidth ]);
 
-    useEffect(() => 
+    useEffect(() =>
     {
         setIsVisible(false);
-        
+
         const element = elementRef.current;
         if(!element) return;
 
@@ -46,32 +46,32 @@ export const ChatWidgetMessageView: FC<ChatWidgetMessageViewProps> = ({
         chat.width = width;
         chat.height = height;
         chat.elementRef = element;
-        
+
         let { left, top } = chat;
 
-        if(!left && !top) 
+        if(!left && !top)
         {
             left = (chat.location.x - (width / 2));
-            top = (element.parentElement!.offsetHeight - height);
-            
+            top = (element.parentElement.offsetHeight - height);
+
             chat.left = left;
             chat.top = top;
         }
 
         setIsReady(true);
 
-        return () => 
+        return () =>
         {
             chat.elementRef = null;
             setIsReady(false);
-        }
+        };
     }, [ chat ]);
 
-    useEffect(() => 
+    useEffect(() =>
     {
-        if (!isReady || !chat || isVisible) return;
-        
-        if (makeRoom) makeRoom(chat);
+        if(!isReady || !chat || isVisible) return;
+
+        if(makeRoom) makeRoom(chat);
         setIsVisible(true);
     }, [ chat, isReady, isVisible, makeRoom ]);
 
@@ -96,4 +96,4 @@ export const ChatWidgetMessageView: FC<ChatWidgetMessageViewProps> = ({
             </div>
         </div>
     );
-}
+};

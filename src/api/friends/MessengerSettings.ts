@@ -6,6 +6,6 @@ export class MessengerSettings
         public userFriendLimit: number = 0,
         public normalFriendLimit: number = 0,
         public extendedFriendLimit: number = 0,
-        public categories: FriendCategoryData[] = []) 
+        public categories: FriendCategoryData[] = [])
     {}
 }

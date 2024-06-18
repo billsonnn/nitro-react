@@ -20,7 +20,7 @@ const useFurniturePlaylistEditorWidgetState = () =>
     {
         setObjectId(-1);
         setCategory(-1);
-    }
+    };
 
     const addToPlaylist = useCallback((diskId: number, slotNumber: number) => SendMessageComposer(new AddJukeboxDiskComposer(diskId, slotNumber)), []);
 
@@ -63,7 +63,7 @@ const useFurniturePlaylistEditorWidgetState = () =>
 
     useNitroEvent<NotifyPlayedSongEvent>(NotifyPlayedSongEvent.NOTIFY_PLAYED_SONG, event =>
     {
-        showSingleBubble(LocalizeText('soundmachine.notification.playing', [ 'songname', 'songauthor' ], [ event.name, event.creator ]), NotificationBubbleType.SOUNDMACHINE)
+        showSingleBubble(LocalizeText('soundmachine.notification.playing', [ 'songname', 'songauthor' ], [ event.name, event.creator ]), NotificationBubbleType.SOUNDMACHINE);
     });
 
     useNitroEvent<SongDiskInventoryReceivedEvent>(SongDiskInventoryReceivedEvent.SDIR_SONG_DISK_INVENTORY_RECEIVENT_EVENT, event =>
@@ -73,7 +73,7 @@ const useFurniturePlaylistEditorWidgetState = () =>
 
     useNitroEvent<PlayListStatusEvent>(PlayListStatusEvent.PLUE_PLAY_LIST_UPDATED, event =>
     {
-        setPlaylist(GetSoundManager().musicController?.getRoomItemPlaylist()?.entries.concat())
+        setPlaylist(GetSoundManager().musicController?.getRoomItemPlaylist()?.entries.concat());
     });
 
     useNitroEvent<PlayListStatusEvent>(PlayListStatusEvent.PLUE_PLAY_LIST_FULL, event =>
@@ -96,13 +96,13 @@ const useFurniturePlaylistEditorWidgetState = () =>
         {
             GetSoundManager().musicController?.requestUserSongDisks();
         }
-    }
+    };
 
     useMessageEvent(FurnitureListEvent, onFurniListUpdated);
     useMessageEvent(FurnitureListRemovedEvent, onFurniListUpdated);
     useMessageEvent(FurnitureListAddOrUpdateEvent, onFurniListUpdated);
 
     return { objectId, diskInventory, playlist, currentPlayingIndex, onClose, addToPlaylist, removeFromPlaylist, togglePlayPause };
-}
+};
 
 export const useFurniturePlaylistEditorWidget = useFurniturePlaylistEditorWidgetState;

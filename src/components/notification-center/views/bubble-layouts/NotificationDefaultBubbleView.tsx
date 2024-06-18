@@ -22,4 +22,4 @@ export const NotificationDefaultBubbleView: FC<NotificationDefaultBubbleViewProp
             <Text wrap dangerouslySetInnerHTML={ { __html: htmlText } } variant="white" />
         </LayoutNotificationBubbleView>
     );
-}
+};

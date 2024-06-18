@@ -52,4 +52,4 @@ export const InfiniteScroll: FC<InfiniteScrollProps> = props =>
             </div>
         </Base>
     );
-}
+};

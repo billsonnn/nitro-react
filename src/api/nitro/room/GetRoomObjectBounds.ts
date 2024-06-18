@@ -10,4 +10,4 @@ export const GetRoomObjectBounds = (roomId: number, objectId: number, category: 
     rectangle.y = Math.round(rectangle.y);
 
     return rectangle;
-}
+};

@@ -21,4 +21,4 @@ export const RightSideView: FC<{}> = props =>
             </Column>
         </div>
     );
-}
+};

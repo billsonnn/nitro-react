@@ -25,7 +25,7 @@ const useFurnitureBadgeDisplayWidgetState = () =>
         setBadgeDesc('');
         setDate('');
         setSenderName('');
-    }
+    };
 
     useNitroEvent<RoomEngineTriggerWidgetEvent>([
         RoomEngineTriggerWidgetEvent.REQUEST_BADGE_DISPLAY_ENGRAVING,
@@ -58,7 +58,7 @@ const useFurnitureBadgeDisplayWidgetState = () =>
         const ownerId = roomObject.model.getValue<number>(RoomObjectVariable.FURNITURE_OWNER_ID);
 
         if(ownerId !== GetSessionDataManager().userId) return;
-        
+
         simpleAlert(`${ LocalizeText('resolution.failed.subtitle') } ${ LocalizeText('resolution.failed.text') }`, null, null, null, LocalizeText('resolution.failed.title'));
     });
 
@@ -70,6 +70,6 @@ const useFurnitureBadgeDisplayWidgetState = () =>
     });
 
     return { objectId, category, color, badgeName, badgeDesc, date, senderName, onClose };
-}
+};
 
 export const useFurnitureBadgeDisplayWidget = useFurnitureBadgeDisplayWidgetState;

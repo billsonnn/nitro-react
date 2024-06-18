@@ -36,4 +36,4 @@ export const ModToolsPickedIssuesTabView: FC<ModToolsPickedIssuesTabViewProps> =
             </Column>
         </Column>
     );
-}
+};

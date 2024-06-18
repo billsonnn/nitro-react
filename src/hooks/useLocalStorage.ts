@@ -15,7 +15,7 @@ const useLocalStorageState = <T>(key: string, initialValue: T): [ T, Dispatch<Se
             return item ?? initialValue;
         }
 
-        catch(error)
+        catch (error)
         {
             return initialValue;
         }
@@ -32,13 +32,13 @@ const useLocalStorageState = <T>(key: string, initialValue: T): [ T, Dispatch<Se
             if(typeof window !== 'undefined') SetLocalStorage(key, valueToStore);
         }
 
-        catch(error)
+        catch (error)
         {
             NitroLogger.error(error);
         }
-    }
+    };
 
     return [ storedValue, setValue ];
-}
+};
 
 export const useLocalStorage = useLocalStorageState;

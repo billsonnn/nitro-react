@@ -45,7 +45,7 @@ const useFigureDataState = () =>
             }
 
             return { partSets, colorSets };
-        }
+        };
 
         const { partSets, colorSets } = parse(figureString);
 
@@ -84,7 +84,7 @@ const useFigureDataState = () =>
             newValue[setType][paletteId] = colorId;
 
             return newValue;
-        })
+        });
     }, []);
 
     const getFigureString = useMemo(() =>
@@ -127,17 +127,17 @@ const useFigureDataState = () =>
         return figureString;
     }, [ selectedParts, selectedColors ]);
 
-    const getFigureStringWithFace = useCallback((overridePartId: number, override: boolean = true) => 
+    const getFigureStringWithFace = useCallback((overridePartId: number, override: boolean = true) =>
     {
-        const figureSets = [ AvatarFigurePartType.HEAD ].map(setType => 
+        const figureSets = [ AvatarFigurePartType.HEAD ].map(setType =>
         {
             let partId = (setType === AvatarFigurePartType.HEAD && override) ? overridePartId : selectedParts[setType];
             const colors = selectedColors[setType] || [];
-    
+
             let figureSet = `${ setType }-${ partId }`;
 
-            if (partId >= 0) figureSet += colors.map(color => `-${ color }`).join('');
-    
+            if(partId >= 0) figureSet += colors.map(color => `-${ color }`).join('');
+
             return figureSet;
         });
 
@@ -145,6 +145,6 @@ const useFigureDataState = () =>
     }, [ selectedParts, selectedColors ]);
 
     return { selectedParts, selectedColors, gender, setGender, loadAvatarData, selectPart, selectColor, getFigureString, getFigureStringWithFace };
-}
+};
 
 export const useFigureData = useFigureDataState;

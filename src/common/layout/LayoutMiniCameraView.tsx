@@ -17,18 +17,18 @@ export const LayoutMiniCameraView: FC<LayoutMiniCameraViewProps> = props =>
 
     const getCameraBounds = () =>
     {
-        if (!elementRef || !elementRef.current) return null;
+        if(!elementRef || !elementRef.current) return null;
 
         const frameBounds = elementRef.current.getBoundingClientRect();
 
         return new NitroRectangle(Math.floor(frameBounds.x), Math.floor(frameBounds.y), Math.floor(frameBounds.width), Math.floor(frameBounds.height));
-    }
+    };
 
     const takePicture = () =>
     {
         PlaySound(SoundNames.CAMERA_SHUTTER);
         textureReceiver(GetRoomEngine().createTextureFromRoom(roomId, 1, getCameraBounds()));
-    }
+    };
 
     return (
         <DraggableWindow handleSelector=".nitro-room-thumbnail-camera">

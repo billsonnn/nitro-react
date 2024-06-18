@@ -31,7 +31,7 @@ export const GetCatalogLayout = (page: ICatalogPage, hideNavigation: () => void)
     switch(page.layoutCode)
     {
         case 'frontpage_featured':
-            return null
+            return null;
         case 'frontpage4':
             return <CatalogLayoutFrontpage4View { ...layoutProps } />;
         case 'pets':
@@ -77,4 +77,4 @@ export const GetCatalogLayout = (page: ICatalogPage, hideNavigation: () => void)
         default:
             return <CatalogLayoutDefaultView { ...layoutProps } />;
     }
-}
+};

@@ -45,4 +45,4 @@ export const CatalogLayouGuildCustomFurniView: FC<CatalogLayoutProps> = props =>
             </Column>
         </Grid>
     );
-}
+};

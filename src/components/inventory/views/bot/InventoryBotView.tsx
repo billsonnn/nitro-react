@@ -19,7 +19,7 @@ export const InventoryBotView: FC<{
 
     useEffect(() =>
     {
-        if (!selectedBot || !roomPreviewer) return;
+        if(!selectedBot || !roomPreviewer) return;
 
         const botData = selectedBot.botData;
 
@@ -41,14 +41,14 @@ export const InventoryBotView: FC<{
 
     useEffect(() =>
     {
-        if (!selectedBot || !isUnseen(UnseenItemCategory.BOT, selectedBot.botData.id)) return;
+        if(!selectedBot || !isUnseen(UnseenItemCategory.BOT, selectedBot.botData.id)) return;
 
         removeUnseen(UnseenItemCategory.BOT, selectedBot.botData.id);
     }, [ selectedBot, isUnseen, removeUnseen ]);
 
     useEffect(() =>
     {
-        if (!isVisible) return;
+        if(!isVisible) return;
 
         const id = activate();
 
@@ -62,7 +62,7 @@ export const InventoryBotView: FC<{
         return () => setIsVisible(false);
     }, []);
 
-    if (!botItems || !botItems.length) return <InventoryCategoryEmptyView desc={ LocalizeText('inventory.empty.bots.desc') } title={ LocalizeText('inventory.empty.bots.title') } />;
+    if(!botItems || !botItems.length) return <InventoryCategoryEmptyView desc={ LocalizeText('inventory.empty.bots.desc') } title={ LocalizeText('inventory.empty.bots.title') } />;
 
     return (
         <div className="grid h-full grid-cols-12 gap-2">
@@ -87,4 +87,4 @@ export const InventoryBotView: FC<{
             </div>
         </div>
     );
-}
+};

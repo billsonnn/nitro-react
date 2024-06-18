@@ -8,7 +8,7 @@ const useFurnitureInternalLinkWidgetState = () =>
     useNitroEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_INTERNAL_LINK, event =>
     {
         const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
-    
+
         if(!roomObject) return;
 
         const data = roomObject.model.getValue<any>(RoomObjectVariable.FURNITURE_DATA);
@@ -21,6 +21,6 @@ const useFurnitureInternalLinkWidgetState = () =>
     });
 
     return {};
-}
+};
 
 export const useFurnitureInternalLinkWidget = useFurnitureInternalLinkWidgetState;

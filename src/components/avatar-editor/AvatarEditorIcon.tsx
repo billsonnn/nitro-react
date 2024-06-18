@@ -1,7 +1,7 @@
 import { DetailedHTMLProps, HTMLAttributes, PropsWithChildren, forwardRef } from 'react';
 import { classNames } from '../../layout';
 
-type AvatarIconType = 'male' | 'female' | 'clear' | 'sellable' | string;
+type AvatarIconType = 'male' | 'female' | 'clear' | 'sellable';
 
 export const AvatarEditorIcon = forwardRef<HTMLDivElement, PropsWithChildren<{
     icon: AvatarIconType;

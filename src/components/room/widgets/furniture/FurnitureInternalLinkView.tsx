@@ -6,4 +6,4 @@ export const FurnitureInternalLinkView: FC<{}> = props =>
     const {} = useFurnitureInternalLinkWidget();
 
     return null;
-}
+};

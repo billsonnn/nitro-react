@@ -35,20 +35,20 @@ const useWiredState = () =>
             {
                 SendMessageComposer(new UpdateConditionMessageComposer(trigger.id, intParams, stringParam, furniIds, trigger.stuffTypeSelectionCode));
             }
-        }
+        };
 
         if(!IsOwnerOfFloorFurniture(trigger.id))
         {
             showConfirm(LocalizeText('wiredfurni.nonowner.change.confirm.body'), () =>
             {
-                save(trigger)
+                save(trigger);
             }, null, null, null, LocalizeText('wiredfurni.nonowner.change.confirm.title'));
         }
         else
         {
             save(trigger);
         }
-    }
+    };
 
     const selectObjectForWired = (objectId: number, category: number) =>
     {
@@ -78,7 +78,7 @@ const useWiredState = () =>
 
             return newFurniIds;
         });
-    }
+    };
 
     useMessageEvent<WiredOpenEvent>(WiredOpenEvent, event =>
     {
@@ -127,14 +127,14 @@ const useWiredState = () =>
             setFurniIds(prevValue =>
             {
                 if(prevValue && prevValue.length) WiredSelectionVisualizer.clearSelectionShaderFromFurni(prevValue);
-    
+
                 return [];
             });
             setAllowsFurni(WiredFurniType.STUFF_SELECTION_OPTION_NONE);
-        }
+        };
     }, [ trigger ]);
 
     return { trigger, setTrigger, intParams, setIntParams, stringParam, setStringParam, furniIds, setFurniIds, actionDelay, setActionDelay, setAllowsFurni, saveWired, selectObjectForWired };
-}
+};
 
 export const useWired = () => useBetween(useWiredState);

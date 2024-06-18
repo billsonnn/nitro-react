@@ -10,7 +10,7 @@ export class ChatBubbleMessage
 
     private _top: number = 0;
     private _left: number = 0;
-    
+
     constructor(
         public senderId: number = -1,
         public senderCategory: number = -1,
@@ -23,7 +23,7 @@ export class ChatBubbleMessage
         public styleId: number = 0,
         public imageUrl: string = null,
         public color: string = null
-    ) 
+    )
     {
         this.id = ++ChatBubbleMessage.BUBBLE_COUNTER;
     }

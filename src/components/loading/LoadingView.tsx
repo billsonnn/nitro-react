@@ -8,7 +8,7 @@ export const LoadingView: FC<LoadingViewProps> = props =>
 {
     const {} = props;
 
-    const generateStars = (count, className) => 
+    const generateStars = (count, className) =>
     {
         return Array.from({ length: count }, () => ({
             top: `${ Math.random() * 100 }%`,
@@ -23,7 +23,7 @@ export const LoadingView: FC<LoadingViewProps> = props =>
 
     const smallStars = generateStars(90, 'dot');
     const mediumStars = generateStars(15, 'star');
-    
+
     return (
         <div className="relative w-screen h-screen z-loading bg-loading">
             <div className="container flex w-screen h-screen">
@@ -41,4 +41,4 @@ export const LoadingView: FC<LoadingViewProps> = props =>
             </div>
         </div>*/
     );
-}
+};

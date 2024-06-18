@@ -6,6 +6,6 @@ export class SearchResult
     constructor(
         public readonly searchValue: string,
         public readonly offers: IPurchasableOffer[],
-        public readonly filteredNodes: ICatalogNode[]) 
+        public readonly filteredNodes: ICatalogNode[])
     {}
 }

@@ -28,41 +28,41 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
         {
             SendMessageComposer(new GroupRemoveMemberComposer(groupInformation.id, GetSessionDataManager().userId));
 
-            if (onClose) onClose();
+            if(onClose) onClose();
         }, null);
-    }
+    };
 
     const getRoleIcon = () =>
     {
-        if (groupInformation.membershipType === GroupMembershipType.NOT_MEMBER || groupInformation.membershipType === GroupMembershipType.REQUEST_PENDING) return null;
+        if(groupInformation.membershipType === GroupMembershipType.NOT_MEMBER || groupInformation.membershipType === GroupMembershipType.REQUEST_PENDING) return null;
 
-        if (isRealOwner) return <i className="nitro-icon icon-group-owner" title={ LocalizeText('group.youareowner') } />;
+        if(isRealOwner) return <i className="nitro-icon icon-group-owner" title={ LocalizeText('group.youareowner') } />;
 
-        if (groupInformation.isAdmin) return <i className="nitro-icon icon-group-admin" title={ LocalizeText('group.youareadmin') } />;
+        if(groupInformation.isAdmin) return <i className="nitro-icon icon-group-admin" title={ LocalizeText('group.youareadmin') } />;
 
         return <i className="nitro-icon icon-group-member" title={ LocalizeText('group.youaremember') } />;
-    }
+    };
 
     const getButtonText = () =>
     {
-        if (isRealOwner) return 'group.youareowner';
+        if(isRealOwner) return 'group.youareowner';
 
-        if (groupInformation.type === GroupType.PRIVATE && groupInformation.membershipType !== GroupMembershipType.MEMBER) return '';
+        if(groupInformation.type === GroupType.PRIVATE && groupInformation.membershipType !== GroupMembershipType.MEMBER) return '';
 
-        if (groupInformation.membershipType === GroupMembershipType.MEMBER) return 'group.leave';
+        if(groupInformation.membershipType === GroupMembershipType.MEMBER) return 'group.leave';
 
-        if ((groupInformation.membershipType === GroupMembershipType.NOT_MEMBER) && groupInformation.type === GroupType.REGULAR) return 'group.join';
+        if((groupInformation.membershipType === GroupMembershipType.NOT_MEMBER) && groupInformation.type === GroupType.REGULAR) return 'group.join';
 
-        if (groupInformation.membershipType === GroupMembershipType.REQUEST_PENDING) return 'group.membershippending';
+        if(groupInformation.membershipType === GroupMembershipType.REQUEST_PENDING) return 'group.membershippending';
 
-        if ((groupInformation.membershipType === GroupMembershipType.NOT_MEMBER) && groupInformation.type === GroupType.EXCLUSIVE) return 'group.requestmembership';
-    }
+        if((groupInformation.membershipType === GroupMembershipType.NOT_MEMBER) && groupInformation.type === GroupType.EXCLUSIVE) return 'group.requestmembership';
+    };
 
     const handleButtonClick = () =>
     {
-        if ((groupInformation.type === GroupType.PRIVATE) && (groupInformation.membershipType === GroupMembershipType.NOT_MEMBER)) return;
+        if((groupInformation.type === GroupType.PRIVATE) && (groupInformation.membershipType === GroupMembershipType.NOT_MEMBER)) return;
 
-        if (groupInformation.membershipType === GroupMembershipType.MEMBER)
+        if(groupInformation.membershipType === GroupMembershipType.MEMBER)
         {
             leaveGroup();
 
@@ -70,11 +70,11 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
         }
 
         joinGroup();
-    }
+    };
 
     const handleAction = (action: string) =>
     {
-        switch (action)
+        switch(action)
         {
             case 'members':
                 GetGroupMembers(groupInformation.id);
@@ -95,9 +95,9 @@ export const GroupInformationView: FC<GroupInformationViewProps> = props =>
                 CreateLinkEvent('navigator/search/groups');
                 break;
         }
-    }
+    };
 
-    if (!groupInformation) return null;
+    if(!groupInformation) return null;
 
     return (
         <Grid overflow={ overflow } { ...rest }>

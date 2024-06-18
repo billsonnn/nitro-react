@@ -24,7 +24,7 @@ export const NavigatorSearchView: FC<{
         const searchQuery = ((searchFilter.query ? (searchFilter.query + ':') : '') + searchValue);
 
         sendSearch((searchQuery || ''), topLevelContext.code);
-    }
+    };
 
     const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) =>
     {
@@ -66,7 +66,7 @@ export const NavigatorSearchView: FC<{
                 <select className="form-select" value={ searchFilterIndex } onChange={ event => setSearchFilterIndex(parseInt(event.target.value)) }>
                     { SearchFilterOptions.map((filter, index) =>
                     {
-                        return <option key={ index } value={ index }>{ LocalizeText('navigator.filter.' + filter.name) }</option>
+                        return <option key={ index } value={ index }>{ LocalizeText('navigator.filter.' + filter.name) }</option>;
                     }) }
                 </select>
             </div>
@@ -78,4 +78,4 @@ export const NavigatorSearchView: FC<{
             </div>
         </div>
     );
-}
+};

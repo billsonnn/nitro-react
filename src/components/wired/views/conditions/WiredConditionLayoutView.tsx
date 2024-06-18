@@ -61,4 +61,4 @@ export const WiredConditionLayoutView = (code: number) =>
     }
 
     return null;
-}
+};

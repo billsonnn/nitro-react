@@ -43,7 +43,7 @@ export const FloorplanEditorView: FC<{}> = props =>
             convertNumbersForSaving(visualizationSettings.thicknessFloor),
             (visualizationSettings.wallHeight - 1)
         ));
-    }
+    };
 
     const revertChanges = () =>
     {
@@ -52,7 +52,7 @@ export const FloorplanEditorView: FC<{}> = props =>
         FloorplanEditor.instance.doorLocation = { x: originalFloorplanSettings.entryPoint[0], y: originalFloorplanSettings.entryPoint[1] };
         FloorplanEditor.instance.setTilemap(originalFloorplanSettings.tilemap, originalFloorplanSettings.reservedTiles);
         FloorplanEditor.instance.renderTiles();
-    }
+    };
 
     useNitroEvent<RoomEngineEvent>(RoomEngineEvent.DISPOSED, event => setIsVisible(false));
 
@@ -112,9 +112,9 @@ export const FloorplanEditorView: FC<{}> = props =>
             {
                 const parts = url.split('/');
 
-                if (parts.length < 2) return;
+                if(parts.length < 2) return;
 
-                switch (parts[1])
+                switch(parts[1])
                 {
                     case 'show':
                         setIsVisible(true);
@@ -157,4 +157,4 @@ export const FloorplanEditorView: FC<{}> = props =>
                 <FloorplanImportExportView onCloseClick={ () => setImportExportVisible(false) } /> }
         </FloorplanEditorContextProvider>
     );
-}
+};

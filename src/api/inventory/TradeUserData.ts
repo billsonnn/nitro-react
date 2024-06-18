@@ -10,6 +10,6 @@ export class TradeUserData
         public itemCount: number = 0,
         public creditsCount: number = 0,
         public accepts: boolean = false,
-        public canTrade: boolean = false) 
+        public canTrade: boolean = false)
     {}
 }

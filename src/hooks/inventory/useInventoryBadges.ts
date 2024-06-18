@@ -47,7 +47,7 @@ const useInventoryBadgesState = () =>
 
             return newValue;
         });
-    }
+    };
 
     const getBadgeId = (badgeCode: string) =>
     {
@@ -56,7 +56,7 @@ const useInventoryBadgesState = () =>
         if(index === -1) return 0;
 
         return (badgeIds.get(badgeCode) ?? 0);
-    }
+    };
 
     useMessageEvent<BadgesEvent>(BadgesEvent, event =>
     {
@@ -78,7 +78,7 @@ const useInventoryBadgesState = () =>
 
                 badgesToAdd.push(code);
             });
-            
+
             return newValue;
         });
 
@@ -95,7 +95,7 @@ const useInventoryBadgesState = () =>
         {
             const newValue = [ ...prevValue ];
 
-            if(unseen) newValue.unshift(parser.badgeCode)
+            if(unseen) newValue.unshift(parser.badgeCode);
             else newValue.push(parser.badgeCode);
 
             return newValue;
@@ -134,7 +134,7 @@ const useInventoryBadgesState = () =>
         return () =>
         {
             resetCategory(UnseenItemCategory.BADGE);
-        }
+        };
     }, [ isVisible, resetCategory ]);
 
     useEffect(() =>
@@ -147,6 +147,6 @@ const useInventoryBadgesState = () =>
     }, [ isVisible, needsUpdate ]);
 
     return { badgeCodes, activeBadgeCodes, selectedBadgeCode, setSelectedBadgeCode, isWearingBadge, canWearBadges, toggleBadge, getBadgeId, activate, deactivate };
-}
+};
 
 export const useInventoryBadges = () => useBetween(useInventoryBadgesState);

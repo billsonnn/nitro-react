@@ -27,7 +27,7 @@ export const PurchasableClothingConfirmView: FC<PurchasableClothingConfirmViewPr
         SendMessageComposer(new UserFigureComposer(gender, newFigure));
 
         onClose();
-    }
+    };
 
     useEffect(() =>
     {
@@ -37,22 +37,22 @@ export const PurchasableClothingConfirmView: FC<PurchasableClothingConfirmViewPr
         const gender = GetSessionDataManager().gender;
         const validSets: number[] = [];
 
-        if (roomSession && (objectId >= 0))
+        if(roomSession && (objectId >= 0))
         {
             const furniData = GetFurnitureDataForRoomObject(roomSession.roomId, objectId, RoomObjectCategory.FLOOR);
 
-            if (furniData)
+            if(furniData)
             {
-                switch (furniData.specialType)
+                switch(furniData.specialType)
                 {
                     case FurniCategory.FIGURE_PURCHASABLE_SET:
                         mode = MODE_PURCHASABLE_CLOTHING;
 
                         const setIds = furniData.customParams.split(',').map(part => parseInt(part));
 
-                        for (const setId of setIds)
+                        for(const setId of setIds)
                         {
-                            if (GetAvatarRenderManager().isValidFigureSetForGender(setId, gender)) validSets.push(setId);
+                            if(GetAvatarRenderManager().isValidFigureSetForGender(setId, gender)) validSets.push(setId);
                         }
 
                         break;
@@ -60,7 +60,7 @@ export const PurchasableClothingConfirmView: FC<PurchasableClothingConfirmViewPr
             }
         }
 
-        if (mode === MODE_DEFAULT)
+        if(mode === MODE_DEFAULT)
         {
             onClose();
 
@@ -75,7 +75,7 @@ export const PurchasableClothingConfirmView: FC<PurchasableClothingConfirmViewPr
         setMode(mode);
     }, [ roomSession, objectId, onClose ]);
 
-    if (mode === MODE_DEFAULT) return null;
+    if(mode === MODE_DEFAULT) return null;
 
     return (
         <NitroCardView className="nitro-use-product-confirmation">
@@ -101,4 +101,4 @@ export const PurchasableClothingConfirmView: FC<PurchasableClothingConfirmViewPr
             </NitroCardContentView>
         </NitroCardView>
     );
-}
+};

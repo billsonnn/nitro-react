@@ -16,14 +16,14 @@ export const LayoutRoomThumbnailView: FC<LayoutRoomThumbnailViewProps> = props =
     {
         const newClassNames: string[] = [ 'relative w-[110px] h-[110px] bg-[url("@/assets/images/navigator/thumbnail_placeholder.png")] bg-no-repeat bg-center', 'rounded', '!border-[1px] !border-[solid] !border-[#283F5D]' ];
 
-        if (classNames.length) newClassNames.push(...classNames);
+        if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
     }, [ classNames ]);
 
     const getImageUrl = useMemo(() =>
     {
-        if (customUrl && customUrl.length) return (GetConfigurationValue<string>('image.library.url') + customUrl);
+        if(customUrl && customUrl.length) return (GetConfigurationValue<string>('image.library.url') + customUrl);
 
         return (GetConfigurationValue<string>('thumbnails.url').replace('%thumbnail%', roomId.toString()));
     }, [ customUrl, roomId ]);
@@ -34,4 +34,4 @@ export const LayoutRoomThumbnailView: FC<LayoutRoomThumbnailViewProps> = props =
             { children }
         </Base>
     );
-}
+};

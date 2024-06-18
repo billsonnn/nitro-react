@@ -14,5 +14,5 @@ export const ContextMenuListView: FC<ColumnProps> = props =>
         return newClassNames;
     }, [ classNames ]);
 
-    return <Column classNames={ getClassNames } { ...rest } />
-}
+    return <Column classNames={ getClassNames } { ...rest } />;
+};

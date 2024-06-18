@@ -10,7 +10,7 @@ interface FriendsContainerViewProps
     friendsCount: number;
 }
 
-export const FriendsContainerView: FC<FriendsContainerViewProps> = props => 
+export const FriendsContainerView: FC<FriendsContainerViewProps> = props =>
 {
     const { relationships = null, friendsCount = null } = props;
 
@@ -24,5 +24,5 @@ export const FriendsContainerView: FC<FriendsContainerViewProps> = props =>
                 <RelationshipsContainerView relationships={ relationships } />
             </div>
         </div>
-    )
-}
+    );
+};

@@ -15,16 +15,16 @@ export const WidgetContainerView: FC<WidgetContainerViewProps> = props =>
     {
         const option = conf[key];
 
-        if (!option) return null;
+        if(!option) return null;
 
-        switch (key)
+        switch(key)
         {
             case 'image':
                 return GetConfiguration().interpolate(option);
         }
 
         return option;
-    }
+    };
 
     return (
         <div className="widgetcontainer widget flex flex-row overflow-hidden">
@@ -36,4 +36,4 @@ export const WidgetContainerView: FC<WidgetContainerViewProps> = props =>
             </div>
         </div>
     );
-}
+};

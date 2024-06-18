@@ -6,7 +6,7 @@ const classes = {
     themes: {
         'primary': 'border-black bg-red-700'
     }
-}
+};
 
 export const NitroItemCountBadge = forwardRef<HTMLDivElement, PropsWithChildren<{
     theme?: 'primary';

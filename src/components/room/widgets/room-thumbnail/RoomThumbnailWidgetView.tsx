@@ -21,7 +21,7 @@ export const RoomThumbnailWidgetView: FC<{}> = props =>
                 return;
             case RoomWidgetThumbnailEvent.HIDE_THUMBNAIL:
                 setIsVisible(false);
-                return;   
+                return;
             case RoomWidgetThumbnailEvent.TOGGLE_THUMBNAIL:
                 setIsVisible(value => !value);
                 return;
@@ -33,9 +33,9 @@ export const RoomThumbnailWidgetView: FC<{}> = props =>
         await GetRoomEngine().saveTextureAsScreenshot(texture, true);
 
         setIsVisible(false);
-    }
+    };
 
     if(!isVisible) return null;
 
-    return <LayoutMiniCameraView roomId={ roomSession.roomId } textureReceiver={ receiveTexture } onClose={ () => setIsVisible(false) } />
+    return <LayoutMiniCameraView roomId={ roomSession.roomId } textureReceiver={ receiveTexture } onClose={ () => setIsVisible(false) } />;
 };

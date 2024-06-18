@@ -41,4 +41,4 @@ export const WordQuizQuestionView: FC<WordQuizQuestionViewProps> = props =>
                 </div> }
         </Column>
     );
-}
+};

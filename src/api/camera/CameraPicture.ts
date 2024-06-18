@@ -4,6 +4,6 @@ export class CameraPicture
 {
     constructor(
         public texture: NitroTexture,
-        public imageUrl: string) 
+        public imageUrl: string)
     {}
 }

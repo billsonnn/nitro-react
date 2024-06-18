@@ -8,4 +8,4 @@ export const GetClubBadge = (badgeCodes: string[]) =>
     BADGES.forEach(badge => ((badgeCodes.indexOf(badge) > -1) && (badgeCode = badge)));
 
     return (badgeCode || DEFAULT_BADGE);
-}
+};

@@ -16,7 +16,7 @@ export const WiredTriggerAvatarSaysSomethingView: FC<{}> = props =>
     {
         setStringParam(message);
         setIntParams([ triggererAvatar ]);
-    }
+    };
 
     useEffect(() =>
     {
@@ -43,4 +43,4 @@ export const WiredTriggerAvatarSaysSomethingView: FC<{}> = props =>
             </div>
         </WiredTriggerBaseView>
     );
-}
+};

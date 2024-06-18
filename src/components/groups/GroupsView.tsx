@@ -26,9 +26,9 @@ export const GroupsView: FC<{}> = props =>
             linkReceived: (url: string) =>
             {
                 const parts = url.split('/');
-        
+
                 if(parts.length < 2) return;
-        
+
                 switch(parts[1])
                 {
                     case 'create':
@@ -36,7 +36,7 @@ export const GroupsView: FC<{}> = props =>
                         return;
                     case 'manage':
                         if(!parts[2]) return;
-        
+
                         setCreatorVisible(false);
                         SendMessageComposer(new GroupSettingsComposer(Number(parts[2])));
                         return;
@@ -49,7 +49,7 @@ export const GroupsView: FC<{}> = props =>
 
         return () => RemoveLinkEventTracker(linkTracker);
     }, []);
-    
+
     return (
         <>
             { isCreatorVisible &&

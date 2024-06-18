@@ -21,4 +21,4 @@ export const UserLocationView: FC<UserLocationViewProps> = props =>
     if(!userData) return null;
 
     return <ObjectLocationView category={ RoomObjectCategory.UNIT } objectId={ userData.roomIndex } { ...rest } />;
-}
+};

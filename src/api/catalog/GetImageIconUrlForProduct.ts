@@ -16,4 +16,4 @@ export const GetImageIconUrlForProduct = (productType: string, productClassId: n
     }
 
     return imageUrl;
-}
+};

@@ -17,7 +17,7 @@ const useFurnitureBackgroundColorWidgetState = () =>
         const hsl = ColorConverter.rgbToHSL(color);
         const [ _, hue, saturation, lightness ] = ColorUtils.int_to_8BitVals(hsl);
         SendMessageComposer(new ApplyTonerComposer(objectId, hue, saturation, lightness));
-    }
+    };
 
     const toggleToner = () => roomSession.useMultistateItem(objectId);
 
@@ -28,7 +28,7 @@ const useFurnitureBackgroundColorWidgetState = () =>
         setObjectId(-1);
         setCategory(-1);
         setColor(0);
-    }
+    };
 
     useNitroEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_BACKGROUND_COLOR, event =>
     {
@@ -38,7 +38,7 @@ const useFurnitureBackgroundColorWidgetState = () =>
         const model = roomObject.model;
 
         setObjectId(event.objectId);
-        setCategory(event.category)
+        setCategory(event.category);
         const hue = parseInt(model.getValue<string>(RoomObjectVariable.FURNITURE_ROOM_BACKGROUND_COLOR_HUE));
         const saturation = parseInt(model.getValue<string>(RoomObjectVariable.FURNITURE_ROOM_BACKGROUND_COLOR_SATURATION));
         const light = parseInt(model.getValue<string>(RoomObjectVariable.FURNITURE_ROOM_BACKGROUND_COLOR_LIGHTNESS));
@@ -66,6 +66,6 @@ const useFurnitureBackgroundColorWidgetState = () =>
     }, [ objectId, category, color ]);
 
     return { objectId, color, setColor, applyToner, toggleToner, onClose };
-}
+};
 
 export const useFurnitureBackgroundColorWidget = useFurnitureBackgroundColorWidgetState;

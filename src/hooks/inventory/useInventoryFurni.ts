@@ -22,7 +22,7 @@ const useInventoryFurniState = () =>
         if(!groupItems || !groupItems.length) return;
 
         return groupItems.filter((i) => i.type === type);
-    }
+    };
 
     const getWallItemById = (id: number) =>
     {
@@ -36,7 +36,7 @@ const useInventoryFurniState = () =>
         }
 
         return null;
-    }
+    };
 
     const getFloorItemById = (id: number) =>
     {
@@ -50,7 +50,7 @@ const useInventoryFurniState = () =>
         }
 
         return null;
-    }
+    };
 
     useMessageEvent<FurnitureListAddOrUpdateEvent>(FurnitureListAddOrUpdateEvent, event =>
     {
@@ -90,7 +90,7 @@ const useInventoryFurniState = () =>
                             break;
                         }
 
-                        j++
+                        j++;
                     }
 
                     if(groupItem) break;
@@ -121,7 +121,7 @@ const useInventoryFurniState = () =>
     useMessageEvent<FurnitureListEvent>(FurnitureListEvent, event =>
     {
         const parser = event.getParser();
-        
+
         if(!furniMsgFragments) furniMsgFragments = new Array(parser.totalFragments);
 
         const fragment = mergeFurniFragments(parser.fragment, parser.totalFragments, parser.fragmentNumber, furniMsgFragments);
@@ -150,7 +150,7 @@ const useInventoryFurniState = () =>
 
                         continue;
                     }
-                        
+
                     if(getPlacingItemId() === item.ref)
                     {
                         cancelRoomObjectPlacement();
@@ -220,7 +220,7 @@ const useInventoryFurniState = () =>
 
                     continue;
                 }
-                    
+
                 if(getPlacingItemId() === item.ref)
                 {
                     cancelRoomObjectPlacement();
@@ -274,13 +274,13 @@ const useInventoryFurniState = () =>
                 setGroupItems(prevValue =>
                 {
                     const newValue = [ ...prevValue ];
-        
+
                     for(const newGroup of newValue) newGroup.hasUnseenItems = false;
-        
+
                     return newValue;
                 });
             }
-        }
+        };
     }, [ isVisible, resetCategory ]);
 
     useEffect(() =>
@@ -293,6 +293,6 @@ const useInventoryFurniState = () =>
     }, [ isVisible, needsUpdate ]);
 
     return { isVisible, groupItems, setGroupItems, selectedItem, setSelectedItem, activate, deactivate, getWallItemById, getFloorItemById, getItemsByType };
-}
+};
 
 export const useInventoryFurni = () => useBetween(useInventoryFurniState);

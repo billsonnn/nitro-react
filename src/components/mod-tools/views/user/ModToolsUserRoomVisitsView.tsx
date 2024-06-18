@@ -19,7 +19,7 @@ export const ModToolsUserRoomVisitsView: FC<ModToolsUserRoomVisitsViewProps> = p
     {
         const parser = event.getParser();
 
-        if (parser.data.userId !== userId) return;
+        if(parser.data.userId !== userId) return;
 
         setRoomVisitData(parser.data);
     });
@@ -29,7 +29,7 @@ export const ModToolsUserRoomVisitsView: FC<ModToolsUserRoomVisitsViewProps> = p
         SendMessageComposer(new GetRoomVisitsMessageComposer(userId));
     }, [ userId ]);
 
-    if (!userId) return null;
+    if(!userId) return null;
 
     return (
         <NitroCardView className="nitro-mod-tools-user-visits" theme="primary-slim" windowPosition={ DraggableWindowPosition.TOP_LEFT }>
@@ -57,4 +57,4 @@ export const ModToolsUserRoomVisitsView: FC<ModToolsUserRoomVisitsViewProps> = p
             </NitroCardContentView>
         </NitroCardView>
     );
-}
+};

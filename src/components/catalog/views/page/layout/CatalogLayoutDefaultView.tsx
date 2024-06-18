@@ -58,4 +58,4 @@ export const CatalogLayoutDefaultView: FC<CatalogLayoutProps> = props =>
             </Grid>
         </>
     );
-}
+};

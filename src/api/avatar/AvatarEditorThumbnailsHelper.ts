@@ -108,7 +108,7 @@ export class AvatarEditorThumbnailsHelper
             }
 
             return container;
-        }
+        };
 
         return new Promise(async (resolve, reject) =>
         {
@@ -120,7 +120,7 @@ export class AvatarEditorThumbnailsHelper
                 AvatarEditorThumbnailsHelper.THUMBNAIL_CACHE.set(thumbnailKey, imageUrl);
 
                 resolve(imageUrl);
-            }
+            };
 
             const figureContainer = GetAvatarRenderManager().createFigureContainer(`${ setType }-${ part.partSet.id }`);
 
@@ -168,11 +168,11 @@ export class AvatarEditorThumbnailsHelper
 
                 sprite.destroy();
                 avatarImage.dispose();
-    
+
                 AvatarEditorThumbnailsHelper.THUMBNAIL_CACHE.set(thumbnailKey, imageUrl);
 
                 resolve(imageUrl);
-            }
+            };
 
             resetFigure(figureString);
         });

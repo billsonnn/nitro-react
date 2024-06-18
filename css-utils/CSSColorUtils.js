@@ -64,8 +64,6 @@ const generateShades = (colors) =>
         }
     }
 
-    console.log(colors)
-
     return colors;
 }
 

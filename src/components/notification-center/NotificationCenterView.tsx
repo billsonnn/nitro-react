@@ -73,4 +73,4 @@ export const NotificationCenterView: FC<{}> = props =>
             { getAlerts }
         </>
     );
-}
+};

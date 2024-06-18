@@ -15,7 +15,7 @@ export const LayoutCurrencyIcon: FC<CurrencyIconProps> = props =>
     {
         const newClassNames: string[] = [ 'nitro-currency-icon', 'bg-center bg-no-repeat w-[15px] h-[15px]' ];
 
-        if (classNames.length) newClassNames.push(...classNames);
+        if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
     }, [ classNames ]);
@@ -35,10 +35,10 @@ export const LayoutCurrencyIcon: FC<CurrencyIconProps> = props =>
 
         newStyle.backgroundImage = urlString;
 
-        if (Object.keys(style).length) newStyle = { ...newStyle, ...style };
+        if(Object.keys(style).length) newStyle = { ...newStyle, ...style };
 
         return newStyle;
     }, [ style, urlString ]);
 
-    return <Base classNames={ getClassNames } style={ getStyle } { ...rest } />
-}
+    return <Base classNames={ getClassNames } style={ getStyle } { ...rest } />;
+};

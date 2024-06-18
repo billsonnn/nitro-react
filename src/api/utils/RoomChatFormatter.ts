@@ -35,7 +35,7 @@ const encodeHTML = (str: string) =>
 
         return full;
     });
-}
+};
 
 export const RoomChatFormatter = (content: string) =>
 {
@@ -72,4 +72,4 @@ export const RoomChatFormatter = (content: string) =>
     }
 
     return result;
-}
+};

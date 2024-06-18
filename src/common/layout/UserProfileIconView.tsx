@@ -16,7 +16,7 @@ export const UserProfileIconView: FC<UserProfileIconViewProps> = props =>
     {
         const newClassNames: string[] = [ 'bg-[url("@/assets/images/friends/friends-spritesheet.png")]', 'w-[13px] h-[11px] bg-[-51px_-91px]' ];
 
-        if (classNames.length) newClassNames.push(...classNames);
+        if(classNames.length) newClassNames.push(...classNames);
 
         return newClassNames;
     }, [ classNames ]);
@@ -26,4 +26,4 @@ export const UserProfileIconView: FC<UserProfileIconViewProps> = props =>
             { children }
         </Base>
     );
-}
+};

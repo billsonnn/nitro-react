@@ -49,7 +49,7 @@ export class FloorplanEditor
         this._actionSettings = new ActionSettings();
     }
 
-    public onPointerRelease(): void 
+    public onPointerRelease(): void
     {
         this._isPointerDown = false;
     }
@@ -61,14 +61,14 @@ export class FloorplanEditor
         const location = { x: event.offsetX, y: event.offsetY };
 
         this._isPointerDown = true;
-        
+
         this.tileHitDetection(location, true);
     }
 
     public onPointerMove(event: PointerEvent): void
     {
         if(!this._isPointerDown) return;
-        
+
         const location = { x: event.offsetX, y: event.offsetY };
 
         this.tileHitDetection(location, false);
@@ -95,7 +95,7 @@ export class FloorplanEditor
                 const dy = Math.abs(mousePositionY - centreY);
 
                 const solution = (dx / (width * 0.5) + dy / (height * 0.5) <= 1);//todo: improve this
-                
+
                 if(solution)
                 {
                     if(this._isPointerDown)
@@ -104,14 +104,14 @@ export class FloorplanEditor
                         {
                             this.onClick(x, y);
                         }
-                    
+
                         else if(this._lastUsedTile.x !== x || this._lastUsedTile.y !== y)
                         {
                             this._lastUsedTile.x = x;
                             this._lastUsedTile.y = y;
                             this.onClick(x, y);
                         }
-                    
+
                     }
                     return true;
                 }

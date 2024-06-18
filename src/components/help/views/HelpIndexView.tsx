@@ -18,7 +18,7 @@ export const HelpIndexView: FC<{}> = props =>
 
             return { ...prevValue, currentStep, reportType };
         });
-    }
+    };
 
     return (
         <>
@@ -33,5 +33,5 @@ export const HelpIndexView: FC<{}> = props =>
             </div>
             <Button textColor="black" variant="link" onClick={ () => SendMessageComposer(new GetCfhStatusMessageComposer(false)) }>{ LocalizeText('help.main.my.sanction.status') }</Button>
         </>
-    )
-}
+    );
+};

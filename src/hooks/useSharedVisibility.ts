@@ -41,4 +41,4 @@ export const useSharedVisibility = () =>
     }, []);
 
     return { isVisible, activate, deactivate };
-}
+};

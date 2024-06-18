@@ -11,7 +11,7 @@ const classes = {
     color: {
         default: 'focus:outline-none focus:ring-indigo-500 focus:border-indigo-500',
     }
-}
+};
 
 export const NitroInput = forwardRef<HTMLInputElement, PropsWithChildren<{
     color?: 'default' | 'dark' | 'ghost';

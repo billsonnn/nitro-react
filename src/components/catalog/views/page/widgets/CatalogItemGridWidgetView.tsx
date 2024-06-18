@@ -27,7 +27,7 @@ export const CatalogItemGridWidgetView: FC<CatalogItemGridWidgetViewProps> = pro
         offer.activate();
 
         if(offer.isLazy) return;
-        
+
         setCurrentOffer(offer);
 
         if(offer.product && (offer.product.productType === ProductTypeEnum.WALL))
@@ -35,13 +35,13 @@ export const CatalogItemGridWidgetView: FC<CatalogItemGridWidgetViewProps> = pro
             setPurchaseOptions(prevValue =>
             {
                 const newValue = { ...prevValue };
-    
+
                 newValue.extraData = (offer.product.extraParam || null);
-    
+
                 return newValue;
             });
         }
-    }
+    };
 
     return (
         <AutoGrid columnCount={ columnCount } innerRef={ elementRef } { ...rest }>
@@ -49,4 +49,4 @@ export const CatalogItemGridWidgetView: FC<CatalogItemGridWidgetViewProps> = pro
             { children }
         </AutoGrid>
     );
-}
+};
