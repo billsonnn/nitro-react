@@ -52,14 +52,15 @@ export const App: FC<{}> = (props) =>
                     throw new Error('NitroConfig is not defined!');
 
                 const renderer = await PrepareRenderer({
-                    width,
-                    height,
+                    width: Math.floor(width),
+                    height: Math.floor(height),
                     resolution: window.devicePixelRatio,
                     autoDensity: true,
                     backgroundAlpha: 0,
                     preference: 'webgl',
                     eventMode: 'none',
                     failIfMajorPerformanceCaveat: false,
+                    roundPixels: true
                 });
 
                 await GetConfiguration().init();
@@ -143,7 +144,7 @@ export const App: FC<{}> = (props) =>
     return (
         <div
             className={classNames(
-                'w-full h-full overflow-hidden text-base',
+                'w-full h-full overflow-hidden text-base bg-black',
                 !(window.devicePixelRatio % 1) && '[image-rendering:pixelated]',
             )}
         >

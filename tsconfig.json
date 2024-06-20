@@ -2,7 +2,11 @@
     "compilerOptions": {
         "baseUrl": "./src",
         "target": "es2022",
-        "lib": ["dom", "dom.iterable", "esnext"],
+        "lib": [
+            "dom",
+            "dom.iterable",
+            "esnext"
+        ],
         "allowJs": true,
         "skipLibCheck": true,
         "esModuleInterop": true,
@@ -18,8 +22,13 @@
         "noEmit": true,
         "jsx": "react-jsx",
         "paths": {
-            "@layout/*": ["layout/*"]
+            "@layout/*": [
+                "layout/*"
+            ]
         }
     },
-    "include": ["src", "node_modules/@nitrots/nitro-renderer/src/**/*.ts"]
+    "include": [
+        "src",
+        "node_modules/@nitrots/nitro-renderer/src/**/*.ts"
+    ]
 }
