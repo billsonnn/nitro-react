@@ -1,9 +1,9 @@
 import { GroupInformationComposer, GroupInformationEvent, GroupInformationParser, HabboGroupEntryData } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { SendMessageComposer, ToggleFavoriteGroup } from '../../../api';
-import { AutoGrid, Column, Grid, GridProps, LayoutBadgeImageView, LayoutGridItem } from '../../../common';
-import { useMessageEvent } from '../../../hooks';
-import { GroupInformationView } from '../../groups/views/GroupInformationView';
+import { SendMessageComposer, ToggleFavoriteGroup } from '../../api';
+import { AutoGrid, Column, Grid, GridProps, LayoutBadgeImageView, LayoutGridItem } from '../../common';
+import { useMessageEvent } from '../../hooks';
+import { GroupInformationView } from '../groups/views/GroupInformationView';
 
 interface GroupsContainerViewProps extends GridProps
 {

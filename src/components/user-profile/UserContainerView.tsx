@@ -1,14 +1,11 @@
 import { GetSessionDataManager, RequestFriendComposer, UserProfileParser } from '@nitrots/nitro-renderer';
 import { FC, useEffect, useState } from 'react';
-import { FriendlyTime, LocalizeText, SendMessageComposer } from '../../../api';
-import { LayoutAvatarImageView, Text } from '../../../common';
+import { FriendlyTime, LocalizeText, SendMessageComposer } from '../../api';
+import { LayoutAvatarImageView, Text } from '../../common';
 
-interface UserContainerViewProps
-{
+export const UserContainerView: FC<{
     userProfile: UserProfileParser;
-}
-
-export const UserContainerView: FC<UserContainerViewProps> = props =>
+}> = props =>
 {
     const { userProfile = null } = props;
     const [ requestSent, setRequestSent ] = useState(userProfile.requestSent);
@@ -34,21 +31,21 @@ export const UserContainerView: FC<UserContainerViewProps> = props =>
             </div>
             <div className="flex flex-col gap-2">
                 <div className="flex flex-col gap-0">
-                    <Text bold>{ userProfile.username }</Text>
-                    <Text italics small textBreak>{ userProfile.motto }&nbsp;</Text>
+                    <p className="leading-tight">{ userProfile.username }</p>
+                    <p className="text-sm italic leading-tight">{ userProfile.motto }</p>
                 </div>
                 <div className="flex flex-col gap-1">
-                    <Text small>
+                    <p className="text-sm leading-none">
                         <b>{ LocalizeText('extendedprofile.created') }</b> { userProfile.registration }
-                    </Text>
-                    <Text small>
+                    </p>
+                    <p className="text-sm leading-none">
                         <b>{ LocalizeText('extendedprofile.last.login') }</b> { FriendlyTime.format(userProfile.secondsSinceLastVisit, '.ago', 2) }
-                    </Text>
-                    <Text small>
+                    </p>
+                    <p className="text-sm leading-none">
                         <b>{ LocalizeText('extendedprofile.achievementscore') }</b> { userProfile.achievementPoints }
-                    </Text>
+                    </p>
                 </div>
-                <div className="flex gap-1">
+                <div className="flex items-center gap-1">
                     { userProfile.isOnline &&
                         <i className="nitro-icon icon-pf-online" /> }
                     { !userProfile.isOnline &&
@@ -60,11 +57,11 @@ export const UserContainerView: FC<UserContainerViewProps> = props =>
                             <>
                                 <i className="nitro-icon icon-pf-tick" />
                                 { isOwnProfile &&
-                                    <Text>{ LocalizeText('extendedprofile.me') }</Text> }
+                                    <p>{ LocalizeText('extendedprofile.me') }</p> }
                                 { userProfile.isMyFriend &&
-                                    <Text>{ LocalizeText('extendedprofile.friend') }</Text> }
+                                    <p>{ LocalizeText('extendedprofile.friend') }</p> }
                                 { (requestSent || userProfile.requestSent) &&
-                                    <Text>{ LocalizeText('extendedprofile.friendrequestsent') }</Text> }
+                                    <p>{ LocalizeText('extendedprofile.friendrequestsent') }</p> }
                             </> }
                     </div>
                 </div>
