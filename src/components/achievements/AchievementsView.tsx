@@ -1,4 +1,5 @@
-import {
+import
+{
     AddLinkEventTracker,
     ILinkEventTracker,
     RemoveLinkEventTracker,
@@ -8,8 +9,8 @@ import { AchievementUtilities, LocalizeText } from '../../api';
 import { Column, LayoutImage, LayoutProgressBar, Text } from '../../common';
 import { useAchievements } from '../../hooks';
 import { NitroCard } from '../../layout';
-import { AchievementCategoryView } from './views/AchievementCategoryView';
-import { AchievementsCategoryListView } from './views/category-list/AchievementsCategoryListView';
+import { AchievementCategoryView } from './AchievementCategoryView';
+import { AchievementsCategoryListView } from './category-list';
 
 export const AchievementsView: FC<{}> = (props) =>
 {
@@ -108,10 +109,8 @@ export const AchievementsView: FC<{}> = (props) =>
                             selectedCategoryCode={selectedCategoryCode}
                             setSelectedCategoryCode={setSelectedCategoryCode}
                         />
-                        <Column
-                            className="!flex-grow"
-                            gap={1}
-                            justifyContent="end"
+                        <div
+                            className="flex flex-col justify-end flex-grow gap-1"
                         >
                             <Text center small>
                                 {LocalizeText(
@@ -132,7 +131,7 @@ export const AchievementsView: FC<{}> = (props) =>
                                     ]
                                 )}
                             />
-                        </Column>
+                        </div>
                     </>
                 )}
                 {selectedCategory && (

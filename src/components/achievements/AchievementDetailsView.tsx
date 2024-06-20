@@ -1,7 +1,7 @@
 import { AchievementData } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
-import { AchievementUtilities, LocalizeBadgeDescription, LocalizeBadgeName, LocalizeText } from '../../../api';
-import { Column, Flex, LayoutCurrencyIcon, LayoutProgressBar, Text } from '../../../common';
+import { AchievementUtilities, LocalizeBadgeDescription, LocalizeBadgeName, LocalizeText } from '../../api';
+import { Column, Flex, LayoutCurrencyIcon, LayoutProgressBar, Text } from '../../common';
 import { AchievementBadgeView } from './AchievementBadgeView';
 
 interface AchievementDetailsViewProps

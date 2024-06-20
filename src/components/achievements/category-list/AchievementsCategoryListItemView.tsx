@@ -1,6 +1,6 @@
 import { Dispatch, FC, SetStateAction } from 'react';
-import { AchievementUtilities, IAchievementCategory, LocalizeText } from '../../../../api';
-import { LayoutBackgroundImage, LayoutGridItem, Text } from '../../../../common';
+import { AchievementUtilities, IAchievementCategory, LocalizeText } from '../../../api';
+import { LayoutBackgroundImage, LayoutGridItem, Text } from '../../../common';
 
 interface AchievementCategoryListItemViewProps
 {

@@ -1,7 +1,7 @@
 import { AchievementData } from '@nitrots/nitro-renderer';
 import { FC } from 'react';
-import { LayoutGridItem } from '../../../../common';
-import { useAchievements } from '../../../../hooks';
+import { LayoutGridItem } from '../../../common';
+import { useAchievements } from '../../../hooks';
 import { AchievementBadgeView } from '../AchievementBadgeView';
 
 interface AchievementListItemViewProps

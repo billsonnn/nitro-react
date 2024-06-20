@@ -1,7 +1,7 @@
 import { FC, useEffect } from 'react';
-import { AchievementCategory } from '../../../api';
-import { Column } from '../../../common';
-import { useAchievements } from '../../../hooks';
+import { AchievementCategory } from '../../api';
+import { Column } from '../../common';
+import { useAchievements } from '../../hooks';
 import { AchievementDetailsView } from './AchievementDetailsView';
 import { AchievementListView } from './achievement-list';
 
