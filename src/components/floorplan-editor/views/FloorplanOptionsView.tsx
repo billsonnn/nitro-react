@@ -11,7 +11,7 @@ const MIN_WALL_HEIGHT: number = 0;
 const MAX_WALL_HEIGHT: number = 16;
 
 const MIN_FLOOR_HEIGHT: number = 0;
-const MAX_FLOOR_HEIGHT: number = 26;
+const MAX_FLOOR_HEIGHT: number = 29;
 
 export const FloorplanOptionsView: FC<{}> = props =>
 {
@@ -49,7 +49,7 @@ export const FloorplanOptionsView: FC<{}> = props =>
     {
         if(isNaN(value) || (value <= 0)) value = 0;
 
-        if(value > 26) value = 26;
+        if(value > MAX_FLOOR_HEIGHT) value = MAX_FLOOR_HEIGHT;
 
         setFloorHeight(value);
 
