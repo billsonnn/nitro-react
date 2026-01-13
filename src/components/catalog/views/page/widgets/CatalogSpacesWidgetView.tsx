@@ -1,115 +1,116 @@
-import { FC, useEffect, useRef, useState } from 'react';
-import { IPurchasableOffer, LocalizeText, Offer, ProductTypeEnum } from '../../../../../api';
-import { AutoGrid, AutoGridProps, Button, ButtonGroup } from '../../../../../common';
-import { useCatalog } from '../../../../../hooks';
-import { CatalogGridOfferView } from '../common/CatalogGridOfferView';
+import { FC, useEffect, useRef, useState } from "react"
+import { IPurchasableOffer, LocalizeText, Offer, ProductTypeEnum } from "../../../../../api"
+import { AutoGridProps, Button } from "../../../../../common"
+import { useCatalog } from "../../../../../hooks"
+import { CatalogGridOfferView } from "../common/CatalogGridOfferView"
 
 interface CatalogSpacesWidgetViewProps extends AutoGridProps
 {
 
 }
 
-const SPACES_GROUP_NAMES = [ 'floors', 'walls', 'views' ];
+const SPACES_GROUP_NAMES = [ "floors", "walls", "views" ]
 
 export const CatalogSpacesWidgetView: FC<CatalogSpacesWidgetViewProps> = props =>
 {
-    const { columnCount = 5, children = null, ...rest } = props;
-    const [ groupedOffers, setGroupedOffers ] = useState<IPurchasableOffer[][]>(null);
-    const [ selectedGroupIndex, setSelectedGroupIndex ] = useState(-1);
-    const [ selectedOfferForGroup, setSelectedOfferForGroup ] = useState<IPurchasableOffer[]>(null);
-    const { currentPage = null, currentOffer = null, setCurrentOffer = null, setPurchaseOptions = null } = useCatalog();
-    const elementRef = useRef<HTMLDivElement>();
+    const { columnCount = 5, children = null, ...rest } = props
+    const [ groupedOffers, setGroupedOffers ] = useState<IPurchasableOffer[][]>(null)
+    const [ selectedGroupIndex, setSelectedGroupIndex ] = useState(-1)
+    const [ selectedOfferForGroup, setSelectedOfferForGroup ] = useState<IPurchasableOffer[]>(null)
+    const { currentPage = null, currentOffer = null, setCurrentOffer = null, setPurchaseOptions = null } = useCatalog()
+    const elementRef = useRef<HTMLDivElement>()
 
     const setSelectedOffer = (offer: IPurchasableOffer) =>
     {
-        if(!offer) return;
+        if(!offer) return
 
         setSelectedOfferForGroup(prevValue =>
         {
-            const newValue = [ ...prevValue ];
+            const newValue = [ ...prevValue ]
 
-            newValue[selectedGroupIndex] = offer;
+            newValue[selectedGroupIndex] = offer
 
-            return newValue;
-        });
+            return newValue
+        })
     }
 
     useEffect(() =>
     {
-        if(!currentPage) return;
+        if(!currentPage) return
         
-        const groupedOffers: IPurchasableOffer[][] = [ [], [], [] ];
+        const groupedOffers: IPurchasableOffer[][] = [ [], [], [] ]
         
         for(const offer of currentPage.offers)
         {
-            if((offer.pricingModel !== Offer.PRICING_MODEL_SINGLE) && (offer.pricingModel !== Offer.PRICING_MODEL_MULTI)) continue;
+            if((offer.pricingModel !== Offer.PRICING_MODEL_SINGLE) && (offer.pricingModel !== Offer.PRICING_MODEL_MULTI)) continue
 
-            const product = offer.product;
+            const product = offer.product
 
-            if(!product || ((product.productType !== ProductTypeEnum.WALL) && (product.productType !== ProductTypeEnum.FLOOR)) || !product.furnitureData) continue;
+            if(!product || ((product.productType !== ProductTypeEnum.WALL) && (product.productType !== ProductTypeEnum.FLOOR)) || !product.furnitureData) continue
 
-            const className = product.furnitureData.className;
+            const className = product.furnitureData.className
 
             switch(className)
             {
-                case 'floor':
-                    groupedOffers[0].push(offer);
-                    break;
-                case 'wallpaper':
-                    groupedOffers[1].push(offer);
-                    break;
-                case 'landscape':
-                    groupedOffers[2].push(offer);
-                    break;
+            case "floor":
+                groupedOffers[0].push(offer)
+                break
+            case "wallpaper":
+                groupedOffers[1].push(offer)
+                break
+            case "landscape":
+                groupedOffers[2].push(offer)
+                break
             }
         }
 
-        setGroupedOffers(groupedOffers);
-        setSelectedGroupIndex(0);
-        setSelectedOfferForGroup([ groupedOffers[0][0], groupedOffers[1][0], groupedOffers[2][0] ]);
-    }, [ currentPage ]);
+        setGroupedOffers(groupedOffers)
+        setSelectedGroupIndex(0)
+        setSelectedOfferForGroup([ groupedOffers[0][0], groupedOffers[1][0], groupedOffers[2][0] ])
+    }, [ currentPage ])
 
     useEffect(() =>
     {
-        if((selectedGroupIndex === -1) || !selectedOfferForGroup) return;
+        if((selectedGroupIndex === -1) || !selectedOfferForGroup) return
 
-        setCurrentOffer(selectedOfferForGroup[selectedGroupIndex]);
+        setCurrentOffer(selectedOfferForGroup[selectedGroupIndex])
 
-    }, [ selectedGroupIndex, selectedOfferForGroup, setCurrentOffer ]);
+    }, [ selectedGroupIndex, selectedOfferForGroup, setCurrentOffer ])
 
     useEffect(() =>
     {
-        if((selectedGroupIndex === -1) || !selectedOfferForGroup || !currentOffer) return;
+        if((selectedGroupIndex === -1) || !selectedOfferForGroup || !currentOffer) return
 
         setPurchaseOptions(prevValue =>
         {
-            const newValue = { ...prevValue };
+            const newValue = { ...prevValue }
                 
-            newValue.extraData = selectedOfferForGroup[selectedGroupIndex].product.extraParam;
-            newValue.extraParamRequired = true;
+            newValue.extraData = selectedOfferForGroup[selectedGroupIndex].product.extraParam
+            newValue.extraParamRequired = true
 
-            return newValue;
-        });
-    }, [ currentOffer, selectedGroupIndex, selectedOfferForGroup, setPurchaseOptions ]);
+            return newValue
+        })
+    }, [ currentOffer, selectedGroupIndex, selectedOfferForGroup, setPurchaseOptions ])
 
     useEffect(() =>
     {
-        if(elementRef && elementRef.current) elementRef.current.scrollTop = 0;
-    }, [ selectedGroupIndex ]);
+        if(elementRef && elementRef.current) elementRef.current.scrollTop = 0
+    }, [ selectedGroupIndex ])
 
-    if(!groupedOffers || (selectedGroupIndex === -1)) return null;
+    if(!groupedOffers || (selectedGroupIndex === -1)) return null
 
-    const offers = groupedOffers[selectedGroupIndex];
+    const offers = groupedOffers[selectedGroupIndex]
 
     return (
         <>
-            <ButtonGroup>
+            <div className="illumina-btn-group mb-1.5 mt-1">
                 { SPACES_GROUP_NAMES.map((name, index) => <Button key={ index } active={ (selectedGroupIndex === index) } onClick={ event => setSelectedGroupIndex(index) }>{ LocalizeText(`catalog.spaces.tab.${ name }`) }</Button>) }
-            </ButtonGroup>
-            <AutoGrid innerRef={ elementRef } columnCount={ columnCount } { ...rest }>
-                { offers && (offers.length > 0) && offers.map((offer, index) => <CatalogGridOfferView key={ index } itemActive={ (currentOffer && (currentOffer === offer)) } offer={ offer } selectOffer={ offer => setSelectedOffer(offer) } />) }
-                { children }
-            </AutoGrid>
+            </div>
+            <div className="illumina-card h-[155px] w-full overflow-hidden p-1">
+                <div className="illumina-scrollbar grid h-full grid-cols-6 grid-rows-[max-content] gap-[3px] [place-content:flex-start]">
+                    { offers && (offers.length > 0) && offers.map((offer, index) => <CatalogGridOfferView key={ index } itemActive={ (currentOffer && (currentOffer === offer)) } offer={ offer } selectOffer={ offer => setSelectedOffer(offer) } />) }
+                </div>
+            </div>
         </>
-    );
+    )
 }

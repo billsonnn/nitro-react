@@ -1,6 +1,6 @@
-import { createContext, Dispatch, FC, ProviderProps, SetStateAction, useContext } from 'react';
-import { IFloorplanSettings } from './common/IFloorplanSettings';
-import { IVisualizationSettings } from './common/IVisualizationSettings';
+import { createContext, Dispatch, FC, ProviderProps, SetStateAction, useContext } from "react"
+import { IFloorplanSettings } from "./common/IFloorplanSettings"
+import { IVisualizationSettings } from "./common/IVisualizationSettings"
 
 interface IFloorplanEditorContext
 {
@@ -15,8 +15,8 @@ const FloorplanEditorContext = createContext<IFloorplanEditorContext>({
     setOriginalFloorplanSettings: null,
     visualizationSettings: null,
     setVisualizationSettings: null
-});
+})
 
-export const FloorplanEditorContextProvider: FC<ProviderProps<IFloorplanEditorContext>> = props => <FloorplanEditorContext.Provider { ...props } />;
+export const FloorplanEditorContextProvider: FC<ProviderProps<IFloorplanEditorContext>> = props => <FloorplanEditorContext.Provider { ...props } />
 
-export const useFloorplanEditorContext = () => useContext(FloorplanEditorContext);
+export const useFloorplanEditorContext = () => useContext(FloorplanEditorContext)

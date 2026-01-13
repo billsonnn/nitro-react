@@ -1,9 +1,9 @@
-import { useVirtual } from '@tanstack/react-virtual';
-import { FC, Fragment, ReactElement, useEffect, useRef, useState } from 'react';
-import { Base } from './Base';
+import { useVirtual } from "@tanstack/react-virtual"
+import { FC, Fragment, ReactElement, useEffect, useRef, useState } from "react"
 
 interface InfiniteScrollProps<T = any>
 {
+    className: string;
     rows: T[];
     overscan?: number;
     scrollToBottom?: boolean;
@@ -12,39 +12,36 @@ interface InfiniteScrollProps<T = any>
 
 export const InfiniteScroll: FC<InfiniteScrollProps> = props =>
 {
-    const { rows = [], overscan = 5, scrollToBottom = false, rowRender = null } = props;
-    const [ scrollIndex, setScrollIndex ] = useState<number>(rows.length - 1);
-    const elementRef = useRef<HTMLDivElement>(null);
+    const { className = null, rows = [], overscan = 5, scrollToBottom = false, rowRender = null } = props
+    const [ scrollIndex, setScrollIndex ] = useState<number>(rows.length - 1)
+    const elementRef = useRef<HTMLDivElement>(null)
 
     const { virtualItems = [], totalSize = 0, scrollToIndex = null } = useVirtual({
         parentRef: elementRef,
         size: rows.length,
         overscan
-    });
+    })
 
     const paddingTop = (virtualItems.length > 0) ? (virtualItems?.[0]?.start || 0) : 0
-    const paddingBottom = (virtualItems.length > 0) ? (totalSize - (virtualItems?.[virtualItems.length - 1]?.end || 0)) : 0;
+    const paddingBottom = (virtualItems.length > 0) ? (totalSize - (virtualItems?.[virtualItems.length - 1]?.end || 0)) : 0
 
     useEffect(() =>
     {
-        if(!scrollToBottom) return;
+        if(!scrollToBottom) return
 
-        scrollToIndex(scrollIndex);
-    }, [ scrollToBottom, scrollIndex, scrollToIndex ]);
+        scrollToIndex(scrollIndex)
+    }, [ scrollToBottom, scrollIndex, scrollToIndex ])
 
     return (
-        <Base fit innerRef={ elementRef } position="relative" overflow="auto">
+        <div ref={elementRef} className={ className }>
             { (paddingTop > 0) &&
-                <div
-                    style={ { minHeight: `${ paddingTop }px` } } /> }
-            { virtualItems.map(item => 
-            {
-                const row = rows[item.index];
+                <div style={ { minHeight: `${ paddingTop }px` } } /> }
+            { virtualItems.map(item => {
+                const row = rows[item.index]
 
                 if (!row) return (
-                    <Fragment
-                        key={ item.key } />
-                );
+                    <Fragment key={ item.key } />
+                )
 
                 return (
                     <div
@@ -54,10 +51,8 @@ export const InfiniteScroll: FC<InfiniteScrollProps> = props =>
                         { rowRender(row) }
                     </div>
                 )
-            }) }
-            { (paddingBottom > 0) &&
-                <div
-                    style={ { minHeight: `${ paddingBottom }px` } } /> }
-        </Base>
-    );
+            })}
+            { (paddingBottom > 0) && <div style={ { minHeight: `${ paddingBottom }px` } } /> }
+        </div>
+    )
 }

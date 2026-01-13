@@ -1,13 +1,24 @@
-import { FC } from 'react';
-import { LocalizeText } from '../../../api';
-import { Column, Text } from '../../../common';
+import { FC, MouseEvent } from "react"
+import { LocalizeText } from "../../../api"
+import { Button } from "../../../common"
 
-export const GuideToolUserThanksView: FC<{}> = props =>
+interface GuideToolUserThanksViewProps
 {
+    onCloseClick: (event: MouseEvent) => void;
+}
+
+export const GuideToolUserThanksView: FC<GuideToolUserThanksViewProps> = props =>
+{
+    const { onCloseClick = null } = props
+
     return (
-        <Column gap={ 1 }>
-            <Text bold>{ LocalizeText('guide.help.request.user.thanks.info.title') }</Text>
-            <Text>{ LocalizeText('guide.help.request.user.thanks.info.desc') }</Text>
-        </Column>
-    );
-};
+        <>
+            <p className="mb-2.5 font-semibold text-[#484848] [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]">{ LocalizeText("guide.help.request.user.thanks.info.title") }</p>
+            <p className="text-sm text-[#070707]">{ LocalizeText("guide.help.request.user.thanks.info.desc") }</p>
+            <div className="mt-5 flex gap-[30px]">
+                <div className="h-[89px] w-11 bg-[url('/client-assets/images/help/solved.png?v=2451779')] dark:bg-[url('/client-assets/images/help/solved-dark.png?v=2451779')]" />
+                <Button onClick={ onCloseClick }>{ LocalizeText("guide.help.request.user.thanks.close.button") }</Button>
+            </div>
+        </>
+    )
+}

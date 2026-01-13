@@ -1,9 +1,9 @@
-import { GroupSaveBadgeComposer } from '@nitrots/nitro-renderer';
-import { Dispatch, FC, SetStateAction, useCallback, useEffect, useState } from 'react';
-import { GroupBadgePart, IGroupData, SendMessageComposer } from '../../../../api';
-import { Column, Flex, Grid, LayoutBadgeImageView } from '../../../../common';
-import { useGroup } from '../../../../hooks';
-import { GroupBadgeCreatorView } from '../GroupBadgeCreatorView';
+import { GroupSaveBadgeComposer } from "@nitrots/nitro-renderer"
+import { Dispatch, FC, SetStateAction, useCallback, useEffect, useState } from "react"
+import { GroupBadgePart, IGroupData, LocalizeText, SendMessageComposer } from "../../../../api"
+import { LayoutBadgeImageView } from "../../../../common"
+import { useGroup } from "../../../../hooks"
+import { GroupBadgeCreatorView } from "../GroupBadgeCreatorView"
 
 interface GroupTabBadgeViewProps
 {
@@ -15,106 +15,107 @@ interface GroupTabBadgeViewProps
 
 export const GroupTabBadgeView: FC<GroupTabBadgeViewProps> = props =>
 {
-    const { groupData = null, setGroupData = null, setCloseAction = null, skipDefault = null } = props;
-    const [ badgeParts, setBadgeParts ] = useState<GroupBadgePart[]>(null);
-    const { groupCustomize = null } = useGroup();
+    const { groupData = null, setGroupData = null, setCloseAction = null, skipDefault = null } = props
+    const [ badgeParts, setBadgeParts ] = useState<GroupBadgePart[]>(null)
+    const { groupCustomize = null } = useGroup()
 
     const getModifiedBadgeCode = () =>
     {
-        if(!badgeParts || !badgeParts.length) return '';
+        if(!badgeParts || !badgeParts.length) return ""
 
-        let badgeCode = '';
+        let badgeCode = ""
 
-        badgeParts.forEach(part => (part.code && (badgeCode += part.code)));
+        badgeParts.forEach(part => (part.code && (badgeCode += part.code)))
 
-        return badgeCode;
+        return badgeCode
     }
 
     const saveBadge = useCallback(() =>
     {
-        if(!groupData || !badgeParts || !badgeParts.length) return false;
+        if(!groupData || !badgeParts || !badgeParts.length) return false
 
-        if((groupData.groupBadgeParts === badgeParts)) return true;
+        if((groupData.groupBadgeParts === badgeParts)) return true
 
         if(groupData.groupId <= 0)
         {
             setGroupData(prevValue =>
             {
-                const newValue = { ...prevValue };
+                const newValue = { ...prevValue }
 
-                newValue.groupBadgeParts = badgeParts;
+                newValue.groupBadgeParts = badgeParts
 
-                return newValue;
-            });
+                return newValue
+            })
 
-            return true;
+            return true
         }
 
-        const badge = [];
+        const badge = []
 
         badgeParts.forEach(part =>
         {
-            if(!part.code) return;
+            if(!part.code) return
             
-            badge.push(part.key);
-            badge.push(part.color);
-            badge.push(part.position);
-        });
+            badge.push(part.key)
+            badge.push(part.color)
+            badge.push(part.position)
+        })
         
-        SendMessageComposer(new GroupSaveBadgeComposer(groupData.groupId, badge));
+        SendMessageComposer(new GroupSaveBadgeComposer(groupData.groupId, badge))
 
-        return true;
-    }, [ groupData, badgeParts, setGroupData ]);
+        return true
+    }, [ groupData, badgeParts, setGroupData ])
 
     useEffect(() =>
     {
-        if(groupData.groupBadgeParts) return;
+        if(groupData.groupBadgeParts) return
         
         const badgeParts = [
-            new GroupBadgePart(GroupBadgePart.BASE, groupCustomize.badgeBases[0].id, groupCustomize.badgePartColors[0].id),
+            new GroupBadgePart(GroupBadgePart.BASE, groupCustomize.badgeBases[4].id, groupCustomize.badgePartColors[10].id),
             new GroupBadgePart(GroupBadgePart.SYMBOL, 0, groupCustomize.badgePartColors[0].id),
             new GroupBadgePart(GroupBadgePart.SYMBOL, 0, groupCustomize.badgePartColors[0].id),
             new GroupBadgePart(GroupBadgePart.SYMBOL, 0, groupCustomize.badgePartColors[0].id),
-            new GroupBadgePart(GroupBadgePart.SYMBOL, 0, groupCustomize.badgePartColors[0].id)
-        ];
+            new GroupBadgePart(GroupBadgePart.SYMBOL, 6, groupCustomize.badgePartColors[10].id)
+        ]
 
         setGroupData(prevValue =>
         {
-            const groupBadgeParts = badgeParts;
+            const groupBadgeParts = badgeParts
 
-            return { ...prevValue, groupBadgeParts };
-        });
-    }, [ groupData.groupBadgeParts, groupCustomize, setGroupData ]);
+            return { ...prevValue, groupBadgeParts }
+        })
+    }, [ groupData.groupBadgeParts, groupCustomize, setGroupData ])
 
     useEffect(() =>
     {
         if(groupData.groupId <= 0)
         {
-            setBadgeParts(groupData.groupBadgeParts ? [ ...groupData.groupBadgeParts ] : null);
+            setBadgeParts(groupData.groupBadgeParts ? [ ...groupData.groupBadgeParts ] : null)
 
-            return;
+            return
         }
         
-        setBadgeParts(groupData.groupBadgeParts);
-    }, [ groupData ]);
+        setBadgeParts(groupData.groupBadgeParts)
+    }, [ groupData ])
 
     useEffect(() =>
     {
-        setCloseAction({ action: saveBadge });
+        setCloseAction({ action: saveBadge })
 
-        return () => setCloseAction(null);
-    }, [ setCloseAction, saveBadge ]);
+        return () => setCloseAction(null)
+    }, [ setCloseAction, saveBadge ])
     
     return (
-        <Grid overflow="hidden" gap={ 1 }>
-            <Column size={ 2 }>
-                <Flex center className="bg-muted rounded p-1">
+        <div className="flex gap-5">
+            <div className="flex flex-col">
+                <p className="mb-[5px] text-center text-sm font-semibold [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]">{ LocalizeText("group.edit.badge.badge") }</p>
+                <div className="illumina-previewer relative flex size-[94px] shrink-0 items-center justify-center overflow-hidden p-[3px]">
                     <LayoutBadgeImageView badgeCode={ getModifiedBadgeCode() } isGroup={ true } />
-                </Flex>
-            </Column>
-            <Column size={ 10 } overflow="auto">
+                </div>
+            </div>
+            <div className="flex w-full flex-col">
                 <GroupBadgeCreatorView badgeParts={ badgeParts } setBadgeParts={ setBadgeParts } />
-            </Column>
-        </Grid>
-    );
-};
+            </div>
+        </div>
+    )
+}

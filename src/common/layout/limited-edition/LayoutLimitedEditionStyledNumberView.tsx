@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC } from "react"
 
 interface LayoutLimitedEditionStyledNumberViewProps
 {
@@ -7,12 +7,12 @@ interface LayoutLimitedEditionStyledNumberViewProps
 
 export const LayoutLimitedEditionStyledNumberView: FC<LayoutLimitedEditionStyledNumberViewProps> = props =>
 {
-    const { value = 0 } = props;
-    const numbers = value.toString().split('');
+    const { value = 0 } = props
+    const numbers = value.toString().split("")
     
     return (
         <>
-            { numbers.map((number, index) => <i key={ index } className={ 'limited-edition-number n-' + number } />) }
+            { numbers.map((number, index) => <i key={ index } className={ "limited-edition-number n-" + number } />) }
         </>
-    );
+    )
 }

@@ -1,44 +1,44 @@
-import { CSSProperties, FC, useMemo } from 'react';
-import { GetConfiguration } from '../../api';
-import { Base, BaseProps } from '../Base';
+import { FC, useMemo } from "react"
+import { BaseProps } from "../Base"
 
 export interface CurrencyIconProps extends BaseProps<HTMLDivElement>
 {
-    type: number | string;
+    type?: string;
+    currency: number;
+    classNames?: string[];
+    className?: string;
 }
 
 export const LayoutCurrencyIcon: FC<CurrencyIconProps> = props =>
 {
-    const { type = '', classNames = [], style = {}, ...rest } = props;
+    const { type = "", currency = 0, classNames = [], className = "" } = props
 
     const getClassNames = useMemo(() =>
     {
-        const newClassNames: string[] = [ 'nitro-currency-icon' ];
+        const newClassNames: string[] = []
 
-        if(classNames.length) newClassNames.push(...classNames);
+        newClassNames.push(currency.toString())
+        if(type) newClassNames.push(`illumina-currency-${type}`)
+        if(!type) newClassNames.push("illumina-currency")
+            
+        if(currency === -1) newClassNames.push("credits")
+        if(currency === 0) newClassNames.push("duckets")
+        if(currency === 5) newClassNames.push("diamonds")
+        if((currency !== -1) && (currency !== 0) && (currency !== 5)) newClassNames.push("currency-" + currency.toString())
 
-        return newClassNames;
-    }, [ classNames ]);
+        if(classNames.length) newClassNames.push(...classNames)
 
-    const urlString = useMemo(() =>
+        return newClassNames
+    }, [ type, currency, classNames ])
+
+    const getClassName = useMemo(() =>
     {
-        let url = GetConfiguration<string>('currency.asset.icon.url', '');
-    
-        url = url.replace('%type%', type.toString());
+        let newClassName = getClassNames.join(" ")
 
-        return `url(${ url })`;
-    }, [ type ]);
+        if(className.length) newClassName += (" " + className)
 
-    const getStyle = useMemo(() =>
-    {
-        let newStyle: CSSProperties = {};
+        return newClassName.trim()
+    }, [ getClassNames, className ])
 
-        newStyle.backgroundImage = urlString;
-
-        if(Object.keys(style).length) newStyle = { ...newStyle, ...style };
-
-        return newStyle;
-    }, [ style, urlString ]);
-
-    return <Base classNames={ getClassNames } style={ getStyle } { ...rest } />
+    return <i className={ getClassName } />
 }

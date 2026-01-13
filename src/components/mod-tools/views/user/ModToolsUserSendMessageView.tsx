@@ -1,8 +1,8 @@
-import { ModMessageMessageComposer } from '@nitrots/nitro-renderer';
-import { FC, useState } from 'react';
-import { ISelectedUser, SendMessageComposer } from '../../../../api';
-import { Button, DraggableWindowPosition, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
-import { useNotification } from '../../../../hooks';
+import { ModMessageMessageComposer } from "@nitrots/nitro-renderer"
+import { FC, useState } from "react"
+import { ISelectedUser, SendMessageComposer } from "../../../../api"
+import { Button, DraggableWindowPosition, NitroCardContentView, NitroCardHeaderView, NitroCardView } from "../../../../common"
+import { useNotification } from "../../../../hooks"
 
 interface ModToolsUserSendMessageViewProps
 {
@@ -12,34 +12,35 @@ interface ModToolsUserSendMessageViewProps
 
 export const ModToolsUserSendMessageView: FC<ModToolsUserSendMessageViewProps> = props =>
 {
-    const { user = null, onCloseClick = null } = props;
-    const [ message, setMessage ] = useState('');
-    const { simpleAlert = null } = useNotification();
+    const { user = null, onCloseClick = null } = props
+    const [ message, setMessage ] = useState("")
+    const { simpleAlert = null } = useNotification()
 
-    if(!user) return null;
+    if(!user) return null
 
     const sendMessage = () =>
     {
         if(message.trim().length === 0)
         {
-            simpleAlert('Please write a message to user.', null, null, null, 'Error', null);
+            simpleAlert("Please write a message to user.", null, null, null, "Error", null)
             
-            return;
+            return
         }
 
-        SendMessageComposer(new ModMessageMessageComposer(user.userId, message, -999));
+        SendMessageComposer(new ModMessageMessageComposer(user.userId, message, -999))
 
-        onCloseClick();
+        onCloseClick()
     }
 
     return (
-        <NitroCardView className="nitro-mod-tools-user-message" theme="primary-slim" windowPosition={ DraggableWindowPosition.TOP_LEFT }>
-            <NitroCardHeaderView headerText={ 'Send Message' } onCloseClick={ () => onCloseClick() } />
-            <NitroCardContentView className="text-black">
-                <Text>Message To: { user.username }</Text>
-                <textarea className="form-control" value={ message } onChange={ event => setMessage(event.target.value) }></textarea>
-                <Button fullWidth onClick={ sendMessage }>Send message</Button>
+        <NitroCardView uniqueKey="mod-tools-user-message" className="illumina-mod-tools-user-message" windowPosition={ DraggableWindowPosition.TOP_LEFT }>
+            <NitroCardHeaderView headerText={`Message to: ${user.username}`} onCloseClick={ () => onCloseClick() } />
+            <NitroCardContentView>
+                <div className="illumina-input mb-1.5 w-[210px] p-1">
+                    <textarea className="illumina-scrollbar h-[46px] w-full !text-[13px]" spellCheck={ false } value={ message } placeholder="Type your message here or select one of the predefined texts." onChange={ event => setMessage(event.target.value) }></textarea>
+                </div>
+                <Button onClick={ sendMessage }>Send message</Button>
             </NitroCardContentView>
         </NitroCardView>
-    );
+    )
 }

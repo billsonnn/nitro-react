@@ -1,6 +1,4 @@
-import { FC, MouseEvent, useEffect, useState } from 'react';
-import { Overlay, Popover } from 'react-bootstrap';
-import { Base, Flex, Grid, NitroCardContentView } from '../../../../common';
+import { FC, MouseEvent, useEffect, useState } from "react"
 
 interface ChatInputStyleSelectorViewProps
 {
@@ -11,58 +9,57 @@ interface ChatInputStyleSelectorViewProps
 
 export const ChatInputStyleSelectorView: FC<ChatInputStyleSelectorViewProps> = props =>
 {
-    const { chatStyleId = 0, chatStyleIds = null, selectChatStyleId = null } = props;
-    const [ target, setTarget ] = useState<(EventTarget & HTMLElement)>(null);
-    const [ selectorVisible, setSelectorVisible ] = useState(false);
+    const { chatStyleId = 0, chatStyleIds = null, selectChatStyleId = null } = props
+    const [ target, setTarget ] = useState<(EventTarget & HTMLElement)>(null)
+    const [ selectorVisible, setSelectorVisible ] = useState(false)
 
     const selectStyle = (styleId: number) =>
     {
-        selectChatStyleId(styleId);
-        setSelectorVisible(false);
+        selectChatStyleId(styleId)
+        setSelectorVisible(false)
     }
 
     const toggleSelector = (event: MouseEvent<HTMLElement>) =>
     {
-        let visible = false;
+        let visible = false
 
         setSelectorVisible(prevValue =>
         {
-            visible = !prevValue;
+            visible = !prevValue
 
-            return visible;
-        });
+            return visible
+        })
 
-        if(visible) setTarget((event.target as (EventTarget & HTMLElement)));
+        if(visible) setTarget((event.target as (EventTarget & HTMLElement)))
     }
 
     useEffect(() =>
     {
-        if(selectorVisible) return;
+        if(selectorVisible) return
 
-        setTarget(null);
-    }, [ selectorVisible ]);
+        setTarget(null)
+    }, [ selectorVisible ])
 
     return (
         <>
-            <Base pointer className="icon chatstyles-icon" onClick={ toggleSelector } />
-            <Overlay show={ selectorVisible } target={ target } placement="top">
-                <Popover className="nitro-chat-style-selector-container image-rendering-pixelated">
-                    <NitroCardContentView overflow="hidden" className="bg-transparent">
-                        <Grid columnCount={ 3 } overflow="auto">
-                            { chatStyleIds && (chatStyleIds.length > 0) && chatStyleIds.map((styleId) =>
-                            {
+            <i className="absolute right-2 block h-[19px] w-[17px] cursor-pointer bg-[url('/client-assets/images/spritesheet.png?v=2451779')] dark:bg-[url('/client-assets/images/spritesheet-dark.png?v=2451779')] bg-[-353px_0px]" onClick={ toggleSelector } />
+            {selectorVisible &&
+                <div className="illumina-popover pixelated absolute bottom-11 right-0 size-[200px]">
+                    <div className="flex h-full flex-col gap-2 overflow-hidden bg-transparent p-2.5">
+                        <div className="illumina-scrollbar grid !grid-cols-3 gap-1.5 overflow-auto">
+                            { chatStyleIds && (chatStyleIds.length > 0) && chatStyleIds.map((styleId) => {
                                 return (
-                                    <Flex center pointer key={ styleId } className="bubble-parent-container" onClick={ event => selectStyle(styleId) }>
-                                        <Base key={ styleId } className="bubble-container">
-                                            <Base className={ `chat-bubble bubble-${ styleId }` }>&nbsp;</Base>
-                                        </Base>
-                                    </Flex>
-                                );
-                            }) }
-                        </Grid>
-                    </NitroCardContentView>
-                </Popover>
-            </Overlay>
+                                    <div key={ styleId } className="flex h-[30px] cursor-pointer items-center justify-center" onClick={ event => selectStyle(styleId) }>
+                                        <div key={ styleId } className="bubble-container !relative !w-[50px]">
+                                            <div className={ `chat-bubble relative z-[1] min-h-[26px] max-w-full [word-break:break-word] ${ "bubble-" + styleId }` }>&nbsp;</div>
+                                        </div>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    </div>
+                </div>
+            }
         </>
-    );
+    )
 }

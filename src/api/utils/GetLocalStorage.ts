@@ -6,6 +6,6 @@ export const GetLocalStorage = <T>(key: string) =>
     }
     catch(e)
     {
-        return null;
+        return null
     }
 }

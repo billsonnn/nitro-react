@@ -1,132 +1,132 @@
-import { UnseenItemsEvent, UnseenResetCategoryComposer, UnseenResetItemsComposer } from '@nitrots/nitro-renderer';
-import { useCallback, useMemo, useState } from 'react';
-import { useBetween } from 'use-between';
-import { SendMessageComposer } from '../../api';
-import { useMessageEvent } from '../events';
+import { UnseenItemsEvent, UnseenResetCategoryComposer, UnseenResetItemsComposer } from "@nitrots/nitro-renderer"
+import { useCallback, useMemo, useState } from "react"
+import { useBetween } from "use-between"
+import { SendMessageComposer } from "../../api"
+import { useMessageEvent } from "../events"
 
-const sendResetCategoryMessage = (category: number) => SendMessageComposer(new UnseenResetCategoryComposer(category));
-const sendResetItemsMessage = (category: number, itemIds: number[]) => SendMessageComposer(new UnseenResetItemsComposer(category, ...itemIds));
+const sendResetCategoryMessage = (category: number) => SendMessageComposer(new UnseenResetCategoryComposer(category))
+const sendResetItemsMessage = (category: number, itemIds: number[]) => SendMessageComposer(new UnseenResetItemsComposer(category, ...itemIds))
 
 const useInventoryUnseenTrackerState = () =>
 {
-    const [ unseenItems, setUnseenItems ] = useState<Map<number, number[]>>(new Map());
+    const [ unseenItems, setUnseenItems ] = useState<Map<number, number[]>>(new Map())
 
-    const getCount = useCallback((category: number) => (unseenItems.get(category)?.length || 0), [ unseenItems ]);
+    const getCount = useCallback((category: number) => (unseenItems.get(category)?.length || 0), [ unseenItems ])
 
     const getFullCount = useMemo(() =>
     {
-        let count = 0;
+        let count = 0
 
-        for(const key of unseenItems.keys()) count += getCount(key);
+        for(const key of unseenItems.keys()) count += getCount(key)
 
-        return count;
-    }, [ unseenItems, getCount ]);
+        return count
+    }, [ unseenItems, getCount ])
 
     const resetCategory = useCallback((category: number) =>
     {
-        let didReset = true;
+        let didReset = true
 
         setUnseenItems(prevValue =>
         {
             if(!prevValue.has(category))
             {
-                didReset = false;
+                didReset = false
 
-                return prevValue;
+                return prevValue
             }
 
-            const newValue = new Map(prevValue);
+            const newValue = new Map(prevValue)
 
-            newValue.delete(category);
+            newValue.delete(category)
 
-            sendResetCategoryMessage(category);
+            sendResetCategoryMessage(category)
 
-            return newValue;
-        });
+            return newValue
+        })
 
-        return didReset;
-    }, []);
+        return didReset
+    }, [])
 
     const resetItems = useCallback((category: number, itemIds: number[]) =>
     {
-        let didReset = true;
+        let didReset = true
 
         setUnseenItems(prevValue =>
         {
             if(!prevValue.has(category))
             {
-                didReset = false;
+                didReset = false
 
-                return prevValue;
+                return prevValue
             }
 
-            const newValue = new Map(prevValue);
-            const existing = newValue.get(category);
+            const newValue = new Map(prevValue)
+            const existing = newValue.get(category)
 
-            if(existing) for(const itemId of itemIds) existing.splice(existing.indexOf(itemId), 1);
+            if(existing) for(const itemId of itemIds) existing.splice(existing.indexOf(itemId), 1)
 
-            sendResetItemsMessage(category, itemIds);
+            sendResetItemsMessage(category, itemIds)
 
-            return newValue;
-        });
+            return newValue
+        })
 
-        return didReset;
-    }, []);
+        return didReset
+    }, [])
 
     const isUnseen = useCallback((category: number, itemId: number) =>
     {
-        if(!unseenItems.has(category)) return false;
+        if(!unseenItems.has(category)) return false
 
-        const items = unseenItems.get(category);
+        const items = unseenItems.get(category)
 
-        return (items.indexOf(itemId) >= 0);
-    }, [ unseenItems ]);
+        return (items.indexOf(itemId) >= 0)
+    }, [ unseenItems ])
 
     const removeUnseen = useCallback((category: number, itemId: number) =>
     {
         setUnseenItems(prevValue =>
         {
-            if(!prevValue.has(category)) return prevValue;
+            if(!prevValue.has(category)) return prevValue
 
-            const newValue = new Map(prevValue);
-            const items = newValue.get(category);
-            const index = items.indexOf(itemId);
+            const newValue = new Map(prevValue)
+            const items = newValue.get(category)
+            const index = items.indexOf(itemId)
 
-            if(index >= 0) items.splice(index, 1);
+            if(index >= 0) items.splice(index, 1)
 
-            return newValue;
-        });
-    }, []);
+            return newValue
+        })
+    }, [])
 
     useMessageEvent<UnseenItemsEvent>(UnseenItemsEvent, event =>
     {
-        const parser = event.getParser();
+        const parser = event.getParser()
 
         setUnseenItems(prevValue =>
         {
-            const newValue = new Map(prevValue);
+            const newValue = new Map(prevValue)
 
             for(const category of parser.categories)
             {
-                let existing = newValue.get(category);
+                let existing = newValue.get(category)
 
                 if(!existing)
                 {
-                    existing = [];
+                    existing = []
 
-                    newValue.set(category, existing);
+                    newValue.set(category, existing)
                 }
 
-                const itemIds = parser.getItemsByCategory(category);
+                const itemIds = parser.getItemsByCategory(category)
 
-                for(const itemId of itemIds) ((existing.indexOf(itemId) === -1) && existing.push(itemId));
+                for(const itemId of itemIds) ((existing.indexOf(itemId) === -1) && existing.push(itemId))
             }
 
-            return newValue;
-        });
-    });
+            return newValue
+        })
+    })
 
-    return { getCount, getFullCount, resetCategory, resetItems, isUnseen, removeUnseen };
+    return { getCount, getFullCount, resetCategory, resetItems, isUnseen, removeUnseen }
 }
 
-export const useInventoryUnseenTracker = () => useBetween(useInventoryUnseenTrackerState);
+export const useInventoryUnseenTracker = () => useBetween(useInventoryUnseenTrackerState)

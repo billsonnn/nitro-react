@@ -5,9 +5,9 @@
   "private": true,
   "scripts": {
     "start": "vite",
-    "build": "vite build",
-    "build:prod": "npx browserslist@latest --update-db && yarn build",
-    "eslint": "eslint src --ext .ts,.tsx"
+    "build": "set \"GENERATE_SOURCEMAP=false\" && vite build",
+    "build:prod": "set \"GENERATE_SOURCEMAP=false\" && npx browserslist@latest --update-db && yarn build",
+    "lint": "eslint --fix '**/*.{tsx,ts}'"
   },
   "dependencies": {
     "@nitrots/nitro-renderer": "^1.6.6",
@@ -17,7 +17,6 @@
     "react-dom": "^18.2.0",
     "react-icons": "^4.7.1",
     "react-slider": "^2.0.0",
-    "react-youtube": "^7.13.1",
     "typescript": "^4.3.5",
     "use-between": "^1.3.4"
   },
@@ -29,12 +28,17 @@
     "@typescript-eslint/eslint-plugin": "^5.30.7",
     "@typescript-eslint/parser": "^5.30.7",
     "@vitejs/plugin-react": "^3.0.0",
+    "autoprefixer": "^10.4.17",
     "eslint": "^8.20.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jsx-a11y": "^6.6.0",
     "eslint-plugin-react": "^7.30.1",
-    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-tailwindcss": "^3.15.1",
+    "postcss": "^8.4.33",
     "sass": "^1.56.2",
-    "vite": "^4.4.5"
+    "tailwindcss": "^3.4.1",
+    "vite": "^4.4.5",
+    "vite-plugin-javascript-obfuscator": "^3.1.0",
+    "vite-plugin-minify": "^1.5.2"
   }
 }

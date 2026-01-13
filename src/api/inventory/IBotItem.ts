@@ -1,4 +1,4 @@
-import { BotData } from '@nitrots/nitro-renderer';
+import { BotData } from "@nitrots/nitro-renderer"
 
 export interface IBotItem
 {

@@ -1,52 +1,57 @@
-import { FC, useEffect, useState } from 'react';
-import { GetConfiguration, LocalizeText, WiredFurniType, WIRED_STRING_DELIMETER } from '../../../../api';
-import { Column, Flex, Text } from '../../../../common';
-import { useWired } from '../../../../hooks';
-import { WiredActionBaseView } from './WiredActionBaseView';
+import { FC, useEffect, useState } from "react"
+import { GetConfiguration, LocalizeText, WIRED_STRING_DELIMETER, WiredFurniType } from "../../../../api"
+import { useWired } from "../../../../hooks"
+import { WiredMessageView } from "../WiredMessageView"
+import { WiredActionBaseView } from "./WiredActionBaseView"
 
 export const WiredActionBotTalkView: FC<{}> = props =>
 {
-    const [ botName, setBotName ] = useState('');
-    const [ message, setMessage ] = useState('');
-    const [ talkMode, setTalkMode ] = useState(-1);
-    const { trigger = null, setStringParam = null, setIntParams = null } = useWired();
+    const [ botName, setBotName ] = useState("")
+    const [ message, setMessage ] = useState("")
+    const [ talkMode, setTalkMode ] = useState(-1)
+    const { trigger = null, setStringParam = null, setIntParams = null } = useWired()
 
     const save = () =>
     {
-        setStringParam(botName + WIRED_STRING_DELIMETER + message);
-        setIntParams([ talkMode ]);
+        setStringParam(botName + WIRED_STRING_DELIMETER + message)
+        setIntParams([ talkMode ])
     }
 
     useEffect(() =>
     {
-        const data = trigger.stringData.split(WIRED_STRING_DELIMETER);
+        const data = trigger.stringData.split(WIRED_STRING_DELIMETER)
         
-        if(data.length > 0) setBotName(data[0]);
-        if(data.length > 1) setMessage(data[1].length > 0 ? data[1] : '');
+        if(data.length > 0) setBotName(data[0])
+        if(data.length > 1) setMessage(data[1].length > 0 ? data[1] : "")
     
-        setTalkMode((trigger.intData.length > 0) ? trigger.intData[0] : 0);
-    }, [ trigger ]);
+        setTalkMode((trigger.intData.length > 0) ? trigger.intData[0] : 0)
+    }, [ trigger ])
 
     return (
         <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } hasSpecialInput={ true } save={ save }>
-            <Column gap={ 1 }>
-                <Text bold>{ LocalizeText('wiredfurni.params.bot.name') }</Text>
-                <input type="text" className="form-control form-control-sm" maxLength={ 32 } value={ botName } onChange={ event => setBotName(event.target.value) } />
-            </Column>
-            <Column gap={ 1 }>
-                <Text bold>{ LocalizeText('wiredfurni.params.message') }</Text>
-                <input type="text" className="form-control form-control-sm" maxLength={ GetConfiguration<number>('wired.action.bot.talk.max.length', 64) } value={ message } onChange={ event => setMessage(event.target.value) } />
-            </Column>
-            <Column gap={ 1 }>
-                <Flex alignItems="center" gap={ 1 }>
-                    <input className="form-check-input" type="radio" name="talkMode" id="talkMode1" checked={ (talkMode === 0) } onChange={ event => setTalkMode(0) } />
-                    <Text>{ LocalizeText('wiredfurni.params.talk') }</Text>
-                </Flex>
-                <Flex alignItems="center" gap={ 1 }>
-                    <input className="form-check-input" type="radio" name="talkMode" id="talkMode2" checked={ (talkMode === 1) } onChange={ event => setTalkMode(1) } />
-                    <Text>{ LocalizeText('wiredfurni.params.shout') }</Text>
-                </Flex>
-            </Column>
+            <WiredMessageView
+                title={ LocalizeText("wiredfurni.params.bot.name") }   
+                value={ botName }    
+                onChange={ event => setBotName(event.target.value) }
+                maxLength={ 32 }
+            />
+            <div className="mt-1" />
+            <WiredMessageView
+                title={ LocalizeText("wiredfurni.params.message") }   
+                value={ message }    
+                onChange={ event => setMessage(event.target.value) }
+                maxLength={ GetConfiguration<number>("wired.action.bot.talk.max.length", 64) }
+            />
+            <div className="mt-3 flex flex-col gap-2">
+                <div className="flex gap-[15px]">
+                    <input type="radio" name="talkMode" id="talkMode1" checked={ (talkMode === 0) } onChange={ event => setTalkMode(0) } />
+                    <label htmlFor="talkMode1">{ LocalizeText("wiredfurni.params.talk") }</label>
+                </div>
+                <div className="flex gap-[15px]">
+                    <input type="radio" name="talkMode" id="talkMode2" checked={ (talkMode === 1) } onChange={ event => setTalkMode(1) } />
+                    <label htmlFor="talkMode2">{ LocalizeText("wiredfurni.params.shout") }</label>
+                </div>
+            </div>
         </WiredActionBaseView>
-    );
+    )
 }

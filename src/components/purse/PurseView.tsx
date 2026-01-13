@@ -1,90 +1,91 @@
-import { FriendlyTime, HabboClubLevelEnum } from '@nitrots/nitro-renderer';
-import { FC, useMemo } from 'react';
-import { CreateLinkEvent, GetConfiguration, LocalizeText } from '../../api';
-import { Column, Flex, Grid, LayoutCurrencyIcon, Text } from '../../common';
-import { usePurse } from '../../hooks';
-import { CurrencyView } from './views/CurrencyView';
-import { SeasonalView } from './views/SeasonalView';
+import { FriendlyTime, HabboClubLevelEnum } from "@nitrots/nitro-renderer"
+import { FC, useMemo } from "react"
+import { CreateLinkEvent, GetConfiguration, LocalizeText } from "../../api"
+import { usePurse } from "../../hooks"
+import { CurrencyView } from "./views/CurrencyView"
 
 export const PurseView: FC<{}> = props =>
 {
-    const { purse = null, hcDisabled = false } = usePurse();
+    const { purse = null, hcDisabled = false, helpAndSettingsDisabled = false } = usePurse()
 
-    const displayedCurrencies = useMemo(() => GetConfiguration<number[]>('system.currency.types', []), []);
-    const currencyDisplayNumberShort = useMemo(() => GetConfiguration<boolean>('currency.display.number.short', false), []);
+    const displayedCurrencies = useMemo(() => GetConfiguration<number[]>("system.currency.types", []), [])
+    const currencyDisplayNumberShort = useMemo(() => GetConfiguration<boolean>("currency.display.number.short", false), [])
+    const hidePurse: boolean = GetConfiguration<boolean>("illumina.hide.purse")
 
     const getClubText = (() =>
     {
-        if(!purse) return null;
+        if(!purse) return null
 
-        const totalDays = ((purse.clubPeriods * 31) + purse.clubDays);
-        const minutesUntilExpiration = purse.minutesUntilExpiration;
+        const totalDays = ((purse.clubPeriods * 31) + purse.clubDays)
+        const minutesUntilExpiration = purse.minutesUntilExpiration
 
-        if(purse.clubLevel === HabboClubLevelEnum.NO_CLUB) return LocalizeText('purse.clubdays.zero.amount.text');
+        if(purse.clubLevel === HabboClubLevelEnum.NO_CLUB) return LocalizeText("purse.clubdays.zero.amount.text")
 
-        else if((minutesUntilExpiration > -1) && (minutesUntilExpiration < (60 * 24))) return FriendlyTime.shortFormat(minutesUntilExpiration * 60);
+        else if((minutesUntilExpiration > -1) && (minutesUntilExpiration < (60 * 24))) return FriendlyTime.shortFormat(minutesUntilExpiration * 60)
         
-        else return FriendlyTime.shortFormat(totalDays * 86400);
-    })();
+        else return FriendlyTime.shortFormat(totalDays * 86400)
+    })()
 
     const getCurrencyElements = (offset: number, limit: number = -1, seasonal: boolean = false) =>
     {
-        if(!purse || !purse.activityPoints || !purse.activityPoints.size) return null;
+        if(!purse || !purse.activityPoints || !purse.activityPoints.size) return null
 
-        const types = Array.from(purse.activityPoints.keys()).filter(type => (displayedCurrencies.indexOf(type) >= 0));
+        const types = Array.from(purse.activityPoints.keys()).filter(type => (displayedCurrencies.indexOf(type) >= 0))
 
-        let count = 0;
+        let count = 0
 
         while(count < offset)
         {
-            types.shift();
+            types.shift()
 
-            count++;
+            count++
         }
 
-        count = 0;
+        count = 0
 
-        const elements: JSX.Element[] = [];
+        const elements: JSX.Element[] = []
 
         for(const type of types)
         {
-            if((limit > -1) && (count === limit)) break;
+            if((limit > -1) && (count === limit)) break
 
-            if(seasonal) elements.push(<SeasonalView key={ type } type={ type } amount={ purse.activityPoints.get(type) } />);
-            else elements.push(<CurrencyView key={ type } type={ type } amount={ purse.activityPoints.get(type) } short={ currencyDisplayNumberShort } />);
+            elements.push(<CurrencyView key={ type } type={ type } amount={ purse.activityPoints.get(type) } short={ currencyDisplayNumberShort } />)
 
-            count++;
+            count++
         }
 
-        return elements;
+        return elements
     }
 
-    if(!purse) return null;
+    if(!purse) return null
 
     return (
-        <Column alignItems="end" className="nitro-purse-container" gap={ 1 }>
-            <Flex className="nitro-purse rounded-bottom p-1">
-                <Grid fullWidth gap={ 1 }>
-                    <Column justifyContent="center" size={ hcDisabled ? 10 : 6 } gap={ 0 }>
+        <div className="h-[35px]">
+            <div className="flex h-full gap-1.5">
+                { !hidePurse &&
+                    <div className="illumina-purse flex gap-[3px] px-3 py-[9px]">
                         <CurrencyView type={ -1 } amount={ purse.credits } short={ currencyDisplayNumberShort } />
                         { getCurrencyElements(0, 2) }
-                    </Column>
-                    { !hcDisabled &&
-                        <Column center pointer size={ 4 } gap={ 1 } className="nitro-purse-subscription rounded" onClick={ event => CreateLinkEvent('habboUI/open/hccenter') }>
-                            <LayoutCurrencyIcon type="hc" />
-                            <Text variant="white">{ getClubText }</Text>
-                        </Column> }
-                    <Column justifyContent="center" size={ 2 } gap={ 0 }>
-                        <Flex center pointer fullHeight className="nitro-purse-button p-1 rounded" onClick={ event => CreateLinkEvent('help/show') }>
-                            <i className="icon icon-help"/>
-                        </Flex>
-                        <Flex center pointer fullHeight className="nitro-purse-button p-1 rounded" onClick={ event => CreateLinkEvent('user-settings/toggle') } >
-                            <i className="icon icon-cog"/>
-                        </Flex>
-                    </Column>
-                </Grid>
-            </Flex>
-            { getCurrencyElements(2, -1, true) }
-        </Column>
-    );
+                        { getCurrencyElements(2, -1, true) }
+                    </div> }
+                { !hcDisabled &&
+                    <div className="illumina-purse flex h-full gap-[3px] px-3 py-[9px]">
+                        <div className="flex cursor-pointer gap-1 hover:brightness-125 active:translate-x-0 active:translate-y-0 active:brightness-90" onClick={ event => CreateLinkEvent("habboUI/open/hccenter") }>
+                            <i className="illumina-currency club" />
+                            <p className="text-xs font-semibold text-[#F3F3F3] [text-shadow:_0_-1px_0_#000]">{ getClubText }</p>
+                        </div>
+                    </div> }
+                { !helpAndSettingsDisabled &&
+                    <div className="illumina-purse flex h-full items-center gap-[3px] px-3 py-1.5">
+                        <div className="flex cursor-pointer gap-1 hover:brightness-125 active:translate-x-0 active:translate-y-0 active:brightness-90" onClick={ event => CreateLinkEvent("help/show") }>
+                            <i className="size-[15px] bg-[url('/client-assets/images/spritesheet.png?v=2451779')] dark:bg-[url('/client-assets/images/spritesheet-dark.png?v=2451779')] bg-[-235px_-278px]" />
+                        </div>
+                        <div className="mx-[7px] block h-[17px] w-0.5 border-r border-[#3E3931] bg-black" />
+                        <div className="flex cursor-pointer gap-1 hover:brightness-125 active:translate-x-0 active:translate-y-0 active:brightness-90" onClick={ event => CreateLinkEvent("user-settings/toggle") }>
+                            <i className="h-[15px] w-3.5 bg-[url('/client-assets/images/spritesheet.png?v=2451779')] dark:bg-[url('/client-assets/images/spritesheet-dark.png?v=2451779')] bg-[-391px_-160px]" />
+                        </div>
+                    </div> }
+            </div>
+        </div>
+    )
 }

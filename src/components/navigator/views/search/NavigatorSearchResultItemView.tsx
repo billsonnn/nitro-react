@@ -1,121 +1,103 @@
-import { RoomDataParser } from '@nitrots/nitro-renderer';
-import { FC, MouseEvent } from 'react';
-import { FaUser } from 'react-icons/fa';
-import { CreateRoomSession, DoorStateType, GetSessionDataManager, TryVisitRoom } from '../../../../api';
-import { Column, Flex, LayoutBadgeImageView, LayoutGridItemProps, LayoutRoomThumbnailView, Text } from '../../../../common';
-import { useNavigator } from '../../../../hooks';
-import { NavigatorSearchResultItemInfoView } from './NavigatorSearchResultItemInfoView';
+import { RoomDataParser } from "@nitrots/nitro-renderer"
+import { FC, MouseEvent } from "react"
+import { CreateRoomSession, DoorStateType, GetSessionDataManager, TryVisitRoom } from "../../../../api"
+import { LayoutBadgeImageView, LayoutGridItemProps, LayoutRoomThumbnailView } from "../../../../common"
+import { useNavigator } from "../../../../hooks"
+import { NavigatorSearchResultItemInfoView } from "./NavigatorSearchResultItemInfoView"
 
-export interface NavigatorSearchResultItemViewProps extends LayoutGridItemProps
-{
+export interface NavigatorSearchResultItemViewProps extends LayoutGridItemProps {
     roomData: RoomDataParser
     thumbnail?: boolean
 }
 
-export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProps> = props =>
-{
-    const { roomData = null, children = null, thumbnail = false, ...rest } = props;
-    const { setDoorData = null } = useNavigator();
+export const NavigatorSearchResultItemView: FC<NavigatorSearchResultItemViewProps> = props => {
+    const { roomData = null, children = null, thumbnail = false, ...rest } = props
+    const { setDoorData = null } = useNavigator()
 
-    const getUserCounterColor = () =>
-    {
-        const num: number = (100 * (roomData.userCount / roomData.maxUserCount));
+    const getUserCounterColor = () => {
+        const num: number = (100 * (roomData.userCount / roomData.maxUserCount))
 
-        let bg = 'bg-primary';
+        let bg = "-105px -23px"
 
-        if(num >= 92)
-        {
-            bg = 'bg-danger';
+        if (num >= 92) {
+            bg = "-228px -23px"
         }
-        else if(num >= 50)
-        {
-            bg = 'bg-warning';
+        else if (num >= 50) {
+            bg = "-187px -23px"
         }
-        else if(num > 0)
-        {
-            bg = 'bg-success';
+        else if (num > 0) {
+            bg = "-146px -23px"
         }
 
-        return bg;
+        return bg
     }
 
-    const visitRoom = (event: MouseEvent) =>
-    {
-        if(roomData.ownerId !== GetSessionDataManager().userId)
-        {
-            if(roomData.habboGroupId !== 0)
-            {
-                TryVisitRoom(roomData.roomId);
+    const visitRoom = (event: MouseEvent) => {
+        if (roomData.ownerId !== GetSessionDataManager().userId) {
+            if (roomData.habboGroupId !== 0) {
+                TryVisitRoom(roomData.roomId)
 
-                return;
+                return
             }
 
-            switch(roomData.doorMode)
-            {
-                case RoomDataParser.DOORBELL_STATE:
-                    setDoorData(prevValue =>
-                    {
-                        const newValue = { ...prevValue };
-        
-                        newValue.roomInfo = roomData;
-                        newValue.state = DoorStateType.START_DOORBELL;
-        
-                        return newValue;
-                    });
-                    return;
-                case RoomDataParser.PASSWORD_STATE:
-                    setDoorData(prevValue =>
-                    {
-                        const newValue = { ...prevValue };
-        
-                        newValue.roomInfo = roomData;
-                        newValue.state = DoorStateType.START_PASSWORD;
-        
-                        return newValue;
-                    });
-                    return;
+            switch (roomData.doorMode) {
+            case RoomDataParser.DOORBELL_STATE:
+                setDoorData(prevValue => {
+                    const newValue = { ...prevValue }
+
+                    newValue.roomInfo = roomData
+                    newValue.state = DoorStateType.START_DOORBELL
+
+                    return newValue
+                })
+                return
+            case RoomDataParser.PASSWORD_STATE:
+                setDoorData(prevValue => {
+                    const newValue = { ...prevValue }
+
+                    newValue.roomInfo = roomData
+                    newValue.state = DoorStateType.START_PASSWORD
+
+                    return newValue
+                })
+                return
             }
         }
-        
-        CreateRoomSession(roomData.roomId);
+
+        CreateRoomSession(roomData.roomId)
     }
 
-    if(thumbnail) return (
-        <Column pointer overflow="hidden" alignItems="center" onClick={ visitRoom } gap={ 0 } className="navigator-item p-1 bg-light rounded-3 small mb-1 flex-column border border-muted" { ...rest }>
-            <LayoutRoomThumbnailView roomId={ roomData.roomId } customUrl={ roomData.officialRoomPicRef } className="d-flex flex-column align-items-center justify-content-end mb-1">
-                { roomData.habboGroupId > 0 && <LayoutBadgeImageView badgeCode={ roomData.groupBadgeCode } isGroup={ true } className={ 'position-absolute top-0 start-0 m-1' } /> }
-                <Flex center className={ 'badge p-1 position-absolute m-1 ' + getUserCounterColor() } gap={ 1 }>
-                    <FaUser className="fa-icon" />
-                    { roomData.userCount }
-                </Flex>
-                { (roomData.doorMode !== RoomDataParser.OPEN_STATE) && 
-                <i className={ ('position-absolute end-0 mb-1 me-1 icon icon-navigator-room-' + ((roomData.doorMode === RoomDataParser.DOORBELL_STATE) ? 'locked' : (roomData.doorMode === RoomDataParser.PASSWORD_STATE) ? 'password' : (roomData.doorMode === RoomDataParser.INVISIBLE_STATE) ? 'invisible' : '')) } /> }
+    if (thumbnail) return (
+        <div onClick={visitRoom} className="illumina-navigator-room max-h-[153px] cursor-pointer overflow-hidden p-[7px]" {...rest}>
+            <LayoutRoomThumbnailView roomId={roomData.roomId} customUrl={roomData.officialRoomPicRef} className="relative mb-1 flex flex-col items-center justify-end" isRoom={true}>
+                {roomData.habboGroupId > 0 && <LayoutBadgeImageView badgeCode={roomData.groupBadgeCode} isGroup={true} className={"absolute left-0 top-0 m-1"} />}
+                <div className="absolute bottom-[3px] left-8 h-[18px] w-10 bg-[url('/client-assets/images/spritesheet.png?v=2451779')] dark:bg-[url('/client-assets/images/spritesheet-dark.png?v=2451779')]" style={{ backgroundPosition: getUserCounterColor() }}>
+                    <p className="absolute left-[26px] top-0.5 text-xs font-semibold text-white">{roomData.userCount}</p>
+                </div>
+                {(roomData.doorMode !== RoomDataParser.OPEN_STATE) && (
+                    <i className="absolute bottom-0 right-0 mb-1 me-1 h-4 w-[13px] bg-[url('/client-assets/images/spritesheet.png?v=2451779')] dark:bg-[url('/client-assets/images/spritesheet-dark.png?v=2451779')]" style={{ backgroundPosition: (roomData.doorMode === RoomDataParser.DOORBELL_STATE ? "-260px 0px" : roomData.doorMode === RoomDataParser.PASSWORD_STATE ? "-274px 0px" : roomData.doorMode === RoomDataParser.INVISIBLE_STATE ? "-288px 0px" : "") }} />)}
             </LayoutRoomThumbnailView>
-            <Flex className="w-100">
-                <Text truncate className="flex-grow-1">{ roomData.roomName }</Text>
-                <Flex reverse alignItems="center" gap={ 1 }>
-                    <NavigatorSearchResultItemInfoView roomData={ roomData } />
-                </Flex>
-                { children } 
-            </Flex>
-
-        </Column>
-    );
+            <div className="flex w-full">
+                <p className="w-4/5 overflow-hidden text-xs">{roomData.roomName}</p>
+                <NavigatorSearchResultItemInfoView roomData={roomData} />
+                {children}
+            </div>
+        </div>
+    )
 
     return (
-        <Flex pointer overflow="hidden" alignItems="center" onClick={ visitRoom } gap={ 2 } className="navigator-item px-2 py-1 small" { ...rest }>
-            <Flex center className={ 'badge p-1 ' + getUserCounterColor() } gap={ 1 }>
-                <FaUser className="fa-icon" />
-                { roomData.userCount }
-            </Flex>
-            <Text truncate grow>{ roomData.roomName }</Text>
-            <Flex reverse alignItems="center" gap={ 1 }>
-                <NavigatorSearchResultItemInfoView roomData={ roomData } />
-                { roomData.habboGroupId > 0 && <i className="icon icon-navigator-room-group" /> }
-                { (roomData.doorMode !== RoomDataParser.OPEN_STATE) && 
-                    <i className={ ('icon icon-navigator-room-' + ((roomData.doorMode === RoomDataParser.DOORBELL_STATE) ? 'locked' : (roomData.doorMode === RoomDataParser.PASSWORD_STATE) ? 'password' : (roomData.doorMode === RoomDataParser.INVISIBLE_STATE) ? 'invisible' : '')) } /> }
-            </Flex>
-            { children }
-        </Flex>
-    );
+        <div onClick={visitRoom} className="navigator-item illumina-navigator-room-grid flex cursor-pointer items-center gap-1 px-2 py-1" {...rest}>
+            <div className="relative h-[18px] w-10 shrink-0 bg-[url('/client-assets/images/spritesheet.png?v=2451779')] dark:bg-[url('/client-assets/images/spritesheet-dark.png?v=2451779')]" style={{ backgroundPosition: getUserCounterColor() }}>
+                <p className="absolute left-[26px] top-0.5 text-xs font-semibold text-white">{roomData.userCount}</p>
+            </div>
+            <p className="w-full truncate text-xs">{roomData.roomName}</p>
+            <div className="flex items-center gap-1">
+                {(roomData.doorMode !== RoomDataParser.OPEN_STATE) && (
+                    <i className="h-4 w-[13px] bg-[url('/client-assets/images/spritesheet.png?v=2451779')] dark:bg-[url('/client-assets/images/spritesheet-dark.png?v=2451779')]" style={{ backgroundPosition: (roomData.doorMode === RoomDataParser.DOORBELL_STATE ? "-260px 0px" : roomData.doorMode === RoomDataParser.PASSWORD_STATE ? "-274px 0px" : roomData.doorMode === RoomDataParser.INVISIBLE_STATE ? "-288px 0px" : "") }} />)}
+                {roomData.habboGroupId > 0 && <i className="h-[11px] w-[13px] bg-[url('/client-assets/images/spritesheet.png?v=2451779')] dark:bg-[url('/client-assets/images/spritesheet-dark.png?v=2451779')] bg-[-321px_0px]" />}
+                <NavigatorSearchResultItemInfoView roomData={roomData} />
+            </div>
+            {children}
+        </div>
+    )
 }

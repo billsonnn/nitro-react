@@ -1,8 +1,8 @@
-import { CameraPublishStatusMessageEvent, CameraPurchaseOKMessageEvent, CameraStorageUrlMessageEvent, PublishPhotoMessageComposer, PurchasePhotoMessageComposer } from '@nitrots/nitro-renderer';
-import { FC, useEffect, useMemo, useState } from 'react';
-import { CreateLinkEvent, GetConfiguration, GetRoomEngine, LocalizeText, SendMessageComposer } from '../../../api';
-import { Button, Column, Flex, LayoutCurrencyIcon, LayoutImage, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
-import { useMessageEvent } from '../../../hooks';
+import { CameraPublishStatusMessageEvent, CameraPurchaseOKMessageEvent, CameraStorageUrlMessageEvent, PublishPhotoMessageComposer, PurchasePhotoMessageComposer } from "@nitrots/nitro-renderer"
+import { FC, useEffect, useMemo, useState } from "react"
+import { CreateLinkEvent, GetConfiguration, GetRoomEngine, LocalizeText, SendMessageComposer } from "../../../api"
+import { Button, LayoutCurrencyIcon, LayoutImage, NitroCardContentView, NitroCardHeaderView, NitroCardView } from "../../../common"
+import { useMessageEvent } from "../../../hooks"
 
 export interface CameraWidgetCheckoutViewProps
 {
@@ -14,146 +14,147 @@ export interface CameraWidgetCheckoutViewProps
 
 export const CameraWidgetCheckoutView: FC<CameraWidgetCheckoutViewProps> = props =>
 {
-    const { base64Url = null, onCloseClick = null, onCancelClick = null, price = null } = props;
-    const [ pictureUrl, setPictureUrl ] = useState<string>(null);
-    const [ publishUrl, setPublishUrl ] = useState<string>(null);
-    const [ picturesBought, setPicturesBought ] = useState(0);
-    const [ wasPicturePublished, setWasPicturePublished ] = useState(false);
-    const [ isWaiting, setIsWaiting ] = useState(false);
-    const [ publishCooldown, setPublishCooldown ] = useState(0);
+    const { base64Url = null, onCloseClick = null, onCancelClick = null, price = null } = props
+    const [ pictureUrl, setPictureUrl ] = useState<string>(null)
+    const [ publishUrl, setPublishUrl ] = useState<string>(null)
+    const [ picturesBought, setPicturesBought ] = useState(0)
+    const [ wasPicturePublished, setWasPicturePublished ] = useState(false)
+    const [ isWaiting, setIsWaiting ] = useState(false)
+    const [ publishCooldown, setPublishCooldown ] = useState(0)
 
-    const publishDisabled = useMemo(() => GetConfiguration<boolean>('camera.publish.disabled', false), []);
+    const publishDisabled = useMemo(() => GetConfiguration<boolean>("camera.publish.disabled", false), [])
 
     useMessageEvent<CameraPurchaseOKMessageEvent>(CameraPurchaseOKMessageEvent, event =>
     {
-        setPicturesBought(value => (value + 1));
-        setIsWaiting(false);
-    });
+        setPicturesBought(value => (value + 1))
+        setIsWaiting(false)
+    })
 
     useMessageEvent<CameraPublishStatusMessageEvent>(CameraPublishStatusMessageEvent, event =>
     {
-        const parser = event.getParser();
+        const parser = event.getParser()
 
-        setPublishUrl(parser.extraDataId);
-        setPublishCooldown(parser.secondsToWait);
-        setWasPicturePublished(parser.ok);
-        setIsWaiting(false);
-    });
+        setPublishUrl(parser.extraDataId)
+        setPublishCooldown(parser.secondsToWait)
+        setWasPicturePublished(parser.ok)
+        setIsWaiting(false)
+    })
 
     useMessageEvent<CameraStorageUrlMessageEvent>(CameraStorageUrlMessageEvent, event =>
     {
-        const parser = event.getParser();
+        const parser = event.getParser()
 
-        setPictureUrl(GetConfiguration<string>('camera.url') + '/' + parser.url);
-    });
+        setPictureUrl(GetConfiguration<string>("camera.url") + "/" + parser.url)
+    })
 
     const processAction = (type: string, value: string | number = null) =>
     {
         switch(type)
         {
-            case 'close':
-                onCloseClick();
-                return;
-            case 'buy':
-                if(isWaiting) return;
+        case "close":
+            onCloseClick()
+            return
+        case "buy":
+            if(isWaiting) return
 
-                setIsWaiting(true);
-                SendMessageComposer(new PurchasePhotoMessageComposer(''));
-                return;
-            case 'publish':
-                if(isWaiting) return;
+            setIsWaiting(true)
+            SendMessageComposer(new PurchasePhotoMessageComposer(""))
+            return
+        case "publish":
+            if(isWaiting) return
 
-                setIsWaiting(true);
-                SendMessageComposer(new PublishPhotoMessageComposer());
-                return;
-            case 'cancel':
-                onCancelClick();
-                return;
+            setIsWaiting(true)
+            SendMessageComposer(new PublishPhotoMessageComposer())
+            return
+        case "cancel":
+            onCancelClick()
+            return
         }
     }
 
     useEffect(() =>
     {
-        if(!base64Url) return;
+        if(!base64Url) return
 
-        GetRoomEngine().saveBase64AsScreenshot(base64Url);
-    }, [ base64Url ]);
+        GetRoomEngine().saveBase64AsScreenshot(base64Url)
+    }, [ base64Url ])
 
-    if(!price) return null;
+    if(!price) return null
 
     return (
-        <NitroCardView className="nitro-camera-checkout" theme="primary-slim">
-            <NitroCardHeaderView headerText={ LocalizeText('camera.confirm_phase.title') } onCloseClick={ event => processAction('close') } />
+        <NitroCardView className="illumina-camera-checkout w-[340px]">
+            <NitroCardHeaderView headerText={ LocalizeText("camera.confirm_phase.title") } onCloseClick={ event => processAction("close") } />
             <NitroCardContentView>
-                <Flex center>
+                <div className="flex size-80 items-center justify-center bg-[#CCCCCC] dark:bg-[#33312b]">
                     { (pictureUrl && pictureUrl.length) &&
-                        <LayoutImage className="picture-preview border" imageUrl={ pictureUrl } /> }
+                        <LayoutImage className="size-full" imageUrl={ pictureUrl } /> }
                     { (!pictureUrl || !pictureUrl.length) &&
-                        <Flex center className="picture-preview border">
-                            <Text bold>{ LocalizeText('camera.loading') }</Text>
-                        </Flex> }
-                </Flex>
-                <Flex justifyContent="between" alignItems="center" className="bg-muted rounded p-2">
-                    <Column size={ publishDisabled ? 10 : 6 } gap={ 1 }>
-                        <Text bold>
-                            { LocalizeText('camera.purchase.header') }
-                        </Text>
-                        { ((price.credits > 0) || (price.duckets > 0)) &&
-                            <Flex gap={ 1 }>
-                                <Text>{ LocalizeText('catalog.purchase.confirmation.dialog.cost') }</Text>
-                                { (price.credits > 0) &&
-                                    <Flex gap={ 1 }>
-                                        <Text bold>{ price.credits }</Text>
-                                        <LayoutCurrencyIcon type={ -1 } />
-                                    </Flex> }
-                                { (price.duckets > 0) &&
-                                    <Flex gap={ 1 }>
-                                        <Text bold>{ price.duckets }</Text>
-                                        <LayoutCurrencyIcon type={ 5 } />
-                                    </Flex> }
-                            </Flex> }
+                        <p className="text-[8px]xl font-semibold !leading-3 text-white [text-shadow:_0_1px_0_#CCCCCC]">{ LocalizeText("camera.loading") }</p> }
+                </div>
+                { pictureUrl && !wasPicturePublished && <p className="my-2.5 text-sm">{ LocalizeText("camera.confirm_phase.info") }</p> }
+                { !pictureUrl && <p className="my-2.5 text-sm">{ LocalizeText("camera.purchase.pleasewait") }</p> }
+                { wasPicturePublished && <p className="my-2.5 text-sm">{ LocalizeText("camera.publish.successful") }</p> }
+                <div className="flex flex-col">
+                    <div className="illumina-card-item flex w-full flex-col px-2.5 py-2">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="mb-1 text-sm font-semibold [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]">
+                                    { LocalizeText("camera.purchase.header") }
+                                </p>
+                                { ((price.credits > 0) || (price.duckets > 0)) &&
+                                    <div className="flex items-center">
+                                        <p className="text-sm">{ LocalizeText("catalog.purchase.confirmation.dialog.cost") }&nbsp;</p>
+                                        { (price.credits > 0) &&
+                                            <div className="flex items-center gap-[3px]">
+                                                <p className="text-sm font-semibold">{ price.credits }</p>
+                                                <LayoutCurrencyIcon type="big" currency={ -1 } />
+                                            </div> }
+                                        { (price.duckets > 0) &&
+                                            <div className="flex items-center gap-[3px]">
+                                                <p className="text-sm font-semibold">{ price.duckets }</p>
+                                                <LayoutCurrencyIcon type="big" currency={ 5 } />
+                                            </div> }
+                                    </div> }
+                            </div>
+                            <Button variant="success" disabled={ isWaiting } onClick={ event => processAction("buy") }>{ LocalizeText(!picturesBought ? "buy" : "camera.buy.another.button.text") }</Button>
+                        </div>
                         { (picturesBought > 0) &&
-                            <Text>
-                                <Text bold>{ LocalizeText('camera.purchase.count.info') }</Text> { picturesBought }
-                                <u className="ms-1 cursor-pointer" onClick={ () => CreateLinkEvent('inventory/toggle') }>{ LocalizeText('camera.open.inventory') }</u>
-                            </Text> }
-                    </Column>
-                    <Flex alignItems="center">
-                        <Button variant="success" disabled={ isWaiting } onClick={ event => processAction('buy') }>{ LocalizeText(!picturesBought ? 'buy' : 'camera.buy.another.button.text') }</Button>
-                    </Flex>
-                </Flex>
+                            <div className="mt-1.5">
+                                <p className="text-sm !leading-3">
+                                    <b className="font-semibold">{ LocalizeText("camera.purchase.count.info") }</b> { picturesBought } <u className="ms-1 cursor-pointer" onClick={ () => CreateLinkEvent("inventory/toggle") }>{ LocalizeText("camera.open.inventory") }</u>
+                                </p>
+                            </div> }
+                    </div>
+                </div>
                 { !publishDisabled &&
-                <Flex justifyContent="between" alignItems="center" className="bg-muted rounded p-2">
-                    <Column gap={ 1 }>
-                        <Text bold>
-                            { LocalizeText(wasPicturePublished ? 'camera.publish.successful' : 'camera.publish.explanation') }
-                        </Text>
-                        <Text>
-                            { LocalizeText(wasPicturePublished ? 'camera.publish.success.short.info' : 'camera.publish.detailed.explanation') }
-                        </Text>
-                        { wasPicturePublished && <a href={ publishUrl } rel="noreferrer" target="_blank">{ LocalizeText('camera.link.to.published') }</a> }
-                        { !wasPicturePublished && (price.publishDucketPrice > 0) &&
-                            <Flex gap={ 1 }>
-                                <Text>{ LocalizeText('catalog.purchase.confirmation.dialog.cost') }</Text>
-                                <Flex gap={ 1 }>
-                                    <Text bold>{ price.publishDucketPrice }</Text>
-                                    <LayoutCurrencyIcon type={ 5 } />
-                                </Flex>
-                            </Flex> }
-                        { (publishCooldown > 0) && <div className="mt-1 text-center fw-bold">{ LocalizeText('camera.publish.wait', [ 'minutes' ], [ Math.ceil( publishCooldown / 60).toString() ]) }</div> }
-                    </Column>
-                    { !wasPicturePublished &&
-                        <Flex className="d-flex align-items-end">
-                            <Button variant="success" disabled={ (isWaiting || (publishCooldown > 0)) } onClick={ event => processAction('publish') }>
-                                { LocalizeText('camera.publish.button.text') }
-                            </Button>
-                        </Flex> }
-                </Flex> }
-                <Text center>{ LocalizeText('camera.warning.disclaimer') }</Text>
-                <Flex justifyContent="end">
-                    <Button onClick={ event => processAction('cancel') }>{ LocalizeText('generic.cancel') }</Button>
-                </Flex>
+                    <div className="mt-1.5 flex flex-col">
+                        <div className="illumina-card-item flex w-full items-end justify-between px-2.5 py-2">
+                            <div className="max-w-[170px]">
+                                <p className="mb-1 text-sm font-semibold [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]">
+                                    { LocalizeText("camera.publish.explanation") }
+                                </p>
+                                <p className="mb-2 text-sm">
+                                    { LocalizeText("camera.publish.detailed.explanation") }
+                                </p>
+                                { wasPicturePublished && <a className="text-sm underline" href={ publishUrl } rel="noreferrer" target="_blank">{ LocalizeText("camera.link.to.published") }</a> }
+                                { !wasPicturePublished &&
+                                    <div className="flex items-center">
+                                        <p className="text-sm">{ LocalizeText("catalog.purchase.confirmation.dialog.cost") }&nbsp;</p>
+                                        <div className="flex items-center gap-[3px]">
+                                            <p className="text-sm font-semibold">{ price.publishDucketPrice }</p>
+                                            <LayoutCurrencyIcon type="big" currency={ 5 } />
+                                        </div>
+                                    </div> }
+                            </div>
+                            { !wasPicturePublished &&
+                                <Button variant="success" disabled={ (isWaiting || (publishCooldown > 0)) } onClick={ event => processAction("publish") }>
+                                    { LocalizeText("camera.publish.button.text") }
+                                </Button> }
+                        </div>
+                    </div> }
+                <p className="mb-1.5 mt-2 text-sm">{ LocalizeText("camera.warning.disclaimer") }</p>
+                <Button className="!w-fit" onClick={ event => processAction("cancel") }>{ LocalizeText("generic.close") }</Button>
             </NitroCardContentView>
         </NitroCardView>
-    );
+    )
 }

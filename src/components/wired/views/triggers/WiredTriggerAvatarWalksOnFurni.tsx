@@ -1,8 +1,8 @@
-import { FC } from 'react';
-import { WiredFurniType } from '../../../../api';
-import { WiredTriggerBaseView } from './WiredTriggerBaseView';
+import { FC } from "react"
+import { WiredFurniType } from "../../../../api"
+import { WiredTriggerBaseView } from "./WiredTriggerBaseView"
 
 export const WiredTriggerAvatarWalksOnFurniView: FC<{}> = props =>
 {
-    return <WiredTriggerBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_BY_ID_OR_BY_TYPE } hasSpecialInput={ false } save={ null } />;
+    return <WiredTriggerBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_BY_ID_OR_BY_TYPE } hasSpecialInput={ false } save={ null } />
 }

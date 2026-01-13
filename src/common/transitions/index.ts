@@ -1,3 +1,3 @@
-export * from './TransitionAnimation';
-export * from './TransitionAnimationStyles';
-export * from './TransitionAnimationTypes';
+export * from "./TransitionAnimation"
+export * from "./TransitionAnimationStyles"
+export * from "./TransitionAnimationTypes"

@@ -1,4 +1,4 @@
-import { NitroTexture } from '@nitrots/nitro-renderer';
+import { NitroTexture } from "@nitrots/nitro-renderer"
 
 export class CameraPicture
 {

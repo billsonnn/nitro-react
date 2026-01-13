@@ -1,66 +1,68 @@
-import { FC, useEffect, useState } from 'react';
-import { LocalizeBadgeName, LocalizeText, UnseenItemCategory } from '../../../../api';
-import { AutoGrid, Button, Column, Flex, Grid, LayoutBadgeImageView, Text } from '../../../../common';
-import { useInventoryBadges, useInventoryUnseenTracker } from '../../../../hooks';
-import { InventoryBadgeItemView } from './InventoryBadgeItemView';
+import { FC, useEffect, useState } from "react"
+import { LocalizeBadgeName, LocalizeText, UnseenItemCategory } from "../../../../api"
+import { Button, LayoutBadgeImageView } from "../../../../common"
+import { useInventoryBadges, useInventoryUnseenTracker } from "../../../../hooks"
+import { InventoryBadgeItemView } from "./InventoryBadgeItemView"
 
 export const InventoryBadgeView: FC<{}> = props =>
 {
-    const [ isVisible, setIsVisible ] = useState(false);
-    const { badgeCodes = [], activeBadgeCodes = [], selectedBadgeCode = null, isWearingBadge = null, canWearBadges = null, toggleBadge = null, getBadgeId = null, activate = null, deactivate = null } = useInventoryBadges();
-    const { isUnseen = null, removeUnseen = null } = useInventoryUnseenTracker();
+    const [ isVisible, setIsVisible ] = useState(false)
+    const { badgeCodes = [], activeBadgeCodes = [], selectedBadgeCode = null, isWearingBadge = null, canWearBadges = null, toggleBadge = null, getBadgeId = null, activate = null, deactivate = null } = useInventoryBadges()
+    const { isUnseen = null, removeUnseen = null } = useInventoryUnseenTracker()
 
     useEffect(() =>
     {
-        if(!selectedBadgeCode || !isUnseen(UnseenItemCategory.BADGE, getBadgeId(selectedBadgeCode))) return;
+        if(!selectedBadgeCode || !isUnseen(UnseenItemCategory.BADGE, getBadgeId(selectedBadgeCode))) return
 
-        removeUnseen(UnseenItemCategory.BADGE, getBadgeId(selectedBadgeCode));
-    }, [ selectedBadgeCode, isUnseen, removeUnseen, getBadgeId ]);
-
-    useEffect(() =>
-    {
-        if(!isVisible) return;
-
-        const id = activate();
-
-        return () => deactivate(id);
-    }, [ isVisible, activate, deactivate ]);
+        removeUnseen(UnseenItemCategory.BADGE, getBadgeId(selectedBadgeCode))
+    }, [ selectedBadgeCode, isUnseen, removeUnseen, getBadgeId ])
 
     useEffect(() =>
     {
-        setIsVisible(true);
+        if(!isVisible) return
 
-        return () => setIsVisible(false);
-    }, []);
+        const id = activate()
+
+        return () => deactivate(id)
+    }, [ isVisible, activate, deactivate ])
+
+    useEffect(() =>
+    {
+        setIsVisible(true)
+
+        return () => setIsVisible(false)
+    }, [])
 
     return (
-        <Grid>
-            <Column size={ 7 } overflow="hidden">
-                <AutoGrid columnCount={ 4 }>
-                    { badgeCodes && (badgeCodes.length > 0) && badgeCodes.map((badgeCode, index) =>
-                    {
-                        if(isWearingBadge(badgeCode)) return null;
+        <div className="flex h-[270px] w-full gap-2.5">
+            <div className="relative flex flex-col justify-between">
+                <div className="mb-2 h-full">
+                    <div className="illumina-scrollbar grid size-full !grid-cols-[repeat(5,minmax(48px,0fr))] !grid-rows-[repeat(auto-fit,minmax(43px,0fr))] !gap-1.5 overflow-y-auto overflow-x-hidden pt-0.5">
+                        { badgeCodes && (badgeCodes.length > 0) && badgeCodes.map((badgeCode, index) =>
+                        {
+                            if(isWearingBadge(badgeCode)) return null
 
-                        return <InventoryBadgeItemView key={ index } badgeCode={ badgeCode } />
-                    }) }
-                </AutoGrid>
-            </Column>
-            <Column className="justify-content-between" size={ 5 } overflow="auto">
-                <Column overflow="hidden" gap={ 2 }>
-                    <Text>{ LocalizeText('inventory.badges.activebadges') }</Text>
-                    <AutoGrid columnCount={ 3 }>
+                            return <InventoryBadgeItemView key={ index } badgeCode={ badgeCode } />
+                        }) }
+                    </div>
+                </div>
+            </div>
+            <div className="flex w-full flex-col justify-between">
+                <div className="relative flex flex-col">
+                    <p className="text-sm [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]">{ LocalizeText("inventory.badges.activebadges") }</p>
+                    <div className="grid !grid-cols-3 !grid-rows-[repeat(auto-fit,minmax(48px,0fr))] !gap-1.5">
                         { activeBadgeCodes && (activeBadgeCodes.length > 0) && activeBadgeCodes.map((badgeCode, index) => <InventoryBadgeItemView key={ index } badgeCode={ badgeCode } />) }
-                    </AutoGrid>
-                </Column>
+                    </div>
+                </div>
                 { !!selectedBadgeCode &&
-                    <Column grow justifyContent="end" gap={ 2 }>
-                        <Flex alignItems="center" gap={ 2 }>
+                    <div className="flex w-full flex-col">
+                        <div className="mb-1.5 flex gap-2.5">
                             <LayoutBadgeImageView shrink badgeCode={ selectedBadgeCode } />
-                            <Text>{ LocalizeBadgeName(selectedBadgeCode) }</Text>
-                        </Flex>
-                        <Button variant={ (isWearingBadge(selectedBadgeCode) ? 'danger' : 'success') } disabled={ !isWearingBadge(selectedBadgeCode) && !canWearBadges() } onClick={ event => toggleBadge(selectedBadgeCode) }>{ LocalizeText(isWearingBadge(selectedBadgeCode) ? 'inventory.badges.clearbadge' : 'inventory.badges.wearbadge') }</Button>
-                    </Column> }
-            </Column>
-        </Grid>
-    );
+                            <p className="text-sm font-semibold [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]">{ LocalizeBadgeName(selectedBadgeCode) }</p>
+                        </div>
+                        <Button variant="primary" disabled={ !isWearingBadge(selectedBadgeCode) && !canWearBadges() } onClick={ event => toggleBadge(selectedBadgeCode) }>{ LocalizeText(isWearingBadge(selectedBadgeCode) ? "inventory.badges.clearbadge" : "inventory.badges.wearbadge") }</Button>
+                    </div> }
+            </div>
+        </div>
+    )
 }

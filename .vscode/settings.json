@@ -1,32 +1,15 @@
 {
     "typescript.tsdk": "node_modules\\typescript\\lib",
     "typescript.preferences.importModuleSpecifier": "relative",
-    "typescript.preferences.quoteStyle": "single",
-    "typescript.format.placeOpenBraceOnNewLineForControlBlocks": true,
-    "typescript.format.placeOpenBraceOnNewLineForFunctions": true,
-    "editor.wordWrap": "on",
+    "typescript.preferences.quoteStyle": "double",
     "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true,
-        "source.fixAll.sortJSON": false,
-        "source.organizeImports": true
+        "source.fixAll.eslint": "explicit",
+        "source.organizeImports": "explicit"
     },
-    "editor.formatOnSave": false,
-    "git.ignoreLimitWarning": true,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true,
     "files.eol": "\n",
-    "files.insertFinalNewline": true,
-    "files.trimFinalNewlines": true,
     "emmet.showExpandedAbbreviation": "never",
-    "eslint.format.enable": true,
-    "eslint.validate": [
-        "javascript",
-        "typescript"
-    ],
-    "eslint.workingDirectories": [
-        {
-            "pattern": "./src"
-        }
-    ],
     "javascript.format.enable": false,
-    "thunder-client.saveToWorkspace": false,
-    "thunder-client.workspaceRelativePath": "."
 }

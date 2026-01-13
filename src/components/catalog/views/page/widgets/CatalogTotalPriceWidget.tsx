@@ -1,20 +1,34 @@
-import { FC } from 'react';
-import { Column, ColumnProps } from '../../../../../common';
-import { useCatalog } from '../../../../../hooks';
-import { CatalogPriceDisplayWidgetView } from './CatalogPriceDisplayWidgetView';
+import { FC, useMemo } from "react"
+import { LocalizeText, Offer } from "../../../../../api"
+import { useCatalog } from "../../../../../hooks"
+import { CatalogPriceDisplayWidgetView } from "./CatalogPriceDisplayWidgetView"
 
-interface CatalogSimplePriceWidgetViewProps extends ColumnProps
+export const CatalogTotalPriceWidget: FC = () =>
 {
+    const { currentOffer = null, purchaseOptions = null } = useCatalog()
 
-}
-export const CatalogTotalPriceWidget: FC<CatalogSimplePriceWidgetViewProps> = props =>
-{
-    const { gap = 1, ...rest } = props;
-    const { currentOffer = null } = useCatalog();
+    const isLimitedSoldOut = useMemo(() =>
+    {
+        if(!currentOffer) return false
+        
+        if(purchaseOptions.extraParamRequired && (!purchaseOptions.extraData || !purchaseOptions.extraData.length)) return false
+
+        if(currentOffer.pricingModel === Offer.PRICING_MODEL_SINGLE)
+        {
+            const product = currentOffer.product
+
+            if(product && product.isUniqueLimitedItem) return !product.uniqueLimitedItemsLeft
+        }
+
+        return false
+    }, [ currentOffer, purchaseOptions ])
+
+    if(!currentOffer || isLimitedSoldOut || !currentOffer.bundlePurchaseAllowed) return null
 
     return (
-        <Column gap={ gap } { ...rest }>
+        <div className="flex w-[152px] items-center justify-between">
+            <p className="text-sm text-[#6A6A6A]">{ LocalizeText("catalog.bundlewidget.price") }</p>
             <CatalogPriceDisplayWidgetView offer={ currentOffer } />
-        </Column>
-    );
+        </div>
+    )
 }

@@ -1,20 +1,20 @@
-import { CatalogEvent } from '.';
-import { FurnitureItem } from '../../api';
+import { CatalogEvent } from "."
+import { FurnitureItem } from "../../api"
 
 export class CatalogPostMarketplaceOfferEvent extends CatalogEvent
 {
-    public static readonly POST_MARKETPLACE = 'CE_POST_MARKETPLACE';
+    public static readonly POST_MARKETPLACE = "CE_POST_MARKETPLACE"
     
-    private _item: FurnitureItem;
+    private _item: FurnitureItem
 
     constructor(item: FurnitureItem)
     {
-        super(CatalogPostMarketplaceOfferEvent.POST_MARKETPLACE);
-        this._item = item;
+        super(CatalogPostMarketplaceOfferEvent.POST_MARKETPLACE)
+        this._item = item
     }
 
     public get item(): FurnitureItem
     {
-        return this._item;
+        return this._item
     }
 }

@@ -1,2 +1,2 @@
-export * from './AchievementsCategoryListItemView';
-export * from './AchievementsCategoryListView';
+export * from "./AchievementsCategoryListItemView"
+export * from "./AchievementsCategoryListView"

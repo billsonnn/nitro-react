@@ -1,1 +1,1 @@
-export * from './useWired';
+export * from "./useWired"

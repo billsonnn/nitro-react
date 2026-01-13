@@ -1,29 +1,23 @@
-import { FC } from 'react';
-import { CreateLinkEvent, LocalizeText } from '../../../../../api';
-import { Base } from '../../../../../common/Base';
-import { Button } from '../../../../../common/Button';
-import { Column } from '../../../../../common/Column';
-import { Grid } from '../../../../../common/Grid';
-import { LayoutImage } from '../../../../../common/layout/LayoutImage';
-import { CatalogLayoutProps } from './CatalogLayout.types';
+import { FC } from "react"
+import { CreateLinkEvent, LocalizeText } from "../../../../../api"
+import { Button } from "../../../../../common/Button"
+import { CatalogLayoutProps } from "./CatalogLayout.types"
 
 export const CatalogLayouGuildFrontpageView: FC<CatalogLayoutProps> = props =>
 {
-    const { page = null } = props;
+    const { page = null } = props
     
     return (
-        <Grid>
-            <Column size={ 7 } overflow="hidden" className="bg-muted rounded p-2 text-black">
-                <Base dangerouslySetInnerHTML={ { __html: page.localization.getText(2) } } />
-                <Base overflow="auto" dangerouslySetInnerHTML={ { __html: page.localization.getText(0) } } />
-                <Base dangerouslySetInnerHTML={ { __html: page.localization.getText(1) } } />
-            </Column>
-            <Column center size={ 5 } overflow="hidden">
-                <LayoutImage imageUrl={ page.localization.getImage(1) } />
-                <Button onClick={ () => CreateLinkEvent('groups/create') }>
-                    { LocalizeText('catalog.start.guild.purchase.button') }
+        <>
+            <div className="pt-3">
+                <p className="mb-6 font-semibold [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]" dangerouslySetInnerHTML={ { __html: page.localization.getText(2) } } />
+                <p className="text-sm" dangerouslySetInnerHTML={ { __html: page.localization.getText(1) } } />
+            </div>
+            <div className="mt-[114px] flex justify-center">
+                <Button className="!h-8 !px-6 !text-[13px]" onClick={ () => CreateLinkEvent("groups/create") }>
+                    { LocalizeText("catalog.start.guild.purchase.button") }
                 </Button>
-            </Column>
-        </Grid>
-    );
+            </div>
+        </>
+    )
 }

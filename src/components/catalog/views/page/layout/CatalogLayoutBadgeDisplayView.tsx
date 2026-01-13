@@ -1,54 +1,47 @@
-import { FC } from 'react';
-import { LocalizeText } from '../../../../../api';
-import { Base, Column, Flex, Grid, Text } from '../../../../../common';
-import { useCatalog } from '../../../../../hooks';
-import { CatalogBadgeSelectorWidgetView } from '../widgets/CatalogBadgeSelectorWidgetView';
-import { CatalogFirstProductSelectorWidgetView } from '../widgets/CatalogFirstProductSelectorWidgetView';
-import { CatalogItemGridWidgetView } from '../widgets/CatalogItemGridWidgetView';
-import { CatalogLimitedItemWidgetView } from '../widgets/CatalogLimitedItemWidgetView';
-import { CatalogPurchaseWidgetView } from '../widgets/CatalogPurchaseWidgetView';
-import { CatalogTotalPriceWidget } from '../widgets/CatalogTotalPriceWidget';
-import { CatalogViewProductWidgetView } from '../widgets/CatalogViewProductWidgetView';
-import { CatalogLayoutProps } from './CatalogLayout.types';
+import { FC } from "react"
+import { LayoutImage } from "../../../../../common"
+import { useCatalog } from "../../../../../hooks"
+import { CatalogBadgeSelectorWidgetView } from "../widgets/CatalogBadgeSelectorWidgetView"
+import { CatalogFirstProductSelectorWidgetView } from "../widgets/CatalogFirstProductSelectorWidgetView"
+import { CatalogItemGridWidgetView } from "../widgets/CatalogItemGridWidgetView"
+import { CatalogPurchaseWidgetView } from "../widgets/CatalogPurchaseWidgetView"
+import { CatalogSimplePriceWidgetView } from "../widgets/CatalogSimplePriceWidgetView"
+import { CatalogViewProductWidgetView } from "../widgets/CatalogViewProductWidgetView"
+import { CatalogLayoutProps } from "./CatalogLayout.types"
 
 export const CatalogLayoutBadgeDisplayView: FC<CatalogLayoutProps> = props =>
 {
-    const { page = null } = props;
-    const { currentOffer = null } = useCatalog();
+    const { page = null } = props
+    const { currentOffer = null } = useCatalog()
 
     return (
         <>
             <CatalogFirstProductSelectorWidgetView />
-            <Grid>
-                <Column size={ 7 } overflow="hidden">
-                    <CatalogItemGridWidgetView shrink />
-                    <Column gap={ 1 } overflow="hidden">
-                        <Text truncate shrink fontWeight="bold">{ LocalizeText('catalog_selectbadge') }</Text>
-                        <CatalogBadgeSelectorWidgetView />
-                    </Column>
-                </Column>
-                <Column center={ !currentOffer } size={ 5 } overflow="hidden">
+            <div className="relative flex h-full flex-col">
+                <div className="flex-1">
                     { !currentOffer &&
-                        <>
-                            { !!page.localization.getImage(1) && <img alt="" src={ page.localization.getImage(1) } /> }
-                            <Text center dangerouslySetInnerHTML={ { __html: page.localization.getText(0) } } />
-                        </> }
-                    { currentOffer &&
-                        <>
-                            <Base position="relative" overflow="hidden">
-                                <CatalogViewProductWidgetView />
-                            </Base>
-                            <Column grow gap={ 1 }>
-                                <CatalogLimitedItemWidgetView fullWidth />
-                                <Text grow truncate>{ currentOffer.localizationName }</Text>
-                                <Flex justifyContent="end">
-                                    <CatalogTotalPriceWidget alignItems="end" />
-                                </Flex>
-                                <CatalogPurchaseWidgetView />
-                            </Column>
-                        </> }
-                </Column>
-            </Grid>
+                        <div className="flex h-full flex-col items-center justify-center">
+                            { !!page.localization.getImage(1) && 
+                                <LayoutImage imageUrl={ page.localization.getImage(1) } /> }
+                        </div> }
+                    { currentOffer && <div className="relative h-[246px]">
+                        <CatalogViewProductWidgetView />
+                        <p className="absolute left-1.5 top-1.5 text-sm font-semibold [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]">{ currentOffer.localizationName }</p>
+                        <CatalogSimplePriceWidgetView className="absolute bottom-1.5 right-1.5 !px-0" />
+                    </div> }
+                    <div className="mt-[15px] flex h-[175px] justify-between gap-1.5">
+                        <div className="illumina-card h-full w-1/2 overflow-hidden p-1">
+                            <CatalogItemGridWidgetView className="!grid-cols-3" />
+                        </div>
+                        <div className="illumina-card h-full w-1/2 overflow-hidden p-1">
+                            <CatalogBadgeSelectorWidgetView />
+                        </div>
+                    </div>
+                </div>
+                <div className="mt-2 flex h-[30px] flex-col justify-end">
+                    <CatalogPurchaseWidgetView />
+                </div>
+            </div>
         </>
-    );
+    )
 }

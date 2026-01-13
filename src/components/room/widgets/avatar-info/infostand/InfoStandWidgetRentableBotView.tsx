@@ -1,8 +1,8 @@
-import { BotRemoveComposer } from '@nitrots/nitro-renderer';
-import { FC, useMemo } from 'react';
-import { FaTimes } from 'react-icons/fa';
-import { AvatarInfoRentableBot, BotSkillsEnum, LocalizeText, SendMessageComposer } from '../../../../../api';
-import { Button, Column, Flex, LayoutAvatarImageView, LayoutBadgeImageView, Text, UserProfileIconView } from '../../../../../common';
+import { BotRemoveComposer } from "@nitrots/nitro-renderer"
+import { FC, useMemo } from "react"
+import { AvatarInfoRentableBot, BotSkillsEnum, LocalizeText, SendMessageComposer } from "../../../../../api"
+import { Button, LayoutAvatarImageView, LayoutBadgeImageView } from "../../../../../common"
+import { LayoutTimesView } from "../../../../../common/layout/LayoutTimesView"
 
 interface InfoStandWidgetRentableBotViewProps
 {
@@ -12,73 +12,55 @@ interface InfoStandWidgetRentableBotViewProps
 
 export const InfoStandWidgetRentableBotView: FC<InfoStandWidgetRentableBotViewProps> = props =>
 {
-    const { avatarInfo = null, onClose = null } = props;
+    const { avatarInfo = null, onClose = null } = props
 
     const canPickup = useMemo(() =>
     {
-        if(avatarInfo.botSkills.indexOf(BotSkillsEnum.NO_PICK_UP) >= 0) return false;
+        if(avatarInfo.botSkills.indexOf(BotSkillsEnum.NO_PICK_UP) >= 0) return false
 
-        if(!avatarInfo.amIOwner && !avatarInfo.amIAnyRoomController) return false;
+        if(!avatarInfo.amIOwner && !avatarInfo.amIAnyRoomController) return false
 
-        return true;
-    }, [ avatarInfo ]);
+        return true
+    }, [ avatarInfo ])
 
-    const pickupBot = () => SendMessageComposer(new BotRemoveComposer(avatarInfo.webID));
+    const pickupBot = () => SendMessageComposer(new BotRemoveComposer(avatarInfo.webID))
     
-    if(!avatarInfo) return;
+    if(!avatarInfo) return
 
     return (
-        <Column gap={ 1 }>
-            <Column className="nitro-infostand rounded">
-                <Column overflow="visible" className="container-fluid content-area" gap={ 1 }>
-                    <Column gap={ 1 }>
-                        <Flex alignItems="center" justifyContent="between" gap={ 1 }>
-                            <Text variant="white" small wrap>{ avatarInfo.name }</Text>
-                            <FaTimes className="cursor-pointer fa-icon" onClick={ onClose } />
-                        </Flex>
-                        <hr className="m-0" />
-                    </Column>
-                    <Column gap={ 1 }>
-                        <Flex gap={ 1 }>
-                            <Column fullWidth className="body-image bot">
-                                <LayoutAvatarImageView figure={ avatarInfo.figure } direction={ 4 } />
-                            </Column>
-                            <Column grow center gap={ 0 }>
-                                { (avatarInfo.badges.length > 0) && avatarInfo.badges.map(result =>
-                                {
-                                    return <LayoutBadgeImageView key={ result } badgeCode={ result } showInfo={ true } />;
-                                }) }
-                            </Column>
-                        </Flex>
-                        <hr className="m-0" />
-                    </Column>
-                    <Column gap={ 1 }>
-                        <Flex alignItems="center" className="bg-light-dark rounded py-1 px-2">
-                            <Text fullWidth wrap textBreak variant="white" small className="motto-content">{ avatarInfo.motto }</Text>
-                        </Flex>
-                        <hr className="m-0" />
-                    </Column>
-                    <Column gap={ 1 }>
-                        <Flex alignItems="center" gap={ 1 }>
-                            <UserProfileIconView userId={ avatarInfo.ownerId } />
-                            <Text variant="white" small wrap>
-                                { LocalizeText('infostand.text.botowner', [ 'name' ], [ avatarInfo.ownerName ]) }
-                            </Text>
-                        </Flex>
-                        { (avatarInfo.carryItem > 0) &&
-                            <>
-                                <hr className="m-0" />
-                                <Text variant="white" small wrap>
-                                    { LocalizeText('infostand.text.handitem', [ 'item' ], [ LocalizeText('handitem' + avatarInfo.carryItem) ]) }
-                                </Text>
-                            </> }
-                    </Column>
-                </Column>
-            </Column>
+        <div className="relative flex flex-col items-end">
+            <div className="illumina-card relative w-[206px] px-2.5 py-1.5">
+                <div className="flex items-end justify-between">
+                    <p className="text-[13px] font-semibold !leading-3 [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]">{ avatarInfo.name }</p>
+                    <LayoutTimesView onClick={ onClose } />
+                </div>
+                <div className="mb-[7px] mt-[3px] h-0.5 w-full border-b border-white bg-[#CCCCCC] dark:border-[#36322C] dark:bg-black" />
+                <div className="flex gap-[9px]">
+                    <div className="illumina-previewer relative flex w-[74px] items-center justify-center">
+                        <LayoutAvatarImageView className="z-10" figure={ avatarInfo.figure } direction={ 2 } />
+                        <div className="absolute left-0 top-0 size-full bg-[url('/client-assets/images/infostand/bot-bg.png?v=2451779')] bg-center bg-no-repeat" />
+                    </div>
+                    <div className="flex w-full items-center justify-center">
+                        { (avatarInfo.badges.length > 0) && avatarInfo.badges.map((result, index) => {
+                            return <div key={ index } className="illumina-card-item badge-image relative flex size-12 cursor-pointer items-center justify-center bg-center bg-no-repeat">
+                                <LayoutBadgeImageView key={ result } badgeCode={ result } showInfo={ false } />
+                            </div>
+                        })}
+                    </div>
+                </div>
+                <div className="my-1 h-0.5 w-full border-b border-white bg-[#CCCCCC] dark:border-[#36322C] dark:bg-black" />
+                <p className="size-full break-words py-1 text-[13px] !leading-4 [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]">{ avatarInfo.motto }</p>
+                <div className="mb-[7px] mt-1 h-0.5 w-full border-b border-white bg-[#CCCCCC] dark:border-[#36322C] dark:bg-black" />
+                <div className="mb-[9px]">
+                    <p className="text-[13px] !leading-3 [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]">
+                        { LocalizeText("infostand.text.botowner", [ "name" ], [ avatarInfo.ownerName ]) }
+                    </p>
+                </div>
+            </div>
             { canPickup &&
-                <Flex justifyContent="end">
-                    <Button variant="dark" onClick={ pickupBot }>{ LocalizeText('infostand.button.pickup') }</Button>
-                </Flex> }
-        </Column>
-    );
+                <div className="mt-1 flex items-center justify-end gap-1">
+                    <Button variant="primary" className="!px-2" onClick={ pickupBot }>{ LocalizeText("infostand.button.pickup") }</Button>
+                </div> }
+        </div>
+    )
 }

@@ -1,4 +1,4 @@
 export class NotificationConfirmType
 {
-    public static DEFAULT: string = 'default';
+    public static DEFAULT: string = "default"
 }

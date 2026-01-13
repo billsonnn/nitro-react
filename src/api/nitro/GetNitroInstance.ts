@@ -1,6 +1,6 @@
-import { INitro, Nitro } from '@nitrots/nitro-renderer';
+import { INitro, Nitro } from "@nitrots/nitro-renderer"
 
 export function GetNitroInstance(): INitro
 {
-    return Nitro.instance;
+    return Nitro.instance
 }

@@ -1,16 +1,16 @@
-import { HabboWebTools } from '@nitrots/nitro-renderer';
-import { CreateLinkEvent } from './CreateLinkEvent';
+import { HabboWebTools } from "@nitrots/nitro-renderer"
+import { CreateLinkEvent } from "./CreateLinkEvent"
 
 export const OpenUrl = (url: string) =>
 {
-    if(!url || !url.length) return;
+    if(!url || !url.length) return
     
-    if(url.startsWith('http'))
+    if(url.startsWith("http"))
     {
-        HabboWebTools.openWebPage(url);
+        HabboWebTools.openWebPage(url)
     }
     else
     {
-        CreateLinkEvent(url);
+        CreateLinkEvent(url)
     }
 }

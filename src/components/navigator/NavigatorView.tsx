@@ -1,233 +1,230 @@
-import { ConvertGlobalRoomIdMessageComposer, HabboWebTools, ILinkEventTracker, LegacyExternalInterface, NavigatorInitComposer, NavigatorSearchComposer, RoomSessionEvent } from '@nitrots/nitro-renderer';
-import { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { FaPlus } from 'react-icons/fa';
-import { AddEventLinkTracker, LocalizeText, RemoveLinkEventTracker, SendMessageComposer, TryVisitRoom } from '../../api';
-import { Base, Column, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
-import { useNavigator, useRoomSessionManagerEvent } from '../../hooks';
-import { NavigatorDoorStateView } from './views/NavigatorDoorStateView';
-import { NavigatorRoomCreatorView } from './views/NavigatorRoomCreatorView';
-import { NavigatorRoomInfoView } from './views/NavigatorRoomInfoView';
-import { NavigatorRoomLinkView } from './views/NavigatorRoomLinkView';
-import { NavigatorRoomSettingsView } from './views/room-settings/NavigatorRoomSettingsView';
-import { NavigatorSearchResultView } from './views/search/NavigatorSearchResultView';
-import { NavigatorSearchView } from './views/search/NavigatorSearchView';
+import { ConvertGlobalRoomIdMessageComposer, FindNewFriendsMessageComposer, HabboWebTools, ILinkEventTracker, LegacyExternalInterface, NavigatorInitComposer, NavigatorSearchComposer, RoomSessionEvent } from "@nitrots/nitro-renderer"
+import { FC, useCallback, useEffect, useRef, useState } from "react"
+import { AddEventLinkTracker, GetConfiguration, LocalizeText, RemoveLinkEventTracker, SendMessageComposer, TryVisitRoom } from "../../api"
+import { DraggableWindowPosition, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from "../../common"
+import { useNavigator, useRoomSessionManagerEvent } from "../../hooks"
+import { NavigatorDoorStateView } from "./views/NavigatorDoorStateView"
+import { NavigatorRoomCreatorView } from "./views/NavigatorRoomCreatorView"
+import { NavigatorRoomInfoView } from "./views/NavigatorRoomInfoView"
+import { NavigatorRoomSettingsView } from "./views/room-settings/NavigatorRoomSettingsView"
+import { NavigatorSearchResultView } from "./views/search/NavigatorSearchResultView"
+import { NavigatorSearchView } from "./views/search/NavigatorSearchView"
 
-export const NavigatorView: FC<{}> = props =>
-{
-    const [ isVisible, setIsVisible ] = useState(false);
-    const [ isReady, setIsReady ] = useState(false);
-    const [ isCreatorOpen, setCreatorOpen ] = useState(false);
-    const [ isRoomInfoOpen, setRoomInfoOpen ] = useState(false);
-    const [ isRoomLinkOpen, setRoomLinkOpen ] = useState(false);
-    const [ isLoading, setIsLoading ] = useState(false);
-    const [ needsInit, setNeedsInit ] = useState(true);
-    const [ needsSearch, setNeedsSearch ] = useState(false);
-    const { searchResult = null, topLevelContext = null, topLevelContexts = null, navigatorData = null } = useNavigator();
-    const pendingSearch = useRef<{ value: string, code: string }>(null);
-    const elementRef = useRef<HTMLDivElement>();
+export const NavigatorView: FC<{}> = props => {
+    const [ selectedResult, setSelectedResult ] = useState<Number>(0)
+    const [ isVisible, setIsVisible ] = useState(false)
+    const [ isReady, setIsReady ] = useState(false)
+    const [ isCreatorOpen, setCreatorOpen ] = useState(false)
+    const [ isRoomInfoOpen, setRoomInfoOpen ] = useState(false)
+    const [ isRoomLinkOpen, setRoomLinkOpen ] = useState(false)
+    const [ isLoading, setIsLoading ] = useState(false)
+    const [ needsInit, setNeedsInit ] = useState(true)
+    const [ needsSearch, setNeedsSearch ] = useState(false)
+    const { searchResult = null, topLevelContext = null, topLevelContexts = null, navigatorData = null } = useNavigator()
+    const pendingSearch = useRef<{ value: string, code: string }>(null)
+    const elementRef = useRef<HTMLDivElement>()
 
-    useRoomSessionManagerEvent<RoomSessionEvent>(RoomSessionEvent.CREATED, event =>
-    {
-        setIsVisible(false);
-        setCreatorOpen(false);
-    });
+    const navigatorBanner: string = GetConfiguration<string>("illumina.navigator.banner")
 
-    const sendSearch = useCallback((searchValue: string, contextCode: string) =>
-    {
-        setCreatorOpen(false);
+    useRoomSessionManagerEvent<RoomSessionEvent>(RoomSessionEvent.CREATED, event => {
+        setIsVisible(false)
+        setCreatorOpen(false)
+    })
 
-        SendMessageComposer(new NavigatorSearchComposer(contextCode, searchValue));
+    const getResultTitle = (result: any) => {
+        let name = result.code
+        let data = result.data
+        if (!name || !name.length || LocalizeText("navigator.searchcode.title." + name) === ("navigator.searchcode.title." + name)) return data
 
-        setIsLoading(true);
-    }, []);
+        if (name.startsWith("${")) return name.slice(2, (name.length - 1))
 
-    const reloadCurrentSearch = useCallback(() =>
-    {
-        if(!isReady)
-        {
-            setNeedsSearch(true);
+        return ("navigator.searchcode.title." + name)
+    }
 
-            return;
+    const sendSearch = useCallback((searchValue: string, contextCode: string) => {
+        SendMessageComposer(new NavigatorSearchComposer(contextCode, searchValue))
+
+        setIsLoading(true)
+    }, [])
+
+    const reloadCurrentSearch = useCallback(() => {
+        if (!isReady) {
+            setNeedsSearch(true)
+
+            return
         }
 
-        if(pendingSearch.current)
-        {
-            sendSearch(pendingSearch.current.value, pendingSearch.current.code);
+        if (pendingSearch.current) {
+            sendSearch(pendingSearch.current.value, pendingSearch.current.code)
 
-            pendingSearch.current = null;
+            pendingSearch.current = null
 
-            return;
+            return
         }
 
-        if(searchResult)
-        {
-            sendSearch(searchResult.data, searchResult.code);
+        if (searchResult) {
+            sendSearch(searchResult.data, searchResult.code)
 
-            return;
+            return
         }
 
-        if(!topLevelContext) return;
+        if (!topLevelContext) return
 
-        sendSearch('', topLevelContext.code);
-    }, [ isReady, searchResult, topLevelContext, sendSearch ]);
+        sendSearch("", topLevelContext.code)
+    }, [ isReady, searchResult, topLevelContext, sendSearch ])
 
-    useEffect(() =>
-    {
+    useEffect(() => {
         const linkTracker: ILinkEventTracker = {
-            linkReceived: (url: string) =>
-            {
-                const parts = url.split('/');
-        
-                if(parts.length < 2) return;
-        
-                switch(parts[1])
-                {
-                    case 'show': {
-                        setIsVisible(true);
-                        setNeedsSearch(true);
-                        return;
+            linkReceived: (url: string) => {
+                const parts = url.split("/")
+
+                if (parts.length < 2) return
+
+                switch (parts[1]) {
+                case "show": {
+                    setIsVisible(true)
+                    setNeedsSearch(true)
+                    return
+                }
+                case "hide":
+                    setIsVisible(false)
+                    return
+                case "toggle": {
+                    if (isVisible) {
+                        setIsVisible(false)
+
+                        return
                     }
-                    case 'hide':
-                        setIsVisible(false);
-                        return;
-                    case 'toggle': {
-                        if(isVisible)
-                        {
-                            setIsVisible(false);
-        
-                            return;
-                        }
-        
-                        setIsVisible(true);
-                        setNeedsSearch(true);
-                        return;
+
+                    setIsVisible(true)
+                    setNeedsSearch(true)
+                    return
+                }
+                case "toggle-room-info":
+                    setRoomInfoOpen(value => !value)
+                    return
+                case "toggle-room-link":
+                    setRoomLinkOpen(value => !value)
+                    return
+                case "goto":
+                    if (parts.length <= 2) return
+
+                    switch (parts[2]) {
+                    case "home":
+                        if (navigatorData.homeRoomId <= 0) return
+
+                        TryVisitRoom(navigatorData.homeRoomId)
+                        break
+                    default: {
+                        const roomId = parseInt(parts[2])
+
+                        TryVisitRoom(roomId)
                     }
-                    case 'toggle-room-info':
-                        setRoomInfoOpen(value => !value);
-                        return;
-                    case 'toggle-room-link':
-                        setRoomLinkOpen(value => !value);
-                        return;
-                    case 'goto':
-                        if(parts.length <= 2) return;
-        
-                        switch(parts[2])
-                        {
-                            case 'home':
-                                if(navigatorData.homeRoomId <= 0) return;
-        
-                                TryVisitRoom(navigatorData.homeRoomId);
-                                break;
-                            default: {
-                                const roomId = parseInt(parts[2]);
-        
-                                TryVisitRoom(roomId);
-                            }
-                        }
-                        return;
-                    case 'create':
-                        setIsVisible(true);
-                        setCreatorOpen(true);
-                        return;
-                    case 'search':
-                        if(parts.length > 2)
-                        {
-                            const topLevelContextCode = parts[2];
-        
-                            let searchValue = '';
-        
-                            if(parts.length > 3) searchValue = parts[3];
-        
-                            pendingSearch.current = { value: searchValue, code: topLevelContextCode };
-        
-                            setIsVisible(true);
-                            setNeedsSearch(true);
-                        }
-                        return;
+                    }
+                    return
+                case "create":
+                    setCreatorOpen(true)
+                    return
+                case "search":
+                    if (parts.length > 2) {
+                        const topLevelContextCode = parts[2]
+
+                        let searchValue = ""
+
+                        if (parts.length > 3) searchValue = parts[3]
+
+                        pendingSearch.current = { value: searchValue, code: topLevelContextCode }
+
+                        setIsVisible(true)
+                        setNeedsSearch(true)
+                    }
+                    return
                 }
             },
-            eventUrlPrefix: 'navigator/'
-        };
+            eventUrlPrefix: "navigator/"
+        }
 
-        AddEventLinkTracker(linkTracker);
+        AddEventLinkTracker(linkTracker)
 
-        return () => RemoveLinkEventTracker(linkTracker);
-    }, [ isVisible, navigatorData ]);
+        return () => RemoveLinkEventTracker(linkTracker)
+    }, [ isVisible, navigatorData ])
 
-    useEffect(() =>
-    {
-        if(!searchResult) return;
+    useEffect(() => {
+        if (!searchResult) return
 
-        setIsLoading(false);
+        setIsLoading(false)
 
-        if(elementRef && elementRef.current) elementRef.current.scrollTop = 0;
-    }, [ searchResult ]);
+        if (elementRef && elementRef.current) elementRef.current.scrollTop = 0
+    }, [ searchResult ])
 
-    useEffect(() =>
-    {
-        if(!isVisible || !isReady || !needsSearch) return;
+    useEffect(() => {
+        if (!isVisible || !isReady || !needsSearch) return
 
-        reloadCurrentSearch();
+        reloadCurrentSearch()
 
-        setNeedsSearch(false);
-    }, [ isVisible, isReady, needsSearch, reloadCurrentSearch ]);
+        setNeedsSearch(false)
+    }, [ isVisible, isReady, needsSearch, reloadCurrentSearch ])
 
-    useEffect(() =>
-    {
-        if(isReady || !topLevelContext) return;
+    useEffect(() => {
+        if (isReady || !topLevelContext) return
 
-        setIsReady(true);
-    }, [ isReady, topLevelContext ]);
+        setIsReady(true)
+    }, [ isReady, topLevelContext ])
 
-    useEffect(() =>
-    {
-        if(!isVisible || !needsInit) return;
+    useEffect(() => {
+        if (!isVisible || !needsInit) return
 
-        SendMessageComposer(new NavigatorInitComposer());
+        SendMessageComposer(new NavigatorInitComposer())
 
-        setNeedsInit(false);
-    }, [ isVisible, needsInit ]);
+        setNeedsInit(false)
+    }, [ isVisible, needsInit ])
 
-    useEffect(() =>
-    {
-        LegacyExternalInterface.addCallback(HabboWebTools.OPENROOM, (k: string, _arg_2: boolean = false, _arg_3: string = null) => SendMessageComposer(new ConvertGlobalRoomIdMessageComposer(k)));
-    }, []);
+    useEffect(() => {
+        LegacyExternalInterface.addCallback(HabboWebTools.OPENROOM, (k: string, _arg_2: boolean = false, _arg_3: string = null) => SendMessageComposer(new ConvertGlobalRoomIdMessageComposer(k)))
+    }, [])
 
     return (
         <>
-            { isVisible &&
-                <NitroCardView uniqueKey="navigator" className="nitro-navigator">
-                    <NitroCardHeaderView headerText={ LocalizeText(isCreatorOpen ? 'navigator.createroom.title' : 'navigator.title') } onCloseClick={ event => setIsVisible(false) } />
-                    <NitroCardTabsView>
-                        { topLevelContexts && (topLevelContexts.length > 0) && topLevelContexts.map((context, index) =>
-                        {
-                            return (
-                                <NitroCardTabsItemView key={ index } isActive={ ((topLevelContext === context) && !isCreatorOpen) } onClick={ event => sendSearch('', context.code) }>
-                                    { LocalizeText(('navigator.toplevelview.' + context.code)) }
+            {isVisible &&
+                <NitroCardView uniqueKey="navigator" windowPosition={DraggableWindowPosition.TOP_LEFT} className="illumina-navigator h-[535px] w-[425px]">
+                    <NitroCardHeaderView headerText={LocalizeText("navigator.title")} onCloseClick={event => setIsVisible(false)} />
+                    {isLoading && <div className="absolute left-0 top-0 z-50 size-full rounded-md bg-white/25 dark:bg-black/25" />}
+                    <div className="mx-px">
+                        <NitroCardTabsView className="relative max-h-[54px] min-h-[54px] border-y border-y-black bg-cover" style={{ backgroundImage: `url(${navigatorBanner})` }}>
+                            {topLevelContexts && (topLevelContexts.length > 0) && topLevelContexts.map((context, index) => (
+                                <NitroCardTabsItemView key={index} className="z-10" isActive={((topLevelContext === context))} onClick={event => { sendSearch("", context.code), setSelectedResult(0) }}>
+                                    {LocalizeText(("navigator.toplevelview." + context.code))}
                                 </NitroCardTabsItemView>
-                            );
-                        }) }
-                        <NitroCardTabsItemView isActive={ isCreatorOpen } onClick={ event => setCreatorOpen(true) }>
-                            <FaPlus className="fa-icon" />
-                        </NitroCardTabsItemView>
-                    </NitroCardTabsView>
-                    <NitroCardContentView position="relative">
-                        { isLoading &&
-                            <Base fit position="absolute" className="top-0 start-0 z-index-1 bg-muted opacity-0-5" /> }
-                        { !isCreatorOpen &&
-                            <>
-                                <NavigatorSearchView sendSearch={ sendSearch } />
-                                <Column innerRef={ elementRef } overflow="auto">
-                                    { (searchResult && searchResult.results.map((result, index) => <NavigatorSearchResultView key={ index } searchResult={ result } />)) }
-                                </Column>
-                            </> }
-                        { isCreatorOpen && <NavigatorRoomCreatorView /> }
+                            ))}
+                            <div className="absolute left-0 top-0 size-full bg-white/30 dark:bg-[#211d19a3]" />
+                        </NitroCardTabsView>
+                    </div>
+                    <NitroCardContentView overflow="hidden" className="relative h-full pt-1.5">
+                        {LocalizeText(getResultTitle(selectedResult))}
+                        <NavigatorSearchView sendSearch={sendSearch} />
+                        <div ref={elementRef} className="illumina-scrollbar mb-2 h-[334px]">
+                            {searchResult && searchResult.results.map((result, index) => {
+                                return <NavigatorSearchResultView key={index} searchResult={result} />
+                            })}
+                        </div>
+                        <div className="flex justify-between pr-[18px]">
+                            <div className="illumina-input w-fit p-[2px] pb-[3px]">
+                                <button className="relative flex h-[59px] w-[187px] items-center bg-[url('/client-assets/images/rooms/create-room.png')]" onClick={() => setCreatorOpen(true)}>
+                                    <p className="absolute right-[24px] pt-[4px] text-[12.5px] font-bold leading-none text-white [text-shadow:_0_1px_0_#00000050]">{LocalizeText("navigator.create.room")}</p>
+                                </button>
+                            </div>
+                            <div className="illumina-input pb-[3px w-fit p-[2px]">
+                                <button className="relative flex h-[59px] w-[187px] items-center bg-[url('/client-assets/images/rooms/random-room.png')]" onClick={() => SendMessageComposer(new FindNewFriendsMessageComposer())}>
+                                    <p className="absolute right-[24px] pt-[4px] text-[12.5px] font-bold leading-none text-white [text-shadow:_0_1px_0_#00000050]">{LocalizeText("navigator.random.room")}</p>
+                                </button>
+                            </div>
+                        </div>
                     </NitroCardContentView>
-                </NitroCardView> }
+                </NitroCardView>}
+            {isCreatorOpen && <NavigatorRoomCreatorView onCloseClick={event => setCreatorOpen(false)} />}
+            {isRoomInfoOpen && <NavigatorRoomInfoView onCloseClick={() => setRoomInfoOpen(false)} />}
             <NavigatorDoorStateView />
-            { isRoomInfoOpen && <NavigatorRoomInfoView onCloseClick={ () => setRoomInfoOpen(false) } /> }
-            { isRoomLinkOpen && <NavigatorRoomLinkView onCloseClick={ () => setRoomLinkOpen(false) } /> }
             <NavigatorRoomSettingsView />
         </>
-    );
+    )
 }

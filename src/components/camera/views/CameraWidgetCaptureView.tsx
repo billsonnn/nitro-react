@@ -1,9 +1,8 @@
-import { NitroRectangle, TextureUtils } from '@nitrots/nitro-renderer';
-import { FC, useRef } from 'react';
-import { FaTimes } from 'react-icons/fa';
-import { CameraPicture, GetRoomEngine, GetRoomSession, LocalizeText, PlaySound, SoundNames } from '../../../api';
-import { Column, DraggableWindow, Flex } from '../../../common';
-import { useCamera, useNotification } from '../../../hooks';
+import { NitroRectangle, TextureUtils } from "@nitrots/nitro-renderer"
+import { FC, useRef } from "react"
+import { CameraPicture, GetRoomEngine, GetRoomSession, LocalizeText, PlaySound, SoundNames } from "../../../api"
+import { Button, DraggableWindow } from "../../../common"
+import { useCamera, useNotification } from "../../../hooks"
 
 export interface CameraWidgetCaptureViewProps
 {
@@ -12,79 +11,81 @@ export interface CameraWidgetCaptureViewProps
     onDelete: () => void;
 }
 
-const CAMERA_ROLL_LIMIT: number = 5;
+const CAMERA_ROLL_LIMIT: number = 5
 
 export const CameraWidgetCaptureView: FC<CameraWidgetCaptureViewProps> = props =>
 {
-    const { onClose = null, onEdit = null, onDelete = null } = props;
-    const { cameraRoll = null, setCameraRoll = null, selectedPictureIndex = -1, setSelectedPictureIndex = null } = useCamera();
-    const { simpleAlert = null } = useNotification();
-    const elementRef = useRef<HTMLDivElement>();
+    const { onClose = null, onEdit = null, onDelete = null } = props
+    const { cameraRoll = null, setCameraRoll = null, selectedPictureIndex = -1, setSelectedPictureIndex = null } = useCamera()
+    const { simpleAlert = null } = useNotification()
+    const elementRef = useRef<HTMLDivElement>()
 
-    const selectedPicture = ((selectedPictureIndex > -1) ? cameraRoll[selectedPictureIndex] : null);
+    const selectedPicture = ((selectedPictureIndex > -1) ? cameraRoll[selectedPictureIndex] : null)
 
     const getCameraBounds = () =>
     {
-        if(!elementRef || !elementRef.current) return null;
+        if(!elementRef || !elementRef.current) return null
 
-        const frameBounds = elementRef.current.getBoundingClientRect();
+        const frameBounds = elementRef.current.getBoundingClientRect()
         
-        return new NitroRectangle(Math.floor(frameBounds.x), Math.floor(frameBounds.y), Math.floor(frameBounds.width), Math.floor(frameBounds.height));
+        return new NitroRectangle(Math.floor(frameBounds.x), Math.floor(frameBounds.y), Math.floor(frameBounds.width), Math.floor(frameBounds.height))
     }
 
     const takePicture = () =>
     {
         if(selectedPictureIndex > -1)
         {
-            setSelectedPictureIndex(-1);
-            return;
+            setSelectedPictureIndex(-1)
+            return
         }
 
-        const texture = GetRoomEngine().createTextureFromRoom(GetRoomSession().roomId, 1, getCameraBounds());
+        const texture = GetRoomEngine().createTextureFromRoom(GetRoomSession().roomId, 1, getCameraBounds())
 
-        const clone = [ ...cameraRoll ];
+        const clone = [ ...cameraRoll ]
 
         if(clone.length >= CAMERA_ROLL_LIMIT)
         {
-            simpleAlert(LocalizeText('camera.full.body'));
+            simpleAlert(LocalizeText("camera.full.body"))
 
-            clone.pop();
+            clone.pop()
         }
 
-        PlaySound(SoundNames.CAMERA_SHUTTER);
-        clone.push(new CameraPicture(texture, TextureUtils.generateImageUrl(texture)));
+        PlaySound(SoundNames.CAMERA_SHUTTER)
+        clone.push(new CameraPicture(texture, TextureUtils.generateImageUrl(texture)))
 
-        setCameraRoll(clone);
+        setCameraRoll(clone)
     }
 
     return (
         <DraggableWindow uniqueKey="nitro-camera-capture">
-            <Column center className="nitro-camera-capture" gap={ 0 }>
-                { selectedPicture && <img alt="" className="camera-area" src={ selectedPicture.imageUrl } /> }
-                <div className="camera-canvas drag-handler">
-                    <div className="position-absolute header-close" onClick={ onClose }>
-                        <FaTimes className="fa-icon" />
-                    </div>
-                    { !selectedPicture && <div ref={ elementRef } className="camera-area camera-view-finder" /> }
+            <div className="flex flex-col">
+                { selectedPicture && <img alt="" className="absolute left-2.5 top-[37px] size-80" src={ selectedPicture.imageUrl } /> }
+                <div className="drag-handler relative z-[2] h-[462px] w-[340px] bg-[url('/client-assets/images/camera/spritesheet.png?v=2451779')] bg-[-1px_-1px]">
+                    <i className="absolute right-3 top-3 size-[11px] cursor-pointer bg-[url('/client-assets/images/spritesheet.png?v=2451779')] dark:bg-[url('/client-assets/images/spritesheet-dark.png?v=2451779')] bg-[-63px_-207px] bg-no-repeat" onClick={ onClose } />
+                    { !selectedPicture && <div ref={ elementRef } className="absolute left-2.5 top-[37px] size-80 bg-[url('/client-assets/images/camera/spritesheet.png?v=2451779')] bg-[-343px_-1px]" /> }
                     { selectedPicture && 
-                        <div className="camera-area camera-frame">
-                            <div className="camera-frame-preview-actions w-100 position-absolute bottom-0 py-2 text-center">
-                                <button className="btn btn-success me-3" title={ LocalizeText('camera.editor.button.tooltip') } onClick={ onEdit }>{ LocalizeText('camera.editor.button.text') }</button>
-                                <button className="btn btn-danger" onClick={ onDelete }>{ LocalizeText('camera.delete.button.text') }</button>
-                            </div>
+                        <div className="absolute bottom-[106px] left-[11px] flex h-[58px] w-[318px] items-center justify-center bg-[#00000080]">
+                            <Button variant="success" className="h-10" title={ LocalizeText("camera.editor.button.tooltip") } onClick={ onEdit }>{ LocalizeText("camera.editor.button.text") }</Button>
                         </div> }
-                    <div className="d-flex justify-content-center">
-                        <div className="camera-button" title={ LocalizeText('camera.take.photo.button.tooltip') } onClick={ takePicture } />
+                    <div className="flex justify-center">
+                        <div className="mt-[362px] size-[94px] cursor-pointer bg-[url('/client-assets/images/camera/spritesheet.png?v=2451779')] bg-[-343px_-321px] hover:bg-[-535px_-321px] active:bg-[-439px_-321px]" title={ LocalizeText("camera.take.photo.button.tooltip") } onClick={ takePicture } />
                     </div>
                 </div>
                 { (cameraRoll.length > 0) &&
-                    <Flex gap={ 2 } justifyContent="center" className="camera-roll d-flex justify-content-center py-2">
-                        { cameraRoll.map((picture, index) =>
-                        {
-                            return <img alt="" key={ index } src={ picture.imageUrl } onClick={ event => setSelectedPictureIndex(index) } />;
-                        }) }
-                    </Flex> }
-            </Column>
+                    <div className="flex h-[73px] w-[340px] gap-[3px] bg-[url('/client-assets/images/camera/spritesheet.png?v=2451779')] bg-[-1px_-463px] px-3 py-[3px]">
+                        { cameraRoll.map((picture, index) => (
+                            <div key={ index } className="relative flex size-[62px] cursor-pointer items-center justify-center bg-[url('/client-assets/images/camera/spritesheet.png?v=2451779')] bg-[-405px_-474px]" onClick={ event => setSelectedPictureIndex(index) } >
+                                <div className="z-0 size-14 bg-cover bg-center" style={{ backgroundImage: `url(${picture.imageUrl})` }} />
+                                { selectedPictureIndex === index &&
+                                    <div className="absolute size-[62px]">
+                                        <i className="absolute right-0 top-0 z-20 size-[19px] bg-[url('/client-assets/images/camera/spritesheet.png?v=2451779')] bg-[-468px_-476px]" onClick={ onDelete } />
+                                        <div className="absolute left-0 top-0 size-full rounded-lg bg-[#ffffff40]" />
+                                        <div className="absolute left-0 top-0 z-10 size-full bg-[url('/client-assets/images/camera/spritesheet.png?v=2451779')] bg-[-342px_-474px]" />
+                                    </div> }
+                            </div>
+                        ))}
+                    </div> }
+            </div>
         </DraggableWindow>
-    );
+    )
 }

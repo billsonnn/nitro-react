@@ -1,7 +1,7 @@
-import { BadgeImageReadyEvent, NitroSprite, TextureUtils } from '@nitrots/nitro-renderer';
-import { CSSProperties, FC, useEffect, useMemo, useState } from 'react';
-import { GetConfiguration, GetSessionDataManager, LocalizeBadgeDescription, LocalizeBadgeName, LocalizeText } from '../../api';
-import { Base, BaseProps } from '../Base';
+import { BadgeImageReadyEvent, NitroSprite, TextureUtils } from "@nitrots/nitro-renderer"
+import { CSSProperties, FC, useEffect, useMemo, useRef, useState } from "react"
+import { GetConfiguration, GetSessionDataManager, LocalizeBadgeDescription, LocalizeBadgeName, LocalizeText } from "../../api"
+import { BaseProps } from "../Base"
 
 export interface LayoutBadgeImageViewProps extends BaseProps<HTMLDivElement>
 {
@@ -10,94 +10,108 @@ export interface LayoutBadgeImageViewProps extends BaseProps<HTMLDivElement>
     showInfo?: boolean;
     customTitle?: string;
     isGrayscale?: boolean;
+    isShadow?: boolean;
     scale?: number;
 }
 
 export const LayoutBadgeImageView: FC<LayoutBadgeImageViewProps> = props =>
 {
-    const { badgeCode = null, isGroup = false, showInfo = false, customTitle = null, isGrayscale = false, scale = 1, classNames = [], style = {}, children = null, ...rest } = props;
-    const [ imageElement, setImageElement ] = useState<HTMLImageElement>(null);
+    const { badgeCode = null, isGroup = false, showInfo = false, customTitle = null, isGrayscale = false, isShadow = false, scale = 1, classNames = [], className = "", style = {}, children = null, ...rest } = props
+    const [ imageElement, setImageElement ] = useState<HTMLImageElement>(null)
+    const elementRef = useRef<HTMLDivElement>()
+    const [ isVisible, setIsVisible ] = useState(false)
 
     const getClassNames = useMemo(() =>
     {
-        const newClassNames: string[] = [ 'badge-image' ];
+        const newClassNames: string[] = []
 
-        if(isGroup) newClassNames.push('group-badge');
+        if(isGroup) newClassNames.push("group-badge")
 
-        if(isGrayscale) newClassNames.push('grayscale');
+        if(isGrayscale) newClassNames.push("grayscale")
 
-        if(classNames.length) newClassNames.push(...classNames);
+        if(isShadow) newClassNames.push("drop-shadow-[0px_1px_0_#fff] dark:drop-shadow-[0px_1px_0_#33312B]")
 
-        return newClassNames;
-    }, [ classNames, isGroup, isGrayscale ]);
+        if(classNames.length) newClassNames.push(...classNames)
+
+        return newClassNames
+    }, [ classNames, isGroup, isGrayscale ])
+
+    const getClassName = useMemo(() =>
+    {
+        let newClassName = getClassNames.join(" ")
+
+        if(className.length) newClassName += (" " + className)
+
+        return newClassName.trim()
+    }, [ getClassNames, className ])
 
     const getStyle = useMemo(() =>
     {
-        let newStyle: CSSProperties = {};
+        let newStyle: CSSProperties = {}
 
         if(imageElement)
         {
-            newStyle.backgroundImage = `url(${ (isGroup) ? imageElement.src : GetConfiguration<string>('badge.asset.url').replace('%badgename%', badgeCode.toString())})`;
-            newStyle.width = imageElement.width;
-            newStyle.height = imageElement.height;
+            newStyle.backgroundImage = `url(${ (isGroup) ? imageElement.src : GetConfiguration<string>("badge.asset.url").replace("%badgename%", badgeCode.toString())})`
+            newStyle.width = imageElement.width
+            newStyle.height = imageElement.height
 
             if(scale !== 1)
             {
-                newStyle.transform = `scale(${ scale })`;
+                newStyle.transform = `scale(${ scale })`
 
-                if(!(scale % 1)) newStyle.imageRendering = 'pixelated';
+                if(!(scale % 1)) newStyle.imageRendering = "pixelated"
 
-                newStyle.width = (imageElement.width * scale);
-                newStyle.height = (imageElement.height * scale);
+                newStyle.width = (imageElement.width * scale)
+                newStyle.height = (imageElement.height * scale)
             }
         }
 
-        if(Object.keys(style).length) newStyle = { ...newStyle, ...style };
+        if(Object.keys(style).length) newStyle = { ...newStyle, ...style }
 
-        return newStyle;
-    }, [ imageElement, scale, style ]);
+        return newStyle
+    }, [ imageElement, scale, style ])
 
     useEffect(() =>
     {
-        if(!badgeCode || !badgeCode.length) return;
+        if(!badgeCode || !badgeCode.length) return
 
-        let didSetBadge = false;
+        let didSetBadge = false
 
         const onBadgeImageReadyEvent = (event: BadgeImageReadyEvent) =>
         {
-            if(event.badgeId !== badgeCode) return;
+            if(event.badgeId !== badgeCode) return
 
-            const element = TextureUtils.generateImage(new NitroSprite(event.image));
+            const element = TextureUtils.generateImage(new NitroSprite(event.image))
 
-            element.onload = () => setImageElement(element);
+            element.onload = () => setImageElement(element)
 
-            didSetBadge = true;
+            didSetBadge = true
 
-            GetSessionDataManager().events.removeEventListener(BadgeImageReadyEvent.IMAGE_READY, onBadgeImageReadyEvent);
+            GetSessionDataManager().events.removeEventListener(BadgeImageReadyEvent.IMAGE_READY, onBadgeImageReadyEvent)
         }
 
-        GetSessionDataManager().events.addEventListener(BadgeImageReadyEvent.IMAGE_READY, onBadgeImageReadyEvent);
+        GetSessionDataManager().events.addEventListener(BadgeImageReadyEvent.IMAGE_READY, onBadgeImageReadyEvent)
 
-        const texture = isGroup ? GetSessionDataManager().getGroupBadgeImage(badgeCode) : GetSessionDataManager().getBadgeImage(badgeCode);
+        const texture = isGroup ? GetSessionDataManager().getGroupBadgeImage(badgeCode) : GetSessionDataManager().getBadgeImage(badgeCode)
 
         if(texture && !didSetBadge)
         {
-            const element = TextureUtils.generateImage(new NitroSprite(texture));
+            const element = TextureUtils.generateImage(new NitroSprite(texture))
 
-            element.onload = () => setImageElement(element);
+            element.onload = () => setImageElement(element)
         }
 
-        return () => GetSessionDataManager().events.removeEventListener(BadgeImageReadyEvent.IMAGE_READY, onBadgeImageReadyEvent);
-    }, [ badgeCode, isGroup ]);
+        return () => GetSessionDataManager().events.removeEventListener(BadgeImageReadyEvent.IMAGE_READY, onBadgeImageReadyEvent)
+    }, [ badgeCode, isGroup ])
 
     return (
-        <Base classNames={ getClassNames } style={ getStyle } { ...rest }>
-            { (showInfo && GetConfiguration<boolean>('badge.descriptions.enabled', true)) &&
-                <Base className="badge-information text-black py-1 px-2 small">
-                    <div className="fw-bold mb-1">{ isGroup ? customTitle : LocalizeBadgeName(badgeCode) }</div>
-                    <div>{ isGroup ? LocalizeText('group.badgepopup.body') : LocalizeBadgeDescription(badgeCode) }</div>
-                </Base> }
+        <div ref={ elementRef } onMouseOver={ event => setIsVisible(true) } onMouseLeave={ event => setIsVisible(false) } className={ getClassName } style={ getStyle } { ...rest }>
+            { showInfo && isVisible &&
+                <div className="illumina-badge-details pixelated z-[9999]">
+                    <p className="mb-1 font-volter_bold text-[9px] !leading-3">{ isGroup ? customTitle : LocalizeBadgeName(badgeCode) }</p>
+                    { GetConfiguration<boolean>("badge.descriptions.enabled", true) && <p className="font-volter text-[9px] !leading-3">{ isGroup ? LocalizeText("group.badgepopup.body") : LocalizeBadgeDescription(badgeCode) }</p> }
+                </div> }
             { children }
-        </Base>
-    );
+        </div>
+    )
 }

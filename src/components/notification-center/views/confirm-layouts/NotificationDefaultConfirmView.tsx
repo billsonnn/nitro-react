@@ -1,6 +1,6 @@
-import { FC } from 'react';
-import { NotificationAlertType, NotificationConfirmItem } from '../../../../api';
-import { Button, Flex, LayoutNotificationAlertView, LayoutNotificationAlertViewProps, Text } from '../../../../common';
+import { FC } from "react"
+import { NotificationAlertType, NotificationConfirmItem } from "../../../../api"
+import { Button, LayoutNotificationAlertView, LayoutNotificationAlertViewProps } from "../../../../common"
 
 export interface NotificationDefaultConfirmViewProps extends LayoutNotificationAlertViewProps
 {
@@ -9,32 +9,30 @@ export interface NotificationDefaultConfirmViewProps extends LayoutNotificationA
 
 export const NotificationDefaultConfirmView: FC<NotificationDefaultConfirmViewProps> = props =>
 {
-    const { item = null, onClose = null, ...rest } = props;
-    const { message = null, onConfirm = null, onCancel = null, confirmText = null, cancelText = null, title = null } = item;
+    const { item = null, onClose = null, ...rest } = props
+    const { message = null, onConfirm = null, onCancel = null, confirmText = null, cancelText = null, title = null } = item
 
     const confirm = () =>
     {
-        if(onConfirm) onConfirm();
+        if(onConfirm) onConfirm()
 
-        onClose();
+        onClose()
     }
 
     const cancel = () =>
     {
-        if(onCancel) onCancel();
+        if(onCancel) onCancel()
         
-        onClose();
+        onClose()
     }
 
     return (
-        <LayoutNotificationAlertView title={ title } onClose={ onClose } { ...rest } type={ NotificationAlertType.ALERT }>
-            <Flex grow center>
-                <Text>{ message }</Text>
-            </Flex>
-            <Flex gap={ 1 }>
-                <Button fullWidth variant="danger" onClick={ cancel }>{ cancelText }</Button>
-                <Button fullWidth onClick={ confirm }>{ confirmText }</Button>
-            </Flex>
+        <LayoutNotificationAlertView className="w-[278px]" title={ title } onClose={ onClose } { ...rest } type={ NotificationAlertType.DEFAULT }>
+            <p className="min-h-[73px] break-words pb-4 text-sm">{ message }</p>
+            <div className="flex items-center justify-evenly">
+                <Button variant="underline" onClick={ cancel }>{ cancelText }</Button>
+                <Button onClick={ confirm }>{ confirmText }</Button>
+            </div>
         </LayoutNotificationAlertView>
-    );
+    )
 }

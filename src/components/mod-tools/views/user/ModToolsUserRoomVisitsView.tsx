@@ -1,60 +1,53 @@
-import { GetRoomVisitsMessageComposer, RoomVisitsData, RoomVisitsEvent } from '@nitrots/nitro-renderer';
-import { FC, useEffect, useState } from 'react';
-import { SendMessageComposer, TryVisitRoom } from '../../../../api';
-import { Base, Column, DraggableWindowPosition, Grid, InfiniteScroll, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
-import { useMessageEvent } from '../../../../hooks';
+import { GetRoomVisitsMessageComposer, RoomVisitsData, RoomVisitsEvent } from "@nitrots/nitro-renderer"
+import { FC, useEffect, useState } from "react"
+import { SendMessageComposer, TryVisitRoom } from "../../../../api"
+import { DraggableWindowPosition, InfiniteScroll, NitroCardContentView, NitroCardHeaderView, NitroCardView } from "../../../../common"
+import { useMessageEvent } from "../../../../hooks"
 
 interface ModToolsUserRoomVisitsViewProps
 {
     userId: number;
+    userName: string;
     onCloseClick: () => void;
 }
 
 export const ModToolsUserRoomVisitsView: FC<ModToolsUserRoomVisitsViewProps> = props =>
 {
-    const { userId = null, onCloseClick = null } = props;
-    const [ roomVisitData, setRoomVisitData ] = useState<RoomVisitsData>(null);
+    const { userId = null, userName = null, onCloseClick = null } = props
+    const [ roomVisitData, setRoomVisitData ] = useState<RoomVisitsData>(null)
 
     useMessageEvent<RoomVisitsEvent>(RoomVisitsEvent, event =>
     {
-        const parser = event.getParser();
+        const parser = event.getParser()
 
-        if(parser.data.userId !== userId) return;
+        if(parser.data.userId !== userId) return
 
-        setRoomVisitData(parser.data);
-    });
+        setRoomVisitData(parser.data)
+    })
 
     useEffect(() =>
     {
-        SendMessageComposer(new GetRoomVisitsMessageComposer(userId));
-    }, [ userId ]);
+        SendMessageComposer(new GetRoomVisitsMessageComposer(userId))
+    }, [ userId ])
 
-    if(!userId) return null;
+    if(!userId) return null
 
     return (
-        <NitroCardView className="nitro-mod-tools-user-visits" theme="primary-slim" windowPosition={ DraggableWindowPosition.TOP_LEFT }>
-            <NitroCardHeaderView headerText={ 'User Visits' } onCloseClick={ onCloseClick } />
-            <NitroCardContentView className="text-black" gap={ 1 }>
-                <Column fullHeight gap={ 0 } overflow="hidden">
-                    <Column gap={ 2 }>
-                        <Grid gap={ 1 } className="text-black fw-bold border-bottom pb-1">
-                            <Base className="g-col-2">Time</Base>
-                            <Base className="g-col-7">Room name</Base>
-                            <Base className="g-col-3">Visit</Base>
-                        </Grid>
-                    </Column>
-                    <InfiniteScroll rows={ roomVisitData?.rooms ?? [] } rowRender={ row =>
-                    {
-                        return (
-                            <Grid fullHeight={ false } gap={ 1 } alignItems="center" className="text-black py-1 border-bottom">
-                                <Text className="g-col-2">{ row.enterHour.toString().padStart(2, '0') }: { row.enterMinute.toString().padStart(2, '0') }</Text>
-                                <Text className="g-col-7">{ row.roomName }</Text>
-                                <Text bold underline pointer variant="primary" className="g-col-3" onClick={ event => TryVisitRoom(row.roomId) }>Visit Room</Text>
-                            </Grid>
-                        );
-                    } } />
-                </Column>
+        <NitroCardView uniqueKey="mod-tools-user-visits" className="illumina-mod-tools-user-visits" windowPosition={ DraggableWindowPosition.TOP_LEFT }>
+            <NitroCardHeaderView headerText={`Room Visits: ${userName}`} onCloseClick={ onCloseClick } />
+            <NitroCardContentView>
+                <div className="illumina-scrollbar h-[190px] w-[280px]">
+                    <InfiniteScroll className="w-full" rows={ roomVisitData?.rooms ?? [] } rowRender={ row => (
+                        <div className="flex bg-white p-1 dark:bg-[#33312b]">
+                            <p className="w-[185px] cursor-pointer truncate text-[13px] font-semibold !leading-3 underline [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]">{ row.roomName }</p>
+                            <div className="flex gap-1.5">
+                                <p className="text-[13px] !leading-3">{ row.enterHour.toString().padStart(2, "0") }: { row.enterMinute.toString().padStart(2, "0") }</p>
+                                <p className="cursor-pointer text-[13px] font-semibold !leading-3 underline [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]" onClick={ event => TryVisitRoom(row.roomId) }>Enter</p>
+                            </div>
+                        </div>
+                    )} />
+                </div>
             </NitroCardContentView>
         </NitroCardView>
-    );
+    )
 }

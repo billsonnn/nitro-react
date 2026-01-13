@@ -1,5 +1,5 @@
-import { IRoomChatSettings } from './IRoomChatSettings';
-import { IRoomModerationSettings } from './IRoomModerationSettings';
+import { IRoomChatSettings } from "./IRoomChatSettings"
+import { IRoomModerationSettings } from "./IRoomModerationSettings"
 
 export interface IRoomData
 {

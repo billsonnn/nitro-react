@@ -1,6 +1,6 @@
-import { FC, useState } from 'react';
-import { LocalizeText } from '../../../../api';
-import { Button, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
+import { FC, useState } from "react"
+import { LocalizeText } from "../../../../api"
+import { Button, NitroCardContentView, NitroCardHeaderView, NitroCardView } from "../../../../common"
 
 interface FriendsRoomInviteViewProps
 {
@@ -11,21 +11,21 @@ interface FriendsRoomInviteViewProps
 
 export const FriendsRoomInviteView: FC<FriendsRoomInviteViewProps> = props =>
 {
-    const { selectedFriendsIds = null, onCloseClick = null, sendRoomInvite = null } = props;
-    const [ roomInviteMessage, setRoomInviteMessage ] = useState<string>('');
+    const { selectedFriendsIds = null, onCloseClick = null, sendRoomInvite = null } = props
+    const [ roomInviteMessage, setRoomInviteMessage ] = useState<string>("")
 
     return (
-        <NitroCardView className="nitro-friends-room-invite" uniqueKey="nitro-friends-room-invite" theme="primary-slim">
-            <NitroCardHeaderView headerText={ LocalizeText('friendlist.invite.title') } onCloseClick={ onCloseClick } />
+        <NitroCardView uniqueKey="friends-room-invite" className="illumina-friends-room-invite">
+            <NitroCardHeaderView headerText={ LocalizeText("friendlist.invite.title") } onCloseClick={ onCloseClick } />
             <NitroCardContentView className="text-black">
-                { LocalizeText('friendlist.invite.summary', [ 'count' ], [ selectedFriendsIds.length.toString() ]) }
-                <textarea className="form-control" value={ roomInviteMessage } maxLength={ 255 } onChange={ event => setRoomInviteMessage(event.target.value) }></textarea>
-                <Text center className="bg-muted rounded p-1">{ LocalizeText('friendlist.invite.note') }</Text>
-                <Flex gap={ 1 }>
-                    <Button fullWidth variant="success" disabled={ ((roomInviteMessage.length === 0) || (selectedFriendsIds.length === 0)) } onClick={ () => sendRoomInvite(roomInviteMessage) }>{ LocalizeText('friendlist.invite.send') }</Button>
-                    <Button fullWidth onClick={ onCloseClick }>{ LocalizeText('generic.cancel') }</Button>
-                </Flex>
+                <div className="illumina-input p-1">
+                    <textarea className="illumina-scrollbar h-[95px] w-[195px]" spellCheck={ false } value={ roomInviteMessage } maxLength={ 255 } onChange={ event => setRoomInviteMessage(event.target.value) }></textarea>
+                </div>
+                <div className="flex items-center gap-2 pt-1.5">
+                    <Button variant="success" className="w-full" disabled={ ((roomInviteMessage.length === 0) || (selectedFriendsIds.length === 0)) } onClick={ () => sendRoomInvite(roomInviteMessage) }>{ LocalizeText("friendlist.invite.send") }</Button>
+                    <Button className="w-full" onClick={ onCloseClick }>{ LocalizeText("generic.cancel") }</Button>
+                </div>
             </NitroCardContentView>
         </NitroCardView>
-    );
-};
+    )
+}

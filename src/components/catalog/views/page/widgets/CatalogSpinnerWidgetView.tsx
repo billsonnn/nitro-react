@@ -1,46 +1,42 @@
-import { FC } from 'react';
-import { FaCaretLeft, FaCaretRight } from 'react-icons/fa';
-import { LocalizeText } from '../../../../../api';
-import { Flex, Text } from '../../../../../common';
-import { useCatalog } from '../../../../../hooks';
+import { FC } from "react"
+import { LocalizeText } from "../../../../../api"
+import { useCatalog } from "../../../../../hooks"
 
-const MIN_VALUE: number = 1;
-const MAX_VALUE: number = 100;
+const MIN_VALUE: number = 1
+const MAX_VALUE: number = 100
 
 export const CatalogSpinnerWidgetView: FC<{}> = props =>
 {
-    const { currentOffer = null, purchaseOptions = null, setPurchaseOptions = null } = useCatalog();
-    const { quantity = 1 } = purchaseOptions;
+    const { currentOffer = null, purchaseOptions = null, setPurchaseOptions = null } = useCatalog()
+    const { quantity = 1 } = purchaseOptions
 
     const updateQuantity = (value: number) =>
     {
-        if(isNaN(value)) value = 1;
+        if(isNaN(value)) value = 1
 
-        value = Math.max(value, MIN_VALUE);
-        value = Math.min(value, MAX_VALUE);
+        value = Math.max(value, MIN_VALUE)
+        value = Math.min(value, MAX_VALUE)
 
-        if(value === quantity) return;
+        if(value === quantity) return
 
         setPurchaseOptions(prevValue =>
         {
-            const newValue = { ...prevValue };
+            const newValue = { ...prevValue }
 
-            newValue.quantity = value;
+            newValue.quantity = value
 
-            return newValue;
-        });
+            return newValue
+        })
     }
 
-    if(!currentOffer || !currentOffer.bundlePurchaseAllowed) return null;
+    if(!currentOffer || !currentOffer.bundlePurchaseAllowed) return <div className="h-[26px]" />
 
     return (
-        <>
-            <Text>{ LocalizeText('catalog.bundlewidget.spinner.select.amount') }</Text>
-            <Flex alignItems="center" gap={ 1 }>
-                <FaCaretLeft className="text-black cursor-pointer fa-icon" onClick={ event => updateQuantity(quantity - 1) } />
-                <input type="number" className="form-control form-control-sm quantity-input" value={ quantity } onChange={ event => updateQuantity(event.target.valueAsNumber) } />
-                <FaCaretRight className="text-black cursor-pointer fa-icon" onClick={ event => updateQuantity(quantity + 1) } />
-            </Flex>
-        </>
-    );
+        <div className="flex w-[92px] items-center justify-between">
+            <p className="text-sm text-[#6A6A6A]">{ LocalizeText("catalog.bundlewidget.quantity") }</p>
+            <div className="illumina-input relative h-[26px] w-[30px]">
+                <input type="number" className="size-full bg-transparent px-1.5 text-[13px] text-black" value={ quantity } onChange={ event => updateQuantity(event.target.valueAsNumber) } />
+            </div>
+        </div>
+    )
 }

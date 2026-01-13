@@ -1,32 +1,34 @@
-import { GameConfigurationData } from '@nitrots/nitro-renderer';
-import { LocalizeText } from '../../../api';
-import { Base, Flex } from '../../../common';
-import { useGameCenter } from '../../../hooks';
+import { LocalizeText } from "../../../api"
+import { useGameCenter } from "../../../hooks"
 
 export const GameListView = () => 
 {
-    const { games,selectedGame, setSelectedGame } = useGameCenter();
+    const { games,selectedGame, setSelectedGame } = useGameCenter()
 
-    const getClasses = (game: GameConfigurationData) => 
+    const getClasses = (game: any) => 
     {
-        let classes = [ 'game-icon' ];
+        let classes = [ "flex items-center justify-center size-[83px] bg-[url('/client-assets/images/gamecenter/game-item-bg.png')] bg-center bg-no-repeat cursor-pointer" ]
 
-        if(selectedGame === game) classes.push('selected');
+        if(selectedGame === game) classes.push("bg-[url('/client-assets/images/gamecenter/game-item-selected-bg.png')]")
 
-        return classes.join(' ');
+        return classes.join(" ")
     }
     
-    const getIconImage = (game: GameConfigurationData): string => 
+    const getIconImage = (game: any): string => 
     {
-        return `url(${ game.assetUrl }${ game.gameNameId }_icon.png)`
+        return `url(${game.assetUrl }game_icon.png)`
     }
 
-    return <Base fullWidth className="gameList-container bg-dark p-1">
-        { LocalizeText('gamecenter.game_list_title') }
-        <Flex gap={ 3 }>
-            { games && games.map((game,index) => 
-                <Base key={ index } className={ getClasses(game) } onClick={ evt => setSelectedGame(game) } style={ { backgroundImage: getIconImage(game) } }/>
-            ) }
-        </Flex>
-    </Base>
+    return <div className="bg-[#253235] px-px pt-2.5">
+        <div className="relative border border-[#7c8485] outline outline-1 outline-[#161e1f]">
+            <p className="absolute -top-2.5 left-3 z-10 bg-[#253235] px-1.5 text-[13px] font-semibold text-white [text-shadow:_0_1px_0_#253235]">{ LocalizeText("gamecenter.game_list_title") }</p>
+            <div className="flex gap-2 px-[38px] pb-3 pt-4">
+                { games && games.map((game: any, index: number) => 
+                    <div key={ index } className={ getClasses(game) } onClick={ evt => setSelectedGame(game) }>
+                        <div className="size-full bg-center bg-no-repeat" style={ { backgroundImage: getIconImage(game) } } />
+                    </div>
+                ) }
+            </div>
+        </div>
+    </div>
 }

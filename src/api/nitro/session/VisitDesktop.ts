@@ -1,9 +1,9 @@
-import { GetRoomSession, GetRoomSessionManager, GoToDesktop } from '.';
+import { GetRoomSession, GetRoomSessionManager, GoToDesktop } from "."
 
 export const VisitDesktop = () =>
 {
-    if(!GetRoomSession()) return;
+    if(!GetRoomSession()) return
 
-    GoToDesktop();
-    GetRoomSessionManager().removeSession(-1);
+    GoToDesktop()
+    GetRoomSessionManager().removeSession(-1)
 }

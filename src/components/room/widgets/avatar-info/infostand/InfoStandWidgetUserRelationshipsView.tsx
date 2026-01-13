@@ -1,6 +1,6 @@
-import { RelationshipStatusEnum, RelationshipStatusInfoMessageParser } from '@nitrots/nitro-renderer';
-import { FC } from 'react';
-import { InfoStandWidgetUserRelationshipsRelationshipItemView } from './InfoStandWidgetUserRelationshipItemView';
+import { RelationshipStatusEnum, RelationshipStatusInfoMessageParser } from "@nitrots/nitro-renderer"
+import { FC } from "react"
+import { InfoStandWidgetUserRelationshipsRelationshipItemView } from "./InfoStandWidgetUserRelationshipItemView"
 
 interface InfoStandWidgetUserRelationshipsViewProps
 {
@@ -9,9 +9,9 @@ interface InfoStandWidgetUserRelationshipsViewProps
 
 export const InfoStandWidgetUserRelationshipsView: FC<InfoStandWidgetUserRelationshipsViewProps> = props =>
 {
-    const { relationships = null } = props;
+    const { relationships = null } = props
 
-    if(!relationships || !relationships.relationshipStatusMap.length) return null;
+    if(!relationships || !relationships.relationshipStatusMap.length) return null
 
     return (
         <>
@@ -19,5 +19,5 @@ export const InfoStandWidgetUserRelationshipsView: FC<InfoStandWidgetUserRelatio
             <InfoStandWidgetUserRelationshipsRelationshipItemView type={ RelationshipStatusEnum.SMILE } relationship={ relationships.relationshipStatusMap.getValue(RelationshipStatusEnum.SMILE) } />
             <InfoStandWidgetUserRelationshipsRelationshipItemView type={ RelationshipStatusEnum.BOBBA } relationship={ relationships.relationshipStatusMap.getValue(RelationshipStatusEnum.BOBBA) } />
         </>
-    );
+    )
 }

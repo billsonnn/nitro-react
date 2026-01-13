@@ -1,6 +1,6 @@
-import { FC } from 'react';
-import { CalendarItemState, GetConfiguration, GetRoomEngine, GetSessionDataManager, ICalendarItem } from '../../api';
-import { Base, Column, Flex, LayoutImage } from '../../common';
+import { FC } from "react"
+import { CalendarItemState, GetConfiguration, GetRoomEngine, GetSessionDataManager, ICalendarItem } from "../../api"
+import { Base, Column, Flex, LayoutImage } from "../../common"
 
 interface CalendarItemViewProps
 {
@@ -13,31 +13,31 @@ interface CalendarItemViewProps
 
 export const CalendarItemView: FC<CalendarItemViewProps> = props =>
 {
-    const { itemId = -1, state = null, product = null, active = false, onClick = null } = props;
+    const { itemId = -1, state = null, product = null, active = false, onClick = null } = props
     
     const getFurnitureIcon = (name: string) =>
     {
-        let furniData = GetSessionDataManager().getFloorItemDataByName(name);
-        let url = null;
+        let furniData = GetSessionDataManager().getFloorItemDataByName(name)
+        let url = null
 
-        if(furniData) url = GetRoomEngine().getFurnitureFloorIconUrl(furniData.id);
+        if(furniData) url = GetRoomEngine().getFurnitureFloorIconUrl(furniData.id)
         else
         {
-            furniData = GetSessionDataManager().getWallItemDataByName(name);
+            furniData = GetSessionDataManager().getWallItemDataByName(name)
 
-            if(furniData) url = GetRoomEngine().getFurnitureWallIconUrl(furniData.id);
+            if(furniData) url = GetRoomEngine().getFurnitureWallIconUrl(furniData.id)
         }
 
-        return url;
+        return url
     }
 
     return (
-        <Column fit center pointer className={ `campaign-spritesheet campaign-day-generic-bg rounded calendar-item ${ active ? 'active' : '' }` } onClick={ () => onClick(itemId) }>
+        <Column fit center pointer className={ `campaign-spritesheet campaign-day-generic-bg calendar-item rounded ${ active ? "active" : "" }` } onClick={ () => onClick(itemId) }>
             { (state === CalendarItemState.STATE_UNLOCKED) &&
                 <Flex center className="campaign-spritesheet unlocked-bg">
                     <Flex center className="campaign-spritesheet campaign-opened">
                         { product &&
-                            <LayoutImage imageUrl={ product.customImage ? GetConfiguration<string>('image.library.url') + product.customImage : getFurnitureIcon(product.productName) } /> }
+                            <LayoutImage imageUrl={ product.customImage ? GetConfiguration<string>("image.library.url") + product.customImage : getFurnitureIcon(product.productName) } /> }
                     </Flex>
                 </Flex> }
             { (state !== CalendarItemState.STATE_UNLOCKED) &&
@@ -48,5 +48,5 @@ export const CalendarItemView: FC<CalendarItemViewProps> = props =>
                         <Base className="campaign-spritesheet unavailable" /> }
                 </Flex> }
         </Column>
-    );
+    )
 }

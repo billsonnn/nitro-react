@@ -1,11 +1,11 @@
-import { AvatarFigurePartType, IAvatarImageListener, IAvatarRenderManager, IFigurePart, IFigurePartSet, IGraphicAsset, IPartColor, NitroAlphaFilter, NitroContainer, NitroSprite, TextureUtils } from '@nitrots/nitro-renderer';
-import { GetAvatarRenderManager } from '../nitro';
-import { FigureData } from './FigureData';
+import { AvatarFigurePartType, IAvatarImageListener, IAvatarRenderManager, IFigurePart, IFigurePartSet, IGraphicAsset, IPartColor, NitroAlphaFilter, NitroContainer, NitroSprite, TextureUtils } from "@nitrots/nitro-renderer"
+import { GetAvatarRenderManager } from "../nitro"
+import { FigureData } from "./FigureData"
 
 export class AvatarEditorGridPartItem implements IAvatarImageListener
 {
-    private static ALPHA_FILTER: NitroAlphaFilter = new NitroAlphaFilter(0.2);
-    private static THUMB_DIRECTIONS: number[] = [ 2, 6, 0, 4, 3, 1 ];
+    private static ALPHA_FILTER: NitroAlphaFilter = new NitroAlphaFilter(0.2)
+    private static THUMB_DIRECTIONS: number[] = [ 2, 6, 0, 4, 3, 1 ]
     private static DRAW_ORDER: string[] = [
         AvatarFigurePartType.LEFT_HAND_ITEM,
         AvatarFigurePartType.LEFT_HAND,
@@ -31,307 +31,307 @@ export class AvatarEditorGridPartItem implements IAvatarImageListener
         AvatarFigurePartType.EYE_ACCESSORY,
         AvatarFigurePartType.HEAD_ACCESSORY,
         AvatarFigurePartType.HEAD_ACCESSORY_EXTRA,
-        AvatarFigurePartType.RIGHT_HAND_ITEM,
-    ];
+        AvatarFigurePartType.RIGHT_HAND_ITEM
+    ]
 
-    private _renderManager: IAvatarRenderManager;
-    private _partSet: IFigurePartSet;
-    private _partColors: IPartColor[];
-    private _useColors: boolean;
-    private _isDisabled: boolean;
-    private _thumbContainer: NitroContainer;
-    private _imageUrl: string;
-    private _maxColorIndex: number;
-    private _isValidFigure: boolean;
-    private _isHC: boolean;
-    private _isSellable: boolean;
-    private _isClear: boolean;
-    private _isSelected: boolean;
-    private _disposed: boolean;
-    private _isInitalized: boolean;
-    private _notifier: () => void;
+    private _renderManager: IAvatarRenderManager
+    private _partSet: IFigurePartSet
+    private _partColors: IPartColor[]
+    private _useColors: boolean
+    private _isDisabled: boolean
+    private _thumbContainer: NitroContainer
+    private _imageUrl: string
+    private _maxColorIndex: number
+    private _isValidFigure: boolean
+    private _isHC: boolean
+    private _isSellable: boolean
+    private _isClear: boolean
+    private _isSelected: boolean
+    private _disposed: boolean
+    private _isInitalized: boolean
+    private _notifier: () => void
 
     constructor(partSet: IFigurePartSet, partColors: IPartColor[], useColors: boolean = true, isDisabled: boolean = false)
     {
-        this._renderManager = GetAvatarRenderManager();
-        this._partSet = partSet;
-        this._partColors = partColors;
-        this._useColors = useColors;
-        this._isDisabled = isDisabled;
-        this._thumbContainer = null;
-        this._imageUrl = null;
-        this._maxColorIndex = 0;
-        this._isValidFigure = false;
-        this._isHC = false;
-        this._isSellable = false;
-        this._isClear = false;
-        this._isSelected = false;
-        this._disposed = false;
-        this._isInitalized = false;
+        this._renderManager = GetAvatarRenderManager()
+        this._partSet = partSet
+        this._partColors = partColors
+        this._useColors = useColors
+        this._isDisabled = isDisabled
+        this._thumbContainer = null
+        this._imageUrl = null
+        this._maxColorIndex = 0
+        this._isValidFigure = false
+        this._isHC = false
+        this._isSellable = false
+        this._isClear = false
+        this._isSelected = false
+        this._disposed = false
+        this._isInitalized = false
 
         if(partSet)
         {
-            const colors = partSet.parts;
+            const colors = partSet.parts
 
-            for(const color of colors) this._maxColorIndex = Math.max(this._maxColorIndex, color.colorLayerIndex);
+            for(const color of colors) this._maxColorIndex = Math.max(this._maxColorIndex, color.colorLayerIndex)
         }
     }
 
     public init(): void
     {
-        if(this._isInitalized) return;
+        if(this._isInitalized) return
 
-        this._isInitalized = true;
+        this._isInitalized = true
 
-        this.update();
+        this.update()
     }
 
     public dispose(): void
     {
-        if(this._disposed) return;
+        if(this._disposed) return
 
-        this._renderManager = null;
-        this._partSet = null;
-        this._partColors = null;
-        this._imageUrl = null;
-        this._disposed = true;
-        this._isInitalized = false;
+        this._renderManager = null
+        this._partSet = null
+        this._partColors = null
+        this._imageUrl = null
+        this._disposed = true
+        this._isInitalized = false
 
         if(this._thumbContainer)
         {
-            this._thumbContainer.destroy();
+            this._thumbContainer.destroy()
 
-            this._thumbContainer = null;
+            this._thumbContainer = null
         }
     }
 
     public update(): void
     {
-        this.updateThumbVisualization();
+        this.updateThumbVisualization()
     }
 
     private analyzeFigure(): boolean
     {
-        if(!this._renderManager || !this._partSet || !this._partSet.parts || !this._partSet.parts.length) return false;
+        if(!this._renderManager || !this._partSet || !this._partSet.parts || !this._partSet.parts.length) return false
 
-        const figureContainer = this._renderManager.createFigureContainer(((this.partSet.type + '-') + this.partSet.id));
+        const figureContainer = this._renderManager.createFigureContainer(((this.partSet.type + "-") + this.partSet.id))
 
         if(!this._renderManager.isFigureContainerReady(figureContainer))
         {
-            this._renderManager.downloadAvatarFigure(figureContainer, this);
+            this._renderManager.downloadAvatarFigure(figureContainer, this)
 
-            return false;
+            return false
         }
 
-        this._isValidFigure = true;
+        this._isValidFigure = true
 
-        return true;
+        return true
     }
 
     private renderThumb(): NitroContainer
     {
-        if(!this._renderManager || !this._partSet) return null;
+        if(!this._renderManager || !this._partSet) return null
 
         if(!this._isValidFigure)
         {
-            if(!this.analyzeFigure()) return null;
+            if(!this.analyzeFigure()) return null
         }
 
-        const parts = this._partSet.parts.concat().sort(this.sortByDrawOrder);
-        const container = new NitroContainer();
+        const parts = this._partSet.parts.concat().sort(this.sortByDrawOrder)
+        const container = new NitroContainer()
 
         for(const part of parts)
         {
-            if(!part) continue;
+            if(!part) continue
 
-            let asset: IGraphicAsset = null;
-            let direction = 0;
-            let hasAsset = false;
+            let asset: IGraphicAsset = null
+            let direction = 0
+            let hasAsset = false
 
             while(!hasAsset && (direction < AvatarEditorGridPartItem.THUMB_DIRECTIONS.length))
             {
-                const assetName = ((((((((((FigureData.SCALE + '_') + FigureData.STD) + '_') + part.type) + '_') + part.id) + '_') + AvatarEditorGridPartItem.THUMB_DIRECTIONS[direction]) + '_') + FigureData.DEFAULT_FRAME);
+                const assetName = ((((((((((FigureData.SCALE + "_") + FigureData.STD) + "_") + part.type) + "_") + part.id) + "_") + AvatarEditorGridPartItem.THUMB_DIRECTIONS[direction]) + "_") + FigureData.DEFAULT_FRAME)
 
-                asset = this._renderManager.getAssetByName(assetName);
+                asset = this._renderManager.getAssetByName(assetName)
 
                 if(asset && asset.texture)
                 {
-                    hasAsset = true;
+                    hasAsset = true
                 }
                 else
                 {
-                    direction++;
+                    direction++
                 }
             }
 
-            if(!hasAsset) continue;
+            if(!hasAsset) continue
 
-            const x = asset.offsetX;
-            const y = asset.offsetY;
-            let partColor: IPartColor = null;
+            const x = asset.offsetX
+            const y = asset.offsetY
+            let partColor: IPartColor = null
 
             if(this._useColors && (part.colorLayerIndex > 0))
             {
-                const color = this._partColors[(part.colorLayerIndex - 1)];
+                const color = this._partColors[(part.colorLayerIndex - 1)]
 
-                if(color) partColor = color;
+                if(color) partColor = color
             }
 
-            const sprite = new NitroSprite(asset.texture);
+            const sprite = new NitroSprite(asset.texture)
 
-            sprite.position.set(x, y);
+            sprite.position.set(x, y)
 
-            if(partColor) sprite.tint = partColor.rgb;
+            if(partColor) sprite.tint = partColor.rgb
 
-            container.addChild(sprite);
+            container.addChild(sprite)
         }
 
-        return container;
+        return container
     }
 
     private updateThumbVisualization(): void
     {
-        if(!this._isInitalized) return;
+        if(!this._isInitalized) return
 
-        let container = this._thumbContainer;
+        let container = this._thumbContainer
 
-        if(!container) container = this.renderThumb();
+        if(!container) container = this.renderThumb()
 
-        if(!container) return;
+        if(!container) return
 
         if(this._partSet)
         {
-            this._isHC = (this._partSet.clubLevel > 0);
-            this._isSellable = this._partSet.isSellable;
+            this._isHC = (this._partSet.clubLevel > 0)
+            this._isSellable = this._partSet.isSellable
         }
         else
         {
-            this._isHC = false;
-            this._isSellable = false;
+            this._isHC = false
+            this._isSellable = false
         }
 
-        if(this._isDisabled) this.setAlpha(container, 0.2);
+        if(this._isDisabled) this.setAlpha(container, 0.2)
 
-        this._imageUrl = TextureUtils.generateImageUrl(container);
+        this._imageUrl = TextureUtils.generateImageUrl(container)
         
-        if(this.notify) this.notify();
+        if(this.notify) this.notify()
     }
 
     private setAlpha(container: NitroContainer, alpha: number): NitroContainer
     {
-        container.filters = [ AvatarEditorGridPartItem.ALPHA_FILTER ];
+        container.filters = [ AvatarEditorGridPartItem.ALPHA_FILTER ]
 
-        return container;
+        return container
     }
 
     private sortByDrawOrder(a: IFigurePart, b: IFigurePart): number
     {
-        const indexA = AvatarEditorGridPartItem.DRAW_ORDER.indexOf(a.type);
-        const indexB = AvatarEditorGridPartItem.DRAW_ORDER.indexOf(b.type);
+        const indexA = AvatarEditorGridPartItem.DRAW_ORDER.indexOf(a.type)
+        const indexB = AvatarEditorGridPartItem.DRAW_ORDER.indexOf(b.type)
 
-        if(indexA < indexB) return -1;
+        if(indexA < indexB) return -1
 
-        if(indexA > indexB) return 1;
+        if(indexA > indexB) return 1
 
-        if(a.index < b.index) return -1;
+        if(a.index < b.index) return -1
 
-        if(a.index > b.index) return 1;
+        if(a.index > b.index) return 1
 
-        return 0;
+        return 0
     }
 
     public resetFigure(figure: string): void
     {
-        if(!this.analyzeFigure()) return;
+        if(!this.analyzeFigure()) return
 
-        this.update();
+        this.update()
     }
 
     public get disposed(): boolean
     {
-        return this._disposed;
+        return this._disposed
     }
 
     public get id(): number
     {
-        if(!this._partSet) return -1;
+        if(!this._partSet) return -1
 
-        return this._partSet.id;
+        return this._partSet.id
     }
 
     public get partSet(): IFigurePartSet
     {
-        return this._partSet;
+        return this._partSet
     }
 
     public set partColors(partColors: IPartColor[])
     {
-        this._partColors = partColors;
+        this._partColors = partColors
 
-        this.update();
+        this.update()
     }
 
     public get isDisabled(): boolean
     {
-        return this._isDisabled;
+        return this._isDisabled
     }
 
     public set thumbContainer(container: NitroContainer)
     {
-        this._thumbContainer = container;
+        this._thumbContainer = container
 
-        this.update();
+        this.update()
     }
 
     public get imageUrl(): string
     {
-        return this._imageUrl;
+        return this._imageUrl
     }
 
     public get maxColorIndex(): number
     {
-        return this._maxColorIndex;
+        return this._maxColorIndex
     }
 
     public get isHC(): boolean
     {
-        return this._isHC;
+        return this._isHC
     }
 
     public get isSellable(): boolean
     {
-        return this._isSellable;
+        return this._isSellable
     }
 
     public get isClear(): boolean
     {
-        return this._isClear;
+        return this._isClear
     }
 
     public set isClear(flag: boolean)
     {
-        this._isClear = flag;
+        this._isClear = flag
     }
 
     public get isSelected(): boolean
     {
-        return this._isSelected;
+        return this._isSelected
     }
 
     public set isSelected(flag: boolean)
     {
-        this._isSelected = flag;
+        this._isSelected = flag
 
-        if(this.notify) this.notify();
+        if(this.notify) this.notify()
     }
 
     public get notify(): () => void
     {
-        return this._notifier;
+        return this._notifier
     }
 
     public set notify(notifier: () => void)
     {
-        this._notifier = notifier;
+        this._notifier = notifier
     }
 }

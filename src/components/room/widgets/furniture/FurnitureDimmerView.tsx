@@ -1,86 +1,83 @@
-import { RoomEngineTriggerWidgetEvent } from '@nitrots/nitro-renderer';
-import { FC, useEffect, useMemo, useState } from 'react';
-import ReactSlider from 'react-slider';
-import { ColorUtils, FurnitureDimmerUtilities, GetConfiguration, LocalizeText } from '../../../../api';
-import { Base, Button, classNames, Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView, Text } from '../../../../common';
-import { useFurnitureDimmerWidget, useRoomEngineEvent } from '../../../../hooks';
+import { RoomEngineTriggerWidgetEvent } from "@nitrots/nitro-renderer"
+import { FC, useEffect, useState } from "react"
+import ReactSlider from "react-slider"
+import { FurnitureDimmerUtilities, LocalizeText } from "../../../../api"
+import { Button, DraggableWindowPosition, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from "../../../../common"
+import { useFurnitureDimmerWidget, useRoomEngineEvent } from "../../../../hooks"
 
 export const FurnitureDimmerView: FC<{}> = props =>
 {
-    const [ isVisible, setIsVisible ] = useState(false);
-    const { presets = [], dimmerState = 0, selectedPresetId = 0, color = 0xFFFFFF, brightness = 0xFF, effectId = 0, selectedColor = 0, setSelectedColor = null, selectedBrightness = 0, setSelectedBrightness = null, selectedEffectId = 0, setSelectedEffectId = null, selectPresetId = null, applyChanges } = useFurnitureDimmerWidget();
+    const [ isVisible, setIsVisible ] = useState(false)
+    const { presets = [], dimmerState = 0, selectedPresetId = 0, color = 0xFFFFFF, brightness = 0xFF, effectId = 0, selectedColor = 0, setSelectedColor = null, selectedBrightness = 0, setSelectedBrightness = null, selectedEffectId = 0, setSelectedEffectId = null, selectPresetId = null, applyChanges } = useFurnitureDimmerWidget()
 
     const onClose = () =>
     {
-        FurnitureDimmerUtilities.previewDimmer(color, brightness, (effectId === 2));
+        FurnitureDimmerUtilities.previewDimmer(color, brightness, (effectId === 2))
 
-        setIsVisible(false);
+        setIsVisible(false)
     }
 
-    useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REMOVE_DIMMER, event => setIsVisible(false));
+    useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REMOVE_DIMMER, event => setIsVisible(false))
 
     useEffect(() =>
     {
-        if(!presets || !presets.length) return;
+        if(!presets || !presets.length) return
 
-        setIsVisible(true);
-    }, [ presets ]);
+        setIsVisible(true)
+    }, [ presets ])
 
-    const isFreeColorMode = useMemo(() => GetConfiguration<boolean>('widget.dimmer.colorwheel', false), []);
-
-    if(!isVisible) return null;
+    if(!isVisible) return null
 
     return (
-        <NitroCardView className="nitro-room-widget-dimmer">
-            <NitroCardHeaderView headerText={ LocalizeText('widget.dimmer.title') } onCloseClick={ onClose } />
-            { (dimmerState === 1) &&
-                <NitroCardTabsView>
+        <NitroCardView uniqueKey="dimmer" className="illumina-dimmer w-[260px]" windowPosition={ DraggableWindowPosition.TOP_LEFT }>
+            <NitroCardHeaderView headerText={ LocalizeText("widget.dimmer.title") } onCloseClick={ onClose } />
+            <NitroCardContentView>
+                { (dimmerState === 1) &&
+                <NitroCardTabsView className="!justify-start !px-0">
                     { presets.map(preset => <NitroCardTabsItemView key={ preset.id } isActive={ (selectedPresetId === preset.id) } onClick={ event => selectPresetId(preset.id) }>{ LocalizeText(`widget.dimmer.tab.${ preset.id }`) }</NitroCardTabsItemView>) }
                 </NitroCardTabsView> }
-            <NitroCardContentView>
-                { (dimmerState === 0) &&
-                    <Column alignItems="center">
-                        <Base className="dimmer-banner" />
-                        <Text center className="bg-muted rounded p-1">{ LocalizeText('widget.dimmer.info.off') }</Text>
-                        <Button fullWidth variant="success" onClick={ () => FurnitureDimmerUtilities.changeState() }>{ LocalizeText('widget.dimmer.button.on') }</Button>
-                    </Column> }
                 { (dimmerState === 1) &&
-                    <>
-                        <Column gap={ 1 }>
-                            <Text fontWeight="bold">{ LocalizeText('widget.backgroundcolor.hue') }</Text>
-                            { isFreeColorMode &&
-                                <input type="color" className="form-control" value={ ColorUtils.makeColorNumberHex(selectedColor) } onChange={ event => setSelectedColor(ColorUtils.convertFromHex(event.target.value)) } /> }
-                            { !isFreeColorMode &&
-                                <Grid gap={ 1 } columnCount={ 7 }>
-                                    { FurnitureDimmerUtilities.AVAILABLE_COLORS.map((color, index) =>
-                                    {
-                                        return (
-                                            <Column fullWidth pointer key={ index } className={ classNames('color-swatch rounded', ((color === selectedColor ) && 'active')) } onClick={ () => setSelectedColor(color) } style={ { backgroundColor: FurnitureDimmerUtilities.HTML_COLORS[index] } } />
-                                        );
-                                    }) }
-                                </Grid> }
-                        </Column>
-                        <Column gap={ 1 }>
-                            <Text fontWeight="bold">{ LocalizeText('widget.backgroundcolor.lightness') }</Text>
+                    <div className="pt-[13px]">
+                        <div className="flex gap-0.5">
+                            { FurnitureDimmerUtilities.AVAILABLE_COLORS.map((color, index) => (
+                                <Button key={ index } className={`!h-[22px] !w-[27px] !p-[5px] ${(color === selectedColor) ? "!p-1.5" : ""}`} onClick={ () => setSelectedColor(color) }>
+                                    <div className={`size-full border ${(color === selectedColor) ? "!border-[#00000027]" : "border-[#A4A4A4] dark:border-black"}`} style={ { backgroundColor: FurnitureDimmerUtilities.HTML_COLORS[index] } } />
+                                </Button>
+                            )) }
+                        </div>
+                        <div className="mt-3">
                             <ReactSlider
-                                className="nitro-slider"
+                                className="h-[17px] w-[201px] overflow-auto bg-[url('/client-assets/images/room-widgets/dimmer/slider-spritesheet.png?v=2451779')] dark:bg-[url('/client-assets/images/room-widgets/dimmer/slider-spritesheet-dark.png?v=2451779')]"
                                 min={ FurnitureDimmerUtilities.MIN_BRIGHTNESS }
                                 max={ FurnitureDimmerUtilities.MAX_BRIGHTNESS }
                                 value={ selectedBrightness }
                                 onChange={ value => setSelectedBrightness(value) }
-                                thumbClassName={ 'thumb percent' }
-                                renderThumb={ (props, state) => <div { ...props }>{ FurnitureDimmerUtilities.scaleBrightness(state.valueNow) }</div> } />
-                        </Column>
-                        <Flex alignItems="center" gap={ 1 }>
-                            <input className="form-check-input" type="checkbox" checked={ (selectedEffectId === 2) } onChange={ event => setSelectedEffectId(event.target.checked ? 2 : 1) } />
-                            <Text>{ LocalizeText('widget.dimmer.type.checkbox') }</Text>
-                        </Flex>
-                        <Flex gap={ 1 }>
-                            <Button fullWidth variant="danger" onClick={ () => FurnitureDimmerUtilities.changeState() }>{ LocalizeText('widget.dimmer.button.off') }</Button>
-                            <Button fullWidth variant="success" onClick={ applyChanges }>{ LocalizeText('widget.dimmer.button.apply') }</Button>
-                        </Flex>
-                    </> }
+                                renderThumb={ (props, state) => <div { ...props }>
+                                    <i className="block h-[17px] w-3 cursor-pointer bg-[url('/client-assets/images/room-widgets/dimmer/slider-spritesheet.png?v=2451779')] dark:bg-[url('/client-assets/images/room-widgets/dimmer/slider-spritesheet-dark.png?v=2451779')] bg-[-201px_0px]" />
+                                </div> } />
+                        </div>
+                        <div className="mt-[7px] flex items-center gap-1.5">
+                            <input id="onlyBackground" className="illumina-input" type="checkbox" checked={ (selectedEffectId === 2) } onChange={ event => setSelectedEffectId(event.target.checked ? 2 : 1) } />
+                            <label htmlFor="onlyBackground" className="cursor-pointer text-sm">{ LocalizeText("widget.dimmer.type.checkbox") }</label>
+                        </div>
+                        <p className="mt-2 text-xs text-[#999999]">{ LocalizeText("widget.dimmer.info") }</p>
+                        <div className="mt-[17px] flex items-center justify-between">
+                            <Button onClick={ applyChanges }>{ LocalizeText("widget.dimmer.button.apply") }</Button>
+                            <Button onClick={ () => FurnitureDimmerUtilities.changeState() }>{ LocalizeText("widget.dimmer.button.off") }</Button>
+                        </div>
+                    </div> }
+                { (dimmerState === 0) &&
+                    <div className="flex flex-col items-center">
+                        <i className="h-[79px] w-14 bg-[url('/client-assets/images/room-widgets/dimmer/door.png?v=2451779')]" />
+                        <div className="mt-1.5 flex flex-col">
+                            <p className="text-center text-sm">{ LocalizeText("widget.dimmer.info.off") }</p>
+                            <div className="mt-[17px] flex items-center justify-between">
+                                <Button disabled>{ LocalizeText("widget.dimmer.button.apply") }</Button>
+                                <Button onClick={ () => FurnitureDimmerUtilities.changeState() }>{ LocalizeText("widget.dimmer.button.on") }</Button>
+                            </div>
+                        </div>
+                    </div> }
             </NitroCardContentView>
         </NitroCardView>
-    );
+    )
 }

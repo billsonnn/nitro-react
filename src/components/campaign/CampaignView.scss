@@ -1,7 +1,4 @@
 .nitro-campaign-calendar {
-    width: $nitro-calendar-width;
-    height: $nitro-calendar-height;
-
     .calendar-item {
         filter: brightness(80%);
 
@@ -13,7 +10,7 @@
 
 .campaign-spritesheet {
     display: block;
-    background: transparent url('@/assets/images/campaign/campaign_spritesheet.png') no-repeat;
+    //background: transparent url('@/client-assets/images/campaign/campaign_spritesheet.png?v=2451779') no-repeat;
 
     &.available {
         width: 69px;

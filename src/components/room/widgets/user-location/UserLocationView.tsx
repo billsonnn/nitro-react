@@ -1,8 +1,8 @@
-import { RoomObjectCategory } from '@nitrots/nitro-renderer';
-import { FC } from 'react';
-import { BaseProps } from '../../../../common';
-import { useRoom } from '../../../../hooks';
-import { ObjectLocationView } from '../object-location/ObjectLocationView';
+import { RoomObjectCategory } from "@nitrots/nitro-renderer"
+import { FC } from "react"
+import { BaseProps } from "../../../../common"
+import { useRoom } from "../../../../hooks"
+import { ObjectLocationView } from "../object-location/ObjectLocationView"
 
 interface UserLocationViewProps extends BaseProps<HTMLDivElement>
 {
@@ -11,14 +11,14 @@ interface UserLocationViewProps extends BaseProps<HTMLDivElement>
 
 export const UserLocationView: FC<UserLocationViewProps> = props =>
 {
-    const { userId = -1, ...rest } = props;
-    const { roomSession = null } = useRoom();
+    const { userId = -1, ...rest } = props
+    const { roomSession = null } = useRoom()
 
-    if((userId === -1) || !roomSession) return null;
+    if((userId === -1) || !roomSession) return null
 
-    const userData = roomSession.userDataManager.getUserData(userId);
+    const userData = roomSession.userDataManager.getUserData(userId)
 
-    if(!userData) return null;
+    if(!userData) return null
 
-    return <ObjectLocationView objectId={ userData.roomIndex } category={ RoomObjectCategory.UNIT } { ...rest } />;
+    return <ObjectLocationView objectId={ userData.roomIndex } category={ RoomObjectCategory.UNIT } { ...rest } />
 }

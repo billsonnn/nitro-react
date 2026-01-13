@@ -1,48 +1,35 @@
-import { FC } from 'react';
-import { Base, Column, Flex, Grid, Text } from '../../../../../common';
-import { useCatalog } from '../../../../../hooks';
-import { CatalogGuildBadgeWidgetView } from '../widgets/CatalogGuildBadgeWidgetView';
-import { CatalogGuildSelectorWidgetView } from '../widgets/CatalogGuildSelectorWidgetView';
-import { CatalogItemGridWidgetView } from '../widgets/CatalogItemGridWidgetView';
-import { CatalogPurchaseWidgetView } from '../widgets/CatalogPurchaseWidgetView';
-import { CatalogTotalPriceWidget } from '../widgets/CatalogTotalPriceWidget';
-import { CatalogViewProductWidgetView } from '../widgets/CatalogViewProductWidgetView';
-import { CatalogLayoutProps } from './CatalogLayout.types';
+import { FC } from "react"
+import { useCatalog } from "../../../../../hooks"
+import { CatalogFirstProductSelectorWidgetView } from "../widgets/CatalogFirstProductSelectorWidgetView"
+import { CatalogGuildBadgeWidgetView } from "../widgets/CatalogGuildBadgeWidgetView"
+import { CatalogGuildSelectorWidgetView } from "../widgets/CatalogGuildSelectorWidgetView"
+import { CatalogItemGridWidgetView } from "../widgets/CatalogItemGridWidgetView"
+import { CatalogSimplePriceWidgetView } from "../widgets/CatalogSimplePriceWidgetView"
+import { CatalogViewProductWidgetView } from "../widgets/CatalogViewProductWidgetView"
+import { CatalogLayoutProps } from "./CatalogLayout.types"
 
 export const CatalogLayouGuildCustomFurniView: FC<CatalogLayoutProps> = props =>
 {
-    const { page = null } = props;
-    const { currentOffer = null } = useCatalog();
+    const { page = null } = props
+    const { currentOffer = null } = useCatalog()
     
     return (
-        <Grid>
-            <Column size={ 7 } overflow="hidden">
-                <CatalogItemGridWidgetView />
-            </Column>
-            <Column center={ !currentOffer } size={ 5 } overflow="hidden">
-                { !currentOffer &&
-                    <>
-                        { !!page.localization.getImage(1) && <img alt="" src={ page.localization.getImage(1) } /> }
-                        <Text center dangerouslySetInnerHTML={ { __html: page.localization.getText(0) } } />
-                    </> }
-                { currentOffer &&
-                    <>
-                        <Base position="relative" overflow="hidden">
-                            <CatalogViewProductWidgetView />
-                            <CatalogGuildBadgeWidgetView position="absolute" className="bottom-1 end-1" />
-                        </Base>
-                        <Column grow gap={ 1 }>
-                            <Text truncate>{ currentOffer.localizationName }</Text>
-                            <Base grow>
-                                <CatalogGuildSelectorWidgetView />
-                            </Base>
-                            <Flex justifyContent="end">
-                                <CatalogTotalPriceWidget alignItems="end" />
-                            </Flex>
-                            <CatalogPurchaseWidgetView />
-                        </Column>
-                    </> }
-            </Column>
-        </Grid>
-    );
+        <>
+            <CatalogFirstProductSelectorWidgetView />
+            <div className="flex-1">
+                <div className="relative h-[255px]">
+                    <div className="relative h-[246px]">
+                        <CatalogViewProductWidgetView />
+                        <p className="absolute left-1.5 top-1.5 text-sm font-semibold [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]">{ currentOffer?.localizationName }</p>
+                        <CatalogGuildBadgeWidgetView className="absolute bottom-[62px] right-[13px]" />
+                        <CatalogSimplePriceWidgetView className="absolute bottom-1.5 right-1.5 !px-0" />
+                    </div>
+                </div>
+                <div className="illumina-card h-[125px] w-full overflow-hidden p-1">
+                    <CatalogItemGridWidgetView />
+                </div>
+            </div>
+            <CatalogGuildSelectorWidgetView />
+        </>
+    )
 }

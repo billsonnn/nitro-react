@@ -1,4 +1,4 @@
-import { IChatEntry } from '../chat-history';
+import { IChatEntry } from "../chat-history"
 
 export interface IHelpReport
 {

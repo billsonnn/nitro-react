@@ -1,2 +1,2 @@
-export * from './ClubStatus';
-export * from './GetClubBadge';
+export * from "./ClubStatus"
+export * from "./GetClubBadge"

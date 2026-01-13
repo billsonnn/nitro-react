@@ -1,2 +1,2 @@
-export * from './GetConfigurationManager';
-export * from './GetNitroCore';
+export * from "./GetConfigurationManager"
+export * from "./GetNitroCore"

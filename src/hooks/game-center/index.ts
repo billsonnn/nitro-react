@@ -1,1 +1,1 @@
-export * from './useGameCenter';
+export * from "./useGameCenter"

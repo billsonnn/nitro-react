@@ -1,11 +1,11 @@
-import { UpdateFloorPropertiesMessageComposer } from '@nitrots/nitro-renderer';
-import { FC, useState } from 'react';
-import { LocalizeText, SendMessageComposer } from '../../../api';
-import { Button, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../common';
-import { UseMountEffect } from '../../../hooks';
-import { ConvertTileMapToString } from '../common/ConvertMapToString';
-import { convertNumbersForSaving } from '../common/Utils';
-import { useFloorplanEditorContext } from '../FloorplanEditorContext';
+import { UpdateFloorPropertiesMessageComposer } from "@nitrots/nitro-renderer"
+import { FC, useState } from "react"
+import { LocalizeText, SendMessageComposer } from "../../../api"
+import { Button, NitroCardContentView, NitroCardHeaderView, NitroCardView } from "../../../common"
+import { UseMountEffect } from "../../../hooks"
+import { useFloorplanEditorContext } from "../FloorplanEditorContext"
+import { ConvertTileMapToString } from "../common/ConvertMapToString"
+import { convertNumbersForSaving } from "../common/Utils"
 
 interface FloorplanImportExportViewProps
 {
@@ -14,42 +14,44 @@ interface FloorplanImportExportViewProps
 
 export const FloorplanImportExportView: FC<FloorplanImportExportViewProps> = props =>
 {
-    const { onCloseClick = null } = props;
-    const [ map, setMap ] = useState<string>('');
-    const { originalFloorplanSettings = null } = useFloorplanEditorContext();
+    const { onCloseClick = null } = props
+    const [ map, setMap ] = useState<string>("")
+    const { originalFloorplanSettings = null } = useFloorplanEditorContext()
 
     const saveFloorChanges = () =>
     {
         SendMessageComposer(new UpdateFloorPropertiesMessageComposer(
-            map.split('\n').join('\r'),
+            map.split("\n").join("\r"),
             originalFloorplanSettings.entryPoint[0],
             originalFloorplanSettings.entryPoint[1],
             originalFloorplanSettings.entryPointDir,
             convertNumbersForSaving(originalFloorplanSettings.thicknessWall),
             convertNumbersForSaving(originalFloorplanSettings.thicknessFloor),
             originalFloorplanSettings.wallHeight - 1
-        ));
+        ))
     }
 
     UseMountEffect(() =>
     {
-        setMap(ConvertTileMapToString(originalFloorplanSettings.tilemap));  
-    });
+        setMap(ConvertTileMapToString(originalFloorplanSettings.tilemap))  
+    })
 
     return (
-        <NitroCardView theme="primary-slim" className="floorplan-import-export">
-            <NitroCardHeaderView headerText={ LocalizeText('floor.plan.editor.import.export') } onCloseClick={ onCloseClick } />
+        <NitroCardView uniqueKey="floorplan-editor-import_export" className="illumina-floorplan-editor-import_export w-[380px]">
+            <NitroCardHeaderView headerText={ LocalizeText("floor.plan.editor.import.export") } onCloseClick={ onCloseClick } />
             <NitroCardContentView>
-                <textarea className="h-100" value={ map } onChange={ event => setMap(event.target.value) } />
-                <Flex justifyContent="between">
+                <div className="illumina-input h-[253px] w-[363px] py-1.5 pr-1">
+                    <textarea className="illumina-scrollbar size-full pl-1" spellCheck={ false } value={ map } onChange={ event => setMap(event.target.value) } />
+                </div>
+                <div className="mt-1 flex justify-between">
                     <Button onClick={ event => setMap(ConvertTileMapToString(originalFloorplanSettings.tilemap)) }>
-                        { LocalizeText('floor.plan.editor.revert.to.last.received.map') }
+                        { LocalizeText("floor.plan.editor.revert.to.last.received.map") }
                     </Button>
                     <Button onClick={ saveFloorChanges }>
-                        { LocalizeText('floor.plan.editor.save') }
+                        { LocalizeText("floor.plan.editor.save") }
                     </Button>
-                </Flex>
+                </div>
             </NitroCardContentView>
         </NitroCardView>
-    );
+    )
 }

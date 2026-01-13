@@ -1,46 +1,46 @@
-import { FurnitureListItemParser, IObjectData } from '@nitrots/nitro-renderer';
-import { GetRoomEngine } from '../nitro';
-import { FurniCategory } from './FurniCategory';
-import { FurnitureItem } from './FurnitureItem';
-import { GroupItem } from './GroupItem';
+import { FurnitureListItemParser, IObjectData } from "@nitrots/nitro-renderer"
+import { GetRoomEngine } from "../nitro"
+import { FurniCategory } from "./FurniCategory"
+import { FurnitureItem } from "./FurnitureItem"
+import { GroupItem } from "./GroupItem"
 
-export const createGroupItem = (type: number, category: number, stuffData: IObjectData, extra: number = NaN) => new GroupItem(type, category, GetRoomEngine(), stuffData, extra);
+export const createGroupItem = (type: number, category: number, stuffData: IObjectData, extra: number = NaN) => new GroupItem(type, category, GetRoomEngine(), stuffData, extra)
 
 const addSingleFurnitureItem = (set: GroupItem[], item: FurnitureItem, unseen: boolean) =>
 {
-    const groupItems: GroupItem[] = [];
+    const groupItems: GroupItem[] = []
 
     for(const groupItem of set)
     {
-        if(groupItem.type === item.type) groupItems.push(groupItem);
+        if(groupItem.type === item.type) groupItems.push(groupItem)
     }
 
     for(const groupItem of groupItems)
     {
-        if(groupItem.getItemById(item.id)) return groupItem;
+        if(groupItem.getItemById(item.id)) return groupItem
     }
 
-    const groupItem = createGroupItem(item.type, item.category, item.stuffData, item.extra);
+    const groupItem = createGroupItem(item.type, item.category, item.stuffData, item.extra)
 
-    groupItem.push(item);
+    groupItem.push(item)
 
     if(unseen)
     {
-        groupItem.hasUnseenItems = true;
+        groupItem.hasUnseenItems = true
 
-        set.unshift(groupItem);
+        set.unshift(groupItem)
     }
     else
     {
-        set.push(groupItem);
+        set.push(groupItem)
     }
 
-    return groupItem;
+    return groupItem
 }
 
 const addGroupableFurnitureItem = (set: GroupItem[], item: FurnitureItem, unseen: boolean) =>
 {
-    let existingGroup: GroupItem = null;
+    let existingGroup: GroupItem = null
 
     for(const groupItem of set)
     {
@@ -50,9 +50,9 @@ const addGroupableFurnitureItem = (set: GroupItem[], item: FurnitureItem, unseen
             {
                 if(groupItem.stuffData.getLegacyString() === item.stuffData.getLegacyString())
                 {
-                    existingGroup = groupItem;
+                    existingGroup = groupItem
 
-                    break;
+                    break
                 }
             }
 
@@ -60,113 +60,113 @@ const addGroupableFurnitureItem = (set: GroupItem[], item: FurnitureItem, unseen
             {
                 if(item.stuffData.compare(groupItem.stuffData))
                 {
-                    existingGroup = groupItem;
+                    existingGroup = groupItem
 
-                    break;
+                    break
                 }
             }
 
             else
             {
-                existingGroup = groupItem;
+                existingGroup = groupItem
 
-                break;
+                break
             }
         }
     }
 
     if(existingGroup)
     {
-        existingGroup.push(item);
+        existingGroup.push(item)
 
         if(unseen)
         {
-            existingGroup.hasUnseenItems = true;
+            existingGroup.hasUnseenItems = true
 
-            const index = set.indexOf(existingGroup);
+            const index = set.indexOf(existingGroup)
 
-            if(index >= 0) set.splice(index, 1);
+            if(index >= 0) set.splice(index, 1)
             
-            set.unshift(existingGroup);
+            set.unshift(existingGroup)
         }
 
-        return existingGroup;
+        return existingGroup
     }
 
-    existingGroup = createGroupItem(item.type, item.category, item.stuffData, item.extra);
+    existingGroup = createGroupItem(item.type, item.category, item.stuffData, item.extra)
 
-    existingGroup.push(item);
+    existingGroup.push(item)
 
     if(unseen)
     {
-        existingGroup.hasUnseenItems = true;
+        existingGroup.hasUnseenItems = true
 
-        set.unshift(existingGroup);
+        set.unshift(existingGroup)
     }
     else
     {
-        set.push(existingGroup);
+        set.push(existingGroup)
     }
 
-    return existingGroup;
+    return existingGroup
 }
 
 export const addFurnitureItem = (set: GroupItem[], item: FurnitureItem, unseen: boolean) =>
 {
     if(!item.isGroupable)
     {
-        addSingleFurnitureItem(set, item, unseen);
+        addSingleFurnitureItem(set, item, unseen)
     }
     else
     {
-        addGroupableFurnitureItem(set, item, unseen);
+        addGroupableFurnitureItem(set, item, unseen)
     }
 }
 
 export const mergeFurniFragments = (fragment: Map<number, FurnitureListItemParser>, totalFragments: number, fragmentNumber: number, fragments: Map<number, FurnitureListItemParser>[]) =>
 {
-    if(totalFragments === 1) return fragment;
+    if(totalFragments === 1) return fragment
 
-    fragments[fragmentNumber] = fragment;
-
-    for(const frag of fragments)
-    {
-        if(!frag) return null;
-    }
-
-    const merged: Map<number, FurnitureListItemParser> = new Map();
+    fragments[fragmentNumber] = fragment
 
     for(const frag of fragments)
     {
-        for(const [ key, value ] of frag) merged.set(key, value);
-
-        frag.clear();
+        if(!frag) return null
     }
 
-    fragments = null;
+    const merged: Map<number, FurnitureListItemParser> = new Map()
 
-    return merged;
+    for(const frag of fragments)
+    {
+        for(const [ key, value ] of frag) merged.set(key, value)
+
+        frag.clear()
+    }
+
+    fragments = null
+
+    return merged
 }
 
 export const getAllItemIds = (groupItems: GroupItem[]) =>
 {
-    const itemIds: number[] = [];
+    const itemIds: number[] = []
 
     for(const groupItem of groupItems)
     {
-        let totalCount = groupItem.getTotalCount();
+        let totalCount = groupItem.getTotalCount()
 
-        if(groupItem.category === FurniCategory.POST_IT) totalCount = 1;
+        if(groupItem.category === FurniCategory.POST_IT) totalCount = 1
 
-        let i = 0;
+        let i = 0
 
         while(i < totalCount)
         {
-            itemIds.push(groupItem.getItemByIndex(i).id);
+            itemIds.push(groupItem.getItemByIndex(i).id)
 
-            i++;
+            i++
         }
     }
 
-    return itemIds;
+    return itemIds
 }

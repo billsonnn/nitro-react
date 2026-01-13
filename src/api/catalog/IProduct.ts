@@ -1,5 +1,5 @@
-import { IFurnitureData, IProductData } from '@nitrots/nitro-renderer';
-import { IPurchasableOffer } from './IPurchasableOffer';
+import { IFurnitureData, IProductData } from "@nitrots/nitro-renderer"
+import { IPurchasableOffer } from "./IPurchasableOffer"
 
 export interface IProduct
 {

@@ -1,3 +1,3 @@
-import { NitroVersion } from '@nitrots/nitro-renderer';
+import { NitroVersion } from "@nitrots/nitro-renderer"
 
-export const GetRendererVersion = () => NitroVersion.RENDERER_VERSION;
+export const GetRendererVersion = () => NitroVersion.RENDERER_VERSION

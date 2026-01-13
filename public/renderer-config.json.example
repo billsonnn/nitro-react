@@ -105,8 +105,11 @@
         "${asset.url}/bundled/generic/avatar_additions.nitro",
         "${asset.url}/bundled/generic/group_badge.nitro",
         "${asset.url}/bundled/generic/floor_editor.nitro",
-        "${images.url}/loading_icon.png",
-        "${images.url}/clear_icon.png",
-        "${images.url}/big_arrow.png"
+        "/client-assets/images/common/card-bg.png",
+        "/client-assets/images/common/card-dark-bg.png",
+        "/client-assets/images/spritesheet.png",
+        "/client-assets/images/spritesheet-dark.png",
+        "/client-assets/images/hotelview/hotelview_default.png",
+        "/client-assets/images/hotelview/hotelview_dec.png"
     ]
 }

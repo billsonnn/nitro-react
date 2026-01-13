@@ -1,35 +1,39 @@
-import { FC, useMemo } from 'react';
-import { Flex, FlexProps } from './Flex';
-import { ButtonSizeType, ColorVariantType } from './types';
+import { ButtonHTMLAttributes, FC, useMemo } from "react"
+import { ColorVariantType } from "./types"
 
-export interface ButtonProps extends FlexProps
-{
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: ColorVariantType;
-    size?: ButtonSizeType;
     active?: boolean;
-    disabled?: boolean;
+    classNames?: string[];
 }
 
-export const Button: FC<ButtonProps> = props =>
-{
-    const { variant = 'primary', size = 'sm', active = false, disabled = false, classNames = [], ...rest } = props;
+export const Button: FC<ButtonProps> = (props) => {
+    const { variant = "primary", active = false, classNames = [], className = "", children = null, ...rest } = props
 
-    const getClassNames = useMemo(() =>
-    {
-        const newClassNames: string[] = [ 'btn' ];
+    const getClassNames = useMemo(() => {
+        const newClassNames: string[] = [ "flex justify-center items-center h-[26px] px-4 text-xs cursor-pointer" ]
 
-        if(variant) newClassNames.push('btn-' + variant);
+        if (variant) newClassNames.push("illumina-btn-" + variant)
+        if (variant === "primary" || variant === "success") newClassNames.push("hover:drop-shadow-[0px_0px_4px_#ffffff63] dark:hover:drop-shadow-[0px_0px_4px_#00000063]")
 
-        if(size) newClassNames.push('btn-' + size);
+        if (active) newClassNames.push("active")
 
-        if(active) newClassNames.push('active');
+        if (classNames.length) newClassNames.push(...classNames)
 
-        if(disabled) newClassNames.push('disabled');
+        return newClassNames
+    }, [ variant, active, classNames ])
 
-        if(classNames.length) newClassNames.push(...classNames);
+    const getClassName = useMemo(() => {
+        let newClassName = getClassNames.join(" ")
 
-        return newClassNames;
-    }, [ variant, size, active, disabled, classNames ]);
+        if (className.length) newClassName += (" " + className)
 
-    return <Flex center classNames={ getClassNames } { ...rest } />;
+        return newClassName.trim()
+    }, [ getClassNames, className ])
+
+    return (
+        <button className={getClassName} {...rest}>
+            {children}
+        </button>
+    )
 }

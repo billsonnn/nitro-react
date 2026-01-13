@@ -1,1 +1,1 @@
-export type FloatType = 'start' | 'end' | 'none';
+export type FloatType = "start" | "end" | "none";

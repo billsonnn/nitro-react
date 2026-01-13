@@ -1,5 +1,5 @@
-import { FC, useMemo } from 'react';
-import { Base, BaseProps } from '..';
+import { FC, useMemo } from "react"
+import { BaseProps } from ".."
 
 interface LayoutItemCountViewProps extends BaseProps<HTMLDivElement>
 {
@@ -8,21 +8,30 @@ interface LayoutItemCountViewProps extends BaseProps<HTMLDivElement>
 
 export const LayoutItemCountView: FC<LayoutItemCountViewProps> = props =>
 {
-    const { count = 0, position = 'absolute', classNames = [], children = null, ...rest } = props;
+    const { count = 0, classNames = [], className = "", children = null, ...rest } = props
 
     const getClassNames = useMemo(() =>
     {
-        const newClassNames: string[] = [ 'badge', 'border', 'border-black', 'bg-danger', 'px-1', 'nitro-item-count' ];
+        const newClassNames: string[] = [ "illumina-item-badge absolute -top-1.5 -right-1.5 px-1.5 text-[11px] font-semibold [text-shadow:_0_1px_0_#ec2822] not-italic text-white z-30" ]
 
-        if(classNames.length) newClassNames.push(...classNames);
+        if(classNames.length) newClassNames.push(...classNames)
 
-        return newClassNames;
-    }, [ classNames ]);
+        return newClassNames
+    }, [ classNames ])
+
+    const getClassName = useMemo(() =>
+    {
+        let newClassName = getClassNames.join(" ")
+
+        if(className.length) newClassName += (" " + className)
+
+        return newClassName.trim()
+    }, [ getClassNames, className ])
 
     return (
-        <Base position="absolute" classNames={ getClassNames } { ...rest }>
+        <div className={ getClassName } { ...rest }>
             { count }
             { children }
-        </Base>
-    );
+        </div>
+    )
 }

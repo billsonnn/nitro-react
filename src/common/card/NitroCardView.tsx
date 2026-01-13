@@ -1,64 +1,38 @@
-import { FC, useMemo, useRef } from 'react';
-import { Column, ColumnProps } from '..';
-import { DraggableWindow, DraggableWindowPosition, DraggableWindowProps } from '../draggable-window';
-import { NitroCardContextProvider } from './NitroCardContext';
+import { FC, useMemo, useRef } from "react"
+import { ColumnProps } from ".."
+import { DraggableWindow, DraggableWindowPosition, DraggableWindowProps } from "../draggable-window"
 
 export interface NitroCardViewProps extends DraggableWindowProps, ColumnProps
 {
-    theme?: string;
+    customZIndex?: number;
 }
 
 export const NitroCardView: FC<NitroCardViewProps> = props =>
 {
-    const { theme = 'primary', uniqueKey = null, handleSelector = '.drag-handler', windowPosition = DraggableWindowPosition.CENTER, disableDrag = false, overflow = 'hidden', position = 'relative', gap = 0, classNames = [], ...rest } = props;
-    const elementRef = useRef<HTMLDivElement>();
+    const { uniqueKey = null, handleSelector = ".drag-handler", windowPosition = DraggableWindowPosition.CENTER, disableDrag = false, customZIndex = 0, classNames = [], className = "", ...rest } = props
+    const elementRef = useRef<HTMLDivElement>()
 
     const getClassNames = useMemo(() =>
     {
-        const newClassNames: string[] = [ 'nitro-card', 'rounded', 'shadow', ];
+        const newClassNames: string[] = [ "illumina-card flex flex-col drop-shadow-[4px_4px_4px_#00000017]" ]
 
-        newClassNames.push(`theme-${ theme || 'primary' }`);
+        if(classNames.length) newClassNames.push(...classNames)
 
-        if(classNames.length) newClassNames.push(...classNames);
+        return newClassNames
+    }, [ classNames ])
 
-        return newClassNames;
-    }, [ theme, classNames ]);
-
-    /* useEffect(() =>
+    const getClassName = useMemo(() =>
     {
-        if(!uniqueKey || !elementRef || !elementRef.current) return;
+        let newClassName = getClassNames.join(" ")
 
-        const localStorage = GetLocalStorage<WindowSaveOptions>(`nitro.windows.${ uniqueKey }`);
-        const element = elementRef.current;
+        if(className.length) newClassName += (" " + className)
 
-        if(localStorage && localStorage.size)
-        {
-            //element.style.width = `${ localStorage.size.width }px`;
-            //element.style.height = `${ localStorage.size.height }px`;
-        }
-
-        const observer = new ResizeObserver(event =>
-        {
-            const newStorage = { ...GetLocalStorage<Partial<WindowSaveOptions>>(`nitro.windows.${ uniqueKey }`) } as WindowSaveOptions;
-
-            newStorage.size = { width: element.offsetWidth, height: element.offsetHeight };
-
-            SetLocalStorage<WindowSaveOptions>(`nitro.windows.${ uniqueKey }`, newStorage);
-        });
-
-        observer.observe(element);
-
-        return () =>
-        {
-            observer.disconnect();
-        }
-    }, [ uniqueKey ]); */
+        return newClassName.trim()
+    }, [ getClassNames, className ])
 
     return (
-        <NitroCardContextProvider value={ { theme } }>
-            <DraggableWindow uniqueKey={ uniqueKey } handleSelector={ handleSelector } windowPosition={ windowPosition } disableDrag={ disableDrag }>
-                <Column innerRef={ elementRef } overflow={ overflow } position={ position } gap={ gap } classNames={ getClassNames } { ...rest } />
-            </DraggableWindow>
-        </NitroCardContextProvider>
-    );
+        <DraggableWindow uniqueKey={ uniqueKey } handleSelector={ handleSelector } windowPosition={ windowPosition } disableDrag={ false } customZIndex={ customZIndex }>
+            <div ref={ elementRef } className={ getClassName } { ...rest } />
+        </DraggableWindow>
+    )
 }

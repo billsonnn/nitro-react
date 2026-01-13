@@ -1,8 +1,8 @@
-import { AchievementData } from '@nitrots/nitro-renderer';
-import { FC } from 'react';
-import { LayoutGridItem } from '../../../../common';
-import { useAchievements } from '../../../../hooks';
-import { AchievementBadgeView } from '../AchievementBadgeView';
+import { AchievementData } from "@nitrots/nitro-renderer"
+import { FC } from "react"
+import { AchievementUtilities } from "../../../../api"
+import { LayoutBadgeImageView } from "../../../../common"
+import { useAchievements } from "../../../../hooks"
 
 interface AchievementListItemViewProps
 {
@@ -11,14 +11,14 @@ interface AchievementListItemViewProps
 
 export const AchievementListItemView: FC<AchievementListItemViewProps> = props =>
 {
-    const { achievement = null } = props;
-    const { selectedAchievement = null, setSelectedAchievementId = null } = useAchievements();
+    const { achievement = null } = props
+    const { selectedAchievement = null, setSelectedAchievementId = null } = useAchievements()
 
-    if(!achievement) return null;
+    if(!achievement) return null
 
     return (
-        <LayoutGridItem itemActive={ (selectedAchievement === achievement) } itemUnseen={ (achievement.unseen > 0) } onClick={ event => setSelectedAchievementId(achievement.achievementId) }>
-            <AchievementBadgeView achievement={ achievement } />
-        </LayoutGridItem>
-    );
+        <div className={`illumina-card-item flex h-[50px] w-[52px] cursor-pointer items-center justify-center ${(selectedAchievement === achievement) && "active"}`} onClick={ event => setSelectedAchievementId(achievement.achievementId) }>
+            <LayoutBadgeImageView badgeCode={ AchievementUtilities.getAchievementBadgeCode(achievement) } isGrayscale={ !AchievementUtilities.getAchievementHasStarted(achievement) } />
+        </div>
+    )
 }

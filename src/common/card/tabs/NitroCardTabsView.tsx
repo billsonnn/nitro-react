@@ -1,22 +1,31 @@
-import { FC, useMemo } from 'react';
-import { Flex, FlexProps } from '../..';
+import { FC, useMemo } from "react"
+import { FlexProps } from "../.."
 
 export const NitroCardTabsView: FC<FlexProps> = props =>
 {
-    const { justifyContent = 'center', gap = 1, classNames = [], children = null, ...rest } = props;
+    const { classNames = [], className = "", children = null, ...rest } = props
 
     const getClassNames = useMemo(() =>
     {
-        const newClassNames: string[] = [ 'container-fluid', 'nitro-card-tabs', 'pt-1' ];
+        const newClassNames: string[] = [ "flex justify-center items-end px-2.5 gap-1" ]
 
-        if(classNames.length) newClassNames.push(...classNames);
+        if(classNames.length) newClassNames.push(...classNames)
 
-        return newClassNames;
-    }, [ classNames ]);
+        return newClassNames
+    }, [ classNames ])
+
+    const getClassName = useMemo(() =>
+    {
+        let newClassName = getClassNames.join(" ")
+
+        if(className.length) newClassName += (" " + className)
+
+        return newClassName.trim()
+    }, [ getClassNames, className ])
 
     return (
-        <Flex justifyContent={ justifyContent } gap={ gap } classNames={ getClassNames } { ...rest }>
+        <div className={ getClassName } { ...rest }>
             { children }
-        </Flex>
-    );
+        </div>
+    )
 }

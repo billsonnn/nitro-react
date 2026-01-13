@@ -1,4 +1,4 @@
-import { PetData } from '@nitrots/nitro-renderer';
+import { PetData } from "@nitrots/nitro-renderer"
 
 export interface IPetItem
 {

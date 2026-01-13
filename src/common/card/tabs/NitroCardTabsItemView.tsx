@@ -1,6 +1,6 @@
-import { FC, useMemo } from 'react';
-import { Flex, FlexProps } from '../../Flex';
-import { LayoutItemCountView } from '../../layout';
+import { FC, useMemo } from "react"
+import { FlexProps } from "../../Flex"
+import { LayoutItemCountView } from "../../layout"
 
 interface NitroCardTabsItemViewProps extends FlexProps
 {
@@ -10,26 +10,34 @@ interface NitroCardTabsItemViewProps extends FlexProps
 
 export const NitroCardTabsItemView: FC<NitroCardTabsItemViewProps> = props =>
 {
-    const { isActive = false, count = 0, overflow = 'hidden', position = 'relative', pointer = true, classNames = [], children = null, ...rest } = props;
+    const { isActive = false, count = 0, classNames = [], className = "", children = null, ...rest } = props
 
     const getClassNames = useMemo(() =>
     {
-        const newClassNames: string[] = [ 'nav-item', 'rounded-top', 'border' ];
+        const newClassNames: string[] = [ "illumina-tab-item illumina-btn-primary flex justify-center items-center relative cursor-pointer h-[27px] px-3 text-[13px] !font-normal" ]
 
-        if(isActive) newClassNames.push('active');
+        if(isActive) newClassNames.push("active")
 
-        if(classNames.length) newClassNames.push(...classNames);
+        if(classNames.length) newClassNames.push(...classNames)
 
-        return newClassNames;
-    }, [ isActive, classNames ]);
+        return newClassNames
+    }, [ isActive, classNames ])
+
+    const getClassName = useMemo(() =>
+    {
+        let newClassName = getClassNames.join(" ")
+
+        if(className.length) newClassName += (" " + className)
+
+        return newClassName.trim()
+    }, [ getClassNames, className ])
 
     return (
-        <Flex overflow={ overflow } pointer={ pointer } position={ position } classNames={ getClassNames } { ...rest }>
-            <Flex shrink center>
+        <div className={ getClassName } { ...rest }>
+            <div className="flex items-center justify-center">
                 { children }
-            </Flex>
-            { (count > 0) &&
-                <LayoutItemCountView count={ count } /> }
-        </Flex>
-    );
+            </div>
+            { (count > 0) && <LayoutItemCountView count={ count } className="-right-0.5 -top-0.5 text-[10px]" /> }
+        </div>
+    )
 }

@@ -1,4 +1,4 @@
-import { GroupBadgePart } from './GroupBadgePart';
+import { GroupBadgePart } from "./GroupBadgePart"
 
 export interface IGroupData
 {

@@ -1,1 +1,1 @@
-export * from './GetRoomCameraWidgetManager';
+export * from "./GetRoomCameraWidgetManager"

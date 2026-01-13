@@ -1,1 +1,1 @@
-export * from './RoomWidgetThumbnailEvent';
+export * from "./RoomWidgetThumbnailEvent"

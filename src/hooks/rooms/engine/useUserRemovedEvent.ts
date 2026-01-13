@@ -1,19 +1,19 @@
-import { useEffect } from 'react';
-import { RoomWidgetUpdateRoomObjectEvent, UI_EVENT_DISPATCHER } from '../../../api';
+import { useEffect } from "react"
+import { RoomWidgetUpdateRoomObjectEvent, UI_EVENT_DISPATCHER } from "../../../api"
 
 export const useUserRemovedEvent = (isActive: boolean, handler: (event: RoomWidgetUpdateRoomObjectEvent) => void) =>
 {
     useEffect(() =>
     {
-        if(!isActive) return;
+        if(!isActive) return
 
-        const onRoomWidgetUpdateRoomObjectEvent = (event: RoomWidgetUpdateRoomObjectEvent) => handler(event);
+        const onRoomWidgetUpdateRoomObjectEvent = (event: RoomWidgetUpdateRoomObjectEvent) => handler(event)
 
-        UI_EVENT_DISPATCHER.addEventListener(RoomWidgetUpdateRoomObjectEvent.USER_REMOVED, onRoomWidgetUpdateRoomObjectEvent);
+        UI_EVENT_DISPATCHER.addEventListener(RoomWidgetUpdateRoomObjectEvent.USER_REMOVED, onRoomWidgetUpdateRoomObjectEvent)
 
         return () =>
         {
-            UI_EVENT_DISPATCHER.removeEventListener(RoomWidgetUpdateRoomObjectEvent.USER_REMOVED, onRoomWidgetUpdateRoomObjectEvent);
+            UI_EVENT_DISPATCHER.removeEventListener(RoomWidgetUpdateRoomObjectEvent.USER_REMOVED, onRoomWidgetUpdateRoomObjectEvent)
         }
-    }, [ isActive, handler ]);
+    }, [ isActive, handler ])
 }

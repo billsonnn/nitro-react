@@ -1,16 +1,17 @@
-import { TargetedOfferData } from '@nitrots/nitro-renderer';
-import { Dispatch, SetStateAction } from 'react';
-import { GetConfiguration } from '../../../../api';
-import { Base, LayoutNotificationBubbleView, Text } from '../../../../common';
+import { TargetedOfferData } from "@nitrots/nitro-renderer"
+import { Dispatch, SetStateAction } from "react"
+import { GetConfiguration } from "../../../../api"
 
 export const OfferBubbleView = (props: { offer: TargetedOfferData, setOpen: Dispatch<SetStateAction<boolean>> }) =>
 {
-    const { offer = null, setOpen = null } = props;
+    const { offer = null, setOpen = null } = props
 
-    if (!offer) return;
+    if (!offer) return
 
-    return <LayoutNotificationBubbleView fadesOut={ false } onClose={ null } onClick={ evt => setOpen(true) } gap={ 2 }>
-        <Base className="nitro-targeted-offer-icon" style={ { backgroundImage: `url(${ GetConfiguration('image.library.url') + offer.iconImageUrl })` } }/>
-        <Text variant="light" className="ubuntu-bold">{ offer.title }</Text>
-    </LayoutNotificationBubbleView>;
+    return <div className="illumina-purse mt-[3px] w-48 cursor-pointer" onClick={ evt => setOpen(true) }>
+        <div className="flex gap-[7px] px-[7px] py-2.5">
+            <i className="size-10" style={ { backgroundImage: `url(${ GetConfiguration("image.library.url") + offer.iconImageUrl })` } }/>
+            <p className="text-xs font-semibold text-white [text-shadow:_0_1px_0_#33312B]">{ offer.title }</p>
+        </div>
+    </div>
 }

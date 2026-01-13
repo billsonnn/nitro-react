@@ -1,110 +1,55 @@
 {
-    "root": true,
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "ecmaVersion": "latest",
-        "sourceType": "module",
-        "ecmaFeatures": {
-            "jsx": true
-        }
-    },
-    "settings": {
-        "react": {
-            "pragma": "React",
-            "version": "18.0.0"
-        }
-    },
     "env": {
         "browser": true,
         "es2021": true
     },
+    "parser": "@typescript-eslint/parser",
     "extends": [
         "plugin:react/recommended",
-        "plugin:react/jsx-runtime",
-        "plugin:react-hooks/recommended"
+        "plugin:tailwindcss/recommended"
+    ],
+    "overrides": [
+      {
+          "env": {
+                "node": true
+          },
+          "files": [
+                ".eslintrc.ts",
+                ".eslintrc.tsx"
+            ],
+          "parserOptions": {
+                "sourceType": "script"
+          }
+      }
     ],
     "plugins": [
-        "@typescript-eslint",
-        "react"
+        "react",
+        "@typescript-eslint"
     ],
     "rules": {
-        "linebreak-style": [
-            "off"
-        ],
-        "quotes": [
-            "error",
-            "single"
-        ],
-        "@typescript-eslint/indent": [
-            "error",
-            4,
-            {
-                "SwitchCase": 1
-            }
-        ],
-        "array-bracket-spacing": [
-            "error",
-            "always"
-        ],
-        "brace-style": [
-            "error",
-            "allman"
-        ],
-        "template-curly-spacing": [
-            "error",
-            "always"
-        ],
-        "no-multi-spaces": [
-            "error"
-        ],
-        "@typescript-eslint/object-curly-spacing": [
-            "error",
-            "always",
-            {
-                "arraysInObjects": true,
-                "objectsInObjects": false
-            }
-        ],
-        "@typescript-eslint/ban-types": [
-            "error",
-            {
-                "types": {
-                    "String": true,
-                    "Boolean": true,
-                    "Number": true,
-                    "Symbol": true,
-                    "{}": false,
-                    "Object": false,
-                    "object": false,
-                    "Function": false
-                },
-                "extendDefaults": true
-            }
-        ],
-        "no-switch-case-fall-through": [
-            "off"
-        ],
-        "jsx-quotes": [
-            "error"
-        ],
-        "react/prop-types": [
-            "off"
-        ],
-        "react/jsx-curly-spacing": [
-            "error",
-            {
-                "when": "always",
-                "children": true
-            }
-        ],
-        "react/jsx-equals-spacing": [
-            "error"
-        ],
-        "react/jsx-newline": [
-            "error",
-            {
-                "prevent": true
-            }
-        ]
+        "tailwindcss/no-custom-classname": "off",
+        "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 1, "maxBOF": 1 }],
+        "no-multi-spaces": ["error", { "ignoreEOLComments": false }],
+        "no-duplicate-imports": ["error", { "includeExports": true }],
+        "no-empty-character-class": "error",
+        "eqeqeq": ["error", "always"],
+        "no-duplicate-case": "error",
+        "comma-dangle": ["error", "never"],
+        "quotes": [ "error", "double" ],
+        "semi": [ "error", "never" ],
+        "indent": [ "error", 4 ],
+        "react/react-in-jsx-scope": "off",
+        "react/prop-types": "off",
+        "react/no-unescaped-entities": "off",
+        "object-curly-spacing": [ "error", "always" ],
+        "array-bracket-spacing": [ "error", "always" ],
+        "space-infix-ops": ["error", { "int32Hint": false }],
+        "space-in-parens": ["error", "never"],
+        "space-before-blocks": ["error", "always"]
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
     }
 }

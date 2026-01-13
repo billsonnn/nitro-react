@@ -1,5 +1,5 @@
-import { IFurnitureData, IProductData } from '@nitrots/nitro-renderer';
-import { IPurchasableOffer } from './IPurchasableOffer';
+import { IFurnitureData, IProductData } from "@nitrots/nitro-renderer"
+import { IPurchasableOffer } from "./IPurchasableOffer"
 
 export class PlacedObjectPurchaseData
 {
@@ -16,26 +16,26 @@ export class PlacedObjectPurchaseData
 
     public get offerId(): number
     {
-        return this.offer.offerId;
+        return this.offer.offerId
     }
 
     public get productClassId(): number
     {
-        return this.offer.product.productClassId;
+        return this.offer.product.productClassId
     }
 
     public get productData(): IProductData
     {
-        return this.offer.product.productData;
+        return this.offer.product.productData
     }
 
     public get furniData(): IFurnitureData
     {
-        return this.offer.product.furnitureData;
+        return this.offer.product.furnitureData
     }
 
     public get extraParam(): string
     {
-        return this.offer.product.extraParam;
+        return this.offer.product.extraParam
     }
 }

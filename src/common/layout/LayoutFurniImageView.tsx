@@ -1,8 +1,7 @@
-import { IGetImageListener, ImageResult, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
-import { CSSProperties, FC, useEffect, useMemo, useState } from 'react';
-import { BaseProps } from '..';
-import { GetRoomEngine, ProductTypeEnum } from '../../api';
-import { Base } from '../Base';
+import { IGetImageListener, ImageResult, TextureUtils, Vector3d } from "@nitrots/nitro-renderer"
+import { CSSProperties, FC, useEffect, useMemo, useState } from "react"
+import { BaseProps } from ".."
+import { GetRoomEngine, ProductTypeEnum } from "../../api"
 
 interface LayoutFurniImageViewProps extends BaseProps<HTMLDivElement>
 {
@@ -15,68 +14,68 @@ interface LayoutFurniImageViewProps extends BaseProps<HTMLDivElement>
 
 export const LayoutFurniImageView: FC<LayoutFurniImageViewProps> = props =>
 {
-    const { productType = 's', productClassId = -1, direction = 2, extraData = '', scale = 1, style = {}, ...rest } = props;
-    const [ imageElement, setImageElement ] = useState<HTMLImageElement>(null);
+    const { productType = "s", productClassId = -1, direction = 2, extraData = "", scale = 1, style = {}, ...rest } = props
+    const [ imageElement, setImageElement ] = useState<HTMLImageElement>(null)
 
     const getStyle = useMemo(() =>
     {
-        let newStyle: CSSProperties = {};
+        let newStyle: CSSProperties = {}
 
         if(imageElement?.src?.length)
         {
-            newStyle.backgroundImage = `url('${ imageElement.src }')`;
-            newStyle.width = imageElement.width;
-            newStyle.height = imageElement.height;
+            newStyle.backgroundImage = `url('${ imageElement.src }')`
+            newStyle.width = imageElement.width
+            newStyle.height = imageElement.height
         }
 
         if(scale !== 1)
         {
-            newStyle.transform = `scale(${ scale })`;
+            newStyle.transform = `scale(${ scale })`
 
-            if(!(scale % 1)) newStyle.imageRendering = 'pixelated';
+            if(!(scale % 1)) newStyle.imageRendering = "pixelated"
         }
 
-        if(Object.keys(style).length) newStyle = { ...newStyle, ...style };
+        if(Object.keys(style).length) newStyle = { ...newStyle, ...style }
 
-        return newStyle;
-    }, [ imageElement, scale, style ]);
+        return newStyle
+    }, [ imageElement, scale, style ])
 
     useEffect(() =>
     {
-        let imageResult: ImageResult = null;
+        let imageResult: ImageResult = null
 
         const listener: IGetImageListener = {
             imageReady: (id, texture, image) =>
             {
                 if(!image && texture)
                 {
-                    image = TextureUtils.generateImage(texture);
+                    image = TextureUtils.generateImage(texture)
                 }
 
-                image.onload = () => setImageElement(image);
+                image.onload = () => setImageElement(image)
             },
             imageFailed: null
-        };
+        }
 
         switch(productType.toLocaleLowerCase())
         {
-            case ProductTypeEnum.FLOOR:
-                imageResult = GetRoomEngine().getFurnitureFloorImage(productClassId, new Vector3d(direction), 64, listener, 0, extraData);
-                break;
-            case ProductTypeEnum.WALL:
-                imageResult = GetRoomEngine().getFurnitureWallImage(productClassId, new Vector3d(direction), 64, listener, 0, extraData);
-                break;
+        case ProductTypeEnum.FLOOR:
+            imageResult = GetRoomEngine().getFurnitureFloorImage(productClassId, new Vector3d(direction), 64, listener, 0, extraData)
+            break
+        case ProductTypeEnum.WALL:
+            imageResult = GetRoomEngine().getFurnitureWallImage(productClassId, new Vector3d(direction), 64, listener, 0, extraData)
+            break
         }
 
         if(imageResult)
         {
-            const image = imageResult.getImage();
+            const image = imageResult.getImage()
 
-            image.onload = () => setImageElement(image);
+            image.onload = () => setImageElement(image)
         }
-    }, [ productType, productClassId, direction, extraData ]);
+    }, [ productType, productClassId, direction, extraData ])
 
-    if(!imageElement) return null;
+    if(!imageElement) return null
 
-    return <Base classNames={ [ 'furni-image' ] } style={ getStyle } { ...rest } />;
+    return <div className={"relative- size-full bg-center bg-no-repeat" } style={ getStyle } { ...rest } />
 }

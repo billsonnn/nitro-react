@@ -1,8 +1,7 @@
-import { AchievementData } from '@nitrots/nitro-renderer';
-import { FC } from 'react';
-import { AchievementUtilities, LocalizeBadgeDescription, LocalizeBadgeName, LocalizeText } from '../../../api';
-import { Column, Flex, LayoutCurrencyIcon, LayoutProgressBar, Text } from '../../../common';
-import { AchievementBadgeView } from './AchievementBadgeView';
+import { AchievementData } from "@nitrots/nitro-renderer"
+import { FC } from "react"
+import { AchievementUtilities, LocalizeBadgeDescription, LocalizeBadgeName, LocalizeText } from "../../../api"
+import { LayoutBadgeImageView } from "../../../common"
 
 interface AchievementDetailsViewProps
 {
@@ -11,43 +10,39 @@ interface AchievementDetailsViewProps
 
 export const AchievementDetailsView: FC<AchievementDetailsViewProps> = props =>
 {
-    const { achievement = null } = props;
+    const { achievement = null } = props
 
-    if(!achievement) return null;
+    if(!achievement) return null
 
     return (
-        <Flex shrink className="bg-muted rounded p-2 text-black" gap={ 2 } overflow="hidden">
-            <Column center gap={ 1 }>
-                <AchievementBadgeView className="nitro-achievements-badge-image" achievement={ achievement } scale={ 2 } />
-                <Text fontWeight="bold">
-                    { LocalizeText('achievements.details.level', [ 'level', 'limit' ], [ AchievementUtilities.getAchievementLevel(achievement).toString(), achievement.levelCount.toString() ]) }
-                </Text>
-            </Column>
-            <Column fullWidth justifyContent="center" overflow="hidden">
-                <Column gap={ 1 }>
-                    <Text fontWeight="bold" truncate>
+        <div className="flex h-[114px] pr-[7px]">
+            <div className="mr-[5px]">
+                <div className="flex size-[72px] items-center justify-center bg-[url('/client-assets/images/spritesheet.png?v=2451779')] dark:bg-[url('/client-assets/images/spritesheet-dark.png?v=2451779')] bg-[-390px_-212px]">
+                    <LayoutBadgeImageView className="scale-250" badgeCode={ AchievementUtilities.getAchievementBadgeCode(achievement) } isGrayscale={ !AchievementUtilities.getAchievementHasStarted(achievement) } />
+                </div>
+            </div>
+            <div className="flex w-full flex-col">
+                <div className="flex h-full flex-col">
+                    <p className="mb-2 text-sm font-semibold [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]">
                         { LocalizeBadgeName(AchievementUtilities.getAchievementBadgeCode(achievement)) }
-                    </Text>
-                    <Text textBreak>
+                    </p>
+                    <p className="mb-[13px] text-sm">
                         { LocalizeBadgeDescription(AchievementUtilities.getAchievementBadgeCode(achievement)) }
-                    </Text>
-                </Column>
-                { ((achievement.levelRewardPoints > 0) || (achievement.scoreLimit > 0)) &&
-                    <Column gap={ 1 }>
-                        { (achievement.levelRewardPoints > 0) &&
-                            <Flex alignItems="center" gap={ 1 }>
-                                <Text truncate className="small">
-                                    { LocalizeText('achievements.details.reward') }
-                                </Text>
-                                <Flex center className="fw-bold small" gap={ 1 }>
-                                    { achievement.levelRewardPoints }
-                                    <LayoutCurrencyIcon type={ achievement.levelRewardPointType } />
-                                </Flex>
-                            </Flex> }
-                        { (achievement.scoreLimit > 0) &&
-                            <LayoutProgressBar text={ LocalizeText('achievements.details.progress', [ 'progress', 'limit' ], [ (achievement.currentPoints + achievement.scoreAtStartOfLevel).toString(), (achievement.scoreLimit + achievement.scoreAtStartOfLevel).toString() ]) } progress={ (achievement.currentPoints + achievement.scoreAtStartOfLevel) } maxProgress={ (achievement.scoreLimit + achievement.scoreAtStartOfLevel) } /> }
-                    </Column> }
-            </Column>
-        </Flex>
+                    </p>
+                    <p className="text-sm">
+                        {LocalizeText("resolution.achievement.level")} <b className="font-semibold [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]">{AchievementUtilities.getAchievementLevel(achievement).toString()}/{achievement.levelCount.toString()}</b>
+                    </p>
+                </div>
+                { (achievement.scoreLimit > 0) &&
+                    <div className="w-full pt-1.5">
+                        <div className="illumina-card-item illumina-achievements-progress-bar relative flex h-[23px] items-center justify-center p-1">
+                            <div className="size-full">
+                                <div className="illumina-achievements-progress-bar-percent h-full" style={ { width: (~~(((((achievement.currentPoints + achievement.scoreAtStartOfLevel) - 0) * (100 - 0)) / ((achievement.scoreLimit + achievement.scoreAtStartOfLevel) - 0)) + 0) + "%") } } />
+                            </div>
+                            <p className="absolute text-center text-xs font-semibold">{(achievement.currentPoints + achievement.scoreAtStartOfLevel).toString() + "/" + (achievement.scoreLimit + achievement.scoreAtStartOfLevel).toString() }</p>
+                        </div>
+                    </div> }
+            </div>
+        </div>
     )
 }

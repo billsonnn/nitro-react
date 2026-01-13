@@ -1,9 +1,8 @@
-import { FC, ReactNode, useEffect, useState } from 'react';
-import { Transition } from 'react-transition-group';
-import { getTransitionAnimationStyle } from './TransitionAnimationStyles';
+import { FC, ReactNode, useEffect, useRef, useState } from "react"
+import { Transition } from "react-transition-group"
+import { getTransitionAnimationStyle } from "./TransitionAnimationStyles"
 
-interface TransitionAnimationProps
-{
+interface TransitionAnimationProps {
     type: string;
     inProp: boolean;
     timeout?: number;
@@ -11,42 +10,43 @@ interface TransitionAnimationProps
     children?: ReactNode;
 }
 
-export const TransitionAnimation: FC<TransitionAnimationProps> = props =>
-{
-    const { type = null, inProp = false, timeout = 300, className = null, children = null } = props;
+export const TransitionAnimation: FC<TransitionAnimationProps> = ({
+    type,
+    inProp,
+    timeout = 300,
+    className = "",
+    children
+}) => {
+    const nodeRef = useRef<HTMLDivElement>(null)
+    const [ isChildrenVisible, setChildrenVisible ] = useState(false)
 
-    const [ isChildrenVisible, setChildrenVisible ] = useState(false);
+    useEffect(() => {
+        let timeoutId: ReturnType<typeof setTimeout> | null = null
 
-    useEffect(() =>
-    {
-        let timeoutData: ReturnType<typeof setTimeout> = null;
-
-        if(inProp)
-        {
-            setChildrenVisible(true);
-        }
-        else
-        {
-            timeoutData = setTimeout(() =>
-            {
-                setChildrenVisible(false);
-                clearTimeout(timeout);
-            }, timeout);
+        if (inProp) {
+            setChildrenVisible(true)
+        } else {
+            timeoutId = setTimeout(() => {
+                setChildrenVisible(false)
+            }, timeout)
         }
 
-        return () =>
-        {
-            if(timeoutData) clearTimeout(timeoutData);
+        return () => {
+            if (timeoutId) clearTimeout(timeoutId)
         }
-    }, [ inProp, timeout ]);
+    }, [ inProp, timeout ])
 
     return (
-        <Transition in={ inProp } timeout={ timeout }>
-            { state => (
-                <div className={ (className ?? '') + ' animate__animated' } style={ { ...getTransitionAnimationStyle(type, state, timeout) } }>
-                    { isChildrenVisible && children }
+        <Transition nodeRef={nodeRef} in={inProp} timeout={timeout}>
+            {(state) => (
+                <div
+                    ref={nodeRef}
+                    className={`${className} animate__animated`}
+                    style={getTransitionAnimationStyle(type, state, timeout)}
+                >
+                    {isChildrenVisible && children}
                 </div>
-            ) }
+            )}
         </Transition>
-    );
+    )
 }

@@ -1,4 +1,4 @@
-import { DetailedHTMLProps, FC, HTMLAttributes } from 'react';
+import { DetailedHTMLProps, FC, HTMLAttributes } from "react"
 
 export interface LayoutImageProps extends DetailedHTMLProps<HTMLAttributes<HTMLImageElement>, HTMLImageElement>
 {
@@ -7,7 +7,7 @@ export interface LayoutImageProps extends DetailedHTMLProps<HTMLAttributes<HTMLI
 
 export const LayoutImage: FC<LayoutImageProps> = props =>
 {
-    const { imageUrl = null, className = '', ...rest } = props;
+    const { imageUrl = null, className = "", ...rest } = props
 
-    return <img src={ imageUrl } className={ 'no-select ' + className } alt="" { ...rest } />;
+    return <img src={ imageUrl } className={ "no-select " + className } alt="" { ...rest } />
 }

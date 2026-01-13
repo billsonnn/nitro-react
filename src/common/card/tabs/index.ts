@@ -1,2 +1,2 @@
-export * from './NitroCardTabsItemView';
-export * from './NitroCardTabsView';
+export * from "./NitroCardTabsItemView"
+export * from "./NitroCardTabsView"

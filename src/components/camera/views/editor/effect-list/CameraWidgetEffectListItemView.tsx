@@ -1,8 +1,5 @@
-import { IRoomCameraWidgetEffect } from '@nitrots/nitro-renderer';
-import { FC } from 'react';
-import { FaLock, FaTimes } from 'react-icons/fa';
-import { LocalizeText } from '../../../../../api';
-import { Button, LayoutGridItem, Text } from '../../../../../common';
+import { IRoomCameraWidgetEffect } from "@nitrots/nitro-renderer"
+import { FC } from "react"
 
 export interface CameraWidgetEffectListItemViewProps
 {
@@ -16,25 +13,18 @@ export interface CameraWidgetEffectListItemViewProps
 
 export const CameraWidgetEffectListItemView: FC<CameraWidgetEffectListItemViewProps> = props =>
 {
-    const { effect = null, thumbnailUrl = null, isActive = false, isLocked = false, selectEffect = null, removeEffect = null } = props;
+    const { effect = null, thumbnailUrl = null, isActive = false, isLocked = false, selectEffect = null, removeEffect = null } = props
 
     return (
-        <LayoutGridItem title={ LocalizeText(!isLocked ? (`camera.effect.name.${ effect.name }`) : `camera.effect.required.level ${ effect.minLevel }`) } itemActive={ isActive } onClick={ event => (!isActive && selectEffect()) }>
-            { isActive &&
-                <Button variant="danger" className="rounded-circle remove-effect" onClick={ removeEffect }>
-                    <FaTimes className="fa-icon" />
-                </Button> }
+        <div className="relative flex size-[62px] cursor-pointer items-center justify-center bg-[url('/client-assets/images/camera/spritesheet.png?v=2451779')] bg-[-405px_-474px]" onClick={ event => (!isActive && selectEffect()) }>
             { !isLocked && (thumbnailUrl && thumbnailUrl.length > 0) &&
-                <div className="effect-thumbnail-image border">
-                    <img alt="" src={ thumbnailUrl } />
+                <div className="z-0 size-14 bg-cover bg-center" style={{ backgroundImage: `url(${thumbnailUrl})` }} /> }
+            { isActive &&
+                <div className="absolute size-[62px]">
+                    <i className="absolute right-0 top-0 z-20 size-[19px] bg-[url('/client-assets/images/camera/spritesheet.png?v=2451779')] bg-[-468px_-476px]" onClick={ removeEffect } />
+                    <div className="absolute left-0 top-0 size-full rounded-lg bg-[#ffffff40]" />
+                    <div className="absolute left-0 top-0 z-10 size-full bg-[url('/client-assets/images/camera/spritesheet.png?v=2451779')] bg-[-342px_-474px]" />
                 </div> }
-            { isLocked &&
-                <Text center bold>
-                    <div>
-                        <FaLock className="fa-icon" />
-                    </div>
-                    { effect.minLevel }
-                </Text> }
-        </LayoutGridItem>
-    );
+        </div>
+    )
 }

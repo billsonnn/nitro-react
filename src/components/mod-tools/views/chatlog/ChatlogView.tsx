@@ -1,9 +1,9 @@
-import { ChatRecordData } from '@nitrots/nitro-renderer';
-import { FC, useMemo } from 'react';
-import { CreateLinkEvent, TryVisitRoom } from '../../../../api';
-import { Base, Button, Column, Flex, Grid, InfiniteScroll, Text } from '../../../../common';
-import { useModTools } from '../../../../hooks';
-import { ChatlogRecord } from './ChatlogRecord';
+import { ChatRecordData } from "@nitrots/nitro-renderer"
+import { FC, useMemo } from "react"
+import { CreateLinkEvent } from "../../../../api"
+import { InfiniteScroll } from "../../../../common"
+import { useModTools } from "../../../../hooks"
+import { ChatlogRecord } from "./ChatlogRecord"
 
 interface ChatlogViewProps
 {
@@ -12,12 +12,12 @@ interface ChatlogViewProps
 
 export const ChatlogView: FC<ChatlogViewProps> = props =>
 {
-    const { records = null } = props;
-    const { openRoomInfo = null } = useModTools();
+    const { records = null } = props
+    const { openRoomInfo = null } = useModTools()
 
     const allRecords = useMemo(() =>
     {
-        const results: ChatlogRecord[] = [];
+        const results: ChatlogRecord[] = []
 
         records.forEach(record =>
         {
@@ -25,7 +25,7 @@ export const ChatlogView: FC<ChatlogViewProps> = props =>
                 isRoomInfo: true,
                 roomId: record.roomId,
                 roomName: record.roomName
-            });
+            })
 
             record.chatlog.forEach(chatlog =>
             {
@@ -36,56 +36,45 @@ export const ChatlogView: FC<ChatlogViewProps> = props =>
                     hasHighlighting: chatlog.hasHighlighting,
                     message: chatlog.message,
                     isRoomInfo: false
-                });
-            });
-        });
+                })
+            })
+        })
         
-        return results;
-    }, [ records ]);
+        return results
+    }, [ records ])
 
     const RoomInfo = (props: { roomId: number, roomName: string }) =>
     {
         return (
-            <Flex gap={ 2 } alignItems="center" justifyContent="between" className="bg-muted rounded p-1">
-                <Flex gap={ 1 }>
-                    <Text bold>Room name:</Text>
-                    <Text>{ props.roomName }</Text>
-                </Flex>
-                <Flex gap={ 1 }>
-                    <Button onClick={ event => TryVisitRoom(props.roomId) }>Visit Room</Button>
-                    <Button onClick={ event => openRoomInfo(props.roomId) }>Room Tools</Button>
-                </Flex>
-            </Flex>
-        );
+            <div className="my-1 mb-1.5 flex gap-1">
+                <p className="text-[13px] !leading-3">Room name:</p>
+                <p className="cursor-pointer text-[13px] font-semibold !leading-3 underline [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]" onClick={ event => CreateLinkEvent(`mod-tools/toggle-room-info/${ props.roomId }`) }>{ props.roomName }</p>
+            </div>
+        )
     }
 
     return (
         <>
-            <Column fit gap={ 0 } overflow="hidden">
-                <Column gap={ 2 }>
-                    <Grid gap={ 1 } className="text-black fw-bold border-bottom pb-1">
-                        <Base className="g-col-2">Time</Base>
-                        <Base className="g-col-3">User</Base>
-                        <Base className="g-col-7">Message</Base>
-                    </Grid>
-                </Column>
+            <div className="illumina-scrollbar h-[337px] w-[387px]">
                 { (records && (records.length > 0)) &&
-                    <InfiniteScroll rows={ allRecords } rowRender={ (row: ChatlogRecord) =>
+                    <InfiniteScroll className="w-full" rows={ allRecords } rowRender={ (row: ChatlogRecord) =>
                     {
                         return (
                             <>
                                 { row.isRoomInfo &&
                                     <RoomInfo roomId={ row.roomId } roomName={ row.roomName } /> }
                                 { !row.isRoomInfo &&
-                                    <Grid fullHeight={ false } gap={ 1 } alignItems="center" className="log-entry py-1 border-bottom">
-                                        <Text className="g-col-2">{ row.timestamp }</Text>
-                                        <Text className="g-col-3" bold underline pointer onClick={ event => CreateLinkEvent(`mod-tools/open-user-info/${ row.habboId }`) }>{ row.username }</Text>
-                                        <Text textBreak wrap className="g-col-7">{ row.message }</Text>
-                                    </Grid> }
+                                    <div className="flex bg-white p-1 dark:bg-[#33312b]">
+                                        <div className="flex w-[150px] shrink-0 gap-1.5">
+                                            <p className="text-[13px] !leading-3">{ row.timestamp }</p>
+                                            <p className="cursor-pointer text-[13px] font-semibold !leading-3 underline [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]" onClick={ event => CreateLinkEvent(`mod-tools/open-user-info/${ row.habboId }`) }>{ row.username }</p>
+                                        </div>
+                                        <p className="break-words text-[13px] !leading-3">{ row.message }</p>
+                                    </div> }
                             </>
-                        );
+                        )
                     } } /> }
-            </Column>
+            </div>
         </>
-    );
+    )
 }

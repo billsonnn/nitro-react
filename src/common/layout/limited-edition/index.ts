@@ -1,3 +1,3 @@
-export * from './LayoutLimitedEditionCompactPlateView';
-export * from './LayoutLimitedEditionCompletePlateView';
-export * from './LayoutLimitedEditionStyledNumberView';
+export * from "./LayoutLimitedEditionCompactPlateView"
+export * from "./LayoutLimitedEditionCompletePlateView"
+export * from "./LayoutLimitedEditionStyledNumberView"

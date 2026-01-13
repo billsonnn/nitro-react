@@ -1,6 +1,6 @@
-import { ClubGiftInfoParser, ClubOfferData, HabboGroupEntryData, MarketplaceConfigurationMessageParser } from '@nitrots/nitro-renderer';
-import { CatalogPetPalette } from './CatalogPetPalette';
-import { GiftWrappingConfiguration } from './GiftWrappingConfiguration';
+import { ClubGiftInfoParser, ClubOfferData, HabboGroupEntryData, MarketplaceConfigurationMessageParser } from "@nitrots/nitro-renderer"
+import { CatalogPetPalette } from "./CatalogPetPalette"
+import { GiftWrappingConfiguration } from "./GiftWrappingConfiguration"
 
 export interface ICatalogOptions
 {

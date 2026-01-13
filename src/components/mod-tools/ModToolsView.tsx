@@ -1,140 +1,156 @@
-import { ILinkEventTracker, RoomEngineEvent, RoomId, RoomObjectCategory, RoomObjectType } from '@nitrots/nitro-renderer';
-import { FC, useEffect, useRef, useState } from 'react';
-import { AddEventLinkTracker, CreateLinkEvent, GetRoomSession, ISelectedUser, RemoveLinkEventTracker } from '../../api';
-import { Base, Button, DraggableWindowPosition, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
-import { useModTools, useObjectSelectedEvent, useRoomEngineEvent } from '../../hooks';
-import { ModToolsChatlogView } from './views/room/ModToolsChatlogView';
-import { ModToolsRoomView } from './views/room/ModToolsRoomView';
-import { ModToolsTicketsView } from './views/tickets/ModToolsTicketsView';
-import { ModToolsUserChatlogView } from './views/user/ModToolsUserChatlogView';
-import { ModToolsUserView } from './views/user/ModToolsUserView';
+import { ILinkEventTracker, RoomEngineEvent, RoomId, RoomObjectCategory, RoomObjectType } from "@nitrots/nitro-renderer"
+import { FC, useEffect, useState } from "react"
+import { AddEventLinkTracker, CreateLinkEvent, GetConfiguration, GetRoomSession, GetSessionDataManager, ISelectedUser, RemoveLinkEventTracker } from "../../api"
+import { DraggableWindowPosition, NitroCardContentView, NitroCardHeaderView, NitroCardView } from "../../common"
+import { useModTools, useObjectSelectedEvent, useRoomEngineEvent } from "../../hooks"
+import { ModToolsChatlogView } from "./views/room/ModToolsChatlogView"
+import { ModToolsRoomView } from "./views/room/ModToolsRoomView"
+import { ModToolsTicketsView } from "./views/tickets/ModToolsTicketsView"
+import { ModToolsUserChatlogView } from "./views/user/ModToolsUserChatlogView"
+import { ModToolsUserView } from "./views/user/ModToolsUserView"
 
 export const ModToolsView: FC<{}> = props =>
 {
-    const [ isVisible, setIsVisible ] = useState(false);
-    const [ currentRoomId, setCurrentRoomId ] = useState<number>(-1);
-    const [ selectedUser, setSelectedUser ] = useState<ISelectedUser>(null);
-    const [ isTicketsVisible, setIsTicketsVisible ] = useState(false);
-    const { openRooms = [], openRoomChatlogs = [], openUserChatlogs = [], openUserInfos = [], openRoomInfo = null, closeRoomInfo = null, toggleRoomInfo = null, openRoomChatlog = null, closeRoomChatlog = null, toggleRoomChatlog = null, openUserInfo = null, closeUserInfo = null, toggleUserInfo = null, openUserChatlog = null, closeUserChatlog = null, toggleUserChatlog = null } = useModTools();
-    const elementRef = useRef<HTMLDivElement>(null);
+    const [ isVisible, setIsVisible ] = useState(true)
+    const [ currentRoomId, setCurrentRoomId ] = useState<number>(-1)
+    const [ selectedUser, setSelectedUser ] = useState<ISelectedUser>(null)
+    const [ isTicketsVisible, setIsTicketsVisible ] = useState(false)
+    const { openRooms = [], openRoomChatlogs = [], openUserChatlogs = [], openUserInfos = [], openRoomInfo = null, closeRoomInfo = null, toggleRoomInfo = null, openRoomChatlog = null, closeRoomChatlog = null, toggleRoomChatlog = null, openUserInfo = null, closeUserInfo = null, toggleUserInfo = null, openUserChatlog = null, closeUserChatlog = null, toggleUserChatlog = null } = useModTools()
+    
+    const isMod = GetSessionDataManager().isModerator
+    const modToolsIsClosable: boolean = GetConfiguration<boolean>("illumina.mod_tools.closable")
 
     useRoomEngineEvent<RoomEngineEvent>([
         RoomEngineEvent.INITIALIZED,
         RoomEngineEvent.DISPOSED
     ], event =>
     {
-        if(RoomId.isRoomPreviewerId(event.roomId)) return;
+        if(RoomId.isRoomPreviewerId(event.roomId)) return
 
         switch(event.type)
         {
-            case RoomEngineEvent.INITIALIZED:
-                setCurrentRoomId(event.roomId);
-                return;
-            case RoomEngineEvent.DISPOSED:
-                setCurrentRoomId(-1);
-                return;
+        case RoomEngineEvent.INITIALIZED:
+            setCurrentRoomId(event.roomId)
+            return
+        case RoomEngineEvent.DISPOSED:
+            setCurrentRoomId(-1)
+            return
         }
-    });
+    })
 
     useObjectSelectedEvent(event =>
     {
-        if(event.category !== RoomObjectCategory.UNIT) return;
+        if(event.category !== RoomObjectCategory.UNIT) return
 
-        const roomSession = GetRoomSession();
+        const roomSession = GetRoomSession()
 
-        if(!roomSession) return;
+        if(!roomSession) return
 
-        const userData = roomSession.userDataManager.getUserDataByIndex(event.id);
+        const userData = roomSession.userDataManager.getUserDataByIndex(event.id)
 
-        if(!userData || userData.type !== RoomObjectType.USER) return;
+        if(!userData || userData.type !== RoomObjectType.USER) return
 
-        setSelectedUser({ userId: userData.webID, username: userData.name });
-    });
+        setSelectedUser({ userId: userData.webID, username: userData.name })
+    })
 
     useEffect(() =>
     {
         const linkTracker: ILinkEventTracker = {
             linkReceived: (url: string) =>
             {
-                const parts = url.split('/');
+                const parts = url.split("/")
         
-                if(parts.length < 2) return;
+                if(parts.length < 2) return
         
                 switch(parts[1])
                 {
-                    case 'show':
-                        setIsVisible(true);
-                        return;
-                    case 'hide':
-                        setIsVisible(false);
-                        return;
-                    case 'toggle':
-                        setIsVisible(prevValue => !prevValue);
-                        return;
-                    case 'open-room-info':
-                        openRoomInfo(Number(parts[2]));
-                        return;
-                    case 'close-room-info':
-                        closeRoomInfo(Number(parts[2]));           
-                        return;
-                    case 'toggle-room-info':
-                        toggleRoomInfo(Number(parts[2]));
-                        return;
-                    case 'open-room-chatlog':
-                        openRoomChatlog(Number(parts[2]));
-                        return;
-                    case 'close-room-chatlog':
-                        closeRoomChatlog(Number(parts[2]));             
-                        return;
-                    case 'toggle-room-chatlog':
-                        toggleRoomChatlog(Number(parts[2]));
-                        return;
-                    case 'open-user-info':
-                        openUserInfo(Number(parts[2]));
-                        return;
-                    case 'close-user-info':
-                        closeUserInfo(Number(parts[2]));             
-                        return;
-                    case 'toggle-user-info':
-                        toggleUserInfo(Number(parts[2]));
-                        return;
-                    case 'open-user-chatlog':
-                        openUserChatlog(Number(parts[2]));   
-                        return;
-                    case 'close-user-chatlog':
-                        closeUserChatlog(Number(parts[2]));              
-                        return;
-                    case 'toggle-user-chatlog':
-                        toggleUserChatlog(Number(parts[2]));
-                        return;
+                case "show":
+                    setIsVisible(true)
+                    return
+                case "hide":
+                    setIsVisible(false)
+                    return
+                case "toggle":
+                    setIsVisible(prevValue => !prevValue)
+                    return
+                case "open-room-info":
+                    openRoomInfo(Number(parts[2]))
+                    return
+                case "close-room-info":
+                    closeRoomInfo(Number(parts[2]))           
+                    return
+                case "toggle-room-info":
+                    toggleRoomInfo(Number(parts[2]))
+                    return
+                case "open-room-chatlog":
+                    openRoomChatlog(Number(parts[2]))
+                    return
+                case "close-room-chatlog":
+                    closeRoomChatlog(Number(parts[2]))             
+                    return
+                case "toggle-room-chatlog":
+                    toggleRoomChatlog(Number(parts[2]))
+                    return
+                case "open-user-info":
+                    openUserInfo(Number(parts[2]))
+                    return
+                case "close-user-info":
+                    closeUserInfo(Number(parts[2]))             
+                    return
+                case "toggle-user-info":
+                    toggleUserInfo(Number(parts[2]))
+                    return
+                case "open-user-chatlog":
+                    openUserChatlog(Number(parts[2]))   
+                    return
+                case "close-user-chatlog":
+                    closeUserChatlog(Number(parts[2]))              
+                    return
+                case "toggle-user-chatlog":
+                    toggleUserChatlog(Number(parts[2]))
+                    return
                 }
             },
-            eventUrlPrefix: 'mod-tools/'
-        };
+            eventUrlPrefix: "mod-tools/"
+        }
 
-        AddEventLinkTracker(linkTracker);
+        AddEventLinkTracker(linkTracker)
 
-        return () => RemoveLinkEventTracker(linkTracker);
-    }, [ openRoomInfo, closeRoomInfo, toggleRoomInfo, openRoomChatlog, closeRoomChatlog, toggleRoomChatlog, openUserInfo, closeUserInfo, toggleUserInfo, openUserChatlog, closeUserChatlog, toggleUserChatlog ]);
+        return () => RemoveLinkEventTracker(linkTracker)
+    }, [ openRoomInfo, closeRoomInfo, toggleRoomInfo, openRoomChatlog, closeRoomChatlog, toggleRoomChatlog, openUserInfo, closeUserInfo, toggleUserInfo, openUserChatlog, closeUserChatlog, toggleUserChatlog ])
 
     return (
         <>
-            { isVisible &&
-                <NitroCardView uniqueKey="mod-tools" className="nitro-mod-tools" windowPosition={ DraggableWindowPosition.TOP_LEFT } theme="primary-slim" >
-                    <NitroCardHeaderView headerText={ 'Mod Tools' } onCloseClick={ event => setIsVisible(false) } />
-                    <NitroCardContentView className="text-black" gap={ 1 }>
-                        <Button gap={ 1 } onClick={ event => CreateLinkEvent(`mod-tools/toggle-room-info/${ currentRoomId }`) } disabled={ (currentRoomId <= 0) } className="position-relative">
-                            <Base className="icon icon-small-room position-absolute start-1"/> Room Tool
-                        </Button>
-                        <Button innerRef={ elementRef } gap={ 1 } onClick={ event => CreateLinkEvent(`mod-tools/toggle-room-chatlog/${ currentRoomId }`) } disabled={ (currentRoomId <= 0) } className="position-relative">
-                            <Base className="icon icon-chat-history position-absolute start-1"/> Chatlog Tool
-                        </Button>
-                        <Button gap={ 1 } onClick={ () => CreateLinkEvent(`mod-tools/toggle-user-info/${ selectedUser.userId }`) } disabled={ !selectedUser } className="position-relative">
-                            <Base className="icon icon-user position-absolute start-1"/> User: { selectedUser ? selectedUser.username : '' }
-                        </Button>
-                        <Button gap={ 1 } onClick={ () => setIsTicketsVisible(prevValue => !prevValue) } className="position-relative">
-                            <Base className="icon icon-tickets position-absolute start-1"/> Report Tool
-                        </Button>
+            { (isVisible && isMod) &&
+                <NitroCardView uniqueKey="mod-tools" className="illumina-mod-tools size-[170px]" windowPosition={ DraggableWindowPosition.TOP_LEFT } >
+                    <NitroCardHeaderView headerText={ "Mod Tools" } onCloseClick={ event => modToolsIsClosable && setIsVisible(false) } />
+                    <NitroCardContentView className="text-black">
+                        <div className="mt-1 flex flex-col gap-3">
+                            <button className="flex items-center disabled:text-[#717171]" onClick={ event => CreateLinkEvent(`mod-tools/toggle-room-info/${ currentRoomId }`) } disabled={ (currentRoomId <= 0) }>
+                                <div className="h-4 w-[21px]">
+                                    <i className="block h-4 w-[17px] bg-[url('/client-assets/images/spritesheet.png?v=2451779')] dark:bg-[url('/client-assets/images/spritesheet-dark.png?v=2451779')] bg-[-426px_-84px]" />
+                                </div>
+                                <p className="text-xs font-semibold [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]">Room tool for this room</p>
+                            </button>
+                            <button className="flex items-center disabled:text-[#717171]" onClick={ event => CreateLinkEvent(`mod-tools/toggle-room-chatlog/${ currentRoomId }`) } disabled={ (currentRoomId <= 0) }>
+                                <div className="size-[21px]">
+                                    <i className="block h-[21px] w-[17px] bg-[url('/client-assets/images/spritesheet.png?v=2451779')] dark:bg-[url('/client-assets/images/spritesheet-dark.png?v=2451779')] bg-[-395px_-84px]" />
+                                </div>
+                                <p className="text-xs font-semibold [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]">Chatlog for this room</p>
+                            </button>
+                            <button className="flex items-center disabled:text-[#717171]" onClick={ () => CreateLinkEvent(`mod-tools/toggle-user-info/${ selectedUser.userId }`) } disabled={ !selectedUser }>
+                                <div className="-ml-px h-[19px] w-[22px]">
+                                    <i className="block h-[19px] w-[17px] bg-[url('/client-assets/images/spritesheet.png?v=2451779')] dark:bg-[url('/client-assets/images/spritesheet-dark.png?v=2451779')] bg-[-444px_-84px]" />
+                                </div>
+                                <p className="text-xs font-semibold [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]">User info: { selectedUser ? selectedUser.username : "" }</p>
+                            </button>
+                            <button className="flex items-center disabled:text-[#717171]" onClick={ () => setIsTicketsVisible(prevValue => !prevValue) }>
+                                <div className="h-4 w-[21px] pl-1">
+                                    <i className="block h-4 w-3 bg-[url('/client-assets/images/spritesheet.png?v=2451779')] dark:bg-[url('/client-assets/images/spritesheet-dark.png?v=2451779')] bg-[-413px_-84px]" />
+                                </div>
+                                <p className="text-xs font-semibold [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]">Ticket browser</p>
+                            </button>
+                        </div>
                     </NitroCardContentView>
                 </NitroCardView> }
             { (openRooms.length > 0) && openRooms.map(roomId => <ModToolsRoomView key={ roomId } roomId={ roomId } onCloseClick={ () => CreateLinkEvent(`mod-tools/close-room-info/${ roomId }`) } />) }
@@ -143,5 +159,5 @@ export const ModToolsView: FC<{}> = props =>
             { (openUserChatlogs.length > 0) && openUserChatlogs.map(userId => <ModToolsUserChatlogView key={ userId } userId={ userId } onCloseClick={ () => CreateLinkEvent(`mod-tools/close-user-chatlog/${ userId }`) }/>) }
             { isTicketsVisible && <ModToolsTicketsView onCloseClick={ () => setIsTicketsVisible(false) } /> }
         </>
-    );
+    )
 }

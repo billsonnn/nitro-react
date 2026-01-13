@@ -1,6 +1,5 @@
-import { FC, useMemo } from 'react';
-import { FaCaretDown, FaCaretUp } from 'react-icons/fa';
-import { Flex, FlexProps } from '../../../../common';
+import { FC } from "react"
+import { FlexProps } from "../../../../common"
 
 interface CaretViewProps extends FlexProps
 {
@@ -8,19 +7,11 @@ interface CaretViewProps extends FlexProps
 }
 export const ContextMenuCaretView: FC<CaretViewProps> = props =>
 {
-    const { justifyContent = 'center', alignItems = 'center', classNames = [], collapsed = true, ...rest } = props;
+    const { collapsed = true, ...rest } = props
 
-    const getClassNames = useMemo(() =>
-    {
-        const newClassNames: string[] = [ 'menu-footer' ];
-
-        if(classNames.length) newClassNames.push(...classNames);
-
-        return newClassNames;
-    }, [ classNames ]);
-
-    return <Flex justifyContent={ justifyContent } alignItems={ alignItems } classNames={ getClassNames } { ...rest }>
-        { !collapsed && <FaCaretDown className="fa-icon align-self-center" /> }
-        { collapsed && <FaCaretUp className="fa-icon align-self-center" /> }
-    </Flex>
+    return <div className="flex w-full items-center justify-center" { ...rest }>
+        <div className="caret-down" />
+        {/* { !collapsed && "collapsed-no" }
+        { collapsed && "collapsed-true" } */}
+    </div>
 }

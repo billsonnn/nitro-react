@@ -1,6 +1,5 @@
-import { FC } from 'react';
-import { LocalizeText } from '../../../api';
-import { Base, Button, Column, Flex, Text } from '../../../common';
+import { FC } from "react"
+import { LocalizeText } from "../../../api"
 
 interface GuideToolMenuViewProps
 {
@@ -31,46 +30,46 @@ export const GuideToolMenuView: FC<GuideToolMenuViewProps> = props =>
         helpersOnDuty = 0,
         guardiansOnDuty = 0,
         processAction = null
-    } = props;
+    } = props
     
     return (
-        <Column>
-            <Flex alignItems="center" gap={ 2 } className="bg-muted p-2 rounded">
-                <Base className={ 'duty-switch' + (isOnDuty ? '' : ' off') } onClick={ event => processAction('toggle_duty') } />
-                <Column gap={ 0 }>
-                    <Text bold>{ LocalizeText('guide.help.guide.tool.yourstatus') }</Text>
-                    <Text>{ LocalizeText(`guide.help.guide.tool.duty.${ (isOnDuty ? 'on' : 'off') }`) }</Text>
-                </Column>
-            </Flex>
-            <Column gap={ 1 }>
-                <Text bold>{ LocalizeText('guide.help.guide.tool.tickettypeselection.caption') }</Text>
-                <Flex alignItems="center" gap={ 1 }>
-                    <input className="form-check-input" disabled={ isOnDuty } type="checkbox" checked={ isHandlingGuideRequests } onChange={ event => setIsHandlingGuideRequests(event.target.checked) } />
-                    <Text>{ LocalizeText('guide.help.guide.tool.tickettypeselection.guiderequests') }</Text>
-                </Flex>
-                <Flex alignItems="center" gap={ 1 }>
-                    <input className="form-check-input" disabled={ isOnDuty } type="checkbox" checked={ isHandlingHelpRequests } onChange={ event => setIsHandlingHelpRequests(event.target.checked) } />
-                    <Text>{ LocalizeText('guide.help.guide.tool.tickettypeselection.onlyhelprequests') }</Text>
-                </Flex>
-                <Flex alignItems="center" gap={ 1 }>
-                    <input className="form-check-input" disabled={ isOnDuty } type="checkbox" checked={ isHandlingBullyReports } onChange={ event => setIsHandlingBullyReports(event.target.checked) } />
-                    <Text>{ LocalizeText('guide.help.guide.tool.tickettypeselection.bullyreports') }</Text>
-                </Flex>
-            </Column>
-            <hr className="bg-dark m-0" />
-            <Flex center gap={ 2 }>
-                <Base className="info-icon" />
-                <Column gap={ 1 }>
-                    <Base dangerouslySetInnerHTML={ { __html: LocalizeText('guide.help.guide.tool.guidesonduty', [ 'amount' ], [ guidesOnDuty.toString() ]) } } />
-                    <Base dangerouslySetInnerHTML={ { __html: LocalizeText('guide.help.guide.tool.helpersonduty', [ 'amount' ], [ helpersOnDuty.toString() ]) } } />
-                    <Base dangerouslySetInnerHTML={ { __html: LocalizeText('guide.help.guide.tool.guardiansonduty', [ 'amount' ], [ guardiansOnDuty.toString() ]) } } />
-                </Column>
-            </Flex>
-            <hr className="bg-dark m-0" />
-            <Flex justifyContent="between" gap={ 2 }>
-                <Button disabled onClick={ event => processAction('forum_link') }>{ LocalizeText('guide.help.guide.tool.forum.link') }</Button>
-                <Button disabled>{ LocalizeText('guide.help.guide.tool.skill.link') }</Button>
-            </Flex>
-        </Column>
-    );
+        <>
+            <div className="illumina-previewer mb-2 p-3.5">
+                <div className="flex items-end gap-2">
+                    <input type="checkbox" className="illumina-input toggle" checked={ isOnDuty } onChange={ event => processAction("toggle_duty") } />
+                    <div className="flex flex-col gap-1">
+                        <p className="text-[13px] !leading-3 text-[#797979] [text-shadow:_0_1px_0_#fff] dark:text-white/60 dark:[text-shadow:_0_1px_0_#33312B]">{ LocalizeText("guide.help.guide.tool.yourstatus") }</p>
+                        <p className="text-[13px] font-semibold !leading-3 [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]">{ LocalizeText(`guide.help.guide.tool.duty.${ (isOnDuty ? "on" : "off") }`) }</p>
+                    </div>
+                </div>
+            </div>
+            <div className={`flex flex-col gap-1 ${isOnDuty ? "opacity-25" : "opacity-100"}`}>
+                <p className="mb-1 text-[13px] font-semibold !leading-3 [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]">{ LocalizeText("guide.help.guide.tool.tickettypeselection.caption") }</p>
+                <div className="flex items-center gap-2">
+                    <input disabled={ isOnDuty } type="checkbox" className="illumina-input" checked={ isHandlingGuideRequests } onChange={ event => setIsHandlingGuideRequests(event.target.checked) } />
+                    <p className="text-[13px] font-semibold !leading-3 [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]">{ LocalizeText("guide.help.guide.tool.tickettypeselection.guiderequests") }</p>
+                </div>
+                <div className="flex items-center gap-2">
+                    <input disabled={ isOnDuty } type="checkbox" className="illumina-input" checked={ isHandlingHelpRequests } onChange={ event => setIsHandlingHelpRequests(event.target.checked) } />
+                    <p className="text-[13px] font-semibold !leading-3 [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]">{ LocalizeText("guide.help.guide.tool.tickettypeselection.onlyhelprequests") }</p>
+                </div>
+                <div className="flex items-center gap-2">
+                    <input disabled={ isOnDuty } type="checkbox" className="illumina-input" checked={ isHandlingBullyReports } onChange={ event => setIsHandlingBullyReports(event.target.checked) } />
+                    <p className="text-[13px] font-semibold !leading-3 [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]">{ LocalizeText("guide.help.guide.tool.tickettypeselection.bullyreports") }</p>
+                </div>
+            </div>
+            <div className="my-2 h-0.5 w-full border-b border-white bg-[#CCCCCC] dark:border-[#36322C] dark:bg-black" />
+            <div className="ml-1 flex items-center gap-2">
+                <i className="block h-6 w-[23px] bg-[url('/client-assets/images/spritesheet.png?v=2451779')] dark:bg-[url('/client-assets/images/spritesheet-dark.png?v=2451779')] bg-[-247px_-253px]" />
+                <div className="flex flex-col gap-1">
+                    <p className="text-[13px] !leading-3 text-[#010101] [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]" dangerouslySetInnerHTML={ { __html: LocalizeText("guide.help.guide.tool.helpersonduty", [ "amount" ], [ helpersOnDuty.toString() ]) } } />
+                    <p className="text-[13px] !leading-3 text-[#010101] [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]" dangerouslySetInnerHTML={ { __html: LocalizeText("guide.help.guide.tool.guardiansonduty", [ "amount" ], [ guardiansOnDuty.toString() ]) } } />
+                </div>
+            </div>
+            {/* <div className="my-2 h-0.5 w-full border-b border-white dark:border-[#36322C] bg-[#CCCCCC] dark:bg-black" />
+            <div className="flex justify-center">
+                <Button variant="underline" className="!text-[13px]" disabled>{ LocalizeText("guide.help.guide.tool.skill.link") }</Button>
+            </div> */}
+        </>
+    )
 }

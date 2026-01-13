@@ -1,42 +1,30 @@
-import { GroupInformationComposer, GroupInformationEvent, GroupInformationParser, HabboGroupEntryData } from '@nitrots/nitro-renderer';
-import { FC, useEffect, useState } from 'react';
-import { SendMessageComposer, ToggleFavoriteGroup } from '../../../api';
-import { AutoGrid, Base, Column, Flex, Grid, GridProps, LayoutBadgeImageView, LayoutGridItem } from '../../../common';
-import { useMessageEvent } from '../../../hooks';
-import { GroupInformationView } from '../../groups/views/GroupInformationView';
+import { GroupInformationComposer, GroupInformationParser, HabboGroupEntryData } from "@nitrots/nitro-renderer"
+import { FC, useEffect, useState } from "react"
+import { GetGroupInformation, LocalizeText, SendMessageComposer, ToggleFavoriteGroup } from "../../../api"
+import { GridProps, LayoutBadgeImageView } from "../../../common"
 
 interface GroupsContainerViewProps extends GridProps
 {
     itsMe: boolean;
     groups: HabboGroupEntryData[];
-    onLeaveGroup: () => void;
 }
 
 export const GroupsContainerView: FC<GroupsContainerViewProps> = props =>
 {
-    const { itsMe = null, groups = null, onLeaveGroup = null, overflow = 'hidden', gap = 2, ...rest } = props;
-    const [ selectedGroupId, setSelectedGroupId ] = useState<number>(null);
-    const [ groupInformation, setGroupInformation ] = useState<GroupInformationParser>(null);
-
-    useMessageEvent<GroupInformationEvent>(GroupInformationEvent, event =>
-    {
-        const parser = event.getParser();
-
-        if(!selectedGroupId || (selectedGroupId !== parser.id) || parser.flag) return;
-
-        setGroupInformation(parser);
-    });
+    const { itsMe = null, groups = null, ...rest } = props
+    const [ selectedGroupId, setSelectedGroupId ] = useState<number>(null)
+    const [ groupInformation, setGroupInformation ] = useState<GroupInformationParser>(null)
 
     useEffect(() =>
     {
-        if(!selectedGroupId) return;
+        if(!selectedGroupId) return
         
-        SendMessageComposer(new GroupInformationComposer(selectedGroupId, false));
-    }, [ selectedGroupId ]);
+        SendMessageComposer(new GroupInformationComposer(selectedGroupId, false))
+    }, [ selectedGroupId ])
 
     useEffect(() =>
     {
-        setGroupInformation(null);
+        setGroupInformation(null)
 
         if(groups.length > 0)
         {
@@ -44,47 +32,31 @@ export const GroupsContainerView: FC<GroupsContainerViewProps> = props =>
             {
                 if(prevValue === groups[0].groupId)
                 {
-                    SendMessageComposer(new GroupInformationComposer(groups[0].groupId, false));
+                    SendMessageComposer(new GroupInformationComposer(groups[0].groupId, false))
                 }
 
-                return groups[0].groupId;
-            });
+                return groups[0].groupId
+            })
         }
-    }, [ groups ]);
+    }, [ groups ])
 
-    if(!groups || !groups.length)
-    {
-        return (
-            <Column center fullHeight>
-                <Flex justifyContent="center" gap={ 2 }>
-                    <Base className="no-group-spritesheet image-1" />
-                    <Base className="no-group-spritesheet image-2" />
-                    <Base className="no-group-spritesheet image-3" />
-                </Flex>
-            </Column>
-        );
-    }
+    if(!groups || !groups.length) return (
+        <p className="!dark:text-[#cccccc] text-xs font-semibold !leading-3 text-[#1B1B1B]  [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]">
+            {itsMe
+                ? LocalizeText("extendedprofile.nogroups.me")
+                : LocalizeText("extendedprofile.nogroups.user")
+            }
+        </p>
+    )
     
     return (
-        <Grid overflow={ overflow } gap={ 2 } { ...rest }>
-            <Column alignItems="center" size={ 2 } overflow="auto">
-                <AutoGrid overflow={ null } columnCount={ 1 } columnMinHeight={ 50 } className="user-groups-container">
-                    { groups.map((group, index) =>
-                    {
-                        return (
-                            <LayoutGridItem key={ index } overflow="unset" itemActive={ (selectedGroupId === group.groupId) } onClick={ () => setSelectedGroupId(group.groupId) } className="p-1">
-                                { itsMe &&
-                                <i className={ 'position-absolute end-0 top-0 z-index-1 icon icon-group-' + (group.favourite ? 'favorite' : 'not-favorite') } onClick={ () => ToggleFavoriteGroup(group) } /> }
-                                <LayoutBadgeImageView badgeCode={ group.badgeCode } isGroup={ true } />
-                            </LayoutGridItem>
-                        )
-                    }) }
-                </AutoGrid>
-            </Column>
-            <Column size={ 10 } overflow="hidden">
-                { groupInformation &&
-                    <GroupInformationView groupInformation={ groupInformation } onClose={ onLeaveGroup } /> }
-            </Column>
-        </Grid>
-    );
+        <div className="flex items-center gap-3">
+            { groups.map((group, index) => (
+                <div key={ index } className="relative !size-auto cursor-pointer">
+                    { itsMe && <i className={ "block size-3.5 bg-[url('/client-assets/images/spritesheet.png?v=2451779')] dark:bg-[url('/client-assets/images/spritesheet-dark.png?v=2451779')] absolute -right-0.5 -top-0.5 z-20 " + (group.favourite ? "bg-[-330px_-103px]" : "bg-[-315px_-103px]") } onClick={ () => ToggleFavoriteGroup(group) } /> }
+                    <LayoutBadgeImageView badgeCode={ group.badgeCode } isGroup={ true } isShadow={ true } onClick={ () => GetGroupInformation(group.groupId) } />
+                </div>
+            ))}
+        </div>
+    )
 }

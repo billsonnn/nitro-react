@@ -1,52 +1,46 @@
-import { FC, useEffect, useMemo, useState } from 'react';
-import { Flex, FlexProps } from '..';
-import { TransitionAnimation, TransitionAnimationTypes } from '../transitions';
+import { FC, ReactNode, useEffect, useState } from "react"
+import { TransitionAnimation, TransitionAnimationTypes } from "../transitions"
 
-export interface LayoutNotificationBubbleViewProps extends FlexProps
+export interface LayoutNotificationBubbleViewProps
 {
     fadesOut?: boolean;
     timeoutMs?: number;
-    onClose: () => void;
+    onClick?: any;
+    onClose?: () => void;
+    children?: ReactNode;
 }
 
 export const LayoutNotificationBubbleView: FC<LayoutNotificationBubbleViewProps> = props =>
 {
-    const { fadesOut = true, timeoutMs = 8000, onClose = null, overflow = 'hidden', classNames = [], ...rest } = props;
-    const [ isVisible, setIsVisible ] = useState(false);
-
-    const getClassNames = useMemo(() =>
-    {
-        const newClassNames: string[] = [ 'nitro-notification-bubble', 'rounded' ];
-
-        if(classNames.length) newClassNames.push(...classNames);
-
-        return newClassNames;
-    }, [ classNames ]);
+    const { fadesOut = true, timeoutMs = 8000, onClose = null, children = null } = props
+    const [ isVisible, setIsVisible ] = useState(false)
 
     useEffect(() =>
     {
-        setIsVisible(true);
+        setIsVisible(true)
 
-        return () => setIsVisible(false);
-    }, []);
+        return () => setIsVisible(false)
+    }, [])
 
     useEffect(() =>
     {
-        if(!fadesOut) return;
+        if(!fadesOut) return
 
         const timeout = setTimeout(() =>
         {
-            setIsVisible(false);
+            setIsVisible(false)
 
-            setTimeout(() => onClose(), 300);
-        }, timeoutMs);
+            setTimeout(() => onClose(), 300)
+        }, timeoutMs)
 
-        return () => clearTimeout(timeout);
-    }, [ fadesOut, timeoutMs, onClose ]);
+        return () => clearTimeout(timeout)
+    }, [ fadesOut, timeoutMs, onClose ])
 
     return (
         <TransitionAnimation type={ TransitionAnimationTypes.FADE_IN } inProp={ isVisible } timeout={ 300 }>
-            <Flex overflow={ overflow } classNames={ getClassNames } onClick={ onClose } { ...rest } />
+            <div className="illumina-notification flex w-[190px] gap-4 p-[10px_5px_14px_7px]" onClick={ onClose }>
+                { children }
+            </div>
         </TransitionAnimation>
-    );
+    )
 }

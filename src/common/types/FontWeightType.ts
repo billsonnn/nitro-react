@@ -1,1 +1,1 @@
-export type FontWeightType = 'bold' | 'bolder' | 'normal' | 'light' | 'lighter';
+export type FontWeightType = "bold" | "bolder" | "normal" | "light" | "lighter";

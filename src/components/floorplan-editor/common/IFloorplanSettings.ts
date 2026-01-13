@@ -1,4 +1,4 @@
-import { IVisualizationSettings } from './IVisualizationSettings';
+import { IVisualizationSettings } from "./IVisualizationSettings"
 
 export interface IFloorplanSettings extends IVisualizationSettings
 {

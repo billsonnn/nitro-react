@@ -1,5 +1,5 @@
-import { ICatalogPage } from './ICatalogPage';
-import { IProduct } from './IProduct';
+import { ICatalogPage } from "./ICatalogPage"
+import { IProduct } from "./IProduct"
 
 export interface IPurchasableOffer
 {

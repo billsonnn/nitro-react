@@ -1,26 +1,2102 @@
-@import './achievements/AchievementsView';
-@import './avatar-editor/AvatarEditorView';
-@import './camera/CameraWidgetView';
-@import './campaign/CampaignView';
-@import './catalog/CatalogView';
-@import './chat-history/ChatHistoryView';
-@import './floorplan-editor/FloorplanEditorView.scss';
-@import './friends/FriendsView';
-@import './groups/GroupView';
-@import './guide-tool/GuideToolView';
-@import './hc-center/HcCenterView';
-@import './help/HelpView';
-@import './hotel-view/HotelView';
-@import './inventory/InventoryView';
-@import './loading/LoadingView';
-@import './mod-tools/ModToolsView';
-@import './navigator/NavigatorView';
-@import './nitropedia/NitropediaView';
-@import './notification-center/NotificationCenterView';
-@import './purse/PurseView';
-@import './right-side/RightSideView';
-@import './room/RoomView';
-@import './toolbar/ToolbarView';
-@import './user-profile/UserProfileVew';
-@import './wired/WiredView';
-@import './game-center/GameCenterView.scss';
+.illumina-loading {
+    border-image-slice: 10 fill;
+    border-image-width: 10px;
+    border-image-repeat: repeat repeat;
+    border-image-source: url("/client-assets/images/loading/loading-bg.png?v=2451779");
+}
+
+.illumina-progress-bar {
+    border-image-slice: 7 fill;
+    border-image-width: 7px;
+    border-image-repeat: repeat repeat;
+    border-image-source: url("/client-assets/images/loading/progress-bar-bg.png?v=2451779");
+
+    .illumina-progress-bar-percent {
+        border-image-slice: 7 fill;
+        border-image-width: 7px;
+        border-image-repeat: repeat repeat;
+        border-image-source: url("/client-assets/images/loading/progress-bar-percent-bg.png?v=2451779");
+    }
+}
+
+.illumina-card {
+    border-image-source: url("/client-assets/images/common/card-bg.png?v=2451779");
+    border-image-slice: 8 fill;
+    border-image-width: 8px;
+    border-image-repeat: repeat repeat;
+
+    &.green {
+        border-image-source: url("/client-assets/images/common/card-green-bg.png?v=2451779");
+
+        .caret-down {
+            background-image: url("/client-assets/images/common/caret-green-bg.png?v=2451779");
+        }
+    }
+
+    &.orange {
+        border-image-source: url("/client-assets/images/common/card-orange-bg.png?v=2451779");
+
+        .caret-down {
+            background-image: url("/client-assets/images/common/caret-orange-bg.png?v=2451779");
+        }
+    }
+
+    .caret-down {
+        position: absolute;
+        bottom: -6px;
+        background-image: url("/client-assets/images/common/caret-bg.png?v=2451779");
+        width: 13px;
+        height: 8px;
+    }
+
+    .illumina-card-filter {
+        border-image-source: url("/client-assets/images/common/item-bg.png?v=2451779");
+        border-image-slice: 7 fill;
+        border-image-width: 7px;
+        border-image-outset: 0px;
+        border-image-repeat: repeat repeat;
+    }
+
+    .illumina-card-item {
+        border-image-source: url("/client-assets/images/common/item-bg.png?v=2451779");
+        border-image-slice: 9 fill;
+        border-image-width: 9px;
+        border-image-outset: 0px;
+        border-image-repeat: repeat repeat;
+
+        &.dark {
+            border-image-source: url("/client-assets/images/common/item-dark-bg.png?v=2451779");
+        }
+
+        &.active {
+            border-image-source: url("/client-assets/images/common/item-active-bg.png?v=2451779");
+        }
+    }
+
+    .illumina-card-body {
+        .illumina-navigator-category-header {
+            border-image-slice: 7 fill;
+            border-image-width: 7px;
+            border-image-repeat: repeat repeat;
+            border-image-source: url("/client-assets/images/rooms/room-bg.png?v=2451779");
+        }
+
+        .illumina-navigator-room {
+            border-image-slice: 10 fill;
+            border-image-width: 10px;
+            border-image-repeat: repeat repeat;
+            border-image-source: url("/client-assets/images/rooms/room-bg.png?v=2451779");
+        }
+
+        .illumina-navigator-room-grid {
+            border-image-slice: 10 fill;
+            border-image-width: 10px;
+            border-image-repeat: repeat repeat;
+            border-image-source: url("/client-assets/images/rooms/grid-even-bg.png?v=2451779");
+
+            &:nth-child(2n+1) {
+                border-image-source: url("/client-assets/images/rooms/grid-odd-bg.png?v=2451779");
+            }
+        }
+    }
+}
+
+.illumina-navigator-room-rectangle-thumbnail {
+    border-image-slice: 8 fill;
+    border-image-width: 8px;
+    border-image-source: url("/client-assets/images/rooms/rectangle-thumbnail-bg.png?v=2451779");
+}
+
+.illumina-navigator-room-rectangle-thumbnail-room-name {
+    border-image-source: url("/client-assets/images/rooms/rectangle-thumbnail-room-name-bg.png?v=2451779");
+    border-image-slice: 7 fill;
+    border-image-width: 7px;
+    border-image-outset: 0px;
+    border-image-repeat: repeat repeat;
+}
+
+.illumina-chat-input {
+    border-image-slice: 6 fill;
+    border-image-width: 6px;
+    border-image-repeat: repeat repeat;
+    border-image-source: url("/client-assets/images/toolbar/chat-bg.png?v=2451779");
+}
+
+.illumina-popover {
+    border-image-slice: 10 fill;
+    border-image-width: 10px;
+    border-image-repeat: repeat repeat;
+    border-image-source: url("/client-assets/images/common/popover-bg.png?v=2451779");
+}
+
+.friend-bar-item {
+    &:not(:last-child) {
+        &:after {
+            content: "";
+            display: block;
+            width: 2px;
+            height: 26px;
+            border-left: 1px solid #000;
+            border-right: 1px solid #3E3931;
+    
+        }
+    }
+    &.friend-bar-item-active {
+        height: 45px;
+        border-image-slice: 10 fill;
+        border-image-width: 10px;
+        border-image-repeat: repeat repeat;
+        border-image-source: url("/client-assets/images/toolbar/friends-bg.png?v=2451779");
+
+        &:not(:last-child) {
+            &:after {
+                content: "";
+                display: none;
+        
+            }
+        }
+        
+        .friend-bar-item-container {
+            transform: translateY(-10px);
+            height: calc(100% + 20px);
+        }
+    }
+}
+
+.illumina-furni-item {
+    border-image-source: url("/client-assets/images/common/item-no-border-bg.png?v=2451779");
+    border-image-slice: 9 fill;
+    border-image-width: 9px;
+    border-image-outset: 0px;
+    border-image-repeat: repeat repeat;
+
+    &.active {
+        border-image-source: url("/client-assets/images/common/item-bg.png?v=2451779");
+    }
+
+    &.unseen {
+        border-image-source: url("/client-assets/images/common/item-green-no-border-bg.png?v=2451779");
+
+        &.active {
+            border-image-source: url("/client-assets/images/common/item-green-bg.png?v=2451779");
+        }
+    }
+
+    &.has-trade {
+        .item-opacity {
+            opacity: 0.25;
+        }
+    }
+}
+
+.illumina-previewer {
+    border-image-slice: 15 fill;
+    border-image-width: 15px;
+    border-image-repeat: repeat repeat;
+    border-image-source: url("/client-assets/images/common/previewer-bg.png?v=2451779");
+}
+
+.illumina-toolbar {
+    background-image: url('/client-assets/images/toolbar/toolbar-bg.png?v=2451779');
+}
+
+.illumina-toolbar-left {
+    display: flex;
+    flex-direction: column;
+
+    .illumina-toolbar-left-item {
+        display: flex;
+        justify-content: center;
+        border-image-slice: 8 fill;
+        border-image-width: 8px;
+        border-image-source: url("/client-assets/images/toolbar/vertical/mid-bg.png?v=2451779");
+        padding: 8px 6px 6px;
+
+        &:first-child {
+            border-image-source: url("/client-assets/images/toolbar/vertical/start-bg.png?v=2451779");
+        }
+
+        &:last-child {
+            border-image-source: url("/client-assets/images/toolbar/vertical/end-bg.png?v=2451779");
+        }
+    }
+
+    .illumina-toolbar-left-item-line {
+        background-image: url("/client-assets/images/toolbar/vertical/line-bg.png?v=2451779");
+        width: 52px;
+        height: 7px;
+    }
+}
+
+.illumina-toolbar-me {
+    border-image-slice: 10 fill;
+    border-image-width: 10px;
+    border-image-repeat: repeat repeat;
+    border-image-source: url("/client-assets/images/toolbar/toolbar-me-bg.png?v=2451779");
+}
+
+.illumina-item-badge {
+    border-image-slice: 8 fill;
+    border-image-width: 8px;
+    border-image-repeat: repeat repeat;
+    border-image-source: url("/client-assets/images/common/badge-bg.png?v=2451779");
+}
+
+.illumina-btn-group {
+    display: flex;
+    
+    .illumina-btn-primary {
+        border-image-source: url("/client-assets/images/buttons/groups/horizontal/group-primary-mid-bg.png?v=2451779");
+
+        &:first-child {
+            border-image-source: url("/client-assets/images/buttons/groups/horizontal/group-primary-start-bg.png?v=2451779");
+
+            &:active, &.active {
+                border-image-source: url("/client-assets/images/buttons/groups/horizontal/group-primary-active-start-bg.png?v=2451779");
+            }
+
+            &:disabled {
+                &:active, &.active {
+                    border-image-source: url("/client-assets/images/buttons/groups/horizontal/group-primary-mid-bg.png?v=2451779")!important;
+                    cursor: auto;
+                }
+            }
+        }
+
+        &:last-child {
+            border-image-source: url("/client-assets/images/buttons/groups/horizontal/group-primary-end-bg.png?v=2451779");
+
+            &:active, &.active {
+                border-image-source: url("/client-assets/images/buttons/groups/horizontal/group-primary-active-end-bg.png?v=2451779");
+            }
+
+            &:disabled {
+                &:active, &.active {
+                    border-image-source: url("/client-assets/images/buttons/groups/horizontal/group-primary-end-bg.png?v=2451779")!important;
+                    cursor: auto;
+                }
+            }
+        }
+
+        &:active, &.active {
+            border-image-source: url("/client-assets/images/buttons/groups/horizontal/group-primary-active-mid-bg.png?v=2451779");
+        }
+
+        &:disabled {
+            &:active, &.active {
+                border-image-source: url("/client-assets/images/buttons/groups/horizontal/group-primary-mid-bg.png?v=2451779")!important;
+                cursor: auto;
+            }
+        }
+    }
+
+    &.vertical {
+        display: flex;
+        flex-direction: column;
+
+        .illumina-btn-primary {
+            border-image-source: url("/client-assets/images/buttons/groups/vertical/group-primary-mid-bg.png?v=2451779");
+    
+            &:first-child {
+                border-image-source: url("/client-assets/images/buttons/groups/vertical/group-primary-start-bg.png?v=2451779");
+    
+                &:active, &.active {
+                    border-image-source: url("/client-assets/images/buttons/groups/vertical/group-primary-active-start-bg.png?v=2451779");
+                }
+            }
+    
+            &:last-child {
+                border-image-source: url("/client-assets/images/buttons/groups/vertical/group-primary-end-bg.png?v=2451779");
+    
+                &:active, &.active {
+                    border-image-source: url("/client-assets/images/buttons/groups/vertical/group-primary-active-end-bg.png?v=2451779");
+                }
+            }
+    
+            &:active, &.active {
+                border-image-source: url("/client-assets/images/buttons/groups/vertical/group-primary-active-mid-bg.png?v=2451779");
+            }
+        }
+    }
+}
+
+.illumina-btn-primary {
+    border-image-slice: 8 fill;
+    border-image-width: 8px;
+    border-image-source: url("/client-assets/images/buttons/primary-bg.png?v=2451779");
+    font-weight: 600;
+    text-shadow: 0 1px 0 #fff;
+
+    &:active, &.active {
+        border-image-source: url("/client-assets/images/buttons/primary-active-bg.png?v=2451779");
+    }
+
+    &:disabled {
+        color: #6D6D6D;
+        cursor: auto;
+
+        &:active {
+            border-image-source: url("/client-assets/images/buttons/primary-bg.png?v=2451779");
+        }
+    }
+}
+
+.illumina-btn-dark {
+    border-image-slice: 8 fill;
+    border-image-width: 8px;
+    border-image-source: url("/client-assets/images/buttons/primary-dark-bg.png?v=2451779v=0.0.1");
+    color: #fff;
+    font-weight: 600;
+    text-shadow: 0 1px 0 #000;
+}
+
+.illumina-btn-success {
+    border-image-slice: 8 fill;
+    border-image-width: 8px;
+    border-image-source: url("/client-assets/images/buttons/success-bg.png?v=2451779");
+    color: #fff;
+    font-weight: 600;
+    text-shadow: 0 1px 0 #036200;
+
+    &:active, &.active {
+        border-image-source: url("/client-assets/images/buttons/success-active-bg.png?v=2451779");
+    }
+
+    &:disabled {
+        border-image-source: url("/client-assets/images/buttons/success-active-bg.png?v=2451779");
+        color: #cccfcc;
+        cursor: auto;
+    }
+}
+
+.illumina-btn-orange {
+    border-image-slice: 8 fill;
+    border-image-width: 8px;
+    border-image-source: url("/client-assets/images/buttons/orange-bg.png?v=2451779");
+    color: #fff;
+    font-weight: 600;
+    text-shadow: 0 1px 0 #EA8000;
+
+    &:disabled {
+        opacity: .8;
+        border-image-source: url("/client-assets/images/buttons/orange-disabled-bg.png?v=2451779");
+        cursor: default;
+    }
+}
+
+.illumina-btn-underline {
+    padding-left: 0;
+    padding-right: 0;
+    text-decoration: underline;
+}
+
+.illumina-btn-volter-bold {
+    border-image-slice: 6 fill;
+    border-image-width: 6px;
+    border-image-source: url("/client-assets/images/buttons/volter-bold-bg.png?v=2451779");
+    font-family: "Illumina Volter Bold";
+    font-size: 9px;
+    height: 22px;
+}
+
+.illumina-btn-volter {
+    border-image-slice: 6 fill;
+    border-image-width: 6px;
+    border-image-source: url("/client-assets/images/buttons/volter-bg.png?v=2451779");
+    font-family: "Illumina Volter";
+    font-size: 9px;
+    padding: 0 39px;
+    height: 22px;
+}
+
+.illumina-btn-wired {
+    border-image-slice: 3 fill;
+    border-image-width: 3px;
+    border-image-source: url("/client-assets/images/buttons/wired-bg.png?v=2451779");
+    width: 100%;
+    height: 22px;
+    font-family: "Illumina Volter";
+    font-size: 9px;
+
+    &:hover {
+        border-image-source: url("/client-assets/images/buttons/wired-hover-bg.png?v=2451779");
+    }
+
+    &:active {
+        border-image-source: url("/client-assets/images/buttons/wired-active-bg.png?v=2451779");
+    }
+}
+
+.illumina-input {
+    background-color: transparent;
+    border-image-slice: 7 fill;
+    border-image-width: 7px;
+    border-image-repeat: repeat repeat;
+    border-image-source: url("/client-assets/images/common/input-bg.png?v=2451779");
+    font-size: 14px;
+    background-color: transparent;
+
+    &[type="checkbox"] {
+        flex-shrink: 0;
+        width: 19px;
+        height: 20px;
+        cursor: pointer;
+
+        &:checked {
+            border-image-source: url("/client-assets/images/common/input-checked-bg.png?v=2451779");
+        }
+
+        &.toggle {
+            border-image-source: none!important;
+            background-image: url("/client-assets/images/spritesheet.png?v=2451779");
+            background-position: 0px -245px;
+            width: 38px;
+            height: 21px;
+        
+            &:checked {
+                background-position: 0px -223px;
+            }
+        }
+    }
+
+    &[type="radio"] {
+        border-image-source: none!important;
+        background-image: url("/client-assets/images/spritesheet.png?v=2451779");
+        background-position: 0px -267px;
+        flex-shrink: 0;
+        width: 11px;
+        height: 12px;
+        cursor: pointer;
+
+        &:checked {
+            background-position: 0px -279px;
+        }
+    }
+
+    &[type="range"] {
+        background-image: url("/client-assets/images/settings/sound-spritesheet.png?v=2451779")!important;
+        width: 141px;
+        height: 25px;
+        border-image-source: none!important;
+        
+        &::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            margin-top: 10px;
+            background-image: url("/client-assets/images/settings/sound-spritesheet.png?v=2451779");
+            background-position: -142px 0px;
+            width: 12px;
+            height: 15px;
+            cursor: pointer;
+         }
+    }
+}
+
+.illumina-select {
+    background-color: transparent;
+    border-image-source: url("/client-assets/images/common/input-bg.png?v=2451779");
+    border-image-slice: 6 fill;
+    border-image-width: 6px;
+    border-image-outset: 0px;
+    border-image-repeat: repeat repeat;
+    font-size: 14px;
+    background-color: transparent;
+}
+
+.illumina-scrollbar {
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-right: 10px;
+
+    &.big-scroll {
+        &::-webkit-scrollbar {
+            width: 13px;
+            height: 13px;
+        }
+    }
+
+    &::-webkit-scrollbar {
+        width: 9px;
+        height: 9px;
+    }
+    
+    &::-webkit-scrollbar-track {
+        border-image-slice: 5 fill;
+        border-image-width: 5px;
+        border-image-repeat: repeat repeat;
+        border-image-source: url("/client-assets/images/scrollbar/scrollbar-track-bg.png?v=2451779");
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        border-image-slice: 3 fill;
+        border-image-width: 3px;
+        border-image-repeat: repeat repeat;
+        border-image-source: url("/client-assets/images/scrollbar/scrollbar-thumb-bg.png?v=2451779");
+    }
+    
+    &::-webkit-scrollbar-thumb:hover {
+        border-image-source: url("/client-assets/images/scrollbar/scrollbar-thumb-hover-bg.png?v=2451779");
+    }
+
+    &::-webkit-scrollbar-thumb:active {
+        border-image-source: url("/client-assets/images/scrollbar/scrollbar-thumb-active-bg.png?v=2451779");
+    }
+}
+
+.illumina-unique-item {
+    &:before {
+        position: absolute;
+        content: '';
+        width: 36px;
+        height: 36px;
+        background: url('/client-assets/images/spritesheet.png?v=2451779');
+        background-position: -37px -143px;
+        z-index: 1;
+    }
+
+    &:after {
+        position: absolute;
+        content: '';
+        width: 36px;
+        height: 36px;
+        background: url('/client-assets/images/spritesheet.png?v=2451779');
+        background-position: -109px -143px;
+        z-index: 4;
+    }
+
+    &.sold-out:after {
+        position: absolute;
+        content: '';
+        width: 36px;
+        height: 36px;
+        background: url('/client-assets/images/spritesheet.png?v=2451779');
+        background-position: -317px -143px;
+        z-index: 20;
+    }
+}
+
+.limited-edition-number {
+    display: inline-block;
+    outline: 0;
+    height: 5px;
+    margin-right: 1px;
+    background-image: url('/client-assets/images/unique/numbers.png?v=2451779');
+    background-repeat: no-repeat;
+
+    &:last-child {
+        margin-right: 0px;
+    }
+
+    &.n-0 {
+        width: 4px;
+        background-position: -1px 0px;
+    }
+
+    &.n-1 {
+        width: 2px;
+        background-position: -6px 0px;
+    }
+
+    &.n-2 {
+        width: 4px;
+        background-position: -9px 0px;
+    }
+
+    &.n-3 {
+        width: 4px;
+        background-position: -14px 0px;
+    }
+
+    &.n-4 {
+        width: 4px;
+        background-position: -19px 0px;
+    }
+
+    &.n-5 {
+        width: 4px;
+        background-position: -24px 0px;
+    }
+
+    &.n-6 {
+        width: 4px;
+        background-position: -29px 0px;
+    }
+
+    &.n-7 {
+        width: 4px;
+        background-position: -34px 0px;
+    }
+
+    &.n-8 {
+        width: 4px;
+        background-position: -39px 0px;
+    }
+
+    &.n-9 {
+        width: 4px;
+        background-position: -44px 0px;
+    }
+}
+
+.illumina-currency {
+    display: block;
+    background-image: url('/client-assets/images/spritesheet.png?v=2451779');
+
+    &.club {
+        width: 15px;
+        height: 15px;
+        background-position: -318px -37px;
+
+    }
+
+    &.credits {
+        width: 15px;
+        height: 15px;
+        background-position: -318px -53px;
+    }
+
+    &.diamonds {
+        width: 15px;
+        height: 15px;
+        background-position: -302px -53px;
+    }
+
+    &.duckets {
+        width: 15px;
+        height: 15px;
+        background-position: -286px -53px;
+    }
+}
+
+.illumina-currency-small {
+    display: block;
+    background-image: url('/client-assets/images/spritesheet.png?v=2451779');
+
+    &.credits {
+        width: 11px;
+        height: 11px;
+        background-position: -338px -70px;
+    }
+
+    &.duckets {
+        width: 11px;
+        height: 11px;
+        background-position: -352px -70px;
+
+        .use-pixel {
+            width: 13px;
+            height: 13px;
+            background-position: -309px -69px;
+        }
+    }
+
+    &.diamonds {
+        width: 11px;
+        height: 11px;
+        background-position: -395px -70px;
+    }
+}
+
+.illumina-currency-big {
+    display: block;
+    background-image: url('/client-assets/images/spritesheet.png?v=2451779');
+
+    &.credits {
+        width: 21px;
+        height: 21px;
+        background-position: -334px -25px;
+    }
+
+    &.duckets {
+        width: 19px;
+        height: 20px;
+        background-position: -356px -25px;
+
+        .use-pixel {
+            width: 19px;
+            height: 22px;
+            background-position: -355px -47px;
+        }
+    }
+
+    &.diamonds {
+        width: 19px;
+        height: 19px;
+        background-position: -376px -25px;
+    }
+}
+
+.illumina-catalogue-info {
+    border-image-source: url("/client-assets/images/catalogue/info-bg.png?v=2451779");
+    border-image-slice: 7 fill;
+    border-image-width: 7px;
+    border-image-outset: 0px;
+    border-image-repeat: repeat repeat;
+}
+
+.illumina-catalogue-feature-text {
+    border-image-source: url("/client-assets/images/catalogue/feature-text-bg.png?v=2451779");
+    border-image-slice: 7 fill;
+    border-image-width: 7px;
+    border-image-outset: 0px;
+    border-image-repeat: repeat repeat;
+}
+
+.illumina-catalogue-redeem {
+    border-image-source: url("/client-assets/images/catalogue/redeem-bg.png?v=2451779");
+    border-image-slice: 7 fill;
+    border-image-width: 7px;
+    border-image-outset: 0px;
+    border-image-repeat: repeat repeat;
+}
+
+.illumina-catalogue-text2 {
+    border-image-source: url("/client-assets/images/catalogue/bundle-text2-bg.png?v=2451779");
+    border-image-slice: 7 fill;
+    border-image-width: 7px;
+    border-image-outset: 0px;
+    border-image-repeat: repeat repeat;
+}
+
+.illumina-catalogue-track-preview {
+    border-image-source: url("/client-assets/images/catalogue/track-preview-bg.png?v=2451779");
+    border-image-slice: 7 fill;
+    border-image-width: 7px;
+    border-image-outset: 0px;
+    border-image-repeat: repeat repeat;
+}
+
+.illumina-catalogue-currency {
+    border-image-source: url("/client-assets/images/catalogue/currency-bg.png?v=2451779");
+    border-image-slice: 8 fill;
+    border-image-width: 8px;
+    border-image-outset: 0px;
+    border-image-repeat: repeat repeat;
+    color: #000!important;
+}
+
+.illumina-catalogue-currency-credits {
+    border-image-source: url("/client-assets/images/catalogue/currency-credits-bg.png?v=2451779");
+    border-image-slice: 8 fill;
+    border-image-width: 8px;
+    border-image-outset: 0px;
+    border-image-repeat: repeat repeat;
+    color: #000!important;
+}
+
+.illumina-catalogue-currency-diamonds {
+    border-image-source: url("/client-assets/images/catalogue/currency-diamonds-bg.png?v=2451779");
+    border-image-slice: 8 fill;
+    border-image-width: 8px;
+    border-image-outset: 0px;
+    border-image-repeat: repeat repeat;
+    color: #000!important;
+}
+
+.illumina-catalogue-currency-duckets {
+    border-image-source: url("/client-assets/images/catalogue/currency-duckets-bg.png?v=2451779");
+    border-image-slice: 8 fill;
+    border-image-width: 8px;
+    border-image-outset: 0px;
+    border-image-repeat: repeat repeat;
+    color: #000!important;
+}
+
+.illumina-achievements-progress-bar {
+    .illumina-achievements-progress-bar-percent {
+        border-image-slice: 7 fill;
+        border-image-width: 7px;
+        border-image-repeat: repeat repeat;
+        border-image-source: url("/client-assets/images/achievements/progress-bar-percent-bg.png?v=2451779");
+    }
+}
+
+.illumina-achievements-body {
+    border-image-slice: 7 fill;
+    border-image-width: 7px;
+    border-image-repeat: repeat repeat;
+    border-image-source: url("/client-assets/images/achievements/achievement-bg.png?v=2451779");
+}
+
+.package-image-gnome_box {
+    background-image: url('/client-assets/images/room-widgets/pet-package/gnome.png?v=2451779');
+}
+
+.package-image-leprechaun_box {
+    background-image: url('/client-assets/images/room-widgets/pet-package/leprechaun_box.png?v=2451779');
+}
+
+.package-image-val11_present {
+    background-image: url('/client-assets/images/room-widgets/pet-package/val11_present.png?v=2451779');
+}
+
+.package-image-velociraptor_egg {
+    background-image: url('/client-assets/images/room-widgets/pet-package/velociraptor_egg.png?v=2451779');
+}
+
+.package-image-pterosaur_egg {
+    background-image: url('/client-assets/images/room-widgets/pet-package/pterosaur_egg.png?v=2451779');
+}
+
+.package-image-petbox_epic {
+    background-image: url('/client-assets/images/room-widgets/pet-package/petbox_epic.png?v=2451779');
+}
+
+.illumina-stickie-image {
+    &.stickie-blue {
+        background-position: -2px -2px;
+    }
+
+    &.stickie-yellow {
+        background-position: -191px -184px;
+    }
+
+    &.stickie-green {
+        background-position: -191px -2px;
+    }
+
+    &.stickie-pink {
+        background-position: -2px -184px;
+    }
+
+    &.stickie-christmas {
+        background-position: -380px -2px;
+    }
+
+    &.stickie-shakesp {
+        background-position: -569px -2px;
+    }
+
+    &.stickie-dreams {
+        background-position: -380px -184px;
+    }
+
+    &.stickie-heart {
+        background-position: -758px -2px;
+    }
+
+    &.stickie-juninas {
+        background-position: -569px -184px;
+    }
+}
+
+.illumina-purse {
+    border-image-source: url("/client-assets/images/purse/purse-bg.png?v=2451779");
+    border-image-slice: 12 fill;
+    border-image-width: 12px;
+    border-image-repeat: repeat repeat;
+}
+
+.illumina-notification {
+    border-image-source: url("/client-assets/images/notifications/notification-bg.png?v=2451779");
+    border-image-slice: 12 fill;
+    border-image-width: 12px;
+    border-image-repeat: repeat repeat;
+}
+
+.illumina-poll {
+    border-image-source: url("/client-assets/images/room-widgets/poll/poll-bg.png?v=2451779");
+    border-image-slice: 7 fill;
+    border-image-width: 7px;
+    border-image-outset: 0px;
+    border-image-repeat: repeat repeat;
+}
+
+.illumina-poll-like {
+    border-image-source: url("/client-assets/images/room-widgets/poll/poll-like-bg.png?v=2451779");
+    border-image-slice: 7 fill;
+    border-image-width: 7px;
+    border-image-outset: 0px;
+    border-image-repeat: repeat repeat;
+}
+
+.illumina-poll-dislike {
+    border-image-source: url("/client-assets/images/room-widgets/poll/poll-dislike-bg.png?v=2451779");
+    border-image-slice: 7 fill;
+    border-image-width: 7px;
+    border-image-outset: 0px;
+    border-image-repeat: repeat repeat;
+}
+
+
+.bubble-container {
+    .chat-bubble {
+        color: #000;
+        border-image-slice: 17 6 6 29 fill;
+        border-image-width: 17px 6px 6px 29px;
+        border-image-outset: 2px 0px 0px 0px;
+        border-image-repeat: repeat repeat;
+
+        &.type-1 {
+            // whisper
+            .message {
+                font-style: italic;
+                color: #595959;
+            }
+        }
+
+        &.type-2 {
+            // shout
+            .message {
+                font-weight: 600;
+            }
+        }
+
+        &.bubble-0 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_0_transparent.png?v=2451779');
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_0_1_33_34_pointer.png?v=2451779');
+                bottom: -5px;
+            }
+        }
+
+        &.bubble-1 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_1.png?v=2451779');
+
+            border-image-slice: 18 6 6 29 fill;
+            border-image-width: 18px 6px 6px 29px;
+            border-image-outset: 3px 0px 0px 0px;
+
+            .user-container {
+                display: none;
+            }
+
+            .username {
+                display: none;
+            }
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_0_1_33_34_pointer.png?v=2451779');
+            }
+        }
+
+        &.bubble-2,
+        &.bubble-31 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_2.png?v=2451779');
+
+            .user-container {
+                display: none;
+            }
+
+            .username {
+                color: rgba(#fff, 1);
+            }
+
+            .message {
+                color: rgba(#fff, 1) !important;
+            }
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_2_31_pointer.png?v=2451779');
+                height: 7px;
+            }
+        }
+
+        &.bubble-3 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_3.png?v=2451779');
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_3_pointer.png?v=2451779');
+            }
+        }
+
+        &.bubble-4 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_4.png?v=2451779');
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_4_pointer.png?v=2451779');
+            }
+        }
+
+        &.bubble-5 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_5.png?v=2451779');
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_5_pointer.png?v=2451779');
+            }
+        }
+
+        &.bubble-6 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_6.png?v=2451779');
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_6_pointer.png?v=2451779');
+            }
+        }
+
+        &.bubble-7 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_7.png?v=2451779');
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_7_pointer.png?v=2451779');
+            }
+        }
+
+        &.bubble-8 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_8.png?v=2451779');
+
+            border-image-slice: 20 6 6 27 fill;
+            border-image-width: 20px 6px 6px 27px;
+            border-image-outset: 5px 0px 0px 0px;
+
+            .chat-content {
+                color: #fff;
+            }
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_8_pointer.png?v=2451779');
+            }
+        }
+
+        &.bubble-9 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_9.png?v=2451779');
+
+            border-image-slice: 17 18 12 19 fill;
+            border-image-width: 17px 18px 12px 19px;
+            border-image-outset: 7px 7px 0px 9px;
+
+            .chat-content {
+                margin-left: 20px;
+            }
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_9_pointer.png?v=2451779');
+                width: 7px;
+                height: 10px;
+                bottom: -6px;
+            }
+        }
+
+        &.bubble-10 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_10.png?v=2451779');
+
+            border-image-slice: 29 18 8 37 fill;
+            border-image-width: 29px 18px 8px 37px;
+            border-image-outset: 12px 7px 1px 5px;
+
+            .chat-content {
+                margin-left: 24px;
+                color: #fff;
+            }
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_10_pointer.png?v=2451779');
+                width: 7px;
+                height: 8px;
+                bottom: -3px;
+            }
+        }
+
+        &.bubble-11 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_11.png?v=2451779');
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_11_pointer.png?v=2451779');
+            }
+        }
+
+        &.bubble-12 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_12.png?v=2451779');
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_12_pointer.png?v=2451779');
+            }
+        }
+
+        &.bubble-13 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_13.png?v=2451779');
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_13_pointer.png?v=2451779');
+            }
+        }
+
+        &.bubble-14 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_14.png?v=2451779');
+
+            .chat-content {
+                color: #fff;
+            }
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_14_pointer.png?v=2451779');
+            }
+        }
+
+        &.bubble-15 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_15.png?v=2451779');
+
+            .chat-content {
+                color: #fff;
+            }
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_15_pointer.png?v=2451779');
+            }
+        }
+
+        &.bubble-16 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_16.png?v=2451779');
+
+            border-image-slice: 13 6 10 31 fill;
+            border-image-width: 13px 6px 10px 31px;
+            border-image-outset: 6px 0px 0px 0px;
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_16_pointer.png?v=2451779');
+                height: 8px;
+            }
+        }
+
+        &.bubble-17 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_17.png?v=2451779');
+
+            border-image-slice: 24 6 8 35 fill;
+            border-image-width: 24px 6px 8px 35px;
+            border-image-outset: 9px 0px 2px 5px;
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_17_pointer.png?v=2451779');
+            }
+        }
+
+        &.bubble-18 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_18.png?v=2451779');
+
+            border-image-slice: 7 16 8 16 fill;
+            border-image-width: 7px 16px 8px 16px;
+            border-image-outset: 3px 10px 2px 11px;
+
+            .chat-content {
+                margin-left: 20px;
+            }
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_18_pointer.png?v=2451779');
+                height: 8px;
+            }
+        }
+
+        &.bubble-19 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_19.png?v=2451779');
+
+            border-image-slice: 17 6 9 19 fill;
+            border-image-width: 17px 6px 9px 19px;
+            border-image-outset: 5px 0px 0px 8px;
+
+            .chat-content {
+                margin-left: 20px;
+            }
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_19_20_pointer.png?v=2451779');
+            }
+        }
+
+        &.bubble-20 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_20.png?v=2451779');
+
+            border-image-slice: 18 6 8 19 fill;
+            border-image-width: 18px 6px 8px 19px;
+            border-image-outset: 5px 0px 0px 8px;
+
+            .chat-content {
+                margin-left: 20px;
+            }
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_19_20_pointer.png?v=2451779');
+            }
+        }
+
+        &.bubble-21 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_21.png?v=2451779');
+
+            border-image-slice: 20 6 12 24 fill;
+            border-image-width: 20px 6px 12px 24px;
+            border-image-outset: 13px 2px 1px 3px;
+
+            .chat-content {
+                margin-left: 20px;
+            }
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_21_pointer.png?v=2451779');
+                bottom: -4px;
+            }
+        }
+
+        &.bubble-22 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_22.png?v=2451779');
+
+            border-image-slice: 18 19 11 33 fill;
+            border-image-width: 18px 19px 11px 33px;
+            border-image-outset: 7px 1px 1px 5px;
+
+            .chat-content {
+                margin-left: 20px;
+            }
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_22_pointer.png?v=2451779');
+            }
+        }
+
+        &.bubble-23 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_23.png?v=2451779');
+
+            border-image-slice: 16 6 7 32 fill;
+            border-image-width: 16px 6px 7px 32px;
+            border-image-outset: 5px 0px 0px 3px;
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_23_37_pointer.png?v=2451779');
+            }
+        }
+
+        &.bubble-24 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_24.png?v=2451779');
+
+            border-image-slice: 23 8 6 40 fill;
+            border-image-width: 23px 8px 6px 40px;
+            border-image-outset: 6px 0px 0px 6px;
+
+            .chat-content {
+                margin-left: 30px;
+                color: #fff;
+            }
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_24_pointer.png?v=2451779');
+                bottom: -4px;
+            }
+        }
+
+        &.bubble-25 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_25.png?v=2451779');
+
+            border-image-slice: 10 13 8 28 fill;
+            border-image-width: 10px 13px 8px 28px;
+            border-image-outset: 6px 3px 2px 0px;
+
+            .chat-content {
+                color: #fff;
+            }
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_25_pointer.png?v=2451779');
+                height: 9px;
+                bottom: -7px;
+            }
+        }
+
+        &.bubble-26 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_26.png?v=2451779');
+
+            border-image-slice: 16 9 8 29 fill;
+            border-image-width: 16px 9px 8px 29px;
+            border-image-outset: 2px 2px 2px 0px;
+
+            .chat-content {
+                color: #c59432;
+                text-shadow: 1px 1px rgba(0, 0, 0, 0.3);
+            }
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_26_pointer.png?v=2451779');
+                height: 10px;
+                bottom: -6px;
+            }
+        }
+
+        &.bubble-27 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_27.png?v=2451779');
+
+            border-image-slice: 25 6 5 36 fill;
+            border-image-width: 25px 6px 5px 36px;
+            border-image-outset: 8px 0px 0px 5px;
+
+            .chat-content {
+                margin-left: 30px;
+                color: #fff;
+            }
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_27_pointer.png?v=2451779');
+            }
+        }
+
+        &.bubble-28 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_28.png?v=2451779');
+
+            border-image-slice: 16 7 7 27 fill;
+            border-image-width: 16px 7px 7px 27px;
+            border-image-outset: 3px 0px 0px 0px;
+
+            .chat-content {
+                margin-left: 25px;
+            }
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_28_pointer.png?v=2451779');
+            }
+        }
+
+        &.bubble-29 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_29.png?v=2451779');
+
+            border-image-slice: 10 7 15 31 fill;
+            border-image-width: 10px 7px 15px 31px;
+            border-image-outset: 2px 0px 0px 1px;
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_29_pointer.png?v=2451779');
+                bottom: -4px;
+            }
+        }
+
+        &.bubble-30 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_30.png?v=2451779');
+
+            .user-container {
+                display: none;
+            }
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_30_pointer.png?v=2451779');
+                height: 7px;
+            }
+        }
+
+        &.bubble-32 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_32.png?v=2451779');
+
+            border-image-slice: 15 7 7 30 fill;
+            border-image-width: 15px 7px 7px 30px;
+            border-image-outset: 2px 0px 0px 0px;
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_32_pointer.png?v=2451779');
+            }
+        }
+
+        &.bubble-33 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_33_34.png?v=2451779');
+
+            border-image-slice: 7 6 6 39 fill;
+            border-image-width: 7px 6px 6px 39px;
+            border-image-outset: 2px 0px 0px 0px;
+
+            .user-container {
+                display: none;
+            }
+
+            .chat-content {
+                margin-left: 35px;
+            }
+
+            &::before {
+                content: ' ';
+                position: absolute;
+                width: 19px;
+                height: 19px;
+                left: 9px;
+                top: 2px;
+                background: url('/client-assets/images/bubbles/bubble_33_extra.png?v=2451779');
+            }
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_0_1_33_34_pointer.png?v=2451779');
+            }
+        }
+
+        &.bubble-34 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_33_34.png?v=2451779');
+
+            border-image-slice: 7 6 6 39 fill;
+            border-image-width: 7px 6px 6px 39px;
+            border-image-outset: 2px 0px 0px 0px;
+
+            &.type-1 {
+                .message {
+                    font-style: unset;
+                    color: inherit;
+                }
+            }
+
+            .user-container {
+                display: none;
+            }
+
+            .username {
+                display: none;
+            }
+
+            .chat-content {
+                margin-left: 35px;
+            }
+
+            &::before {
+                content: ' ';
+                position: absolute;
+                width: 19px;
+                height: 19px;
+                left: 9px;
+                top: 2px;
+                background: url('/client-assets/images/bubbles/bubble_34_extra.png?v=2451779');
+            }
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_0_1_33_34_pointer.png?v=2451779');
+            }
+        }
+
+        &.bubble-35 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_35.png?v=2451779');
+
+            border-image-slice: 19 6 5 29 fill;
+            border-image-width: 19px 6px 5px 29px;
+            border-image-outset: 4px 0px 0px 0px;
+
+            .user-container {
+                display: none;
+            }
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_35_pointer.png?v=2451779');
+            }
+        }
+
+        &.bubble-36 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_36.png?v=2451779');
+
+            border-image-slice: 17 7 5 30 fill;
+            border-image-width: 17px 7px 5px 30px;
+            border-image-outset: 2px 0px 0px 0px;
+
+            .user-container {
+                display: none;
+            }
+
+            &::before {
+                content: ' ';
+                position: absolute;
+                width: 13px;
+                height: 18px;
+                left: 5px;
+                top: 2px;
+                background: url('/client-assets/images/bubbles/bubble_36_extra.png?v=2451779');
+            }
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_36_pointer.png?v=2451779');
+            }
+        }
+
+        &.bubble-37 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_37.png?v=2451779');
+
+            border-image-slice: 16 6 7 32 fill;
+            border-image-width: 16px 6px 7px 32px;
+            border-image-outset: 5px 0px 0px 3px;
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_23_37_pointer.png?v=2451779');
+            }
+        }
+
+        &.bubble-38 {
+            border-image-source: url('/client-assets/images/bubbles/bubble_38.png?v=2451779');
+
+            border-image-slice: 17 7 5 30 fill;
+            border-image-width: 17px 7px 5px 30px;
+            border-image-outset: 2px 0px 0px 0px;
+
+            .user-container {
+                display: none;
+            }
+
+            &::before {
+                content: ' ';
+                position: absolute;
+                width: 19px;
+                height: 19px;
+                left: 3px;
+                top: 2px;
+                background: url('/client-assets/images/bubbles/bubble_38_extra.png?v=2451779');
+            }
+
+            .pointer {
+                background: url('/client-assets/images/bubbles/bubble_38_pointer.png?v=2451779');
+            }
+        }
+    }
+}
+
+.illumina-wired {
+    border-image-source: url("/client-assets/images/wireds/card-bg.png?v=2451779");
+    border-image-slice: 10 fill;
+    border-image-width: 10px;
+    border-image-repeat: repeat repeat;
+    font-family: "Illumina Volter"!important;
+    color: #fff!important;
+    
+    p, label {
+        font-size: 9px;
+        line-height: 12px!important;
+    }
+
+    input[type="text"], input[type="number"] {
+        background-color: transparent;
+        border: 1px solid #fff;
+        padding: 2px 1px;
+        width: 100%;
+        height: 16px;
+        font-family: "Illumina Volter";
+        font-size: 9px;
+        line-height: 12px!important;
+    }
+
+    input[type="checkbox"] {
+        background-image: url("/client-assets/images/spritesheet.png?v=2451779");
+        background-position: -25px -267px;
+        width: 14px;
+        height: 12px;
+        cursor: pointer;
+        flex-shrink: 0;
+        
+        &:checked {
+            background-position: -25px -280px;
+        }
+    }
+
+    input[type="radio"] {
+        background-image: url("/client-assets/images/spritesheet.png?v=2451779");
+        background-position: -12px -267px;
+        width: 12px;
+        height: 12px;
+        cursor: pointer;
+        flex-shrink: 0;
+        
+        &:checked {
+            background-position: -12px -280px;
+        }
+    }
+}
+
+.illumina-offers-end-time {
+    border-image-source: url("/client-assets/images/offers/time-bg.png?v=2451779");
+    border-image-slice: 7 fill;
+    border-image-width: 7px;
+    border-image-outset: 0px;
+    border-image-repeat: repeat repeat;
+}
+
+.illumina-offers-content {
+    border-image-source: url("/client-assets/images/offers/content-bg.png?v=2451779");
+    border-image-slice: 7 fill;
+    border-image-width: 7px;
+    border-image-outset: 0px;
+    border-image-repeat: repeat repeat;
+}
+
+.illumina-groups-hc-required {
+    border-image-source: url("/client-assets/images/groups/hc-required-bg.png?v=2451779");
+    border-image-slice: 7 fill;
+    border-image-width: 7px;
+    border-image-outset: 0px;
+    border-image-repeat: repeat repeat;
+}
+
+.illumina-groups-purchase {
+    border-image-source: url("/client-assets/images/groups/purchase-bg.png?v=2451779");
+    border-image-slice: 7 fill;
+    border-image-width: 7px;
+    border-image-outset: 0px;
+    border-image-repeat: repeat repeat;
+
+    &.disabled {
+        border-image-source: url("/client-assets/images/groups/purchase-disabled-bg.png?v=2451779");
+    }
+}
+
+.camera-slider {
+    .track-0 {
+        background-color: #fff;
+    }
+    
+    .thumb-0 {
+        width: 20px;
+        height: 20px;
+        margin: -8px 0 0;
+    }
+}
+
+.illumina-profile-motto {
+    border-image-source: url("/client-assets/images/profile/motto-bg.png?v=2451779");
+    border-image-slice: 8 fill;
+    border-image-width: 8px;
+    border-image-repeat: repeat repeat;
+
+    .caret-down {
+        position: absolute;
+        bottom: -5px;
+        background-image: url("/client-assets/images/profile/motto-caret-bg.png?v=2451779");
+        width: 9px;
+        height: 5px;
+    }
+}
+
+.illumina-profile-relationship {
+    border-image-source: url("/client-assets/images/profile/relationship-bg.png?v=2451779");
+    border-image-slice: 7 fill;
+    border-image-width: 7px;
+    border-image-outset: 0px;
+    border-image-repeat: repeat repeat;
+}
+
+.illumina-messenger-message {
+    border-image-source: url("/client-assets/images/messenger/message-bg.png?v=2451779");
+    border-image-slice: 6 fill;
+    border-image-width: 6px;
+    border-image-repeat: repeat repeat;
+
+    &.message-left {
+        &::before {
+            position: absolute;
+            top: 9px;
+            left: -5px;
+            display: block;
+            background-image: url("/client-assets/images/messenger/caret-left.png?v=2451779");
+            width: 5px;
+            height: 10px;
+            content: "";
+        }
+    }
+
+    &.message-right {
+        &::before {
+            position: absolute;
+            top: 9px;
+            right: -5px;
+            display: block;
+            background-image: url("/client-assets/images/messenger/caret-right.png?v=2451779");
+            width: 5px;
+            height: 10px;
+            content: "";
+        }
+    }
+}
+
+.illumina-hc-center-benefits {
+    border-image-source: url("/client-assets/images/hc-center/benefits-bg.png?v=2451779");
+    border-image-slice: 7 fill;
+    border-image-width: 7px;
+    border-image-outset: 0px;
+    border-image-repeat: repeat repeat;
+}
+
+.illumina-room-tools {
+    border-image-source: url("/client-assets/images/room-tools/bg.png?v=2451779");
+    border-image-slice: 7 fill;
+    border-image-width: 7px;
+    border-image-outset: 0px;
+    border-image-repeat: repeat repeat;
+}
+
+.illumina-room-thumbnail-camera {
+    width: 132px;
+    height: 192px;
+    background-image: url("/client-assets/images/camera/thumbnail-camera.png?v=2451779");
+}
+
+.illumina-emergency {
+    border-image-source: url("/client-assets/images/help/emergency-bg.png?v=2451779");
+    border-image-slice: 7 fill;
+    border-image-width: 7px;
+    border-image-outset: 0px;
+    border-image-repeat: repeat repeat;
+}
+
+.illumina-badge-details {
+    border-image-source: url("/client-assets/images/infostand/badge-details-bg.png?v=2451779");
+    border-image-slice: 6 fill;
+    border-image-width: 6px;
+    position: absolute;
+    right: 55px;
+    top: 5px;
+    width: 263px;
+    min-height: 40px;
+    padding: 8px 12px;
+}
+
+.illumina-report-chat-item {
+    border-image-slice: 15 fill;
+    border-image-width: 15px;
+    border-image-repeat: repeat repeat;
+    border-image-source: url("/client-assets/images/help/chat-bg.png?v=2451779");
+    
+    &.selected {
+        border-image-source: url("/client-assets/images/help/selected-chat-bg.png?v=2451779");
+    }
+}
+
+.avatar-image {
+    position: relative;
+    width: 90px;
+    height: 130px;
+    background-repeat: no-repeat;
+    background-position: center -8px;
+    pointer-events: none;
+}
+
+.pet-image {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.illumina-nitropedia {
+    .content {
+        padding: 0 8px;
+        border-image-slice: 7 fill;
+        border-image-width: 7px;
+        border-image-repeat: repeat repeat;
+        border-image-source: url("/client-assets/images/nitropedia/content-bg.png?v=2451779");
+        
+        h1 {
+            font-weight: 600;
+            font-size: 23px;
+            color: #fc6204;
+        }
+        
+        h2 {
+            font-weight: 600;
+            font-size: 20px;
+            color: #fc6204;
+        }
+        
+        h3 {
+            font-weight: 600;
+            font-size: 16px;
+            color: #fc6204;
+        }
+
+        p {
+            font-size: 14px;
+        }
+        
+        a {
+            font-weight: bold;
+            color: #fc6204;
+            text-decoration: underline;
+        }
+        
+        .bullet-item {
+            margin-left: 7px;
+            text-indent: -7px;
+        }
+        
+        .padding-top {
+            font-size: 1px;
+            line-height: 10px;
+        }
+        
+        .padding-bottom {
+            font-size: 1px;
+            line-height: 5px;
+        }
+    }
+}
+
+.dark {
+    color: #fff;
+
+    * {
+        color: inherit;
+    }
+
+    font {
+        color: revert-layer!important;
+    }
+
+    input, textarea {
+        &::-ms-input-placeholder {
+            color: #504e45;
+        }
+        
+        &::placeholder {
+            color: #504e45;
+        }
+    }
+
+    .illumina-card {
+        border-image-source: url("/client-assets/images/common/card-dark-bg.png?v=2451779");
+
+        .caret-down {
+            background-image: url("/client-assets/images/common/caret-dark-bg.png?v=2451779");
+        }
+
+        .illumina-card-body {
+            .illumina-navigator-category-header {
+                border-image-source: url("/client-assets/images/rooms/room-dark-bg.png?v=2451779");
+            }
+    
+            .illumina-navigator-room {
+                border-image-source: url("/client-assets/images/rooms/room-dark-bg.png?v=2451779");
+            }
+
+            .illumina-navigator-room-grid {
+                border-image-source: url("/client-assets/images/rooms/grid-even-dark-bg.png?v=2451779");
+    
+                &:nth-child(2n+1) {
+                    border-image-source: url("/client-assets/images/rooms/grid-odd-dark-bg.png?v=2451779");
+                }
+            }
+        }
+
+        .illumina-card-item {
+            border-image-source: url("/client-assets/images/common/item-dark-bg.png?v=2451779");
+    
+            &.dark {
+                border-image-source: url("/client-assets/images/common/item-active-dark-bg.png?v=2451779");
+            }
+    
+            &.active {
+                border-image-source: url("/client-assets/images/common/item-active-dark-bg.png?v=2451779");
+            }
+        }
+
+        .illumina-card-filter {
+            border-image-source: url("/client-assets/images/common/item-dark-bg.png?v=2451779");
+        }
+    }
+
+    .illumina-btn-group {
+        .illumina-btn-primary {
+            border-image-source: url("/client-assets/images/buttons/groups/horizontal/group-primary-mid-dark-bg.png?v=2451779");
+    
+            &:first-child {
+                border-image-source: url("/client-assets/images/buttons/groups/horizontal/group-primary-start-dark-bg.png?v=2451779");
+    
+                &:active, &.active {
+                    border-image-source: url("/client-assets/images/buttons/groups/horizontal/group-primary-active-start-dark-bg.png?v=2451779");
+                }
+    
+                &:disabled {
+                    &:active, &.active {
+                        border-image-source: url("/client-assets/images/buttons/groups/horizontal/group-primary-mid-dark-bg.png?v=2451779")!important;
+                    }
+                }
+            }
+    
+            &:last-child {
+                border-image-source: url("/client-assets/images/buttons/groups/horizontal/group-primary-end-dark-bg.png?v=2451779");
+    
+                &:active, &.active {
+                    border-image-source: url("/client-assets/images/buttons/groups/horizontal/group-primary-active-end-dark-bg.png?v=2451779");
+                }
+    
+                &:disabled {
+                    &:active, &.active {
+                        border-image-source: url("/client-assets/images/buttons/groups/horizontal/group-primary-end-dark-bg.png?v=2451779")!important;
+                    }
+                }
+            }
+    
+            &:active, &.active {
+                border-image-source: url("/client-assets/images/buttons/groups/horizontal/group-primary-active-mid-dark-bg.png?v=2451779");
+            }
+    
+            &:disabled {
+                &:active, &.active {
+                    border-image-source: url("/client-assets/images/buttons/groups/horizontal/group-primary-mid-dark-bg.png?v=2451779")!important;
+                }
+            }
+        }
+    
+        &.vertical {
+            .illumina-btn-primary {
+                border-image-source: url("/client-assets/images/buttons/groups/vertical/group-primary-mid-dark-bg.png?v=2451779");
+        
+                &:first-child {
+                    border-image-source: url("/client-assets/images/buttons/groups/vertical/group-primary-start-dark-bg.png?v=2451779");
+        
+                    &:active, &.active {
+                        border-image-source: url("/client-assets/images/buttons/groups/vertical/group-primary-active-start-dark-bg.png?v=2451779");
+                    }
+                }
+        
+                &:last-child {
+                    border-image-source: url("/client-assets/images/buttons/groups/vertical/group-primary-end-dark-bg.png?v=2451779");
+        
+                    &:active, &.active {
+                        border-image-source: url("/client-assets/images/buttons/groups/vertical/group-primary-active-end-dark-bg.png?v=2451779");
+                    }
+                }
+        
+                &:active, &.active {
+                    border-image-source: url("/client-assets/images/buttons/groups/vertical/group-primary-active-mid-dark-bg.png?v=2451779");
+                }
+            }
+        }
+    }
+
+    .illumina-btn-primary {
+        border-image-source: url("/client-assets/images/buttons/primary-dark-bg.png?v=2451779v=0.0.1");
+        text-shadow: 0 1px 0 #33312B;
+
+        &:active, &.active {
+            border-image-source: url("/client-assets/images/buttons/primary-active-dark-bg.png?v=2451779");
+        }
+
+        &:disabled {
+            color: #605d53;
+
+            &:active {
+                border-image-source: url("/client-assets/images/buttons/primary-dark-bg.png?v=2451779");
+            }
+        }
+    }
+
+    .illumina-btn-volter-bold {
+        border-image-source: url("/client-assets/images/buttons/volter-bold-dark-bg.png?v=2451779");
+    }
+    
+    .illumina-btn-volter {
+        border-image-source: url("/client-assets/images/buttons/volter-dark-bg.png?v=2451779");
+    }
+
+    .illumina-input {
+        border-image-source: url("/client-assets/images/common/input-dark-bg.png?v=2451779");
+    
+        &[type="checkbox"] {
+            &:checked {
+                border-image-source: url("/client-assets/images/common/input-checked-dark-bg.png?v=2451779");
+            }
+    
+            &.toggle {
+                background-image: url("/client-assets/images/spritesheet-dark.png?v=2451779");
+            }
+        }
+    
+        &[type="radio"] {
+            background-image: url("/client-assets/images/spritesheet-dark.png?v=2451779");
+        }
+    }
+
+    .illumina-select {
+        background-color: transparent;
+        border-image-source: url("/client-assets/images/common/input-dark-bg.png?v=2451779");
+    }
+
+    .illumina-previewer {
+        border-image-source: url("/client-assets/images/common/previewer-dark-bg.png?v=2451779");
+    }
+
+    .illumina-navigator-room-rectangle-thumbnail {
+        border-image-source: url("/client-assets/images/rooms/rectangle-thumbnail-dark-bg.png?v=2451779");
+    }
+
+    .illumina-catalogue-currency {
+        border-image-source: url("/client-assets/images/catalogue/currency-dark-bg.png?v=2451779");
+        color: #fff!important;
+    }
+
+    .illumina-furni-item {
+        border-image-source: url("/client-assets/images/common/item-no-border-dark-bg.png?v=2451779");
+    
+        &.active {
+            border-image-source: url("/client-assets/images/common/item-dark-bg.png?v=2451779");
+        }
+    
+        &.unseen {
+            border-image-source: url("/client-assets/images/common/item-green-no-border-bg.png?v=2451779");
+    
+            &.active {
+                border-image-source: url("/client-assets/images/common/item-green-bg.png?v=2451779");
+            }
+        }
+    
+        &.has-trade {
+            .item-opacity {
+                opacity: 0.25;
+            }
+        }
+    }
+
+    .illumina-messenger-message {
+        border-image-source: url("/client-assets/images/messenger/message-dark-bg.png?v=2451779vsdasasdasss");
+    
+        &.message-left {
+            &::before {
+                background-image: url("/client-assets/images/messenger/caret-left-dark.png?v=2451779");
+            }
+        }
+    
+        &.message-right {
+            &::before {
+                background-image: url("/client-assets/images/messenger/caret-right-dark.png?v=2451779");
+            }
+        }
+    }
+
+    .illumina-catalogue-info {
+        border-image-source: url("/client-assets/images/catalogue/info-dark-bg.png?v=2451779");
+    }
+
+    .illumina-badge-details {
+        border-image-source: url("/client-assets/images/infostand/badge-details-dark-bg.png?v=2451779");
+    }
+
+    .illumina-report-chat-item {
+        border-image-source: url("/client-assets/images/help/chat-dark-bg.png?v=2451779");
+        
+        &.selected {
+            border-image-source: url("/client-assets/images/help/selected-chat-dark-bg.png?v=2451779");
+        }
+    }
+
+    .illumina-profile-relationship {
+        border-image-source: url("/client-assets/images/profile/relationship-dark-bg.png?v=2451779");
+    }
+
+    .illumina-achievements-body {
+        border-image-source: url("/client-assets/images/achievements/achievement-dark-bg.png?v=2451779");
+    }
+
+    .illumina-popover {
+        border-image-source: url("/client-assets/images/common/popover-dark-bg.png?v=2451779");
+    }
+
+    .illumina-emergency {
+        border-image-source: url("/client-assets/images/help/emergency-dark-bg.png?v=2451779");
+    }
+
+    .illumina-nitropedia {
+        .content {
+            border-image-source: url("/client-assets/images/nitropedia/content-dark-bg.png?v=2451779");
+        }
+    }
+
+    .illumina-scrollbar {
+        &::-webkit-scrollbar-track {
+            border-image-source: url("/client-assets/images/scrollbar/scrollbar-track-dark-bg.png?v=2451779");
+        }
+        
+        &::-webkit-scrollbar-thumb {
+            border-image-source: url("/client-assets/images/scrollbar/scrollbar-thumb-dark-bg.png?v=2451779");
+        }
+        
+        &::-webkit-scrollbar-thumb:hover {
+            border-image-source: url("/client-assets/images/scrollbar/scrollbar-thumb-hover-dark-bg.png?v=2451779");
+        }
+    
+        &::-webkit-scrollbar-thumb:active {
+            border-image-source: url("/client-assets/images/scrollbar/scrollbar-thumb-active-dark-bg.png?v=2451779");
+        }
+    }
+}

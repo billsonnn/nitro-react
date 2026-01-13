@@ -1,12 +1,12 @@
-import { FC } from 'react';
-import { VALUE_KEY_DISLIKE, VALUE_KEY_LIKE } from '../../../../api';
-import { useWordQuizWidget } from '../../../../hooks';
-import { WordQuizQuestionView } from './WordQuizQuestionView';
-import { WordQuizVoteView } from './WordQuizVoteView';
+import { FC } from "react"
+import { VALUE_KEY_DISLIKE, VALUE_KEY_LIKE } from "../../../../api"
+import { useWordQuizWidget } from "../../../../hooks"
+import { WordQuizQuestionView } from "./WordQuizQuestionView"
+import { WordQuizVoteView } from "./WordQuizVoteView"
 
 export const WordQuizWidgetView: FC<{}> = props =>
 {
-    const { question = null, answerSent = false, answerCounts = null, userAnswers = null, vote = null } = useWordQuizWidget();
+    const { question = null, answerSent = false, answerCounts = null, userAnswers = null, vote = null } = useWordQuizWidget()
 
     return (
         <>
@@ -15,5 +15,5 @@ export const WordQuizWidgetView: FC<{}> = props =>
             { userAnswers &&
                 Array.from(userAnswers.entries()).map(([ key, value ], index) => <WordQuizVoteView key={ index } userIndex={ key } vote={ value.value } />) }
         </>
-    );
+    )
 }

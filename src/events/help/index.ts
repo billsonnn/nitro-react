@@ -1,1 +1,1 @@
-export * from './HelpNameChangeEvent';
+export * from "./HelpNameChangeEvent"

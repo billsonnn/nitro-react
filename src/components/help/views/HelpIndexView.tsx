@@ -1,37 +1,116 @@
-import { GetCfhStatusMessageComposer } from '@nitrots/nitro-renderer';
-import { FC } from 'react';
-import { DispatchUiEvent, GetConfiguration, LocalizeText, ReportState, ReportType, SendMessageComposer } from '../../../api';
-import { Button, Column, Text } from '../../../common';
-import { GuideToolEvent } from '../../../events';
-import { useHelp } from '../../../hooks';
+import { FC, useState } from "react"
+import { DispatchUiEvent, GetConfiguration, LocalizeText, ReportState, ReportType, VisitDesktop } from "../../../api"
+import { Button, NitroBigCardContentView, NitroBigCardHeaderView, NitroBigCardView } from "../../../common"
+import { LayoutTimesView } from "../../../common/layout/LayoutTimesView"
+import { GuideToolEvent } from "../../../events"
+import { useHelp } from "../../../hooks"
 
-export const HelpIndexView: FC<{}> = props =>
+export interface HelpIndexViewProps
 {
-    const { setActiveReport = null } = useHelp();
+    onClose: () => void;
+}
+
+export const HelpIndexView: FC<HelpIndexViewProps> = props =>
+{
+    const [ isLeaveRoom, setIsLeaveRoom ] = useState(false)
+    const { setActiveReport = null } = useHelp()
+    const { onClose = null } = props
 
     const onReportClick = () =>
     {
         setActiveReport(prevValue =>
         {
-            const currentStep = ReportState.SELECT_USER;
-            const reportType = ReportType.BULLY;
+            const currentStep = ReportState.SELECT_USER
+            const reportType = ReportType.BULLY
 
-            return { ...prevValue, currentStep, reportType };
-        });
+            return { ...prevValue, currentStep, reportType }
+        })
+    }
+    const onEmergencyClick = () =>
+    {
+        // if(isLeaveRoom) {
+        //     VisitDesktop()
+        // }
+        VisitDesktop()
+        DispatchUiEvent(new GuideToolEvent(GuideToolEvent.CREATE_HELP_REQUEST))
+        onClose()
+    }
+
+    const needHelpClick = () =>
+    {
+        DispatchUiEvent(new GuideToolEvent(GuideToolEvent.CREATE_HELP_REQUEST))
+        onClose()
     }
 
     return (
-        <>
-            <Column grow center gap={ 1 }>
-                <Text fontSize={ 3 }>{ LocalizeText('help.main.frame.title') }</Text>
-                <Text>{ LocalizeText('help.main.self.description') }</Text>
-            </Column>
-            <Column gap={ 1 }>
-                <Button onClick={ onReportClick }>{ LocalizeText('help.main.bully.subtitle') }</Button>
-                <Button onClick={ () => DispatchUiEvent(new GuideToolEvent(GuideToolEvent.CREATE_HELP_REQUEST)) } disabled={ !GetConfiguration('guides.enabled') }>{ LocalizeText('help.main.help.title') }</Button>
-                <Button disabled={ true }>{ LocalizeText('help.main.self.tips.title') }</Button>
-            </Column>
-            <Button variant="link" textColor="black" onClick={ () => SendMessageComposer(new GetCfhStatusMessageComposer(false)) }>{ LocalizeText('help.main.my.sanction.status') }</Button>
-        </>
+        <NitroBigCardView uniqueKey="help-center" className="illumina-help-center w-[420px]" onCloseClick={ onClose }>
+            <NitroBigCardHeaderView headerText={ LocalizeText("help.main.frame.title") } />
+            <NitroBigCardContentView className="text-[#010101]">
+                <div className="mb-[7px] flex w-full justify-end">
+                    <LayoutTimesView onClick={ onClose } />
+                </div>
+                <div className="mb-7">
+                    <div className="mb-3.5 flex w-full items-center">
+                        <div className="h-0.5 w-[170px] border-b border-white bg-[#CCCCCC] dark:border-[#36322C] dark:bg-black" />
+                        <span className="px-3 text-[11px] font-semibold uppercase text-[#010101] [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]">{ LocalizeText("help.main2.bully.title") }</span>
+                        <div className="h-0.5 flex-1 border-b border-white bg-[#CCCCCC] dark:border-[#36322C] dark:bg-black" />
+                    </div>
+                    <div className="flex">
+                        <div className="h-[130px] w-[170px] shrink-0 bg-[url('/client-assets/images/help/bully.png?v=2451779')] bg-center bg-no-repeat" />
+                        <div className="ml-3.5">
+                            <p className="mb-2.5 text-[13px] font-semibold [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]" onClick={ onReportClick }>{ LocalizeText("help.main2.bully.subtitle") }</p>
+                            <p className="mb-[18px] text-xs !leading-4">{ LocalizeText("help.main2.bully.description") }</p>
+                            <Button onClick={ onReportClick }>{ LocalizeText("help.main2.bully.button") }</Button>
+                        </div>
+                    </div>
+                </div>
+                <div className="mb-7">
+                    <div className="mb-3.5 flex w-full items-center">
+                        <div className="h-0.5 w-[170px] border-b border-white bg-[#CCCCCC] dark:border-[#36322C] dark:bg-black" />
+                        <span className="px-3 text-[11px] font-semibold uppercase [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]">{ LocalizeText("help.main.help.section.title") }</span>
+                        <div className="h-0.5 flex-1 border-b border-white bg-[#CCCCCC] dark:border-[#36322C] dark:bg-black" />
+                    </div>
+                    <div className="flex">
+                        <div className="h-[130px] w-[170px] shrink-0 bg-[url('/client-assets/images/help/need-help.png?v=2451779')] bg-no-repeat dark:bg-[url('/client-assets/images/help/need-help-dark.png?v=2451779')]" />
+                        <div className="ml-3.5">
+                            <p className="mb-2.5 text-[13px] font-semibold [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]">{ LocalizeText("help.main.help.title") }</p>
+                            <p className="mb-[18px] text-xs !leading-4">{ LocalizeText("help.main.help.content") }</p>
+                            <Button onClick={ needHelpClick } disabled={ !GetConfiguration("guides.enabled") }>{ LocalizeText("help.main.help.button") }</Button>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div className="mb-3.5 flex w-full items-center">
+                        <span className="px-3 text-[11px] font-semibold uppercase [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]">{ LocalizeText("help.main.self.section.title") }</span>
+                        <div className="h-0.5 flex-1 border-b border-white bg-[#CCCCCC] dark:border-[#36322C] dark:bg-black" />
+                    </div>
+                    <div className="illumina-previewer flex items-center justify-between px-[22px] py-3">
+                        <div className="w-[168px]">
+                            <p className="mb-2.5 text-center text-[13px] font-semibold underline [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]">{ LocalizeText("help.main.self.tips.title") }</p>
+                            <p className="text-center text-xs !leading-4">{ LocalizeText("help.main.self.tips.content") }</p>
+                        </div>
+                        <div className="h-[45px] w-0.5 border-l border-[#CCCCCC] bg-white dark:border-[#36322C] dark:bg-black" />
+                        <div className="w-[168px]">
+                            <p className="mb-2.5 text-center text-[13px] font-semibold underline [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]">{ LocalizeText("help.main.self.way.title") }</p>
+                            <p className="text-center text-xs !leading-4">{ LocalizeText("help.main.self.way.content") }</p>
+                        </div>
+                    </div>
+                </div>
+                <div className="my-2 h-0.5 w-full border-b border-white bg-[#CCCCCC] dark:border-[#36322C] dark:bg-black" />
+                <div className="illumina-emergency flex h-[68px] items-center justify-between px-[22px] py-[18px]">
+                    <div>
+                        <p className="mb-1.5 text-sm font-semibold !leading-3 text-white">{ LocalizeText("help.main2.emergency.title") }</p>
+                        <p className="text-sm !leading-3 text-white">{ LocalizeText("help.main2.emergency.subtitle") }</p>
+                    </div>
+                    <div className="flex flex-col items-center">
+                        <Button onClick={ onEmergencyClick }>{ LocalizeText("help.main2.emergency.button") }</Button>
+                        {/* <div className="flex items-center gap-1.5 mt-1.5">
+                            <input type="checkbox" id="leaveRoom" className="illumina-input" onChange={() => setIsLeaveRoom(!isLeaveRoom)} />
+                            <label htmlFor="leaveRoom" className="text-[13px] text-white">{ LocalizeText("help.main2.emergency.leave") }</label>
+                        </div> */}
+                    </div>
+                </div>
+            </NitroBigCardContentView>
+        </NitroBigCardView>
     )
 }

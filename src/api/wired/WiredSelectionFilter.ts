@@ -1,4 +1,4 @@
-import { ColorConverter, NitroFilter } from '@nitrots/nitro-renderer';
+import { ColorConverter, NitroFilter } from "@nitrots/nitro-renderer"
 
 const vertex = `
 attribute vec2 aVertexPosition;
@@ -9,7 +9,7 @@ void main(void)
 {
     gl_Position = vec4((projectionMatrix * vec3(aVertexPosition, 1.0)).xy, 0.0, 1.0);
     vTextureCoord = aTextureCoord;
-}`;
+}`
 
 const fragment = `
 varying vec2 vTextureCoord;
@@ -26,70 +26,70 @@ void main(void) {
     } else if(currentColor.a > 0.0) {
         gl_FragColor = vec4(colorOverlay.r, colorOverlay.g, colorOverlay.b, currentColor.a);
     }
-}`;
+}`
 
 export class WiredSelectionFilter extends NitroFilter
 {
-    private _lineColor: number;
-    private _color: number;
+    private _lineColor: number
+    private _color: number
 
     constructor(lineColor: number | number[], color: number | number[])
     {
-        super(vertex, fragment);
+        super(vertex, fragment)
 
-        this.uniforms.lineColor = new Float32Array(3);
-        this.uniforms.color = new Float32Array(3);
-        this.lineColor = lineColor;
-        this.color = color;
+        this.uniforms.lineColor = new Float32Array(3)
+        this.uniforms.color = new Float32Array(3)
+        this.lineColor = lineColor
+        this.color = color
     }
 
     public get lineColor(): number | number[]
     {
-        return this._lineColor;
+        return this._lineColor
     }
 
     public set lineColor(value: number | number[])
     {
-        const arr = this.uniforms.lineColor;
+        const arr = this.uniforms.lineColor
 
-        if(typeof value === 'number')
+        if(typeof value === "number")
         {
-            ColorConverter.hex2rgb(value, arr);
+            ColorConverter.hex2rgb(value, arr)
 
-            this._lineColor = value;
+            this._lineColor = value
         }
         else
         {
-            arr[0] = value[0];
-            arr[1] = value[1];
-            arr[2] = value[2];
+            arr[0] = value[0]
+            arr[1] = value[1]
+            arr[2] = value[2]
 
-            this._lineColor = ColorConverter.rgb2hex(arr);
+            this._lineColor = ColorConverter.rgb2hex(arr)
         }
     }
 
     public get color(): number | number[]
     {
-        return this._color;
+        return this._color
     }
 
     public set color(value: number | number[])
     {
-        const arr = this.uniforms.color;
+        const arr = this.uniforms.color
 
-        if(typeof value === 'number')
+        if(typeof value === "number")
         {
-            ColorConverter.hex2rgb(value, arr);
+            ColorConverter.hex2rgb(value, arr)
 
-            this._color = value;
+            this._color = value
         }
         else
         {
-            arr[0] = value[0];
-            arr[1] = value[1];
-            arr[2] = value[2];
+            arr[0] = value[0]
+            arr[1] = value[1]
+            arr[2] = value[2]
 
-            this._color = ColorConverter.rgb2hex(arr);
+            this._color = ColorConverter.rgb2hex(arr)
         }
     }
 }

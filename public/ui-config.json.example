@@ -1,4 +1,147 @@
 {
+    "illumina.hotel.name": "Habbo",
+    "illumina.main.theme": "light",
+    "illumina.high.contrast": false,
+    "illumina.overlay.radial": false,
+    "illumina.mod_tools.closable": true,
+    "illumina.camera.enabled": true,
+    "illumina.help_settings.disabled": false,
+    "illumina.purchase.popup": true,
+    "illumina.hide.purse": false,
+    "illumina.random.figure.enabled": false,
+    "illumina.loading.reload.button.url": "default",
+    "illumina.toolbar.type": "default",
+    "illumina.navigator.type": "default",
+    "illumina.navigator.banner": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEictve3dYsxlCRN7dsmAtLFRc9V-gPf_D0fHJd0pj1p8GYtBSD03xmUNeX4XblrXYb3UT8UP5zVl3Pm2a9SYYyvuSSksceJxvcxfSKjd4UgVF_Mz84iG3QNEza6H3qt1L-HD7pVDqubB-E/s1600/TopStories_picnic.gif",
+    "illumina.loading.logo": "/client-assets/images/illumina-logo.png",
+    "illumina.loading.text": "Please wait! Habbo is loading...",
+    "illumina.loading.images": [
+        "/client-assets/images/loading/photos/photo-1.png",
+        "/client-assets/images/loading/photos/photo-2.png",
+        "/client-assets/images/loading/photos/photo-3.png",
+        "/client-assets/images/loading/photos/photo-4.png",
+        "/client-assets/images/loading/photos/photo-5.png",
+        "/client-assets/images/loading/photos/photo-6.png",
+        "/client-assets/images/loading/photos/photo-7.png",
+        "/client-assets/images/loading/photos/photo-8.png",
+        "/client-assets/images/loading/photos/photo-9.png",
+        "/client-assets/images/loading/photos/photo-10.png"
+    ],
+    "illumina.gamecenter.game_list": [
+        {
+            "enabled": false,
+            "gameId": 0,
+            "gameNameId": "snowwar",
+            "bgColor": "#93d4f3",
+            "assetUrl": "/client-assets/images/gamecenter/snowwar/",
+            "apiKey": "YOUR SNOWSTORM API KEY"
+        },
+        {
+            "enabled": true,
+            "gameId": 3,
+            "gameNameId": "basejump",
+            "bgColor": "#68bbd2",
+            "assetUrl": "/client-assets/images/gamecenter/basejump/",
+            "theme": "default",
+            "apiKey": "YOUR THEFASTFOODGAME.COM API KEY"
+        }
+    ],
+    "illumina.interactive.hotelview": {
+        "enabled": true,
+        "theme": "default",
+        "show.drape": true,
+        "drape.image": "${image.library.url}reception/drape.png",
+        "rooms": [
+            {
+                "id": "rooftop",
+                "style": {
+                    "width": "120px",
+                    "height": "164px",
+                    "top": "91px",
+                    "left": "368px"
+                },
+                "roomId": -1,
+                "show": true
+            },
+            {
+                "id": "rooftop-pool",
+                "style": {
+                    "width": "183px",
+                    "height": "164px",
+                    "top": "312px",
+                    "left": "520px"
+                },
+                "roomId": -1,
+                "show": true
+            },
+            {
+                "id": "pool",
+                "style": {
+                    "width": "433px",
+                    "height": "361px",
+                    "top": "477px",
+                    "left": "628px"
+                },
+                "roomId": -1,
+                "show": true
+            },
+            {
+                "id": "picnic",
+                "style": {
+                    "width": "576px",
+                    "height": "436px",
+                    "top": "489px",
+                    "left": "-128px"
+                },
+                "roomId": -1,
+                "show": true
+            },
+            {
+                "id": "peaceful-park",
+                "style": {
+                    "width": "384px",
+                    "height": "269px",
+                    "top": "359px",
+                    "left": "723px"
+                },
+                "roomId": -1,
+                "show": true
+            },
+            {
+                "id": "park",
+                "style": {
+                    "width": "236px",
+                    "height": "181px",
+                    "top": "333px",
+                    "left": "686px"
+                },
+                "roomId": -1,
+                "show": true
+            },
+            {
+                "id": "reception",
+                "style": {
+                    "width": "73px",
+                    "height": "65px",
+                    "top": "637px",
+                    "left": "459px"
+                },
+                "roomId": -1,
+                "show": true
+            },
+            {
+                "id": "central-terrace",
+                "style": {
+                    "width": "305px",
+                    "height": "134px",
+                    "top": "388px",
+                    "left": "290px"
+                },
+                "roomId": -1,
+                "show": true
+            }
+        ]
+    },
     "image.library.notifications.url": "${image.library.url}notifications/%image%.png",
     "achievements.images.url": "${image.library.url}Quests/%image%.png",
     "camera.url": "https://camera.url",

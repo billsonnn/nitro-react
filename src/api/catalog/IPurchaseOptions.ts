@@ -1,4 +1,4 @@
-import { IObjectData } from '@nitrots/nitro-renderer';
+import { IObjectData } from "@nitrots/nitro-renderer"
 
 export interface IPurchaseOptions
 {

@@ -1,11 +1,11 @@
-import { AdvancedMap } from '@nitrots/nitro-renderer';
-import { GroupItem } from './GroupItem';
+import { AdvancedMap } from "@nitrots/nitro-renderer"
+import { GroupItem } from "./GroupItem"
 
 export class TradeUserData
 {
     constructor(
         public userId: number = -1,
-        public userName: string = '',
+        public userName: string = "",
         public userItems: AdvancedMap<string, GroupItem> = new AdvancedMap(),
         public itemCount: number = 0,
         public creditsCount: number = 0,

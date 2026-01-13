@@ -1,72 +1,66 @@
-import { FC } from 'react';
-import { attemptItemPlacement, CreateLinkEvent, LocalizeText } from '../../../../api';
-import { Button, Column, Flex, LayoutGiftTagView, LayoutImage, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';
-import { useFurniturePresentWidget, useInventoryFurni } from '../../../../hooks';
+import { FC } from "react"
+import { attemptItemPlacement, CreateLinkEvent, LocalizeText } from "../../../../api"
+import { Button, LayoutAvatarImageView, LayoutGiftTagView, LayoutImage, NitroCardContentView, NitroCardHeaderView, NitroCardView } from "../../../../common"
+import { useFurniturePresentWidget, useInventoryFurni } from "../../../../hooks"
 
 export const FurnitureGiftOpeningView: FC<{}> = props =>
 {
-    const { objectId = -1, classId = -1, itemType = null, text = null, isOwnerOfFurniture = false, senderName = null, senderFigure = null, placedItemId = -1, placedItemType = null, placedInRoom = false, imageUrl = null, openPresent = null, onClose = null } = useFurniturePresentWidget();
-    const { groupItems = [] } = useInventoryFurni();
+    const { objectId = -1, text = null, isOwnerOfFurniture = false, senderName = null, senderFigure = null, placedItemId = -1, imageUrl = null, openPresent = null, onClose = null } = useFurniturePresentWidget()
+    const { groupItems = [] } = useInventoryFurni()
 
-    if(objectId === -1) return null;
+    if(objectId === -1) return null
 
     const place = (itemId: number) =>
     {
-        const groupItem = groupItems.find(group => (group.getItemById(itemId)?.id === itemId));
+        const groupItem = groupItems.find(group => (group.getItemById(itemId)?.id === itemId))
 
-        if(groupItem) attemptItemPlacement(groupItem);
+        if(groupItem) attemptItemPlacement(groupItem)
 
-        onClose();
+        onClose()
     }
 
     return (
-        <NitroCardView className="nitro-gift-opening" theme="primary-slim">
-            <NitroCardHeaderView headerText={ LocalizeText(senderName ? 'widget.furni.present.window.title_from' : 'widget.furni.present.window.title', [ 'name' ], [ senderName ]) } onCloseClick={ onClose } />
+        <NitroCardView uniqueKey="furniture-gift-opening" className="illumina-furniture-gift-opening w-[326px]">
+            <NitroCardHeaderView headerText={ LocalizeText(senderName ? "widget.furni.present.window.title_from" : "widget.furni.present.window.title", [ "name" ], [ senderName ]) } onCloseClick={ onClose } />
             <NitroCardContentView>
                 { (placedItemId === -1) &&
-                    <Column overflow="hidden">
-                        <Flex center overflow="auto">
-                            <LayoutGiftTagView userName={ senderName } figure={ senderFigure } message={ text } />
-                        </Flex>
+                    <>
+                        <LayoutGiftTagView userName={ senderName } figure={ senderFigure } message={ text } />
                         { isOwnerOfFurniture &&
-                            <Flex gap={ 1 }>
-                                { senderName &&
-                                    <Button fullWidth onClick={ event => CreateLinkEvent('catalog/open') }>
-                                        { LocalizeText('widget.furni.present.give_gift', [ 'name' ], [ senderName ]) }
-                                    </Button> }
-                                <Button fullWidth variant="success" onClick={ openPresent }>
-                                    { LocalizeText('widget.furni.present.open_gift') }
+                            <div className="mt-2.5 flex flex-col items-center gap-2.5">
+                                <Button variant="success" className="!px-16" onClick={ openPresent }>
+                                    { LocalizeText("widget.furni.present.open_gift") }
                                 </Button>
-                            </Flex> }
-                    </Column> }
-                { (placedItemId > -1) &&
-                    <Flex gap={ 2 } overflow="hidden">
-                        <Column center className="p-2">
-                            <LayoutImage imageUrl={ imageUrl } />
-                        </Column>
-                        <Column grow>
-                            <Column center gap={ 1 }>
-                                <Text wrap small>{ LocalizeText('widget.furni.present.message_opened') }</Text>
-                                <Text bold fontSize={ 5 }>{ text }</Text>
-                            </Column>
-                            <Column grow gap={ 1 }>
-                                <Flex gap={ 1 }>
-                                    { placedInRoom &&
-                                        <Button fullWidth onClick={ null }>
-                                            { LocalizeText('widget.furni.present.put_in_inventory') }
-                                        </Button> }
-                                    <Button fullWidth variant="success" onClick={ event => place(placedItemId) }>
-                                        { LocalizeText(placedInRoom ? 'widget.furni.present.keep_in_room' : 'widget.furni.present.place_in_room') }
-                                    </Button>
-                                </Flex>
-                                { (senderName && senderName.length) &&
-                                    <Button fullWidth onClick={ event => CreateLinkEvent('catalog/open') }>
-                                        { LocalizeText('widget.furni.present.give_gift', [ 'name' ], [ senderName ]) }
+                                { senderName &&
+                                    <Button onClick={ event => CreateLinkEvent("catalog/open") }>
+                                        { LocalizeText("widget.furni.present.give_gift", [ "name" ], [ senderName ]) }
                                     </Button> }
-                            </Column>
-                        </Column>
-                    </Flex> }
+                            </div> }
+                    </> }
+                { (placedItemId > -1) &&
+                    <div className="flex flex-col">
+                        <div className="mb-5 flex items-center gap-[15px] overflow-hidden px-2.5">
+                            <div className="flex h-20 w-[81px] items-center justify-center bg-[url('/client-assets/images/spritesheet.png?v=2451779')] dark:bg-[url('/client-assets/images/spritesheet-dark.png?v=2451779')] bg-[-309px_-212px] bg-no-repeat">
+                                <LayoutImage imageUrl={ imageUrl } />
+                            </div>
+                            <p className="text-sm">{ LocalizeText("widget.furni.present.message_opened", [ "product" ], [ text ]) }</p>
+                        </div>
+                        <div className="mb-2.5 flex flex-col gap-2.5 px-[50px]">
+                            <Button onClick={ event => place(placedItemId) }>
+                                { LocalizeText("widget.furni.present.place_in_room") }
+                            </Button>
+                            <Button onClick={ onClose }>
+                                { LocalizeText("widget.furni.present.put_in_inventory") }
+                            </Button>
+                        </div>
+                        { (senderName && senderName.length) && <div className="illumina-catalogue-info relative flex justify-center py-3">
+                            <Button variant="success" className="relative" onClick={ event => CreateLinkEvent("catalog/open") }>
+                                { LocalizeText("widget.furni.present.give_gift", [ "name" ], [ senderName ]) }
+                                <LayoutAvatarImageView className="!absolute -right-10 top-[-50px] !bg-[center_6px]" figure={ senderFigure } direction={ 2 } headOnly={ true } />
+                            </Button>
+                        </div> }
+                    </div> }
             </NitroCardContentView>
         </NitroCardView>
-    );
+    )
 }

@@ -1,50 +1,53 @@
-import { ILinkEventTracker } from '@nitrots/nitro-renderer';
-import { useEffect } from 'react';
-import { AddEventLinkTracker, RemoveLinkEventTracker } from '../../api';
-import { Flex } from '../../common';
-import { useGameCenter } from '../../hooks';
-import { GameListView } from './views/GameListView';
-import { GameStageView } from './views/GameStageView';
-import { GameView } from './views/GameView';
+import { ILinkEventTracker } from "@nitrots/nitro-renderer"
+import { useEffect, useState } from "react"
+import { AddEventLinkTracker, RemoveLinkEventTracker, VisitDesktop } from "../../api"
+import { useGameCenter } from "../../hooks"
+import { GameListView } from "./views/GameListView"
+import { GameStageView } from "./views/GameStageView"
+import { GameView } from "./views/GameView"
 
 export const GameCenterView = () => 
 {
-    const{ isVisible, setIsVisible, games, accountStatus } = useGameCenter();
+    const{ isVisible, setIsVisible, games, accountStatus } = useGameCenter()
+    const [ blackScreen, setBlackScreen ] = useState(false)
 
     useEffect(() =>
     {
-        const toggleGameCenter = () =>
-        {
-            setIsVisible(prev => !prev);
-        }
 
         const linkTracker: ILinkEventTracker = {
             linkReceived: (url: string) =>
             {
-                const value = url.split('/');
+                const value = url.split("/")
                 
                 switch(value[1]) 
                 {
-                    case 'toggle':
-                        toggleGameCenter();
-                        break;
+                case "show":
+                    setBlackScreen(true)
+                    VisitDesktop()
+                    setTimeout(() => {
+                        setIsVisible(true)
+                    }, 250)
+                    return
+                case "hide":
+                    setIsVisible(false)
+                    return
                 }
             },
-            eventUrlPrefix: 'games/'
-        };
+            eventUrlPrefix: "games/"
+        }
 
-        AddEventLinkTracker(linkTracker);
+        AddEventLinkTracker(linkTracker)
 
-        return () => RemoveLinkEventTracker(linkTracker);
-    }, [ ]);
+        return () => RemoveLinkEventTracker(linkTracker)
+    }, [ ])
 
-    if(!isVisible || !games || !accountStatus) return;
+    if(!isVisible || !games || !accountStatus) return
     
-    return <Flex position="absolute" className="top-0 bottom-0 start-0 end-0 bg-black" justifyContent="center">
-        <Flex className="game-center-main" column>
+    return <div className="absolute left-0 top-0 size-full bg-black">
+        <div className="flex h-[calc(100%-52px)] flex-col">
             <GameView/>
             <GameListView />
-        </Flex>
+        </div>
         <GameStageView />
-    </Flex>
+    </div>
 }

@@ -1,8 +1,8 @@
-import { GetNitroInstance } from './GetNitroInstance';
+import { GetNitroInstance } from "./GetNitroInstance"
 
 export function CreateLinkEvent(link: string): void
 {
-    link = (link.startsWith('event:') ? link.substring(6) : link);
+    link = (link.startsWith("event:") ? link.substring(6) : link)
     
-    GetNitroInstance().createLinkEvent(link);
+    GetNitroInstance().createLinkEvent(link)
 }

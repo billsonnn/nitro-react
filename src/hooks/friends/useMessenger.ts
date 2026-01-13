@@ -1,187 +1,187 @@
-import { NewConsoleMessageEvent, RoomInviteErrorEvent, RoomInviteEvent, SendMessageComposer as SendMessageComposerPacket } from '@nitrots/nitro-renderer';
-import { useEffect, useMemo, useState } from 'react';
-import { useBetween } from 'use-between';
-import { CloneObject, GetSessionDataManager, LocalizeText, MessengerIconState, MessengerThread, MessengerThreadChat, NotificationAlertType, PlaySound, SendMessageComposer, SoundNames } from '../../api';
-import { useMessageEvent } from '../events';
-import { useNotification } from '../notification';
-import { useFriends } from './useFriends';
+import { NewConsoleMessageEvent, RoomInviteErrorEvent, RoomInviteEvent, SendMessageComposer as SendMessageComposerPacket } from "@nitrots/nitro-renderer"
+import { useEffect, useMemo, useState } from "react"
+import { useBetween } from "use-between"
+import { CloneObject, GetSessionDataManager, LocalizeText, MessengerIconState, MessengerThread, MessengerThreadChat, NotificationAlertType, PlaySound, SendMessageComposer, SoundNames } from "../../api"
+import { useMessageEvent } from "../events"
+import { useNotification } from "../notification"
+import { useFriends } from "./useFriends"
 
 const useMessengerState = () =>
 {
-    const [ messageThreads, setMessageThreads ] = useState<MessengerThread[]>([]);
-    const [ activeThreadId, setActiveThreadId ] = useState<number>(-1);
-    const [ hiddenThreadIds, setHiddenThreadIds ] = useState<number[]>([]);
-    const [ iconState, setIconState ] = useState<number>(MessengerIconState.HIDDEN);
-    const { getFriend = null } = useFriends();
-    const { simpleAlert = null } = useNotification();
+    const [ messageThreads, setMessageThreads ] = useState<MessengerThread[]>([])
+    const [ activeThreadId, setActiveThreadId ] = useState<number>(-1)
+    const [ hiddenThreadIds, setHiddenThreadIds ] = useState<number[]>([])
+    const [ iconState, setIconState ] = useState<number>(MessengerIconState.HIDDEN)
+    const { getFriend = null } = useFriends()
+    const { simpleAlert = null } = useNotification()
 
-    const visibleThreads = useMemo(() => messageThreads.filter(thread => (hiddenThreadIds.indexOf(thread.threadId) === -1)), [ messageThreads, hiddenThreadIds ]);
-    const activeThread = useMemo(() => ((activeThreadId > 0) && visibleThreads.find(thread => (thread.threadId === activeThreadId) || null)), [ activeThreadId, visibleThreads ]);
+    const visibleThreads = useMemo(() => messageThreads.filter(thread => (hiddenThreadIds.indexOf(thread.threadId) === -1)), [ messageThreads, hiddenThreadIds ])
+    const activeThread = useMemo(() => ((activeThreadId > 0) && visibleThreads.find(thread => (thread.threadId === activeThreadId) || null)), [ activeThreadId, visibleThreads ])
 
     const getMessageThread = (userId: number) =>
     {
-        let thread = messageThreads.find(thread => (thread.participant && (thread.participant.id === userId)));
+        let thread = messageThreads.find(thread => (thread.participant && (thread.participant.id === userId)))
 
         if(!thread)
         {
-            const friend = getFriend(userId);
+            const friend = getFriend(userId)
 
-            if(!friend) return null;
+            if(!friend) return null
     
-            thread = new MessengerThread(friend);
+            thread = new MessengerThread(friend)
 
-            thread.addMessage(null, LocalizeText('messenger.moderationinfo'), 0, null, MessengerThreadChat.SECURITY_NOTIFICATION);
+            thread.addMessage(null, LocalizeText("messenger.moderationinfo"), 0, null, MessengerThreadChat.SECURITY_NOTIFICATION)
 
-            thread.setRead();
+            thread.setRead()
     
             setMessageThreads(prevValue =>
             {
-                const newValue = [ ...prevValue ];
+                const newValue = [ ...prevValue ]
     
-                newValue.push(thread);
+                newValue.push(thread)
     
-                return newValue;
-            });
+                return newValue
+            })
         }
         else
         {
-            const hiddenIndex = hiddenThreadIds.indexOf(thread.threadId);
+            const hiddenIndex = hiddenThreadIds.indexOf(thread.threadId)
 
             if(hiddenIndex >= 0)
             {
                 setHiddenThreadIds(prevValue =>
                 {
-                    const newValue = [ ...prevValue ];
+                    const newValue = [ ...prevValue ]
     
-                    newValue.splice(hiddenIndex, 1);
+                    newValue.splice(hiddenIndex, 1)
     
-                    return newValue;
+                    return newValue
                 })
             }
         }
 
-        return thread;
+        return thread
     }
 
     const closeThread = (threadId: number) =>
     {
         setHiddenThreadIds(prevValue =>
         {
-            const newValue = [ ...prevValue ];
+            const newValue = [ ...prevValue ]
 
-            if(newValue.indexOf(threadId) >= 0) return prevValue;
+            if(newValue.indexOf(threadId) >= 0) return prevValue
 
-            newValue.push(threadId);
+            newValue.push(threadId)
 
-            return newValue;
-        });
+            return newValue
+        })
 
-        if(activeThreadId === threadId) setActiveThreadId(-1);
+        if(activeThreadId === threadId) setActiveThreadId(-1)
     }
 
     const sendMessage = (thread: MessengerThread, senderId: number, messageText: string, secondsSinceSent: number = 0, extraData: string = null, messageType: number = MessengerThreadChat.CHAT) =>
     {
-        if(!thread || !messageText || !messageText.length) return;
+        if(!thread || !messageText || !messageText.length) return
 
-        const ownMessage = (senderId === GetSessionDataManager().userId);
+        const ownMessage = (senderId === GetSessionDataManager().userId)
 
-        if(ownMessage && (messageText.length <= 255)) SendMessageComposer(new SendMessageComposerPacket(thread.participant.id, messageText));
+        if(ownMessage && (messageText.length <= 255)) SendMessageComposer(new SendMessageComposerPacket(thread.participant.id, messageText))
 
         setMessageThreads(prevValue =>
         {
-            const newValue = [ ...prevValue ];
-            const index = newValue.findIndex(newThread => (newThread.threadId === thread.threadId));
+            const newValue = [ ...prevValue ]
+            const index = newValue.findIndex(newThread => (newThread.threadId === thread.threadId))
 
-            if(index === -1) return prevValue;
+            if(index === -1) return prevValue
 
-            thread = CloneObject(newValue[index]);
+            thread = CloneObject(newValue[index])
 
-            if(ownMessage && (thread.groups.length === 1)) PlaySound(SoundNames.MESSENGER_NEW_THREAD);
+            if(ownMessage && (thread.groups.length === 1)) PlaySound(SoundNames.MESSENGER_NEW_THREAD)
 
-            thread.addMessage(((messageType === MessengerThreadChat.ROOM_INVITE) ? null : senderId), messageText, secondsSinceSent, extraData, messageType);
+            thread.addMessage(((messageType === MessengerThreadChat.ROOM_INVITE) ? null : senderId), messageText, secondsSinceSent, extraData, messageType)
 
-            if(activeThreadId === thread.threadId) thread.setRead();
+            if(activeThreadId === thread.threadId) thread.setRead()
 
-            newValue[index] = thread;
+            newValue[index] = thread
 
-            if(!ownMessage && thread.unread) PlaySound(SoundNames.MESSENGER_MESSAGE_RECEIVED);
+            if(!ownMessage && thread.unread) PlaySound(SoundNames.MESSENGER_MESSAGE_RECEIVED)
 
-            return newValue;
-        });
+            return newValue
+        })
     }
 
     useMessageEvent<NewConsoleMessageEvent>(NewConsoleMessageEvent, event =>
     {
-        const parser = event.getParser();
-        const thread = getMessageThread(parser.senderId);
+        const parser = event.getParser()
+        const thread = getMessageThread(parser.senderId)
 
-        if(!thread) return;
+        if(!thread) return
 
-        sendMessage(thread, parser.senderId, parser.messageText, parser.secondsSinceSent, parser.extraData);
-    });
+        sendMessage(thread, parser.senderId, parser.messageText, parser.secondsSinceSent, parser.extraData)
+    })
 
     useMessageEvent<RoomInviteEvent>(RoomInviteEvent, event =>
     {
-        const parser = event.getParser();
-        const thread = getMessageThread(parser.senderId);
+        const parser = event.getParser()
+        const thread = getMessageThread(parser.senderId)
 
-        if(!thread) return;
+        if(!thread) return
 
-        sendMessage(thread, parser.senderId, parser.messageText, 0, null, MessengerThreadChat.ROOM_INVITE);
-    });
+        sendMessage(thread, parser.senderId, parser.messageText, 0, null, MessengerThreadChat.ROOM_INVITE)
+    })
 
     useMessageEvent<RoomInviteErrorEvent>(RoomInviteErrorEvent, event =>
     {
-        const parser = event.getParser();
+        const parser = event.getParser()
         
-        simpleAlert(`Received room invite error: ${ parser.errorCode },recipients: ${ parser.failedRecipients }`, NotificationAlertType.DEFAULT, null, null, LocalizeText('friendlist.alert.title'));
-    });
+        simpleAlert(`Received room invite error: ${ parser.errorCode },recipients: ${ parser.failedRecipients }`, NotificationAlertType.DEFAULT, null, null, LocalizeText("friendlist.alert.title"))
+    })
 
     useEffect(() =>
     {
-        if(activeThreadId <= 0) return;
+        if(activeThreadId <= 0) return
 
         setMessageThreads(prevValue =>
         {
-            const newValue = [ ...prevValue ];
-            const index = newValue.findIndex(newThread => (newThread.threadId === activeThreadId));
+            const newValue = [ ...prevValue ]
+            const index = newValue.findIndex(newThread => (newThread.threadId === activeThreadId))
 
             if(index >= 0)
             {
-                newValue[index] = CloneObject(newValue[index]);
+                newValue[index] = CloneObject(newValue[index])
 
-                newValue[index].setRead();
+                newValue[index].setRead()
             }
 
-            return newValue;
-        });
-    }, [ activeThreadId ]);
+            return newValue
+        })
+    }, [ activeThreadId ])
 
     useEffect(() =>
     {
         setIconState(prevValue =>
         {
-            if(!visibleThreads.length) return MessengerIconState.HIDDEN;
+            if(!visibleThreads.length) return MessengerIconState.HIDDEN
 
-            let isUnread = false;
+            let isUnread = false
 
             for(const thread of visibleThreads)
             {
                 if(thread.unreadCount > 0)
                 {
-                    isUnread = true;
+                    isUnread = true
 
-                    break;
+                    break
                 }
             }
 
-            if(isUnread) return MessengerIconState.UNREAD;
+            if(isUnread) return MessengerIconState.UNREAD
 
-            return MessengerIconState.SHOW;
-        });
-    }, [ visibleThreads ]);
+            return MessengerIconState.SHOW
+        })
+    }, [ visibleThreads ])
 
-    return { messageThreads, activeThread, iconState, visibleThreads, getMessageThread, setActiveThreadId, closeThread, sendMessage };
+    return { messageThreads, activeThread, iconState, visibleThreads, getMessageThread, setActiveThreadId, closeThread, sendMessage }
 }
 
-export const useMessenger = () => useBetween(useMessengerState);
+export const useMessenger = () => useBetween(useMessengerState)

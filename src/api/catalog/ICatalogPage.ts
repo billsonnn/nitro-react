@@ -1,5 +1,5 @@
-import { IPageLocalization } from './IPageLocalization';
-import { IPurchasableOffer } from './IPurchasableOffer';
+import { IPageLocalization } from "./IPageLocalization"
+import { IPurchasableOffer } from "./IPurchasableOffer"
 
 export interface ICatalogPage
 {

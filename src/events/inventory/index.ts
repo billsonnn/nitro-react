@@ -1,1 +1,1 @@
-export * from './InventoryFurniAddedEvent';
+export * from "./InventoryFurniAddedEvent"

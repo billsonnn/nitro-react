@@ -1,25 +1,23 @@
-import { FC } from 'react';
-import { Column, FlexProps, LayoutBadgeImageView } from '../../../common';
+import { FC } from "react"
+import { LayoutBadgeImageView } from "../../../common"
 
-interface BadgesContainerViewProps extends FlexProps
+interface BadgesContainerViewProps
 {
     badges: string[];
+    isShadow?: boolean;
 }
 
 export const BadgesContainerView: FC<BadgesContainerViewProps> = props =>
 {
-    const { badges = null, gap = 1, justifyContent = 'between', ...rest } = props;
+    const { badges = null, isShadow = false, ...rest } = props
 
     return (
         <>
-            { badges && (badges.length > 0) && badges.map((badge, index) =>
-            {
-                return (
-                    <Column key={ badge } center>
-                        <LayoutBadgeImageView key={ badge } badgeCode={ badge } />
-                    </Column>
-                );
-            }) }
+            { badges && (badges.length > 0) && badges.map((badge, index) => (
+                <div key={ badge } className="flex flex-col" >
+                    <LayoutBadgeImageView key={ badge } badgeCode={ badge } isShadow={ isShadow } />
+                </div>
+            ))}
         </>
-    );
+    )
 }

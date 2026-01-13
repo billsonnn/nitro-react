@@ -1,7 +1,7 @@
-import { FC, useMemo } from 'react';
-import { Flex, FlexProps } from './Flex';
-import { useGridContext } from './GridContext';
-import { ColumnSizesType } from './types';
+import { FC, useMemo } from "react"
+import { Flex, FlexProps } from "./Flex"
+import { useGridContext } from "./GridContext"
+import { ColumnSizesType } from "./types"
 
 export interface ColumnProps extends FlexProps
 {
@@ -12,35 +12,35 @@ export interface ColumnProps extends FlexProps
 
 export const Column: FC<ColumnProps> = props =>
 {
-    const { size = 0, offset = 0, column = true, gap = 2, classNames = [], ...rest } = props;
-    const { isCssGrid = false } = useGridContext();
+    const { size = 0, offset = 0, column = true, gap = 0, classNames = [], ...rest } = props
+    const { isCssGrid = false } = useGridContext()
 
     const getClassNames = useMemo(() =>
     {
-        const newClassNames: string[] = [];
+        const newClassNames: string[] = []
 
         if(size)
         {
-            let colClassName = `col-${ size }`;
+            let colClassName = `col-${ size }`
 
-            if(isCssGrid) colClassName = `g-${ colClassName }`;
+            if(isCssGrid) colClassName = `g-${ colClassName }`
 
-            newClassNames.push(colClassName);
+            newClassNames.push(colClassName)
         }
 
         if(offset)
         {
-            let colClassName = `offset-${ offset }`;
+            let colClassName = `offset-${ offset }`
 
-            if(isCssGrid) colClassName = `g-start-${ offset }`;
+            if(isCssGrid) colClassName = `g-start-${ offset }`
 
-            newClassNames.push(colClassName);
+            newClassNames.push(colClassName)
         }
 
-        if(classNames.length) newClassNames.push(...classNames);
+        if(classNames.length) newClassNames.push(...classNames)
 
-        return newClassNames;
-    }, [ size, offset, isCssGrid, classNames ]);
+        return newClassNames
+    }, [ size, offset, isCssGrid, classNames ])
 
-    return <Flex classNames={ getClassNames } column={ column } gap={ gap } { ...rest } />;
+    return <Flex classNames={ getClassNames } column={ column } gap={ gap } { ...rest } />
 }

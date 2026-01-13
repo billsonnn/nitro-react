@@ -1,43 +1,44 @@
-import { FC, useEffect, useState } from 'react';
-import ReactSlider from 'react-slider';
-import { GetConfiguration, LocalizeText, WiredFurniType } from '../../../../api';
-import { Column, Text } from '../../../../common';
-import { useWired } from '../../../../hooks';
-import { WiredActionBaseView } from './WiredActionBaseView';
+import { FC, useEffect, useState } from "react"
+import { GetConfiguration, LocalizeText, WiredFurniType } from "../../../../api"
+import { useWired } from "../../../../hooks"
+import { WiredMessageView } from "../WiredMessageView"
+import { WiredRangeView } from "../WiredRangeView"
+import { WiredActionBaseView } from "./WiredActionBaseView"
 
 export const WiredActionMuteUserView: FC<{}> = props =>
 {
-    const [ time, setTime ] = useState(-1);
-    const [ message, setMessage ] = useState('');
-    const { trigger = null, setIntParams = null, setStringParam = null } = useWired();
+    const [ time, setTime ] = useState(-1)
+    const [ message, setMessage ] = useState("")
+    const { trigger = null, setIntParams = null, setStringParam = null } = useWired()
 
     const save = () =>
     {
-        setIntParams([ time ]);
-        setStringParam(message);
+        setIntParams([ time ])
+        setStringParam(message)
     }
 
     useEffect(() =>
     {
-        setTime((trigger.intData.length > 0) ? trigger.intData[0] : 0);
-        setMessage(trigger.stringData);
-    }, [ trigger ]);
+        setTime((trigger.intData.length > 0) ? trigger.intData[0] : 0)
+        setMessage(trigger.stringData)
+    }, [ trigger ])
 
     return (
         <WiredActionBaseView requiresFurni={ WiredFurniType.STUFF_SELECTION_OPTION_NONE } hasSpecialInput={ true } save={ save }>
-            <Column gap={ 1 }>
-                <Text bold>{ LocalizeText('wiredfurni.params.length.minutes', [ 'minutes' ], [ time.toString() ]) }</Text>
-                <ReactSlider
-                    className={ 'nitro-slider' }
-                    min={ 1 }
-                    max={ 10 }
-                    value={ time }
-                    onChange={ event => setTime(event) } />
-            </Column>
-            <Column gap={ 1 }>
-                <Text bold>{ LocalizeText('wiredfurni.params.message') }</Text>
-                <input type="text" className="form-control form-control-sm" value={ message } onChange={ event => setMessage(event.target.value) } maxLength={ GetConfiguration<number>('wired.action.mute.user.max.length', 100) } />
-            </Column>
+            <WiredMessageView
+                title={ LocalizeText("wiredfurni.params.message") }   
+                value={ message }    
+                onChange={ event => setMessage(event.target.value) }
+                maxLength={ GetConfiguration<number>("wired.action.mute.user.max.length", 100) }
+            />
+            <div className="my-[7px] h-px w-full bg-[#232323]" />
+            <WiredRangeView
+                title={ LocalizeText("wiredfurni.params.length.minutes", [ "minutes", "dk" ], [ time.toString() ]) }
+                setState={ setTime }
+                state={ time }
+                sliderMin={ 1 }
+                sliderMax={ 10 }
+            />
         </WiredActionBaseView>
-    );
+    )
 }

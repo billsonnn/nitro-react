@@ -1,105 +1,154 @@
-import { GroupBuyComposer, GroupBuyDataComposer, GroupBuyDataEvent } from '@nitrots/nitro-renderer';
-import { FC, useEffect, useState } from 'react';
-import { HasHabboClub, IGroupData, LocalizeText, SendMessageComposer } from '../../../api';
-import { Base, Button, Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../common';
-import { useMessageEvent } from '../../../hooks';
-import { GroupTabBadgeView } from './tabs/GroupTabBadgeView';
-import { GroupTabColorsView } from './tabs/GroupTabColorsView';
-import { GroupTabCreatorConfirmationView } from './tabs/GroupTabCreatorConfirmationView';
-import { GroupTabIdentityView } from './tabs/GroupTabIdentityView';
+import { GroupBuyComposer, GroupBuyDataComposer, GroupBuyDataEvent } from "@nitrots/nitro-renderer"
+import { FC, useEffect, useState } from "react"
+import { HasHabboClub, IGroupData, LocalizeText, SendMessageComposer } from "../../../api"
+import { Button, LayoutCurrencyIcon, NitroCardContentView, NitroCardHeaderView, NitroCardView } from "../../../common"
+import { useMessageEvent, useNotification, usePurse } from "../../../hooks"
+import { GroupTabBadgeView } from "./tabs/GroupTabBadgeView"
+import { GroupTabColorsView } from "./tabs/GroupTabColorsView"
+import { GroupTabCreatorConfirmationView } from "./tabs/GroupTabCreatorConfirmationView"
+import { GroupTabIdentityView } from "./tabs/GroupTabIdentityView"
 
 interface GroupCreatorViewProps
 {
     onClose: () => void;
 }
 
-const TABS: number[] = [ 1, 2, 3, 4 ];
+const TABS: number[] = [ 1, 2, 3, 4 ]
 
 export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
 {
-    const { onClose = null } = props;
-    const [ currentTab, setCurrentTab ] = useState<number>(1);
-    const [ closeAction, setCloseAction ] = useState<{ action: () => boolean }>(null);
-    const [ groupData, setGroupData ] = useState<IGroupData>(null);
-    const [ availableRooms, setAvailableRooms ] = useState<{ id: number, name: string }[]>(null);
-    const [ purchaseCost, setPurchaseCost ] = useState<number>(0);
+    const { onClose = null } = props
+    const [ currentTab, setCurrentTab ] = useState<number>(1)
+    const [ closeAction, setCloseAction ] = useState<{ action: () => boolean }>(null)
+    const [ groupData, setGroupData ] = useState<IGroupData>(null)
+    const [ availableRooms, setAvailableRooms ] = useState<{ id: number, name: string }[]>(null)
+    const [ purchaseCost, setPurchaseCost ] = useState<number>(0)
+    const { getCurrencyAmount } = usePurse()
+    const { showConfirm = null } = useNotification()
+
+    const TAB_HEAD_IMAGE = {
+        1: {
+            position: "bg-[-131px_-43px]"
+        },
+        2: {
+            position: "bg-[-247px_-37px]"
+        },
+        3: {
+            position: "bg-[-361px_-38px]"
+        },
+        4: {
+            position: "bg-[-10px_-37px]"
+        }
+    }
+
+    const getTabStyle = (tab: number) =>
+    {
+        let style = ""
+        
+        if((tab === 1) && currentTab === 1)
+        {
+            style = "bg-[-85px_-3px] !w-[84px] pt-1"
+        }
+        else if((tab === 1) && currentTab !== 1)
+        {
+            style = "bg-[0px_-3px] !w-[84px] pt-2"
+        }
+        else if((tab === 4) && currentTab === 4)
+        {
+            style = "bg-[-472px_0px] w-[133px] h-[33px] ml-[-9px] mt-[-1px] pt-1.5"
+        }
+        else if((tab === 4) && currentTab !== 4)
+        {
+            style = "bg-[-338px_-3px] w-[133px] ml-[-9px] mt-0.5 pt-1.5"
+        }
+        else if(currentTab === tab)
+        {
+            style = "bg-[-254px_-3px] w-[83px] ml-[-5px] pt-1"
+        }
+        else
+        {
+            style = "bg-[-170px_-3px] w-[83px] ml-[-7px] pt-2"
+        }
+        
+        return style
+    }
 
     const onCloseClose = () =>
     {
-        setCloseAction(null);
-        setGroupData(null);
+        setCloseAction(null)
+        setGroupData(null)
 
-        if(onClose) onClose();
+        if(onClose) onClose()
     }
 
     const buyGroup = () =>
     {
-        if(!groupData) return;
+        if(!groupData) return
 
-        const badge = [];
+        if(getCurrencyAmount(-1) < purchaseCost) {
+            showConfirm(LocalizeText("catalog.alert.notenough.credits.description"), null, null, LocalizeText("generic.ok"), null, LocalizeText("catalog.alert.notenough.title"))
+        }
+
+        const badge = []
 
         groupData.groupBadgeParts.forEach(part =>
         {
             if(part.code)
             {
-                badge.push(part.key);
-                badge.push(part.color);
-                badge.push(part.position);
+                badge.push(part.key)
+                badge.push(part.color)
+                badge.push(part.position)
             }
-        });
+        })
 
-        SendMessageComposer(new GroupBuyComposer(groupData.groupName, groupData.groupDescription, groupData.groupHomeroomId, groupData.groupColors[0], groupData.groupColors[1], badge));
+        SendMessageComposer(new GroupBuyComposer(groupData.groupName, groupData.groupDescription, groupData.groupHomeroomId, groupData.groupColors[0], groupData.groupColors[1], badge))
     }
 
     const previousStep = () =>
     {
-        if(closeAction && closeAction.action)
-        {
-            if(!closeAction.action()) return;
-        }
-
         if(currentTab === 1)
         {
-            onClose();
-
-            return;
+            onClose()
         }
 
-        setCurrentTab(value => value - 1);
+        if(closeAction && closeAction.action)
+        {
+            if(!closeAction.action()) return
+        }
+
+        setCurrentTab(value => value - 1)
     }
 
     const nextStep = () =>
     {
         if(closeAction && closeAction.action)
         {
-            if(!closeAction.action()) return;
+            if(!closeAction.action()) return
+        }
+        
+        if(currentTab === 4) {
+            buyGroup()
+            return
         }
 
-        if(currentTab === 4)
-        {
-            buyGroup();
-
-            return;
-        }
-
-        setCurrentTab(value => (value === 4 ? value : value + 1));
+        setCurrentTab(value => (value === 4 ? value : value + 1))
     }
 
     useMessageEvent<GroupBuyDataEvent>(GroupBuyDataEvent, event =>
     {
-        const parser = event.getParser();
+        const parser = event.getParser()
 
-        const rooms: { id: number, name: string }[] = [];
+        const rooms: { id: number, name: string }[] = []
 
-        parser.availableRooms.forEach((name, id) => rooms.push({ id, name }));
+        parser.availableRooms.forEach((name, id) => rooms.push({ id, name }))
 
-        setAvailableRooms(rooms);
-        setPurchaseCost(parser.groupCost);
-    });
+        setAvailableRooms(rooms)
+        setPurchaseCost(parser.groupCost)
+    })
 
     useEffect(() =>
     {
-        setCurrentTab(1);
+        setCurrentTab(1)
 
         setGroupData({
             groupId: -1,
@@ -110,36 +159,37 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
             groupCanMembersDecorate: true,
             groupColors: null,
             groupBadgeParts: null
-        });
+        })
         
-        SendMessageComposer(new GroupBuyDataComposer());
-    }, [ setGroupData ]);
+        SendMessageComposer(new GroupBuyDataComposer())
+    }, [ setGroupData ])
 
-    if(!groupData) return null;
+    if(!groupData) return null
 
     return (
-        <NitroCardView className="nitro-group-creator" theme="primary-slim">
-            <NitroCardHeaderView headerText={ LocalizeText('group.create.title') } onCloseClick={ onCloseClose } />
-            <NitroCardContentView>
-                <Flex center className="creator-tabs">
-                    { TABS.map((tab, index) =>
-                    {
-                        return (
-                            <Flex center key={ index } className={ `tab tab-${ ((tab === 1) ? 'blue-flat' : (tab === 4) ? 'yellow' : 'blue-arrow') } ${ (currentTab === tab) ? 'active' : '' }` }>
-                                <Text variant="white">{ LocalizeText(`group.create.steplabel.${ tab }`) }</Text>
-                            </Flex>
-                        );
-                    }) }
-                </Flex>
-                <Column overflow="hidden">
-                    <Flex alignItems="center" gap={ 2 }>
-                        <Base className={ `nitro-group-tab-image tab-${ currentTab }` } />
-                        <Column grow gap={ 0 }>
-                            <Text bold fontSize={ 4 }>{ LocalizeText(`group.create.stepcaption.${ currentTab }`) }</Text>
-                            <Text>{ LocalizeText(`group.create.stepdesc.${ currentTab }`) }</Text>
-                        </Column>
-                    </Flex>
-                    <Column overflow="hidden">
+        <NitroCardView uniqueKey="group-creator" className="illumina-group-creator h-[520px] w-[392px]">
+            <NitroCardHeaderView headerText={ LocalizeText("group.create.title") } onCloseClick={ onCloseClose } />
+            <NitroCardContentView className="h-full">
+                <div className="flex items-start pt-px">
+                    { TABS.map((tab, index) => (
+                        <div key={ index } className={ `flex h-7 justify-center gap-1 bg-[url('/client-assets/images/groups/spritesheet.png?v=2451779')] dark:bg-[url('/client-assets/images/groups/spritesheet-dark.png?v=2451779')] ${ getTabStyle(tab) }`}>
+                            <p className="text-sm font-semibold text-white">{ LocalizeText(`group.create.steplabel.${ tab }`) }</p>
+                            {tab === 4 &&
+                                <span className="mt-[-2px]">
+                                    <LayoutCurrencyIcon type="big" currency={ -1 } />
+                                </span> }
+                        </div>
+                    ))}
+                </div>
+                <div className="mt-[13px] flex h-full flex-col">
+                    <div className="flex gap-[3px]">
+                        <i className={ `h-[62px] w-[114px] bg-[url('/client-assets/images/groups/spritesheet.png?v=2451779')] bg-no-repeat dark:bg-[url('/client-assets/images/groups/spritesheet-dark.png?v=2451779')] ${ TAB_HEAD_IMAGE[currentTab].position }` } />
+                        <div className="flex flex-col">
+                            <p className="mb-1 text-lg font-semibold [text-shadow:_0_1px_0_#fff] dark:[text-shadow:_0_1px_0_#33312B]">{ LocalizeText(`group.create.stepcaption.${ currentTab }`) }</p>
+                            <p className="text-sm">{ LocalizeText(`group.create.stepdesc.${ currentTab }`) }</p>
+                        </div>
+                    </div>
+                    <div className="mt-2.5 flex w-full flex-1 flex-col justify-between">
                         { (currentTab === 1) &&
                             <GroupTabIdentityView groupData={ groupData } setGroupData={ setGroupData } setCloseAction={ setCloseAction } onClose={ null } isCreator={ true } availableRooms={ availableRooms } /> }
                         { (currentTab === 2) &&
@@ -148,17 +198,38 @@ export const GroupCreatorView: FC<GroupCreatorViewProps> = props =>
                             <GroupTabColorsView groupData={ groupData } setGroupData={ setGroupData } setCloseAction={ setCloseAction } /> }
                         { (currentTab === 4) &&
                             <GroupTabCreatorConfirmationView groupData={ groupData } setGroupData={ setGroupData } purchaseCost={ purchaseCost } /> }
-                    </Column>
-                    <Flex justifyContent="between">
-                        <Button variant="link" className="text-black" onClick={ previousStep }>
-                            { LocalizeText(currentTab === 1 ? 'generic.cancel' : 'group.create.previousstep') }
-                        </Button>
-                        <Button disabled={ ((currentTab === 4) && !HasHabboClub()) } variant={ ((currentTab === 4) ? HasHabboClub() ? 'success' : 'danger' : 'primary') } onClick={ nextStep }>
-                            { LocalizeText((currentTab === 4) ? HasHabboClub() ? 'group.create.confirm.buy' : 'group.create.confirm.viprequired' : 'group.create.nextstep') }
-                        </Button>
-                    </Flex>
-                </Column>
+                        <div className="flex items-end justify-between">
+                            <Button variant="underline" onClick={ previousStep }>
+                                { LocalizeText(currentTab === 1 ? "generic.cancel" : "group.create.previousstep") }
+                            </Button>
+                            {currentTab !== 4 &&
+                                <Button onClick={ nextStep }>
+                                    { LocalizeText("group.create.nextstep") }
+                                </Button> }
+                            {currentTab === 4 && HasHabboClub() &&
+                                <div className="illumina-groups-purchase flex w-[248px] justify-between px-3.5 py-2" onClick={ nextStep }>
+                                    <div className="flex w-[140px] items-center gap-2.5">
+                                        <LayoutCurrencyIcon type="big" currency={ -1 } />
+                                        <p className="text-sm text-[#090909]">{ LocalizeText("group.create.confirm.buyinfo", [ "amount" ], [ purchaseCost.toString() ]) }</p>
+                                    </div>
+                                    <Button>
+                                        { LocalizeText("group.create.confirm.buy") }
+                                    </Button>
+                                </div> }
+                            {currentTab === 4 && !HasHabboClub() &&
+                                <div className="illumina-groups-purchase disabled flex w-[248px] justify-between px-3.5 py-2">
+                                    <div className="flex w-[140px] items-center gap-2.5">
+                                        <LayoutCurrencyIcon type="big" currency={ -1 } />
+                                        <p className="text-sm text-[#090909]">{ LocalizeText("group.create.confirm.buyinfo", [ "amount" ], [ purchaseCost.toString() ]) }</p>
+                                    </div>
+                                    <Button disabled>
+                                        { LocalizeText("group.create.confirm.buy") }
+                                    </Button>
+                                </div> }
+                        </div>
+                    </div>
+                </div>
             </NitroCardContentView>
         </NitroCardView>
-    );
-};
+    )
+}

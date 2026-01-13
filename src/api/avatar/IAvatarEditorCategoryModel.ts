@@ -1,4 +1,4 @@
-import { CategoryData } from './CategoryData';
+import { CategoryData } from "./CategoryData"
 
 export interface IAvatarEditorCategoryModel
 {

@@ -1,81 +1,81 @@
-import { RoomObjectCategory, RoomObjectUserType } from '@nitrots/nitro-renderer';
-import { useEffect, useMemo, useState } from 'react';
-import { GetRoomSession, MessengerRequest } from '../../../api';
-import { useFriends } from '../../friends';
-import { useUserAddedEvent, useUserRemovedEvent } from '../engine';
+import { RoomObjectCategory, RoomObjectUserType } from "@nitrots/nitro-renderer"
+import { useEffect, useMemo, useState } from "react"
+import { GetRoomSession, MessengerRequest } from "../../../api"
+import { useFriends } from "../../friends"
+import { useUserAddedEvent, useUserRemovedEvent } from "../engine"
 
 const useFriendRequestWidgetState = () =>
 {
-    const [ activeRequests, setActiveRequests ] = useState<{ roomIndex: number, request: MessengerRequest }[]>([]);
-    const { requests = [], dismissedRequestIds = [], setDismissedRequestIds = null } = useFriends();
+    const [ activeRequests, setActiveRequests ] = useState<{ roomIndex: number, request: MessengerRequest }[]>([])
+    const { requests = [], dismissedRequestIds = [], setDismissedRequestIds = null } = useFriends()
 
-    const displayedRequests = useMemo(() => activeRequests.filter(request => (dismissedRequestIds.indexOf(request.request.requesterUserId) === -1)), [ activeRequests, dismissedRequestIds ]);
+    const displayedRequests = useMemo(() => activeRequests.filter(request => (dismissedRequestIds.indexOf(request.request.requesterUserId) === -1)), [ activeRequests, dismissedRequestIds ])
 
     const hideFriendRequest = (userId: number) =>
     {
         setDismissedRequestIds(prevValue =>
         {
-            if(prevValue.indexOf(userId) >= 0) return prevValue;
+            if(prevValue.indexOf(userId) >= 0) return prevValue
 
-            const newValue = [ ...prevValue ];
+            const newValue = [ ...prevValue ]
 
-            newValue.push(userId);
+            newValue.push(userId)
 
-            return newValue;
-        });
+            return newValue
+        })
     }
 
     useUserAddedEvent(true, event =>
     {
-        if(event.category !== RoomObjectCategory.UNIT) return;
+        if(event.category !== RoomObjectCategory.UNIT) return
 
-        const userData = GetRoomSession().userDataManager.getUserDataByIndex(event.id);
+        const userData = GetRoomSession().userDataManager.getUserDataByIndex(event.id)
 
-        if(!userData || (userData.type !== RoomObjectUserType.getTypeNumber(RoomObjectUserType.USER))) return;
+        if(!userData || (userData.type !== RoomObjectUserType.getTypeNumber(RoomObjectUserType.USER))) return
         
-        const request = requests.find(request => (request.requesterUserId === userData.webID));
+        const request = requests.find(request => (request.requesterUserId === userData.webID))
 
-        if(!request || activeRequests.find(request => (request.request.requesterUserId === userData.webID))) return;
+        if(!request || activeRequests.find(request => (request.request.requesterUserId === userData.webID))) return
 
-        const newValue = [ ...activeRequests ];
+        const newValue = [ ...activeRequests ]
 
-        newValue.push({ roomIndex: userData.roomIndex, request });
+        newValue.push({ roomIndex: userData.roomIndex, request })
 
-        setActiveRequests(newValue);
-    });
+        setActiveRequests(newValue)
+    })
 
     useUserRemovedEvent(true, event =>
     {
-        if(event.category !== RoomObjectCategory.UNIT) return;
+        if(event.category !== RoomObjectCategory.UNIT) return
 
-        const index = activeRequests.findIndex(request => (request.roomIndex === event.id));
+        const index = activeRequests.findIndex(request => (request.roomIndex === event.id))
 
-        if(index === -1) return;
+        if(index === -1) return
 
-        const newValue = [ ...activeRequests ];
+        const newValue = [ ...activeRequests ]
 
-        newValue.splice(index, 1);
+        newValue.splice(index, 1)
 
-        setActiveRequests(newValue);
-    });
+        setActiveRequests(newValue)
+    })
 
     useEffect(() =>
     {
-        const newDisplayedRequests: { roomIndex: number, request: MessengerRequest }[] = [];
+        const newDisplayedRequests: { roomIndex: number, request: MessengerRequest }[] = []
 
         for(const request of requests)
         {
-            const userData = GetRoomSession().userDataManager.getUserData(request.requesterUserId);
+            const userData = GetRoomSession().userDataManager.getUserData(request.requesterUserId)
 
-            if(!userData) continue;
+            if(!userData) continue
 
-            newDisplayedRequests.push({ roomIndex: userData.roomIndex, request });
+            newDisplayedRequests.push({ roomIndex: userData.roomIndex, request })
         }
 
-        setActiveRequests(newDisplayedRequests);
-    }, [ requests ]);
+        setActiveRequests(newDisplayedRequests)
+    }, [ requests ])
 
-    return { displayedRequests, hideFriendRequest };
+    return { displayedRequests, hideFriendRequest }
 }
 
-export const useFriendRequestWidget = useFriendRequestWidgetState;
+export const useFriendRequestWidget = useFriendRequestWidgetState

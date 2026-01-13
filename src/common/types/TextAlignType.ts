@@ -1,1 +1,1 @@
-export type TextAlignType = 'start' | 'center' | 'end';
+export type TextAlignType = "start" | "center" | "end";
